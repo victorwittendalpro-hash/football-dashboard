@@ -1150,7 +1150,17 @@ function saveAddPlayer() {
     </div>
     <div class="st-form-group" style="margin-bottom:.75rem">
       <label>⚽ Buteurs (optionnel)</label>
-      <div class="scorer-list" id="scorer-list"><!-- populated --></div>
+      <div style="position:relative;margin-bottom:.5rem">
+        <input type="text" id="scorer-search" autocomplete="off"
+          placeholder="Rechercher un joueur..."
+          style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.45rem .75rem;color:#e8eaf0;font-size:13px;outline:none"
+          oninput="scorerSearchInput(this.value)"
+          onkeydown="scorerSearchKey(event)">
+        <div id="scorer-suggestions"
+          style="display:none;position:absolute;top:100%;left:0;right:0;background:#13161e;border:1px solid #3a4460;border-radius:0 0 6px 6px;max-height:180px;overflow-y:auto;z-index:200">
+        </div>
+      </div>
+      <div id="scorer-list" style="display:flex;flex-direction:column;gap:4px;max-height:180px;overflow-y:auto"></div>
     </div>
     <div class="st-modal-actions">
       <button class="btn-clear" onclick="clearMatch()">Effacer</button>
@@ -1434,17 +1444,19 @@ function openModal(lg, teamIdx, matchIdx){
   document.getElementById('m-bm').value = bm;
   document.getElementById('m-be').value = be;
 
-  // Build scorer list for this league
-  var lgPlayers = S8_DATA.players[lg] || [];
+  // Pré-remplir les buteurs depuis données existantes
   var existingScorers = existing ? (existing.scorers || {}) : {};
-  var scorerRows = lgPlayers.map(function(p){
-    var g = existingScorers[p.idx] || 0;
-    return '<div class="scorer-row">'
-      +'<span class="scorer-name">'+p.name+'</span>'
-      +'<div class="scorer-goals"><input type="number" min="0" max="20" value="'+g+'" data-idx="'+p.idx+'" placeholder="0"></div>'
-      +'</div>';
-  }).join('');
-  document.getElementById('scorer-list').innerHTML = scorerRows || '<div style="padding:.5rem;color:#5a6080;font-size:12px">Aucun joueur dans cette ligue</div>';
+  var scorerEntries = [];
+  Object.keys(existingScorers).forEach(function(pidx){
+    var g = existingScorers[pidx];
+    if(g > 0){
+      var p = ALL[parseInt(pidx)];
+      if(p) scorerEntries.push({idx: parseInt(pidx), name: p.name, goals: g});
+    }
+  });
+  renderScorerList(scorerEntries);
+  document.getElementById('scorer-search').value = '';
+  document.getElementById('scorer-suggestions').style.display = 'none';
 
   updatePreview();
   document.getElementById('st-modal').classList.add('open');
@@ -1467,11 +1479,12 @@ function saveMatch(){
   var be = parseInt(document.getElementById('m-be').value)||0;
   var pts = bm>be?3:bm===be?1:0;
 
-  // Collect scorers
+  // Collect scorers depuis les entrées de la liste
   var scorers = {};
-  document.querySelectorAll('#scorer-list input[data-idx]').forEach(function(inp){
-    var g = parseInt(inp.value)||0;
-    if(g>0) scorers[inp.getAttribute('data-idx')] = g;
+  document.querySelectorAll('#scorer-list .scorer-entry').forEach(function(row){
+    var pidx = row.getAttribute('data-idx');
+    var g = parseInt(row.querySelector('.scorer-goals-input').value)||0;
+    if(g > 0) scorers[pidx] = g;
   });
 
   var lg = modalCtx.lg, ti = modalCtx.teamIdx, mi = modalCtx.matchIdx;
@@ -1555,6 +1568,100 @@ document.getElementById('st-modal').addEventListener('click', function(e){
 
 // Init
 initSeasonTool();
+
+// ── Recherche de joueur dans le modal saisie ────────────────────────────────
+var _scorerList = [];  // [{idx, name, goals}]
+var _scorerSearchIdx = -1;
+
+function renderScorerList(entries) {
+  _scorerList = entries;
+  var html = entries.map(function(e, i) {
+    return '<div class="scorer-entry" data-idx="'+e.idx+'" style="display:flex;align-items:center;gap:8px;background:#0d0f14;border-radius:6px;padding:4px 8px">'
+      +'<span style="flex:1;font-size:12px;color:#e8eaf0">'+e.name+'</span>'
+      +'<input type="number" min="0" max="20" value="'+e.goals+'" class="scorer-goals-input"'
+      +' style="width:52px;background:#13161e;border:1px solid #3a4460;border-radius:4px;'
+      +'padding:2px 6px;color:#f5c842;font-size:13px;text-align:center;outline:none"'
+      +' oninput="scorerUpdateGoals('+i+', this.value)">'
+      +'<button onclick="scorerRemove('+i+')" style="background:none;border:none;color:#5a6080;cursor:pointer;font-size:14px;padding:0 2px;line-height:1">✕</button>'
+      +'</div>';
+  }).join('');
+  document.getElementById('scorer-list').innerHTML = html ||
+    '<div style="font-size:11px;color:#5a6080;padding:4px 0">Aucun buteur — recherche ci-dessus</div>';
+}
+
+function scorerUpdateGoals(i, val) {
+  if (_scorerList[i]) _scorerList[i].goals = parseInt(val)||0;
+}
+
+function scorerRemove(i) {
+  _scorerList.splice(i, 1);
+  renderScorerList(_scorerList);
+}
+
+function scorerSearchInput(q) {
+  _scorerSearchIdx = -1;
+  var box = document.getElementById('scorer-suggestions');
+  if (!q || q.length < 1) { box.style.display='none'; return; }
+  var ql = q.toLowerCase();
+  // Recherche dans ALL (tous les joueurs)
+  var matches = [];
+  for (var i=0; i<ALL.length; i++) {
+    if (ALL[i].name.toLowerCase().indexOf(ql) >= 0) {
+      matches.push({idx:i, name:ALL[i].name});
+      if (matches.length >= 8) break;
+    }
+  }
+  if (!matches.length) { box.style.display='none'; return; }
+  box.innerHTML = matches.map(function(m, mi) {
+    return '<div class="sc-sug-item" data-mi="'+mi+'"'
+      +' style="padding:6px 10px;cursor:pointer;font-size:12px;color:#e8eaf0;border-bottom:1px solid #1a1e28"'
+      +' onmousedown="scorerSelect('+m.idx+', ''+m.name.replace(/'/g,"\'")+'')"'
+      +' onmouseover="scorerSugHover(this)">'
+      + m.name
+      + (ALL[m.idx].ligue ? ' <span style="color:#5a6080;font-size:10px">'+ALL[m.idx].ligue+'</span>' : '')
+      +'</div>';
+  }).join('');
+  box.style.display = 'block';
+}
+
+function scorerSugHover(el) {
+  document.querySelectorAll('.sc-sug-item').forEach(function(e){ e.style.background=''; });
+  el.style.background = '#252a38';
+}
+
+function scorerSearchKey(e) {
+  var box = document.getElementById('scorer-suggestions');
+  var items = box.querySelectorAll('.sc-sug-item');
+  if (!items.length) return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    _scorerSearchIdx = Math.min(_scorerSearchIdx+1, items.length-1);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    _scorerSearchIdx = Math.max(_scorerSearchIdx-1, 0);
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (_scorerSearchIdx >= 0) items[_scorerSearchIdx].dispatchEvent(new Event('mousedown'));
+    else if (items.length === 1) items[0].dispatchEvent(new Event('mousedown'));
+    return;
+  } else if (e.key === 'Escape') {
+    box.style.display='none'; return;
+  }
+  items.forEach(function(el,i){ el.style.background = i===_scorerSearchIdx?'#252a38':''; });
+}
+
+function scorerSelect(playerIdx, playerName) {
+  // Vérifier si déjà dans la liste
+  var exists = _scorerList.find(function(e){ return e.idx === playerIdx; });
+  if (!exists) {
+    _scorerList.push({idx: playerIdx, name: playerName, goals: 1});
+    renderScorerList(_scorerList);
+  }
+  document.getElementById('scorer-search').value = '';
+  document.getElementById('scorer-suggestions').style.display = 'none';
+  document.getElementById('scorer-search').focus();
+}
+
 </script>
 </div>
 
