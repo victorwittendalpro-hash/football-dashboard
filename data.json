@@ -100,5 +100,7 @@
       "leg1": null,
       "leg2": null
     }
-  }
+  },
+  "currentSeasonNum": 8,
+  "archives": []
 }
