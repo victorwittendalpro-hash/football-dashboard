@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "matchDetails": {},
+  "clMatchDetails": {},
+  "clKoDetails": {},
+  "clKoBracket": {
+    "r16": [
+      {
+        "home": "FC Barcelone",
+        "away": "Feyenoord",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "Liverpool",
+        "away": "Majorque",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "Inter Milan",
+        "away": "PSV Heindoven",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "Manchester City",
+        "away": "OGC Nice",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "PSG",
+        "away": "AS Roma",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "Sporting Lisbonne",
+        "away": "Manchester United",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "Arsenal",
+        "away": "Real Madrid",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "Benfica",
+        "away": "Dortmund",
+        "leg1": null,
+        "leg2": null
+      }
+    ],
+    "qf": [
+      {
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
+      }
+    ],
+    "sf": [
+      {
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
+      }
+    ],
+    "final": {
+      "home": null,
+      "away": null,
+      "leg1": null,
+      "leg2": null
+    }
+  }
+}
