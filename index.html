@@ -463,18 +463,15 @@ function ghApplyData(data) {
     // Mettre à jour S8_DATA.players avec les nouvelles ligues
     var LN_MAP = {PL:'Premier League', SA:'Serie A', LA:'Liga', L1:'Ligue 1', BU:'Bundesliga'};
     // Déplacer les joueurs vers leur nouvelle ligue en conservant leurs goals
-    var LN_NAMES = Object.values(LN_MAP);
-    // Construire un index goals: playerIdx → goals (toutes ligues confondues)
     var goalsIndex = {};
-    LN_NAMES.forEach(function(lgName) {
+    Object.values(LN_MAP).forEach(function(lgName) {
       (S8_DATA.players[lgName] || []).forEach(function(pl) {
         goalsIndex[pl.idx] = pl.goals || 0;
       });
     });
-    // Reconstruire chaque ligue
     Object.keys(LN_MAP).forEach(function(code) {
       S8_DATA.players[LN_MAP[code]] = ALL
-        .map(function(p, idx){ return {idx:idx, name:p.name, goals:goalsIndex[idx]||p.goals||0}; })
+        .map(function(p, idx){ return {idx:idx, name:p.name, goals:goalsIndex[idx]||0}; })
         .filter(function(e){ return ALL[e.idx] && ALL[e.idx].ligue === code; })
         .sort(function(a,b){ return b.goals - a.goals; });
     });
@@ -1047,9 +1044,8 @@ function saveAddPlayer() {
 function updatePlayerLigue(playerIdx, newLigue) {
   var p = ALL[playerIdx];
   if (!p) return;
-
   var oldLigue = p.ligue;
-  if (oldLigue === newLigue) return;  // Rien à faire
+  if (oldLigue === newLigue) return;
   p.ligue = newLigue;
 
   var LN_MAP   = {PL:'Premier League', SA:'Serie A', LA:'Liga', L1:'Ligue 1', BU:'Bundesliga'};
@@ -1057,11 +1053,10 @@ function updatePlayerLigue(playerIdx, newLigue) {
   var oldLgName = LN_MAP[oldLigue];
   var newLgName = LN_MAP[newLigue];
 
-  // 1. Récupérer les buts actuels du joueur (depuis S8_DATA.players, source de vérité)
+  // 1. Récupérer les buts depuis S8_DATA.players (source de vérité = buts Excel + saisis)
   var currentGoals = 0;
   if (oldLgName && S8_DATA.players[oldLgName]) {
-    var found = S8_DATA.players[oldLgName]
-      .find(function(pl){ return pl.idx === playerIdx; });
+    var found = S8_DATA.players[oldLgName].find(function(pl){ return pl.idx === playerIdx; });
     if (found) currentGoals = found.goals || 0;
   }
 
@@ -1071,19 +1066,16 @@ function updatePlayerLigue(playerIdx, newLigue) {
       .filter(function(pl){ return pl.idx !== playerIdx; });
   }
 
-  // 3. Ajouter dans la nouvelle ligue avec les buts récupérés
+  // 3. Ajouter dans la nouvelle ligue avec ses vrais buts
   if (newLgName) {
     if (!S8_DATA.players[newLgName]) S8_DATA.players[newLgName] = [];
-    // Éviter les doublons
     S8_DATA.players[newLgName] = S8_DATA.players[newLgName]
       .filter(function(pl){ return pl.idx !== playerIdx; });
-    S8_DATA.players[newLgName].push({
-      idx: playerIdx, name: p.name, goals: currentGoals
-    });
+    S8_DATA.players[newLgName].push({idx: playerIdx, name: p.name, goals: currentGoals});
     S8_DATA.players[newLgName].sort(function(a,b){ return b.goals - a.goals; });
   }
 
-  // 4. Mettre à jour la couleur du select
+  // 4. Couleur du select
   var color = LN_COLOR[newLigue] || '#5a6080';
   var sel = document.querySelector('.ligue-select[data-idx="'+playerIdx+'"]');
   if (sel) {
@@ -1092,36 +1084,597 @@ function updatePlayerLigue(playerIdx, newLigue) {
     sel.style.color = color;
   }
 
-  // 5. Si l'onglet "Saison en cours" est visible → re-render
-  var paneS8 = document.getElementById('xpane-s8');
-  if (paneS8 && paneS8.style.display !== 'none') {
-    // Reconstruire le HTML statique du pane (appel simplifié)
-    if (typeof renderSaisonEnCours === 'function') renderSaisonEnCours();
-  }
+  // 5. Re-render saisie si ligue active
+  try { if (typeof curLg !== 'undefined' && curLg) { renderLeague(curLg); initNavBadges(); } } catch(e) {}
 
-  // 6. Si l'onglet "Saisie résultats" est visible → re-render
-  if (typeof curLg !== 'undefined' && curLg) {
-    try { renderLeague(curLg); initNavBadges(); } catch(e) {}
-  }
-
-  // 7. Re-filtrer le tableau comparatif
+  // 6. Re-filter tableau
   tblFilter();
 
-  // 8. Sauvegarder sur GitHub
+  // 7. Sauvegarder
   if (!window._playerLigueOverrides) window._playerLigueOverrides = {};
   window._playerLigueOverrides[playerIdx] = newLigue;
   GH.save();
 
-  // 9. Notification
+  // 8. Notification
   var notif = document.createElement('div');
   notif.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#3ecf8e;color:#0d0f14;'
     + 'padding:.5rem 1rem;border-radius:7px;font-size:12px;font-weight:700;z-index:9999;'
     + 'box-shadow:0 2px 12px rgba(0,0,0,.4)';
-  notif.textContent = '✓ ' + p.name + ' → ' + (newLgName || '—')
-    + (currentGoals > 0 ? ' (' + currentGoals + ' buts transférés)' : '');
+  notif.textContent = '✓ ' + p.name + ' → ' + (newLgName||'—')
+    + (currentGoals > 0 ? ' (' + currentGoals + ' buts)' : '');
   document.body.appendChild(notif);
   setTimeout(function(){ notif.style.opacity='0'; notif.style.transition='opacity .4s'; }, 3000);
   setTimeout(function(){ notif.remove(); }, 3500);
+}
+
+</script>
+<style>
+#xpane-s8{display:none}
+.s8-wrap{max-width:1200px;margin:0 auto;padding:1.25rem;display:flex;flex-direction:column;gap:1.5rem}
+.s8-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:1.25rem}
+.s8lb{background:#13161e;border:1px solid #252a38;border-radius:12px;overflow:hidden}
+.s8lh{display:flex;align-items:center;gap:.6rem;padding:.75rem 1rem;background:#1a1e28;border-bottom:1px solid #252a38}
+.s8tr{display:grid;grid-template-columns:1fr 155px}
+.s8tw{padding:.75rem}
+.s8sw{border-left:1px solid #252a38;background:#0f1117}
+.s8st{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#5a6080;margin-bottom:.5rem}
+.s8t{width:100%;border-collapse:collapse;font-size:12px}
+.s8t thead th{background:#1a1e28;color:#5a6080;font-size:9px;font-weight:700;text-transform:uppercase;padding:.3rem;text-align:center;border-bottom:1px solid #252a38}
+.s8t tbody td{padding:.35rem .3rem;border-bottom:1px solid #1a1e28}
+.s8t tbody tr:last-child td{border-bottom:none}
+.s8eu{background:#13161e;border:1px solid #252a38;border-radius:12px;overflow:hidden}
+.s8euh{display:flex;align-items:center;gap:.6rem;padding:.75rem 1rem;background:#1a1e28;border-bottom:1px solid #252a38;border-left:3px solid #f5c842}
+.s8eub{padding:.75rem}
+.s8eut{width:100%;border-collapse:collapse;font-size:12px}
+.s8eut td{padding:.3rem .3rem;border-bottom:1px solid #1a1e28}
+.s8eut tr:last-child td{border-bottom:none}
+@media(max-width:560px){.s8-grid{grid-template-columns:1fr}.s8tr{grid-template-columns:1fr}}
+</style><div id="xpane-s8" class="extra-pane" style="display:none"><div class="s8-wrap"><div style="display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;padding-bottom:.75rem;border-bottom:1px solid #252a38"><div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff">⚡ <span id="s8-season-label">Saison 8</span> — En cours</div><div style="margin-left:auto;background:#1a1e28;border:1px solid #252a38;border-radius:8px;padding:.5rem .875rem;text-align:center"><div style="font-size:10px;color:#5a6080;text-transform:uppercase">Top buteur Europe</div><div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:#f5c842">Madueke · 21⚽</div></div></div><div class="s8-grid"><div class="s8lb"><div class="s8lh" style="border-left:3px solid #4f8ef7"><span style="font-size:1.1rem">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span><span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#e8eaf0;flex:1">Premier League</span><span style="font-size:11px;color:#5a6080">Journée S8</span></div><div class="s8tr"><div class="s8tw"><div class="s8st">Classement</div><table class="s8t"><thead><tr><th style="width:26px">#</th><th style="text-align:left;padding-left:.3rem">Équipe</th><th>Pts</th><th>BM</th><th>BE</th><th>+/-</th></tr></thead><tbody><tr style="background:#f5c84218"><td style="text-align:center;font-weight:700;color:#f5c842;width:26px">1</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Liverpool_FC.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Liverpool</td><td style="text-align:center;font-weight:700;color:#4f8ef7">24</td><td style="text-align:center;color:#8b93b0">36</td><td style="text-align:center;color:#8b93b0">3</td><td style="text-align:center;color:#3ecf8e">+33</td></tr><tr style="background:#4f8ef718"><td style="text-align:center;font-weight:700;color:#4f8ef7;width:26px">2</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Arsenal_FC.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Arsenal</td><td style="text-align:center;font-weight:700;color:#4f8ef7">24</td><td style="text-align:center;color:#8b93b0">28</td><td style="text-align:center;color:#8b93b0">3</td><td style="text-align:center;color:#3ecf8e">+25</td></tr><tr style="background:#4f8ef718"><td style="text-align:center;font-weight:700;color:#4f8ef7;width:26px">3</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Manchester_City_FC_badge.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Manchester City</td><td style="text-align:center;font-weight:700;color:#4f8ef7">22</td><td style="text-align:center;color:#8b93b0">28</td><td style="text-align:center;color:#8b93b0">3</td><td style="text-align:center;color:#3ecf8e">+25</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">4</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Manchester_United_FC_crest.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Manchester United</td><td style="text-align:center;font-weight:700;color:#4f8ef7">19</td><td style="text-align:center;color:#8b93b0">26</td><td style="text-align:center;color:#8b93b0">10</td><td style="text-align:center;color:#3ecf8e">+16</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">5</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Newcastle_United_Logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Newcastle</td><td style="text-align:center;font-weight:700;color:#4f8ef7">15</td><td style="text-align:center;color:#8b93b0">22</td><td style="text-align:center;color:#8b93b0">11</td><td style="text-align:center;color:#3ecf8e">+11</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">6</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Tottenham_Hotspur.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Tottenham</td><td style="text-align:center;font-weight:700;color:#4f8ef7">14</td><td style="text-align:center;color:#8b93b0">14</td><td style="text-align:center;color:#8b93b0">12</td><td style="text-align:center;color:#3ecf8e">+2</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">7</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Nothimgham Forrest</td><td style="text-align:center;font-weight:700;color:#4f8ef7">13</td><td style="text-align:center;color:#8b93b0">24</td><td style="text-align:center;color:#8b93b0">16</td><td style="text-align:center;color:#3ecf8e">+8</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">8</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Everton_FC_logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Everton</td><td style="text-align:center;font-weight:700;color:#4f8ef7">13</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#5a6080">0</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">9</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Leicester</td><td style="text-align:center;font-weight:700;color:#4f8ef7">12</td><td style="text-align:center;color:#8b93b0">11</td><td style="text-align:center;color:#8b93b0">14</td><td style="text-align:center;color:#f76f6f">-3</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">10</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Aston_Villa_FC_new_crest.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Aston Villa</td><td style="text-align:center;font-weight:700;color:#4f8ef7">11</td><td style="text-align:center;color:#8b93b0">18</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#3ecf8e">+3</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">11</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Bournemouth</td><td style="text-align:center;font-weight:700;color:#4f8ef7">10</td><td style="text-align:center;color:#8b93b0">19</td><td style="text-align:center;color:#8b93b0">14</td><td style="text-align:center;color:#3ecf8e">+5</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">12</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Crystal_Palace_FC_logo_(2022).svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Crystal Palace</td><td style="text-align:center;font-weight:700;color:#4f8ef7">10</td><td style="text-align:center;color:#8b93b0">16</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#3ecf8e">+1</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">13</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Westham</td><td style="text-align:center;font-weight:700;color:#4f8ef7">9</td><td style="text-align:center;color:#8b93b0">16</td><td style="text-align:center;color:#8b93b0">17</td><td style="text-align:center;color:#f76f6f">-1</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">14</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Fulham_FC_(shield).svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Fulham</td><td style="text-align:center;font-weight:700;color:#4f8ef7">8</td><td style="text-align:center;color:#8b93b0">13</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#f76f6f">-2</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">15</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Wolves</td><td style="text-align:center;font-weight:700;color:#4f8ef7">8</td><td style="text-align:center;color:#8b93b0">19</td><td style="text-align:center;color:#8b93b0">22</td><td style="text-align:center;color:#f76f6f">-3</td></tr></tbody></table></div><div class="s8tw s8sw"><div class="s8st">⚽ Top buteurs</div><table class="s8t"><thead><tr><th style="width:20px">#</th><th style="text-align:left;padding-left:.3rem">Joueur</th><th>Buts</th></tr></thead><tbody><tr><td style="text-align:center;font-weight:700;color:#f5c842;width:20px">1</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Moukoko</td><td style="text-align:center;font-weight:700;color:#4f8ef7">12</td></tr><tr><td style="text-align:center;font-weight:700;color:#c0c0c0;width:20px">2</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Poulsen</td><td style="text-align:center;font-weight:700;color:#4f8ef7">11</td></tr><tr><td style="text-align:center;font-weight:700;color:#cd7f32;width:20px">3</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">K. Schade</td><td style="text-align:center;font-weight:700;color:#4f8ef7">9</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">4</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Brobbey</td><td style="text-align:center;font-weight:700;color:#4f8ef7">8</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">5</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Dilrosun</td><td style="text-align:center;font-weight:700;color:#4f8ef7">7</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">6</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Rafael Leao</td><td style="text-align:center;font-weight:700;color:#4f8ef7">7</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">7</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Kyogo. F</td><td style="text-align:center;font-weight:700;color:#4f8ef7">7</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">8</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">J. Windass</td><td style="text-align:center;font-weight:700;color:#4f8ef7">6</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">9</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Nusa</td><td style="text-align:center;font-weight:700;color:#4f8ef7">6</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">10</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Rio Ngumoha</td><td style="text-align:center;font-weight:700;color:#4f8ef7">6</td></tr></tbody></table></div></div></div><div class="s8lb"><div class="s8lh" style="border-left:3px solid #3ecf8e"><span style="font-size:1.1rem">🇮🇹</span><span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#e8eaf0;flex:1">Serie A</span><span style="font-size:11px;color:#5a6080">Journée S8</span></div><div class="s8tr"><div class="s8tw"><div class="s8st">Classement</div><table class="s8t"><thead><tr><th style="width:26px">#</th><th style="text-align:left;padding-left:.3rem">Équipe</th><th>Pts</th><th>BM</th><th>BE</th><th>+/-</th></tr></thead><tbody><tr style="background:#f5c84218"><td style="text-align:center;font-weight:700;color:#f5c842;width:26px">1</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Logo_of_AC_Milan.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">AC Milan</td><td style="text-align:center;font-weight:700;color:#3ecf8e">24</td><td style="text-align:center;color:#8b93b0">31</td><td style="text-align:center;color:#8b93b0">1</td><td style="text-align:center;color:#3ecf8e">+30</td></tr><tr style="background:#3ecf8e18"><td style="text-align:center;font-weight:700;color:#3ecf8e;width:26px">2</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/FC_Internazionale_Milano_2021.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Inter Milan</td><td style="text-align:center;font-weight:700;color:#3ecf8e">22</td><td style="text-align:center;color:#8b93b0">32</td><td style="text-align:center;color:#8b93b0">2</td><td style="text-align:center;color:#3ecf8e">+30</td></tr><tr style="background:#3ecf8e18"><td style="text-align:center;font-weight:700;color:#3ecf8e;width:26px">3</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Calcio_Como.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Côme</td><td style="text-align:center;font-weight:700;color:#3ecf8e">19</td><td style="text-align:center;color:#8b93b0">27</td><td style="text-align:center;color:#8b93b0">8</td><td style="text-align:center;color:#3ecf8e">+19</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">4</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/ACF_Fiorentina_Logo_2022.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Fiorentina</td><td style="text-align:center;font-weight:700;color:#3ecf8e">19</td><td style="text-align:center;color:#8b93b0">27</td><td style="text-align:center;color:#8b93b0">16</td><td style="text-align:center;color:#3ecf8e">+11</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">5</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Logo_Atalanta.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Atalanta</td><td style="text-align:center;font-weight:700;color:#3ecf8e">17</td><td style="text-align:center;color:#8b93b0">19</td><td style="text-align:center;color:#8b93b0">10</td><td style="text-align:center;color:#3ecf8e">+9</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">6</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/SS_Lazio_Badge.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Lazio</td><td style="text-align:center;font-weight:700;color:#3ecf8e">16</td><td style="text-align:center;color:#8b93b0">19</td><td style="text-align:center;color:#8b93b0">7</td><td style="text-align:center;color:#3ecf8e">+12</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">7</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Bologne</td><td style="text-align:center;font-weight:700;color:#3ecf8e">15</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#8b93b0">7</td><td style="text-align:center;color:#3ecf8e">+8</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">8</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Udinese</td><td style="text-align:center;font-weight:700;color:#3ecf8e">15</td><td style="text-align:center;color:#8b93b0">19</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#3ecf8e">+4</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">9</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Torino_FC_1906_Logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Torino</td><td style="text-align:center;font-weight:700;color:#3ecf8e">14</td><td style="text-align:center;color:#8b93b0">21</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#3ecf8e">+6</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">10</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Juventus_FC_2017_icon_(black%29.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Juventus</td><td style="text-align:center;font-weight:700;color:#3ecf8e">14</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#8b93b0">10</td><td style="text-align:center;color:#3ecf8e">+5</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">11</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/AS_Roma_logo_(2017).svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">AS Roma</td><td style="text-align:center;font-weight:700;color:#3ecf8e">13</td><td style="text-align:center;color:#8b93b0">20</td><td style="text-align:center;color:#8b93b0">11</td><td style="text-align:center;color:#3ecf8e">+9</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">12</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Helas Verone</td><td style="text-align:center;font-weight:700;color:#3ecf8e">11</td><td style="text-align:center;color:#8b93b0">11</td><td style="text-align:center;color:#8b93b0">9</td><td style="text-align:center;color:#3ecf8e">+2</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">13</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/SSC_Napoli_2007.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Napoli</td><td style="text-align:center;font-weight:700;color:#3ecf8e">8</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#8b93b0">19</td><td style="text-align:center;color:#f76f6f">-4</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">14</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Venise</td><td style="text-align:center;font-weight:700;color:#3ecf8e">5</td><td style="text-align:center;color:#8b93b0">12</td><td style="text-align:center;color:#8b93b0">20</td><td style="text-align:center;color:#f76f6f">-8</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">15</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Lecce</td><td style="text-align:center;font-weight:700;color:#3ecf8e">5</td><td style="text-align:center;color:#8b93b0">7</td><td style="text-align:center;color:#8b93b0">17</td><td style="text-align:center;color:#f76f6f">-10</td></tr></tbody></table></div><div class="s8tw s8sw"><div class="s8st">⚽ Top buteurs</div><table class="s8t"><thead><tr><th style="width:20px">#</th><th style="text-align:left;padding-left:.3rem">Joueur</th><th>Buts</th></tr></thead><tbody><tr><td style="text-align:center;font-weight:700;color:#f5c842;width:20px">1</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Retegui</td><td style="text-align:center;font-weight:700;color:#3ecf8e">13</td></tr><tr><td style="text-align:center;font-weight:700;color:#c0c0c0;width:20px">2</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Kendry Paez</td><td style="text-align:center;font-weight:700;color:#3ecf8e">11</td></tr><tr><td style="text-align:center;font-weight:700;color:#cd7f32;width:20px">3</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Gonçalo Ramos</td><td style="text-align:center;font-weight:700;color:#3ecf8e">8</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">4</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">A. Canobio</td><td style="text-align:center;font-weight:700;color:#3ecf8e">8</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">5</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Summerville</td><td style="text-align:center;font-weight:700;color:#3ecf8e">7</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">6</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Pio Esposito</td><td style="text-align:center;font-weight:700;color:#3ecf8e">6</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">7</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Matheus Martins</td><td style="text-align:center;font-weight:700;color:#3ecf8e">5</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">8</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">T. Baldanzi</td><td style="text-align:center;font-weight:700;color:#3ecf8e">5</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">9</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Isaac</td><td style="text-align:center;font-weight:700;color:#3ecf8e">4</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">10</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Paulinho</td><td style="text-align:center;font-weight:700;color:#3ecf8e">4</td></tr></tbody></table></div></div></div><div class="s8lb"><div class="s8lh" style="border-left:3px solid #a37af7"><span style="font-size:1.1rem">🇪🇸</span><span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#e8eaf0;flex:1">Liga</span><span style="font-size:11px;color:#5a6080">Journée S8</span></div><div class="s8tr"><div class="s8tw"><div class="s8st">Classement</div><table class="s8t"><thead><tr><th style="width:26px">#</th><th style="text-align:left;padding-left:.3rem">Équipe</th><th>Pts</th><th>BM</th><th>BE</th><th>+/-</th></tr></thead><tbody><tr style="background:#f5c84218"><td style="text-align:center;font-weight:700;color:#f5c842;width:26px">1</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/FC_Barcelona_(crest).svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">FC Barcelone</td><td style="text-align:center;font-weight:700;color:#a37af7">20</td><td style="text-align:center;color:#8b93b0">21</td><td style="text-align:center;color:#8b93b0">5</td><td style="text-align:center;color:#3ecf8e">+16</td></tr><tr style="background:#a37af718"><td style="text-align:center;font-weight:700;color:#a37af7;width:26px">2</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Real_Madrid_CF.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Real Madrid</td><td style="text-align:center;font-weight:700;color:#a37af7">19</td><td style="text-align:center;color:#8b93b0">30</td><td style="text-align:center;color:#8b93b0">12</td><td style="text-align:center;color:#3ecf8e">+18</td></tr><tr style="background:#a37af718"><td style="text-align:center;font-weight:700;color:#a37af7;width:26px">3</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Las Palmas</td><td style="text-align:center;font-weight:700;color:#a37af7">15</td><td style="text-align:center;color:#8b93b0">25</td><td style="text-align:center;color:#8b93b0">21</td><td style="text-align:center;color:#3ecf8e">+4</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">4</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Valence</td><td style="text-align:center;font-weight:700;color:#a37af7">14</td><td style="text-align:center;color:#8b93b0">19</td><td style="text-align:center;color:#8b93b0">10</td><td style="text-align:center;color:#3ecf8e">+9</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">5</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Villarreal_CF_Logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Villareal</td><td style="text-align:center;font-weight:700;color:#a37af7">14</td><td style="text-align:center;color:#8b93b0">19</td><td style="text-align:center;color:#8b93b0">16</td><td style="text-align:center;color:#3ecf8e">+3</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">6</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Real_betis_logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Real Betis</td><td style="text-align:center;font-weight:700;color:#a37af7">13</td><td style="text-align:center;color:#8b93b0">20</td><td style="text-align:center;color:#8b93b0">12</td><td style="text-align:center;color:#3ecf8e">+8</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">7</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">FC Seville</td><td style="text-align:center;font-weight:700;color:#a37af7">13</td><td style="text-align:center;color:#8b93b0">25</td><td style="text-align:center;color:#8b93b0">21</td><td style="text-align:center;color:#3ecf8e">+4</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">8</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Osasuna</td><td style="text-align:center;font-weight:700;color:#a37af7">11</td><td style="text-align:center;color:#8b93b0">23</td><td style="text-align:center;color:#8b93b0">16</td><td style="text-align:center;color:#3ecf8e">+7</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">9</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Español Barcelone</td><td style="text-align:center;font-weight:700;color:#a37af7">10</td><td style="text-align:center;color:#8b93b0">16</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#3ecf8e">+1</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">10</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/RCD_Mallorca_logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Majorque</td><td style="text-align:center;font-weight:700;color:#a37af7">10</td><td style="text-align:center;color:#8b93b0">12</td><td style="text-align:center;color:#8b93b0">17</td><td style="text-align:center;color:#f76f6f">-5</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">11</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">La Corone</td><td style="text-align:center;font-weight:700;color:#a37af7">10</td><td style="text-align:center;color:#8b93b0">14</td><td style="text-align:center;color:#8b93b0">22</td><td style="text-align:center;color:#f76f6f">-8</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">12</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Atletic Bilbao</td><td style="text-align:center;font-weight:700;color:#a37af7">9</td><td style="text-align:center;color:#8b93b0">18</td><td style="text-align:center;color:#8b93b0">20</td><td style="text-align:center;color:#f76f6f">-2</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">13</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Rayo Valleccano</td><td style="text-align:center;font-weight:700;color:#a37af7">7</td><td style="text-align:center;color:#8b93b0">11</td><td style="text-align:center;color:#8b93b0">17</td><td style="text-align:center;color:#f76f6f">-6</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">14</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Real_Sociedad_logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Real Sociedad</td><td style="text-align:center;font-weight:700;color:#a37af7">7</td><td style="text-align:center;color:#8b93b0">13</td><td style="text-align:center;color:#8b93b0">21</td><td style="text-align:center;color:#f76f6f">-8</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">15</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Valladollid</td><td style="text-align:center;font-weight:700;color:#a37af7">2</td><td style="text-align:center;color:#8b93b0">13</td><td style="text-align:center;color:#8b93b0">32</td><td style="text-align:center;color:#f76f6f">-19</td></tr></tbody></table></div><div class="s8tw s8sw"><div class="s8st">⚽ Top buteurs</div><table class="s8t"><thead><tr><th style="width:20px">#</th><th style="text-align:left;padding-left:.3rem">Joueur</th><th>Buts</th></tr></thead><tbody><tr><td style="text-align:center;font-weight:700;color:#f5c842;width:20px">1</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Mbappe</td><td style="text-align:center;font-weight:700;color:#a37af7">14</td></tr><tr><td style="text-align:center;font-weight:700;color:#c0c0c0;width:20px">2</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Yamal</td><td style="text-align:center;font-weight:700;color:#a37af7">6</td></tr><tr><td style="text-align:center;font-weight:700;color:#cd7f32;width:20px">3</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Endrick</td><td style="text-align:center;font-weight:700;color:#a37af7">4</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">4</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Akhliouche</td><td style="text-align:center;font-weight:700;color:#a37af7">4</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">5</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Mudrik</td><td style="text-align:center;font-weight:700;color:#a37af7">3</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">6</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Gnonto</td><td style="text-align:center;font-weight:700;color:#a37af7">3</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">7</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">De La Cruz</td><td style="text-align:center;font-weight:700;color:#a37af7">3</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">8</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">E. Zeballos</td><td style="text-align:center;font-weight:700;color:#a37af7">3</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">9</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Kudus</td><td style="text-align:center;font-weight:700;color:#a37af7">2</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">10</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Julien Duranville</td><td style="text-align:center;font-weight:700;color:#a37af7">2</td></tr></tbody></table></div></div></div><div class="s8lb"><div class="s8lh" style="border-left:3px solid #f7944f"><span style="font-size:1.1rem">🇫🇷</span><span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#e8eaf0;flex:1">Ligue 1</span><span style="font-size:11px;color:#5a6080">Journée S8</span></div><div class="s8tr"><div class="s8tw"><div class="s8st">Classement</div><table class="s8t"><thead><tr><th style="width:26px">#</th><th style="text-align:left;padding-left:.3rem">Équipe</th><th>Pts</th><th>BM</th><th>BE</th><th>+/-</th></tr></thead><tbody><tr style="background:#f5c84218"><td style="text-align:center;font-weight:700;color:#f5c842;width:26px">1</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Paris_Saint-Germain_F.C..svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">PSG</td><td style="text-align:center;font-weight:700;color:#f7944f">24</td><td style="text-align:center;color:#8b93b0">35</td><td style="text-align:center;color:#8b93b0">4</td><td style="text-align:center;color:#3ecf8e">+31</td></tr><tr style="background:#f7944f18"><td style="text-align:center;font-weight:700;color:#f7944f;width:26px">2</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/AS_Monaco_FC_Logo_2021.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">AS Monaco</td><td style="text-align:center;font-weight:700;color:#f7944f">20</td><td style="text-align:center;color:#8b93b0">33</td><td style="text-align:center;color:#8b93b0">7</td><td style="text-align:center;color:#3ecf8e">+26</td></tr><tr style="background:#f7944f18"><td style="text-align:center;font-weight:700;color:#f7944f;width:26px">3</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/OGC_Nice_logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">OGC Nice</td><td style="text-align:center;font-weight:700;color:#f7944f">18</td><td style="text-align:center;color:#8b93b0">17</td><td style="text-align:center;color:#8b93b0">12</td><td style="text-align:center;color:#3ecf8e">+5</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">4</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Racing_Club_de_Lens_logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">RC Lens</td><td style="text-align:center;font-weight:700;color:#f7944f">17</td><td style="text-align:center;color:#8b93b0">24</td><td style="text-align:center;color:#8b93b0">11</td><td style="text-align:center;color:#3ecf8e">+13</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">5</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Olympique_Marseille_logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">OM</td><td style="text-align:center;font-weight:700;color:#f7944f">16</td><td style="text-align:center;color:#8b93b0">20</td><td style="text-align:center;color:#8b93b0">11</td><td style="text-align:center;color:#3ecf8e">+9</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">6</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Strasbourg</td><td style="text-align:center;font-weight:700;color:#f7944f">15</td><td style="text-align:center;color:#8b93b0">22</td><td style="text-align:center;color:#8b93b0">16</td><td style="text-align:center;color:#3ecf8e">+6</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">7</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Toulouse_FC_2018_logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Toulouse</td><td style="text-align:center;font-weight:700;color:#f7944f">14</td><td style="text-align:center;color:#8b93b0">20</td><td style="text-align:center;color:#8b93b0">10</td><td style="text-align:center;color:#3ecf8e">+10</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">8</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Olympique_Lyonnais_logo_2022.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">OL</td><td style="text-align:center;font-weight:700;color:#f7944f">14</td><td style="text-align:center;color:#8b93b0">18</td><td style="text-align:center;color:#8b93b0">10</td><td style="text-align:center;color:#3ecf8e">+8</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">9</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Logo_of_LOSC_Lille.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">LOSC</td><td style="text-align:center;font-weight:700;color:#f7944f">14</td><td style="text-align:center;color:#8b93b0">23</td><td style="text-align:center;color:#8b93b0">17</td><td style="text-align:center;color:#3ecf8e">+6</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">10</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Stade_de_Reims_logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Reims</td><td style="text-align:center;font-weight:700;color:#f7944f">12</td><td style="text-align:center;color:#8b93b0">20</td><td style="text-align:center;color:#8b93b0">18</td><td style="text-align:center;color:#3ecf8e">+2</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">11</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Stade_Rennais_FC.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Rennes</td><td style="text-align:center;font-weight:700;color:#f7944f">12</td><td style="text-align:center;color:#8b93b0">14</td><td style="text-align:center;color:#8b93b0">14</td><td style="text-align:center;color:#5a6080">0</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">12</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">AS Saint-Etienne</td><td style="text-align:center;font-weight:700;color:#f7944f">11</td><td style="text-align:center;color:#8b93b0">26</td><td style="text-align:center;color:#8b93b0">21</td><td style="text-align:center;color:#3ecf8e">+5</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">13</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">FC Nantes</td><td style="text-align:center;font-weight:700;color:#f7944f">10</td><td style="text-align:center;color:#8b93b0">13</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#f76f6f">-2</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">14</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Paris FC</td><td style="text-align:center;font-weight:700;color:#f7944f">9</td><td style="text-align:center;color:#8b93b0">16</td><td style="text-align:center;color:#8b93b0">18</td><td style="text-align:center;color:#f76f6f">-2</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">15</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/HAC_logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">HAC</td><td style="text-align:center;font-weight:700;color:#f7944f">6</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#8b93b0">27</td><td style="text-align:center;color:#f76f6f">-12</td></tr></tbody></table></div><div class="s8tw s8sw"><div class="s8st">⚽ Top buteurs</div><table class="s8t"><thead><tr><th style="width:20px">#</th><th style="text-align:left;padding-left:.3rem">Joueur</th><th>Buts</th></tr></thead><tbody><tr><td style="text-align:center;font-weight:700;color:#f5c842;width:20px">1</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Moïse Sahi</td><td style="text-align:center;font-weight:700;color:#f7944f">20</td></tr><tr><td style="text-align:center;font-weight:700;color:#c0c0c0;width:20px">2</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">M. Tel</td><td style="text-align:center;font-weight:700;color:#f7944f">12</td></tr><tr><td style="text-align:center;font-weight:700;color:#cd7f32;width:20px">3</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Tawanda Chirewa</td><td style="text-align:center;font-weight:700;color:#f7944f">10</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">4</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Moreira Jr.</td><td style="text-align:center;font-weight:700;color:#f7944f">8</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">5</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Mbaye</td><td style="text-align:center;font-weight:700;color:#f7944f">8</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">6</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">B. Barcola</td><td style="text-align:center;font-weight:700;color:#f7944f">6</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">7</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Raphael Veiga</td><td style="text-align:center;font-weight:700;color:#f7944f">3</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">8</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Igor Jesus</td><td style="text-align:center;font-weight:700;color:#f7944f">3</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">9</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Mayulu</td><td style="text-align:center;font-weight:700;color:#f7944f">2</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">10</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Nico Paz</td><td style="text-align:center;font-weight:700;color:#f7944f">2</td></tr></tbody></table></div></div></div><div class="s8lb"><div class="s8lh" style="border-left:3px solid #f76f6f"><span style="font-size:1.1rem">🇩🇪</span><span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#e8eaf0;flex:1">Bundesliga</span><span style="font-size:11px;color:#5a6080">Journée S8</span></div><div class="s8tr"><div class="s8tw"><div class="s8st">Classement</div><table class="s8t"><thead><tr><th style="width:26px">#</th><th style="text-align:left;padding-left:.3rem">Équipe</th><th>Pts</th><th>BM</th><th>BE</th><th>+/-</th></tr></thead><tbody><tr style="background:#f5c84218"><td style="text-align:center;font-weight:700;color:#f5c842;width:26px">1</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Eintracht_Frankfurt_Logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Frankfort</td><td style="text-align:center;font-weight:700;color:#f76f6f">24</td><td style="text-align:center;color:#8b93b0">31</td><td style="text-align:center;color:#8b93b0">9</td><td style="text-align:center;color:#3ecf8e">+22</td></tr><tr style="background:#f76f6f18"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">2</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Borussia_Dortmund_logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Dortmund</td><td style="text-align:center;font-weight:700;color:#f76f6f">22</td><td style="text-align:center;color:#8b93b0">35</td><td style="text-align:center;color:#8b93b0">7</td><td style="text-align:center;color:#3ecf8e">+28</td></tr><tr style="background:#f76f6f18"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">3</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/FC_Bayern_M%C3%BCnchen_logo_(2017).svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Bayern Munich</td><td style="text-align:center;font-weight:700;color:#f76f6f">19</td><td style="text-align:center;color:#8b93b0">24</td><td style="text-align:center;color:#8b93b0">5</td><td style="text-align:center;color:#3ecf8e">+19</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">4</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Logo_SC_Freiburg.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Fribourg</td><td style="text-align:center;font-weight:700;color:#f76f6f">16</td><td style="text-align:center;color:#8b93b0">13</td><td style="text-align:center;color:#8b93b0">7</td><td style="text-align:center;color:#3ecf8e">+6</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">5</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Stuttgart</td><td style="text-align:center;font-weight:700;color:#f76f6f">14</td><td style="text-align:center;color:#8b93b0">24</td><td style="text-align:center;color:#8b93b0">17</td><td style="text-align:center;color:#3ecf8e">+7</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">6</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Werder Breme</td><td style="text-align:center;font-weight:700;color:#f76f6f">13</td><td style="text-align:center;color:#8b93b0">20</td><td style="text-align:center;color:#8b93b0">9</td><td style="text-align:center;color:#3ecf8e">+11</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">7</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Bayer_04_Leverkusen_logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Bayer Leverkusen</td><td style="text-align:center;font-weight:700;color:#f76f6f">13</td><td style="text-align:center;color:#8b93b0">13</td><td style="text-align:center;color:#8b93b0">5</td><td style="text-align:center;color:#3ecf8e">+8</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">8</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">FC Cologne</td><td style="text-align:center;font-weight:700;color:#f76f6f">13</td><td style="text-align:center;color:#8b93b0">22</td><td style="text-align:center;color:#8b93b0">15</td><td style="text-align:center;color:#3ecf8e">+7</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">9</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Leipzig</td><td style="text-align:center;font-weight:700;color:#f76f6f">13</td><td style="text-align:center;color:#8b93b0">13</td><td style="text-align:center;color:#8b93b0">8</td><td style="text-align:center;color:#3ecf8e">+5</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">10</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/FC_Schalke_04_Logo.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Schalke</td><td style="text-align:center;font-weight:700;color:#f76f6f">11</td><td style="text-align:center;color:#8b93b0">16</td><td style="text-align:center;color:#8b93b0">9</td><td style="text-align:center;color:#3ecf8e">+7</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">11</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Union Berlin</td><td style="text-align:center;font-weight:700;color:#f76f6f">9</td><td style="text-align:center;color:#8b93b0">13</td><td style="text-align:center;color:#8b93b0">11</td><td style="text-align:center;color:#3ecf8e">+2</td></tr><tr style=""><td style="text-align:center;font-weight:700;color:#5a6080;width:26px">12</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap"><img src="https://en.wikipedia.org/wiki/Special:Redirect/file/Logo-VfL-Wolfsburg.svg&width=40" width="16" height="16" style="object-fit:contain;vertical-align:middle;margin-right:3px;border-radius:2px;flex-shrink:0" onerror="this.style.display='none'">Wolfsburg</td><td style="text-align:center;font-weight:700;color:#f76f6f">9</td><td style="text-align:center;color:#8b93b0">10</td><td style="text-align:center;color:#8b93b0">9</td><td style="text-align:center;color:#3ecf8e">+1</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">13</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">St Pauli</td><td style="text-align:center;font-weight:700;color:#f76f6f">6</td><td style="text-align:center;color:#8b93b0">13</td><td style="text-align:center;color:#8b93b0">17</td><td style="text-align:center;color:#f76f6f">-4</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">14</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Borussia Mönchengladbach</td><td style="text-align:center;font-weight:700;color:#f76f6f">4</td><td style="text-align:center;color:#8b93b0">12</td><td style="text-align:center;color:#8b93b0">17</td><td style="text-align:center;color:#f76f6f">-5</td></tr><tr style="background:#f76f6f10"><td style="text-align:center;font-weight:700;color:#f76f6f;width:26px">15</td><td style="color:#e8eaf0;padding-left:.3rem;white-space:nowrap">Mayence</td><td style="text-align:center;font-weight:700;color:#f76f6f">4</td><td style="text-align:center;color:#8b93b0">5</td><td style="text-align:center;color:#8b93b0">18</td><td style="text-align:center;color:#f76f6f">-13</td></tr></tbody></table></div><div class="s8tw s8sw"><div class="s8st">⚽ Top buteurs</div><table class="s8t"><thead><tr><th style="width:20px">#</th><th style="text-align:left;padding-left:.3rem">Joueur</th><th>Buts</th></tr></thead><tbody><tr><td style="text-align:center;font-weight:700;color:#f5c842;width:20px">1</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Madueke</td><td style="text-align:center;font-weight:700;color:#f76f6f">21</td></tr><tr><td style="text-align:center;font-weight:700;color:#c0c0c0;width:20px">2</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">E. Haaland</td><td style="text-align:center;font-weight:700;color:#f76f6f">11</td></tr><tr><td style="text-align:center;font-weight:700;color:#cd7f32;width:20px">3</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">K.Yıldız</td><td style="text-align:center;font-weight:700;color:#f76f6f">6</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">4</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">W. Odobert</td><td style="text-align:center;font-weight:700;color:#f76f6f">5</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">5</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">B. Diaz</td><td style="text-align:center;font-weight:700;color:#f76f6f">4</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">6</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Olise</td><td style="text-align:center;font-weight:700;color:#f76f6f">4</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">7</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">E. Mbappe</td><td style="text-align:center;font-weight:700;color:#f76f6f">3</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">8</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Dro Fernandez</td><td style="text-align:center;font-weight:700;color:#f76f6f">2</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">9</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">S. Nanasi</td><td style="text-align:center;font-weight:700;color:#f76f6f">2</td></tr><tr><td style="text-align:center;font-weight:700;color:#8b93b0;width:20px">10</td><td style="color:#e8eaf0;font-size:11px;padding-left:.3rem">Konoplya</td><td style="text-align:center;font-weight:700;color:#f76f6f">1</td></tr></tbody></table></div></div></div></div><div class="s8eu"><div class="s8euh"><span style="font-size:1.2rem">⭐</span><span style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#e8eaf0">Top Buteurs — Europe</span><span style="font-size:11px;color:#5a6080;margin-left:auto">S8 · Toutes compétitions</span></div><div class="s8eub"><table class="s8eut"><thead><tr style="background:#1a1e28"><th style="width:26px;color:#5a6080;font-size:9px;text-transform:uppercase;padding:.3rem">#</th><th style="text-align:left;padding-left:.4rem;color:#5a6080;font-size:9px;text-transform:uppercase">Joueur</th><th style="color:#5a6080;font-size:9px;text-transform:uppercase;padding:.3rem">Buts</th></tr></thead><tbody><tr><td style="text-align:center;font-weight:700;width:26px;color:#f5c842">1</td><td style="color:#e8eaf0;padding-left:.4rem">Madueke</td><td style="text-align:center;font-weight:700;color:#f5c842">21</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#c0c0c0">2</td><td style="color:#e8eaf0;padding-left:.4rem">Moïse Sahi</td><td style="text-align:center;font-weight:700;color:#f5c842">20</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#cd7f32">3</td><td style="color:#e8eaf0;padding-left:.4rem">Mbappe</td><td style="text-align:center;font-weight:700;color:#f5c842">14</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">4</td><td style="color:#e8eaf0;padding-left:.4rem">Retegui</td><td style="text-align:center;font-weight:700;color:#f5c842">13</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">5</td><td style="color:#e8eaf0;padding-left:.4rem">Moukoko</td><td style="text-align:center;font-weight:700;color:#f5c842">12</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">6</td><td style="color:#e8eaf0;padding-left:.4rem">M. Tel</td><td style="text-align:center;font-weight:700;color:#f5c842">12</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">7</td><td style="color:#e8eaf0;padding-left:.4rem">Kendry Paez</td><td style="text-align:center;font-weight:700;color:#f5c842">11</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">8</td><td style="color:#e8eaf0;padding-left:.4rem">Poulsen</td><td style="text-align:center;font-weight:700;color:#f5c842">11</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">9</td><td style="color:#e8eaf0;padding-left:.4rem">E. Haaland</td><td style="text-align:center;font-weight:700;color:#f5c842">11</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">10</td><td style="color:#e8eaf0;padding-left:.4rem">Tawanda Chirewa</td><td style="text-align:center;font-weight:700;color:#f5c842">10</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">11</td><td style="color:#e8eaf0;padding-left:.4rem">K. Schade</td><td style="text-align:center;font-weight:700;color:#f5c842">9</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">12</td><td style="color:#e8eaf0;padding-left:.4rem">Gonçalo Ramos</td><td style="text-align:center;font-weight:700;color:#f5c842">8</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">13</td><td style="color:#e8eaf0;padding-left:.4rem">A. Canobio</td><td style="text-align:center;font-weight:700;color:#f5c842">8</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">14</td><td style="color:#e8eaf0;padding-left:.4rem">Brobbey</td><td style="text-align:center;font-weight:700;color:#f5c842">8</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">15</td><td style="color:#e8eaf0;padding-left:.4rem">Moreira Jr.</td><td style="text-align:center;font-weight:700;color:#f5c842">8</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">16</td><td style="color:#e8eaf0;padding-left:.4rem">Mbaye</td><td style="text-align:center;font-weight:700;color:#f5c842">8</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">17</td><td style="color:#e8eaf0;padding-left:.4rem">Summerville</td><td style="text-align:center;font-weight:700;color:#f5c842">7</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">18</td><td style="color:#e8eaf0;padding-left:.4rem">Dilrosun</td><td style="text-align:center;font-weight:700;color:#f5c842">7</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">19</td><td style="color:#e8eaf0;padding-left:.4rem">Rafael Leao</td><td style="text-align:center;font-weight:700;color:#f5c842">7</td></tr><tr><td style="text-align:center;font-weight:700;width:26px;color:#8b93b0">20</td><td style="color:#e8eaf0;padding-left:.4rem">Kyogo. F</td><td style="text-align:center;font-weight:700;color:#f5c842">7</td></tr></tbody></table></div></div>
+</div>
+</div>
+<div id="xpane-season" class="extra-pane" style="display:none">
+<style>
+#xpane-season{display:none}
+#xpane-season.on{display:block;padding:0}
+
+/* Season tool layout */
+.st-wrap{display:grid;grid-template-columns:220px 1fr;height:calc(100vh - 98px);overflow:hidden}
+@media(max-width:700px){.st-wrap{grid-template-columns:1fr;height:auto}}
+
+/* Left nav */
+.st-nav{background:#13161e;border-right:1px solid #252a38;display:flex;flex-direction:column;overflow:hidden}
+.st-nav-title{padding:.75rem 1rem;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#5a6080;border-bottom:1px solid #252a38}
+.st-nav-tabs{display:flex;flex-direction:column;padding:.4rem;gap:2px;overflow-y:auto;flex:1}
+.st-nav-tab{display:flex;align-items:center;gap:.5rem;padding:.5rem .6rem;border-radius:7px;cursor:pointer;border:1px solid transparent;transition:all .12s;font-size:12px;font-weight:500;color:#8b93b0}
+.st-nav-tab:hover{background:#1a1e28;color:#e8eaf0}
+.st-nav-tab.on{background:#1a1e28;border-color:var(--tab-color,#4f8ef7);color:#e8eaf0}
+.st-nav-tab .tab-flag{font-size:1.1rem}
+.st-nav-tab .tab-badge{margin-left:auto;font-size:10px;background:#252a38;padding:1px 6px;border-radius:999px;color:#5a6080}
+.st-nav-tab.on .tab-badge{background:var(--tab-color,#4f8ef7);color:#fff}
+.st-nav-sep{height:1px;background:#252a38;margin:.3rem .4rem}
+.st-nav-info{padding:.6rem .8rem;font-size:11px;color:#5a6080;border-top:1px solid #252a38}
+
+/* Right panel */
+.st-panel{overflow-y:auto;display:flex;flex-direction:column}
+.st-panel::-webkit-scrollbar{width:4px}
+.st-panel::-webkit-scrollbar-thumb{background:#252a38}
+
+/* Season header */
+.st-header{padding:.875rem 1.25rem;border-bottom:1px solid #252a38;background:#13161e;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.st-lg-name{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff}
+.st-progress{flex:1;min-width:150px}
+.st-progress-bar{height:4px;background:#1a1e28;border-radius:2px;overflow:hidden;margin-top:4px}
+.st-progress-fill{height:100%;border-radius:2px;transition:width .3s}
+.st-progress-text{font-size:10px;color:#5a6080}
+.st-match-count{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:700}
+
+/* Main content area */
+.st-content{padding:1rem 1.25rem;display:flex;flex-direction:column;gap:1rem}
+
+/* Standings table */
+.st-standing{background:#13161e;border:1px solid #252a38;border-radius:10px;overflow:hidden}
+.st-standing-head{display:grid;grid-template-columns:30px 1fr repeat(11,36px);background:#1a1e28;border-bottom:1px solid #252a38;padding:.3rem 0}
+.st-standing-head div{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#5a6080;text-align:center;padding:0 2px}
+.st-standing-head .th-name{text-align:left;padding-left:.5rem}
+.st-team-row{display:grid;grid-template-columns:30px 1fr repeat(11,36px);border-bottom:1px solid #1a1e28;align-items:center;min-height:38px;transition:background .1s}
+.st-team-row:last-child{border-bottom:none}
+.st-team-row:hover{background:#1a1e28}
+.st-team-row .rank{text-align:center;font-weight:700;font-size:11px}
+.st-team-row .tname{font-size:12px;font-weight:500;color:#e8eaf0;padding-left:.5rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st-team-row .tcell{text-align:center;font-size:12px;color:#8b93b0}
+.st-team-row .tcell.pts{font-family:'Syne',sans-serif;font-weight:700;font-size:13px}
+.match-cell{width:28px;height:26px;border-radius:4px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin:3px auto;transition:all .12s}
+.match-cell.win{background:#3ecf8e22;color:#3ecf8e;border:1px solid #3ecf8e44}
+.match-cell.draw{background:#f5c84222;color:#f5c842;border:1px solid #f5c84244}
+.match-cell.loss{background:#f76f6f22;color:#f76f6f;border:1px solid #f76f6f44}
+.match-cell.empty{background:#1a1e28;color:#2e3448;border:1px solid #1a1e28;cursor:default}
+.match-cell.editable:hover{opacity:.8;transform:scale(1.05)}
+
+/* Input modal */
+.st-modal-backdrop{position:fixed;inset:0;background:#00000088;z-index:1000;display:none;align-items:center;justify-content:center}
+.st-modal-backdrop.open{display:flex}
+.st-modal{background:#13161e;border:1px solid #2e3448;border-radius:14px;padding:1.5rem;width:420px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px #00000088}
+.st-modal h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;color:#fff;margin-bottom:1rem}
+.st-modal-close{float:right;background:none;border:none;color:#5a6080;cursor:pointer;font-size:18px;line-height:1;margin-top:-4px}
+.st-modal-close:hover{color:#e8eaf0}
+.st-form-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
+.st-form-group{display:flex;flex-direction:column;gap:.3rem}
+.st-form-group label{font-size:11px;color:#5a6080;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.st-form-group input,.st-form-group select{background:#1a1e28;border:1px solid #2e3448;border-radius:7px;padding:.45rem .7rem;font-size:14px;color:#e8eaf0;font-family:'DM Sans',sans-serif;width:100%}
+.st-form-group input:focus,.st-form-group select:focus{outline:none;border-color:#4f8ef7}
+.st-result-preview{background:#1a1e28;border-radius:8px;padding:.75rem;margin-bottom:.875rem;text-align:center;font-size:13px;color:#8b93b0}
+.st-result-preview .res-score{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;color:#fff;margin:.2rem 0}
+.st-result-preview .res-pts{font-size:11px}
+.st-modal-actions{display:flex;gap:.5rem;justify-content:flex-end}
+.btn-save{background:#4f8ef7;border:none;border-radius:7px;padding:.5rem 1.1rem;font-size:13px;font-weight:600;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-save:hover{background:#3a7de8}
+.btn-cancel{background:#1a1e28;border:1px solid #2e3448;border-radius:7px;padding:.5rem 1rem;font-size:13px;color:#8b93b0;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-clear{background:#f76f6f22;border:1px solid #f76f6f44;border-radius:7px;padding:.5rem 1rem;font-size:13px;color:#f76f6f;cursor:pointer;font-family:'DM Sans',sans-serif}
+.btn-clear:hover{background:#f76f6f33}
+.scorer-list{max-height:180px;overflow-y:auto;border:1px solid #2e3448;border-radius:7px;margin-top:.3rem}
+.scorer-row{display:flex;align-items:center;gap:.5rem;padding:.35rem .6rem;border-bottom:1px solid #1a1e28}
+.scorer-row:last-child{border-bottom:none}
+.scorer-name{flex:1;font-size:12px;color:#e8eaf0}
+.scorer-goals{width:60px}
+.scorer-goals input{background:#13161e;border:1px solid #2e3448;border-radius:5px;padding:.2rem .4rem;font-size:12px;color:#e8eaf0;width:100%;text-align:center;font-family:'DM Sans',sans-serif}
+.scorer-goals input:focus{outline:none;border-color:#4f8ef7}
+
+/* Scorers table */
+.st-scorers{background:#13161e;border:1px solid #252a38;border-radius:10px;overflow:hidden}
+.st-scorers-title{padding:.6rem 1rem;background:#1a1e28;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#5a6080;border-bottom:1px solid #252a38}
+.st-scorers-table{width:100%;border-collapse:collapse;font-size:12px}
+.st-scorers-table td{padding:.4rem .75rem;border-bottom:1px solid #1a1e28}
+.st-scorers-table tr:last-child td{border-bottom:none}
+.st-scorers-table tr:hover td{background:#1a1e28}
+
+/* Legend */
+.st-legend{display:flex;gap:.875rem;flex-wrap:wrap;font-size:11px;color:#5a6080;padding:.5rem 0}
+.legend-item{display:flex;align-items:center;gap:.3rem}
+.legend-dot{width:10px;height:10px;border-radius:2px}
+</style>
+
+<!-- Left nav -->
+<div class="st-wrap">
+<div class="st-nav">
+  <div class="st-nav-title">⚡ <span id="season-nav-label">Saison en cours</span></div>
+  <div class="st-nav-tabs" id="st-tabs">
+    <!-- populated by JS -->
+  </div>
+  <div class="st-nav-info" id="st-nav-info">Cliquez sur un match<br>pour saisir un résultat</div>
+  <div style="padding:.75rem;border-top:1px solid #252a38;margin-top:auto">
+    <button onclick="confirmCloseSeason()"
+      style="width:100%;background:#1a1e28;border:1px solid #f76f6f;border-radius:7px;
+             padding:.5rem;color:#f76f6f;font-size:12px;font-weight:600;cursor:pointer;
+             transition:all .2s"
+      onmouseover="this.style.background='#f76f6f22'"
+      onmouseout="this.style.background='#1a1e28'">
+      🏁 Clôturer la saison
+    </button>
+  </div>
+</div>
+
+<!-- Right panel -->
+<div class="st-panel" id="st-panel">
+  <div style="display:flex;align-items:center;justify-content:center;height:200px;color:#5a6080;font-size:14px">
+    Sélectionne un championnat
+  </div>
+</div>
+</div>
+
+<!-- Input modal -->
+<div class="st-modal-backdrop" id="st-modal">
+  <div class="st-modal">
+    <button class="st-modal-close" onclick="closeModal()">✕</button>
+    <h3 id="modal-title">Saisir résultat — Journée X</h3>
+    <div class="st-result-preview" id="modal-preview">
+      <div class="res-score" id="preview-score">— : —</div>
+      <div class="res-pts" id="preview-pts"></div>
+    </div>
+    <div class="st-form-row">
+      <div class="st-form-group">
+        <label>Buts marqués (BM)</label>
+        <input type="number" id="m-bm" min="0" max="30" value="0" oninput="updatePreview()">
+      </div>
+      <div class="st-form-group">
+        <label>Buts encaissés (BE)</label>
+        <input type="number" id="m-be" min="0" max="30" value="0" oninput="updatePreview()">
+      </div>
+    </div>
+    <div class="st-form-group" style="margin-bottom:.75rem">
+      <label>⚽ Buteurs (optionnel)</label>
+      <div style="position:relative;margin-bottom:.5rem">
+        <input type="text" id="scorer-search" autocomplete="off"
+          placeholder="Rechercher un joueur..."
+          style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.45rem .75rem;color:#e8eaf0;font-size:13px;outline:none"
+          oninput="scorerSearchInput(this.value)"
+          onkeydown="scorerSearchKey(event)">
+        <div id="scorer-suggestions"
+          style="display:none;position:absolute;top:100%;left:0;right:0;background:#13161e;border:1px solid #3a4460;border-radius:0 0 6px 6px;max-height:180px;overflow-y:auto;z-index:200">
+        </div>
+      </div>
+      <div id="scorer-list" style="display:flex;flex-direction:column;gap:4px;max-height:180px;overflow-y:auto"></div>
+    </div>
+    <div class="st-modal-actions">
+      <button class="btn-clear" onclick="clearMatch()">Effacer</button>
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-save" onclick="saveMatch()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════
+const S8_DATA = {"leagues":{"Serie A":[{"name":"AC Milan","matches":[3,3,3,3,3,3,3,3,null,null,null,null,null,null,null,null,null],"bm":31.0,"be":1.0},{"name":"Inter Milan","matches":[3,3,3,3,1,3,3,3,null,null,null,null,null,null,null,null,null],"bm":32.0,"be":2.0},{"name":"Côme","matches":[3,1,3,3,3,3,3,0,null,null,null,null,null,null,null,null,null],"bm":27.0,"be":8.0},{"name":"Fiorentina","matches":[3,3,3,3,3,3,1,0,null,null,null,null,null,null,null,null,null],"bm":27.0,"be":16.0},{"name":"Atalanta","matches":[0,3,1,3,1,3,3,3,null,null,null,null,null,null,null,null,null],"bm":19.0,"be":10.0},{"name":"Lazio","matches":[1,3,3,3,3,0,0,3,null,null,null,null,null,null,null,null,null],"bm":19.0,"be":7.0},{"name":"Bologne","matches":[0,3,0,3,3,3,3,0,null,null,null,null,null,null,null,null,null],"bm":15.0,"be":7.0},{"name":"Udinese","matches":[0,3,0,0,3,3,3,3,null,null,null,null,null,null,null,null,null],"bm":19.0,"be":15.0},{"name":"Torino","matches":[3,0,0,1,3,3,3,1,null,null,null,null,null,null,null,null,null],"bm":21.0,"be":15.0},{"name":"Juventus","matches":[1,3,1,0,3,0,3,3,null,null,null,null,null,null,null,null,null],"bm":15.0,"be":10.0},{"name":"AS Roma","matches":[0,0,0,3,3,3,3,1,null,null,null,null,null,null,null,null,null],"bm":20.0,"be":11.0},{"name":"Helas Verone","matches":[1,3,0,1,0,0,3,3,null,null,null,null,null,null,null,null,null],"bm":11.0,"be":9.0},{"name":"Napoli","matches":[1,0,0,1,0,3,0,3,null,null,null,null,null,null,null,null,null],"bm":15.0,"be":19.0},{"name":"Venise","matches":[0,3,1,0,0,1,0,0,null,null,null,null,null,null,null,null,null],"bm":12.0,"be":20.0},{"name":"Lecce","matches":[0,0,3,1,1,0,0,0,null,null,null,null,null,null,null,null,null],"bm":7.0,"be":17.0}],"Premier League":[{"name":"Liverpool","matches":[3,3,3,3,3,3,3,3,null,null,null,null,null,null,null,null,null],"bm":36.0,"be":3.0},{"name":"Arsenal","matches":[3,3,3,3,3,3,3,3,null,null,null,null,null,null,null,null,null],"bm":28.0,"be":3.0},{"name":"Manchester City","matches":[3,3,3,3,3,1,3,3,null,null,null,null,null,null,null,null,null],"bm":28.0,"be":3.0},{"name":"Manchester United","matches":[1,3,3,3,3,3,0,3,null,null,null,null,null,null,null,null,null],"bm":26.0,"be":10.0},{"name":"Newcastle","matches":[3,1,3,0,1,3,3,1,null,null,null,null,null,null,null,null,null],"bm":22.0,"be":11.0},{"name":"Tottenham","matches":[3,1,0,3,0,3,1,3,null,null,null,null,null,null,null,null,null],"bm":14.0,"be":12.0},{"name":"Nothimgham Forrest","matches":[1,3,1,0,3,1,3,1,null,null,null,null,null,null,null,null,null],"bm":24.0,"be":16.0},{"name":"Everton","matches":[0,0,3,3,0,1,3,3,null,null,null,null,null,null,null,null,null],"bm":15.0,"be":15.0},{"name":"Leicester","matches":[3,3,1,0,1,3,1,0,null,null,null,null,null,null,null,null,null],"bm":11.0,"be":14.0},{"name":"Aston Villa","matches":[0,3,0,1,0,3,1,3,null,null,null,null,null,null,null,null,null],"bm":18.0,"be":15.0},{"name":"Bournemouth","matches":[3,3,0,3,0,1,0,0,null,null,null,null,null,null,null,null,null],"bm":19.0,"be":14.0},{"name":"Crystal Palace","matches":[0,0,1,0,3,3,0,3,null,null,null,null,null,null,null,null,null],"bm":16.0,"be":15.0},{"name":"Westham","matches":[0,0,0,0,0,3,3,3,null,null,null,null,null,null,null,null,null],"bm":16.0,"be":17.0},{"name":"Fulham","matches":[0,1,3,0,1,0,3,0,null,null,null,null,null,null,null,null,null],"bm":13.0,"be":15.0},{"name":"Wolves","matches":[0,0,3,3,0,1,1,0,null,null,null,null,null,null,null,null,null],"bm":19.0,"be":22.0}],"Liga":[{"name":"FC Barcelone","matches":[3,3,3,1,3,1,3,3,null,null,null,null,null,null,null,null,null],"bm":21.0,"be":5.0},{"name":"Real Madrid","matches":[0,3,3,3,3,3,3,1,null,null,null,null,null,null,null,null,null],"bm":30.0,"be":12.0},{"name":"Las Palmas","matches":[0,3,3,0,0,3,3,3,null,null,null,null,null,null,null,null,null],"bm":25.0,"be":21.0},{"name":"Valence","matches":[3,0,3,0,1,3,1,3,null,null,null,null,null,null,null,null,null],"bm":19.0,"be":10.0},{"name":"Villareal","matches":[0,3,1,3,3,3,1,0,null,null,null,null,null,null,null,null,null],"bm":19.0,"be":16.0},{"name":"Real Betis","matches":[3,3,0,0,3,1,3,0,null,null,null,null,null,null,null,null,null],"bm":20.0,"be":12.0},{"name":"FC Seville","matches":[0,1,0,3,3,3,0,3,null,null,null,null,null,null,null,null,null],"bm":25.0,"be":21.0},{"name":"Osasuna","matches":[0,0,1,3,0,3,3,1,null,null,null,null,null,null,null,null,null],"bm":23.0,"be":16.0},{"name":"Español Barcelone","matches":[3,0,0,1,3,3,0,0,null,null,null,null,null,null,null,null,null],"bm":16.0,"be":15.0},{"name":"Majorque","matches":[1,3,0,0,0,3,0,3,null,null,null,null,null,null,null,null,null],"bm":12.0,"be":17.0},{"name":"La Corone","matches":[3,3,0,0,1,0,3,0,null,null,null,null,null,null,null,null,null],"bm":14.0,"be":22.0},{"name":"Atletic Bilbao","matches":[1,0,1,0,3,1,3,0,null,null,null,null,null,null,null,null,null],"bm":18.0,"be":20.0},{"name":"Rayo Valleccano","matches":[0,0,3,0,0,0,1,3,null,null,null,null,null,null,null,null,null],"bm":11.0,"be":17.0},{"name":"Real Sociedad","matches":[0,1,0,1,3,1,1,0,null,null,null,null,null,null,null,null,null],"bm":13.0,"be":21.0},{"name":"Valladollid","matches":[0,0,0,0,1,0,1,0,null,null,null,null,null,null,null,null,null],"bm":13.0,"be":32.0}],"Ligue 1":[{"name":"PSG","matches":[3,3,3,3,3,3,3,3,null,null,null,null,null,null,null,null,null],"bm":35.0,"be":4.0},{"name":"AS Monaco","matches":[3,3,3,3,1,3,1,3,null,null,null,null,null,null,null,null,null],"bm":33.0,"be":7.0},{"name":"OGC Nice","matches":[0,3,3,0,3,3,3,3,null,null,null,null,null,null,null,null,null],"bm":17.0,"be":12.0},{"name":"RC Lens","matches":[1,3,3,3,0,1,3,3,null,null,null,null,null,null,null,null,null],"bm":24.0,"be":11.0},{"name":"OM","matches":[1,1,1,1,3,3,3,3,null,null,null,null,null,null,null,null,null],"bm":20.0,"be":11.0},{"name":"Strasbourg","matches":[3,0,3,1,3,3,1,1,null,null,null,null,null,null,null,null,null],"bm":22.0,"be":16.0},{"name":"Toulouse","matches":[3,0,3,0,3,1,1,3,null,null,null,null,null,null,null,null,null],"bm":20.0,"be":10.0},{"name":"OL","matches":[3,0,1,3,3,3,1,0,null,null,null,null,null,null,null,null,null],"bm":18.0,"be":10.0},{"name":"LOSC","matches":[3,3,3,1,1,3,0,0,null,null,null,null,null,null,null,null,null],"bm":23.0,"be":17.0},{"name":"Reims","matches":[0,3,0,1,3,1,1,3,null,null,null,null,null,null,null,null,null],"bm":20.0,"be":18.0},{"name":"Rennes","matches":[3,1,0,1,0,1,3,3,null,null,null,null,null,null,null,null,null],"bm":14.0,"be":14.0},{"name":"AS Saint-Etienne","matches":[0,1,0,0,3,3,3,1,null,null,null,null,null,null,null,null,null],"bm":26.0,"be":21.0},{"name":"FC Nantes","matches":[0,0,3,0,0,3,3,1,null,null,null,null,null,null,null,null,null],"bm":13.0,"be":15.0},{"name":"Paris FC","matches":[0,3,0,0,3,0,3,0,null,null,null,null,null,null,null,null,null],"bm":16.0,"be":18.0},{"name":"HAC","matches":[0,3,0,0,0,3,0,0,null,null,null,null,null,null,null,null,null],"bm":15.0,"be":27.0}],"Bundesliga":[{"name":"Frankfort","matches":[3,3,3,3,3,3,3,3,null,null,null,null,null,null,null,null,null],"bm":31.0,"be":9.0},{"name":"Dortmund","matches":[3,3,3,3,3,1,3,3,null,null,null,null,null,null,null,null,null],"bm":35.0,"be":7.0},{"name":"Bayern Munich","matches":[3,3,3,3,3,1,3,null,null,null,null,null,null,null,null,null,null],"bm":24.0,"be":5.0},{"name":"Fribourg","matches":[0,3,1,3,3,3,3,null,null,null,null,null,null,null,null,null,null],"bm":13.0,"be":7.0},{"name":"Stuttgart","matches":[3,3,3,1,0,1,3,null,null,null,null,null,null,null,null,null,null],"bm":24.0,"be":17.0},{"name":"Werder Breme","matches":[3,0,1,3,0,3,3,null,null,null,null,null,null,null,null,null,null],"bm":20.0,"be":9.0},{"name":"Bayer Leverkusen","matches":[3,1,1,1,3,1,3,null,null,null,null,null,null,null,null,null,null],"bm":13.0,"be":5.0},{"name":"FC Cologne","matches":[3,3,0,3,3,0,1,null,null,null,null,null,null,null,null,null,null],"bm":22.0,"be":15.0},{"name":"Leipzig","matches":[3,1,0,3,3,0,3,null,null,null,null,null,null,null,null,null,null],"bm":13.0,"be":8.0},{"name":"Schalke","matches":[1,1,3,1,1,3,1,null,null,null,null,null,null,null,null,null,null],"bm":16.0,"be":9.0},{"name":"Union Berlin","matches":[0,3,0,3,0,3,0,null,null,null,null,null,null,null,null,null,null],"bm":13.0,"be":11.0},{"name":"Wolfsburg","matches":[3,1,1,3,0,1,0,null,null,null,null,null,null,null,null,null,null],"bm":10.0,"be":9.0},{"name":"St Pauli","matches":[1,0,3,0,1,0,1,null,null,null,null,null,null,null,null,null,null],"bm":13.0,"be":17.0},{"name":"Borussia Mönchengladbach","matches":[0,0,0,0,0,1,3,null,null,null,null,null,null,null,null,null,null],"bm":12.0,"be":17.0},{"name":"Mayence","matches":[0,0,0,0,0,1,3,null,null,null,null,null,null,null,null,null,null],"bm":5.0,"be":18.0}]},"players":{"Serie A":[{"idx":138,"name":"Retegui","goals":13},{"idx":168,"name":"Kendry Paez","goals":11},{"idx":136,"name":"Gonçalo Ramos","goals":8},{"idx":90,"name":"Summerville","goals":7},{"idx":65,"name":"T. Baldanzi","goals":5},{"idx":7,"name":"Paulinho","goals":4},{"idx":26,"name":"Isaac","goals":4},{"idx":25,"name":"Adingra","goals":3},{"idx":167,"name":"Lazar Samardžić","goals":2},{"idx":0,"name":"Fofana","goals":1},{"idx":21,"name":"Traorè","goals":1},{"idx":13,"name":"Tiago Djaló","goals":0},{"idx":27,"name":"Gavin Bazunu","goals":0},{"idx":37,"name":"Fekir","goals":0},{"idx":38,"name":"T. Hernandez","goals":0},{"idx":40,"name":"Mauro Jr.","goals":0},{"idx":41,"name":"Donnarumma","goals":0},{"idx":45,"name":"Mejbri","goals":0},{"idx":46,"name":"Rico Lewis","goals":0},{"idx":55,"name":"Chalobah","goals":0},{"idx":66,"name":"Mukiele","goals":0},{"idx":68,"name":"Richarlison","goals":0},{"idx":71,"name":"Dragowski","goals":0},{"idx":72,"name":"Garnacho","goals":0},{"idx":82,"name":"I. Bennacer","goals":0},{"idx":113,"name":"N. Aké","goals":0},{"idx":114,"name":"Markovic","goals":0},{"idx":121,"name":"Gnonto","goals":0},{"idx":122,"name":"Bremer","goals":0},{"idx":130,"name":"Igor Paixao","goals":0},{"idx":171,"name":"Svanberg","goals":0},{"idx":190,"name":"Edoardo Bove","goals":0}],"Premier League":[{"idx":164,"name":"Moukoko","goals":12},{"idx":23,"name":"Poulsen","goals":11},{"idx":98,"name":"K. Schade","goals":9},{"idx":142,"name":"Brobbey","goals":8},{"idx":48,"name":"Rafael Leao","goals":7},{"idx":54,"name":"Dilrosun","goals":7},{"idx":99,"name":"Nusa","goals":6},{"idx":147,"name":"J. Windass","goals":6},{"idx":192,"name":"Rio Ngumoha","goals":6},{"idx":77,"name":"Harisson","goals":5},{"idx":70,"name":"Williams Jr.","goals":4},{"idx":144,"name":"Savinho","goals":4},{"idx":177,"name":"Fabio Silva","goals":4},{"idx":95,"name":"Vitor Roque","goals":3},{"idx":78,"name":"Pellistri","goals":2},{"idx":157,"name":"T. Cantwell","goals":2},{"idx":91,"name":"Aaronson","goals":1},{"idx":97,"name":"Arda Güler","goals":1},{"idx":178,"name":"K. Nakamura","goals":1},{"idx":9,"name":"Felipe","goals":0},{"idx":22,"name":"T. Malacia","goals":0},{"idx":24,"name":"T. Adams","goals":0},{"idx":36,"name":"A. Ogbonna","goals":0},{"idx":51,"name":"Ndidi","goals":0},{"idx":53,"name":"Kvaratskhelia","goals":0},{"idx":58,"name":"T. Chong","goals":0},{"idx":69,"name":"W. Fariñez","goals":0},{"idx":74,"name":"Sudakov","goals":0},{"idx":75,"name":"Akanji","goals":0},{"idx":81,"name":"Samu","goals":0},{"idx":89,"name":"Mbabu","goals":0},{"idx":93,"name":"S. Lokonga","goals":0},{"idx":94,"name":"Boey","goals":0},{"idx":100,"name":"Bozdogan","goals":0},{"idx":101,"name":"Stefano Turati","goals":0},{"idx":102,"name":"Van de Ven","goals":0},{"idx":109,"name":"B. Johnson","goals":0},{"idx":110,"name":"J. Grealish","goals":0},{"idx":111,"name":"Aguerd","goals":0},{"idx":118,"name":"Eze","goals":0},{"idx":120,"name":"M. Soulé","goals":0},{"idx":124,"name":"A. Diallo","goals":0},{"idx":125,"name":"E. Nuamah","goals":0},{"idx":132,"name":"A. Gordon","goals":0},{"idx":134,"name":"Ndiaye","goals":0},{"idx":137,"name":"Zubimendi","goals":0},{"idx":140,"name":"A. Ueda","goals":0},{"idx":143,"name":"Mads Bech Sørensen","goals":0},{"idx":146,"name":"J. Frimpong","goals":0},{"idx":149,"name":"Kulusevski","goals":0},{"idx":150,"name":"Di Marco","goals":0},{"idx":151,"name":"Mitoma","goals":0},{"idx":152,"name":"Thorsvedt","goals":0},{"idx":162,"name":"Noah Darvich","goals":0},{"idx":163,"name":"A. Grey","goals":0},{"idx":166,"name":"Y. Musah","goals":0},{"idx":172,"name":"Kerkez","goals":0},{"idx":173,"name":"Laurienté","goals":0},{"idx":174,"name":"Buenanotte","goals":0},{"idx":176,"name":"R. Pepi","goals":0},{"idx":195,"name":"Moïse Sahi","goals":0}],"Liga":[{"idx":3,"name":"Mbappe","goals":14},{"idx":15,"name":"Yamal","goals":6},{"idx":47,"name":"Akhliouche","goals":4},{"idx":156,"name":"Endrick","goals":4},{"idx":2,"name":"Mudrik","goals":3},{"idx":28,"name":"De La Cruz","goals":3},{"idx":16,"name":"A. Baena","goals":2},{"idx":108,"name":"Julien Duranville","goals":2},{"idx":141,"name":"Kudus","goals":2},{"idx":17,"name":"Ben Seghir","goals":1},{"idx":88,"name":"Cucurella","goals":1},{"idx":135,"name":"Gibbs-White","goals":1},{"idx":1,"name":"Gedson","goals":0},{"idx":6,"name":"E. Mammana","goals":0},{"idx":8,"name":"N. Dominguez","goals":0},{"idx":14,"name":"Désiré Doué","goals":0},{"idx":18,"name":"Christensen","goals":0},{"idx":19,"name":"Y. Moreno","goals":0},{"idx":20,"name":"Martinez","goals":0},{"idx":29,"name":"B. Samba","goals":0},{"idx":30,"name":"R. Guerreiro","goals":0},{"idx":32,"name":"Kalulu","goals":0},{"idx":33,"name":"Milinkovic-Savic","goals":0},{"idx":42,"name":"Karsdorp","goals":0},{"idx":43,"name":"F. Farrias","goals":0},{"idx":84,"name":"Bissouma","goals":0},{"idx":87,"name":"Wahi","goals":0},{"idx":112,"name":"Osimhen","goals":0},{"idx":129,"name":"W. Barrios","goals":0},{"idx":139,"name":"Juan Musso","goals":0},{"idx":170,"name":"Helinho","goals":0},{"idx":175,"name":"Muriqi","goals":0}],"Ligue 1":[{"idx":5,"name":"M. Tel","goals":12},{"idx":198,"name":"Tawanda Chirewa","goals":10},{"idx":196,"name":"Mbaye","goals":8},{"idx":12,"name":"B. Barcola","goals":6},{"idx":107,"name":"Igor Jesus","goals":3},{"idx":35,"name":"Mayulu","goals":2},{"idx":63,"name":"Nico Paz","goals":2},{"idx":4,"name":"Aït-Nouri","goals":0},{"idx":10,"name":"W. Zaïre-Emery","goals":0},{"idx":11,"name":"Edgar","goals":0},{"idx":31,"name":"N. Mazraoui","goals":0},{"idx":49,"name":"Botman","goals":0},{"idx":50,"name":"E. Elmas","goals":0},{"idx":52,"name":"Mike Maignan","goals":0},{"idx":57,"name":"Ounahi","goals":0},{"idx":62,"name":"Sangante","goals":0},{"idx":64,"name":"Hugo Larsson","goals":0},{"idx":67,"name":"Ochoa","goals":0},{"idx":76,"name":"Darami","goals":0},{"idx":83,"name":"Gakpo","goals":0},{"idx":86,"name":"L. Henrique","goals":0},{"idx":96,"name":"Hojlund","goals":0},{"idx":106,"name":"G. Mamardashvili","goals":0},{"idx":115,"name":"Mvogo","goals":0},{"idx":119,"name":"L. Rodriguez","goals":0},{"idx":131,"name":"Lovro Majer","goals":0},{"idx":153,"name":"Van Brederode","goals":0},{"idx":161,"name":"J. Bakayoko","goals":0},{"idx":186,"name":"Assane Diao","goals":0},{"idx":197,"name":"R. Bardghji","goals":0}],"Bundesliga":[{"idx":92,"name":"Madueke","goals":21},{"idx":128,"name":"E. Haaland","goals":11},{"idx":104,"name":"K.Yıldız","goals":6},{"idx":34,"name":"B. Diaz","goals":4},{"idx":56,"name":"Olise","goals":4},{"idx":193,"name":"E. Mbappe","goals":3},{"idx":39,"name":"Konoplya","goals":1},{"idx":44,"name":"Konaté","goals":0},{"idx":59,"name":"Alejandro Balde","goals":0},{"idx":60,"name":"Diant Ramaj","goals":0},{"idx":61,"name":"Diomandé","goals":0},{"idx":73,"name":"Chukwueze","goals":0},{"idx":85,"name":"Xavi Simons","goals":0},{"idx":103,"name":"Richardson","goals":0},{"idx":105,"name":"Samu Costa","goals":0},{"idx":126,"name":"João Pedro","goals":0},{"idx":127,"name":"El Khannouss","goals":0},{"idx":133,"name":"F. Wirtz","goals":0},{"idx":145,"name":"Estêvão","goals":0},{"idx":148,"name":"Bertuğ Yıldırım","goals":0}]},"scorers":{"26":4,"7":4,"168":11,"58":0,"21":1,"96":2,"190":0,"197":4,"138":13,"90":7,"25":0,"167":2,"72":0,"136":8,"110":0,"0":1,"65":5,"45":0,"129":3,"145":3,"142":8,"23":11,"95":3,"157":2,"97":1,"147":6,"70":4,"1":4,"134":0,"109":0,"99":6,"177":4,"98":9,"78":2,"126":3,"192":6,"91":1,"144":4,"178":1,"163":0,"150":0,"171":0,"149":0,"166":0,"54":7,"94":0,"81":0,"77":5,"174":0,"48":7,"74":0,"173":0,"137":0,"120":0,"100":0,"176":0,"195":20,"164":12,"140":0,"169":7,"3":14,"141":2,"108":2,"2":3,"17":1,"15":6,"135":1,"156":4,"88":1,"47":4,"121":3,"16":2,"87":0,"112":0,"28":3,"84":0,"175":0,"118":3,"5":12,"57":0,"12":6,"196":8,"35":2,"198":10,"63":2,"107":3,"128":11,"103":0,"34":4,"39":1,"127":0,"73":0,"56":4,"104":6,"161":0,"92":21,"183":0,"184":0,"148":0,"43":0,"193":3}};
+
+const LG_COLORS = {'Premier League':'#4f8ef7','Serie A':'#3ecf8e','Liga':'#a37af7','Ligue 1':'#f7944f','Bundesliga':'#f76f6f'};
+const LG_FLAGS  = {'Premier League':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','Serie A':'🇮🇹','Liga':'🇪🇸','Ligue 1':'🇫🇷','Bundesliga':'🇩🇪'};
+const LG_ORDER  = ['Premier League','Serie A','Liga','Ligue 1','Bundesliga'];
+const TOTAL_MATCHES = 17;
+
+// Per-match goals: {lg: {teamIdx: {matchIdx: {bm, be, scorers:{playerIdx: goals}}}}}
+var matchDetails = {};
+// Load from localStorage if available
+(function(){
+  try {
+    var saved = localStorage.getItem('s8_match_details');
+    if(saved) matchDetails = JSON.parse(saved);
+  } catch(e) {}
+})();
+
+function saveToStorage(){
+  try { localStorage.setItem('s8_match_details', JSON.stringify(matchDetails)); 
+  GH.save();
+} catch(e){}
+}
+
+// Current state
+var curLg = null;
+var modalCtx = null; // {lg, teamName, matchIdx}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+function initSeasonTool(){
+  // Build nav tabs
+  var tabs = document.getElementById('st-tabs');
+  tabs.innerHTML = LG_ORDER.map(function(lg){
+    var teams = S8_DATA.leagues[lg] || [];
+    var played = teams.length > 0 ? teams[0].matches.filter(function(m){return m!==null;}).length : 0;
+    return '<div class="st-nav-tab" data-lg="'+lg+'" style="--tab-color:'+LG_COLORS[lg]+'" onclick="selectLg(\''+lg+'\')">'
+      +'<span class="tab-flag">'+LG_FLAGS[lg]+'</span>'
+      +'<span>'+lg+'</span>'
+      +'<span class="tab-badge">J'+played+'/17</span>'
+      +'</div>';
+  }).join('');
+  selectLg('Premier League');
+}
+
+// ═══════════════════════════════════════════════════════
+// SELECT LEAGUE
+// ═══════════════════════════════════════════════════════
+function selectLg(lg){
+  curLg = lg;
+  document.querySelectorAll('.st-nav-tab').forEach(function(t){
+    t.classList.toggle('on', t.getAttribute('data-lg')===lg);
+  });
+  renderLeague(lg);
+}
+
+function getTeamData(lg){
+  var raw = S8_DATA.leagues[lg] || [];
+  // Apply stored match details to get updated stats
+  var teams = raw.map(function(t, ti){
+    var m = t.matches.slice(); // copy
+    var bm = t.bm, be = t.be;
+    var lgD = matchDetails[lg] || {};
+    var tmD = lgD[ti] || {};
+    // Override with stored per-match data
+    Object.keys(tmD).forEach(function(mi){
+      var d = tmD[mi];
+      var miNum = parseInt(mi);
+      var pts = d.bm > d.be ? 3 : d.bm === d.be ? 1 : 0;
+      if(m[miNum] === null){ // newly added
+        m[miNum] = pts;
+      } else { // update existing
+        m[miNum] = pts;
+      }
+    });
+    // Recalculate totals
+    var totalPts = m.reduce(function(a,v){return a+(v||0);},0);
+    // Recalculate BM/BE from stored details
+    var totalBm = t.bm, totalBe = t.be;
+    // Only override if we have stored per-match data for ALL matches
+    var hasAny = Object.keys(tmD).length > 0;
+    if(hasAny){
+      // For matches in tmD, use stored BM/BE, for others use proportional estimate
+      var storedBm = 0, storedBe = 0;
+      Object.keys(tmD).forEach(function(mi){
+        storedBm += tmD[mi].bm || 0;
+        storedBe += tmD[mi].be || 0;
+      });
+      // Base BM/BE from original minus last match, plus stored
+      totalBm = t.bm; totalBe = t.be;
+    }
+    return {name:t.name, matches:m, bm:totalBm, be:totalBe, pts:totalPts, rawIdx:ti};
+  });
+  // Sort by pts desc, then diff, then bm
+  teams.sort(function(a,b){
+    var da=a.bm-a.be, db=b.bm-b.be;
+    return b.pts-a.pts || db-da || b.bm-a.bm;
+  });
+  return teams;
+}
+
+function renderLeague(lg){
+  var teams = getTeamData(lg);
+  var color = LG_COLORS[lg];
+  var flag  = LG_FLAGS[lg];
+  var played = teams.length>0 ? teams[0].matches.filter(function(m){return m!==null;}).length : 0;
+  var pct = (played/TOTAL_MATCHES*100).toFixed(0);
+
+  // Build match header cells
+  var mHeaders = '';
+  for(var mi=0;mi<TOTAL_MATCHES;mi++){
+    mHeaders += '<div>J'+(mi+1)+'</div>';
+  }
+
+  // Build team rows
+  var rows = teams.map(function(t, rank){
+    var pts = t.pts;
+    var diff = t.bm - t.be;
+    var diffStr = diff>0?'+'+diff:String(diff);
+    var diffColor = diff>0?'#3ecf8e':diff<0?'#f76f6f':'#5a6080';
+    var rankColor = rank===0?'#f5c842':rank<3?color:'#5a6080';
+
+    // Match cells
+    var mCells = t.matches.map(function(pts_m, mi){
+      var ti = t.rawIdx;
+      var hasDetail = matchDetails[lg] && matchDetails[lg][ti] && matchDetails[lg][ti][mi] !== undefined;
+      if(pts_m !== null){
+        var cls = pts_m===3?'win':pts_m===1?'draw':'loss';
+        var label = pts_m===3?'V':pts_m===1?'N':'D';
+        if(hasDetail){
+          var d = matchDetails[lg][ti][mi];
+          label = d.bm+'-'+d.be;
+        }
+        return '<div class="match-cell '+cls+' editable" onclick="openModal(\''+lg+'\','+ti+','+mi+')" title="J'+(mi+1)+' — Cliquez pour modifier">'+label+'</div>';
+      } else {
+        var nextMatch = t.matches.findIndex(function(v){return v===null;});
+        var isNext = (mi === nextMatch);
+        if(isNext){
+          return '<div class="match-cell empty editable" onclick="openModal(\''+lg+'\','+ti+','+mi+')" style="border-style:dashed;cursor:pointer;color:#3a4a60" title="J'+(mi+1)+' — Cliquez pour saisir">+</div>';
+        }
+        return '<div class="match-cell empty" title="J'+(mi+1)+' — Non joué">·</div>';
+      }
+    }).join('');
+
+    return '<div class="st-team-row">'
+      +'<div class="rank" style="color:'+rankColor+'">'+(rank+1)+'</div>'
+      +'<div class="tname" style="display:flex;align-items:center;gap:4px">'+clubLogo(t.name,15)+t.name+'</div>'
+      +'<div class="tcell pts" style="color:'+color+'">'+pts+'</div>'
+      +'<div class="tcell">'+t.bm+'</div>'
+      +'<div class="tcell">'+t.be+'</div>'
+      +'<div class="tcell" style="color:'+diffColor+'">'+diffStr+'</div>'
+      +mCells.split('').slice(0,0).join('')  // placeholder spacer
+      +'</div>';
+  }).join('');
+  // Separate match cells column
+  var rows2 = teams.map(function(t, rank){
+    var pts = t.pts;
+    var diff = t.bm - t.be;
+    var diffStr = diff>0?'+'+diff:String(diff);
+    var diffColor = diff>0?'#3ecf8e':diff<0?'#f76f6f':'#5a6080';
+    var rankColor = rank===0?'#f5c842':rank<3?color:'#5a6080';
+    var mCells = t.matches.map(function(pts_m, mi){
+      var ti = t.rawIdx;
+      var hasDetail = matchDetails[lg] && matchDetails[lg][ti] && matchDetails[lg][ti][mi] !== undefined;
+      if(pts_m !== null){
+        var cls = pts_m===3?'win':pts_m===1?'draw':'loss';
+        var label = pts_m===3?'V':pts_m===1?'N':'D';
+        if(hasDetail){ var d=matchDetails[lg][ti][mi]; label=d.bm+'-'+d.be; }
+        return '<div class="match-cell '+cls+' editable" onclick="openModal(\''+lg.replace(/'/g,"\\'")+'\',' +ti+','+mi+')" title="J'+(mi+1)+'">'+label+'</div>';
+      } else {
+        var nextMatch=-1;
+        for(var k=0;k<t.matches.length;k++){if(t.matches[k]===null){nextMatch=k;break;}}
+        if(mi===nextMatch){
+          return '<div class="match-cell empty editable" onclick="openModal(\''+lg.replace(/'/g,"\\'")+'\',' +ti+','+mi+')" style="border:1px dashed #3a4a60;cursor:pointer" title="J'+(mi+1)+' — Saisir">+</div>';
+        }
+        return '<div class="match-cell empty">·</div>';
+      }
+    }).join('');
+    return '<div class="st-team-row" style="grid-template-columns:30px 1fr repeat(4,36px) repeat('+TOTAL_MATCHES+',30px)">'
+      +'<div class="rank" style="color:'+rankColor+'">'+(rank+1)+'</div>'
+      +'<div class="tname" style="display:flex;align-items:center;gap:4px">'+clubLogo(t.name,15)+t.name+'</div>'
+      +'<div class="tcell pts" style="color:'+color+'">'+pts+'</div>'
+      +'<div class="tcell">'+t.bm+'</div>'
+      +'<div class="tcell">'+t.be+'</div>'
+      +'<div class="tcell" style="color:'+diffColor+'">'+diffStr+'</div>'
+      +mCells
+      +'</div>';
+  }).join('');
+
+  // Scorers table
+  var scorers = (S8_DATA.players[lg]||[]).filter(function(p){return p.goals>0;});
+  var scorersHtml = scorers.map(function(p,i){
+    var c = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
+    return '<tr><td style="text-align:center;color:'+c+';font-weight:700;width:30px">'+(i+1)+'</td>'
+      +'<td style="color:#e8eaf0;font-weight:500">'+p.name+'</td>'
+      +'<td style="text-align:center;font-weight:700;color:'+color+'">'+p.goals+'</td></tr>';
+  }).join('');
+
+  document.getElementById('st-panel').innerHTML =
+    '<div class="st-header">'
+      +'<span style="font-size:1.6rem">'+flag+'</span>'
+      +'<div>'
+        +'<div class="st-lg-name">'+lg+'</div>'
+        +'<div class="st-progress-text">Journée '+played+' / '+TOTAL_MATCHES+'</div>'
+      +'</div>'
+      +'<div class="st-progress" style="max-width:180px">'
+        +'<div class="st-progress-bar"><div class="st-progress-fill" style="width:'+pct+'%;background:'+color+'"></div></div>'
+      +'</div>'
+      +'<div style="margin-left:auto">'
+        +'<div class="st-match-count" style="color:'+color+'">J'+played+'</div>'
+        +'<div style="font-size:10px;color:#5a6080">matchs joués</div>'
+      +'</div>'
+    +'</div>'
+    +'<div class="st-content">'
+      // Classement
+      +'<div class="st-standing">'
+        +'<div style="padding:.6rem 1rem;background:#1a1e28;border-bottom:1px solid #252a38;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#5a6080">📊 Classement · S8</div>'
+        +'<div style="overflow-x:auto">'
+          +'<div style="min-width:900px">'
+            +'<div style="display:grid;grid-template-columns:30px 1fr repeat(4,36px) repeat('+TOTAL_MATCHES+',30px);background:#1a1e28;border-bottom:1px solid #252a38">'
+              +'<div style="padding:.3rem;font-size:9px;font-weight:700;text-transform:uppercase;color:#5a6080;text-align:center">#</div>'
+              +'<div style="padding:.3rem;font-size:9px;font-weight:700;text-transform:uppercase;color:#5a6080;padding-left:.5rem">Équipe</div>'
+              +'<div style="padding:.3rem;font-size:9px;font-weight:700;text-transform:uppercase;color:#5a6080;text-align:center" title="Points">Pts</div>'
+              +'<div style="padding:.3rem;font-size:9px;font-weight:700;text-transform:uppercase;color:#5a6080;text-align:center" title="Buts marqués">BM</div>'
+              +'<div style="padding:.3rem;font-size:9px;font-weight:700;text-transform:uppercase;color:#5a6080;text-align:center" title="Buts encaissés">BE</div>'
+              +'<div style="padding:.3rem;font-size:9px;font-weight:700;text-transform:uppercase;color:#5a6080;text-align:center">+/-</div>'
+              +Array.from({length:TOTAL_MATCHES},function(_,i){return '<div style="padding:.3rem;font-size:9px;font-weight:700;color:#5a6080;text-align:center">J'+(i+1)+'</div>';}).join('')
+            +'</div>'
+            +rows2
+          +'</div>'
+        +'</div>'
+        +'<div class="st-legend" style="padding:.5rem 1rem">'
+          +'<div class="legend-item"><div class="legend-dot" style="background:#3ecf8e22;border:1px solid #3ecf8e44"></div><span style="color:#3ecf8e">V = Victoire (3pts)</span></div>'
+          +'<div class="legend-item"><div class="legend-dot" style="background:#f5c84222;border:1px solid #f5c84244"></div><span style="color:#f5c842">N = Nul (1pt)</span></div>'
+          +'<div class="legend-item"><div class="legend-dot" style="background:#f76f6f22;border:1px solid #f76f6f44"></div><span style="color:#f76f6f">D = Défaite (0pt)</span></div>'
+          +'<div class="legend-item" style="margin-left:auto"><span style="color:#5a6080">Cliquez sur une case pour saisir / modifier un résultat</span></div>'
+        +'</div>'
+      +'</div>'
+      // Scorers
+      +'<div class="st-scorers">'
+        +'<div class="st-scorers-title">⚽ Buteurs — S8</div>'
+        +'<table class="st-scorers-table"><thead><tr>'
+          +'<th style="width:30px;text-align:center;color:#5a6080;font-size:9px;text-transform:uppercase;padding:.4rem">#</th>'
+          +'<th style="text-align:left;color:#5a6080;font-size:9px;text-transform:uppercase;padding:.4rem">Joueur</th>'
+          +'<th style="text-align:center;color:#5a6080;font-size:9px;text-transform:uppercase;padding:.4rem">Buts S8</th>'
+        +'</tr></thead>'
+        +'<tbody>'+scorersHtml+'</tbody>'
+        +'</table>'
+      +'</div>'
+    +'</div>';
+}
+
+// ═══════════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════════
+function openModal(lg, teamIdx, matchIdx){
+  curLg = lg;
+  var team = S8_DATA.leagues[lg][teamIdx];
+  modalCtx = {lg:lg, teamIdx:teamIdx, matchIdx:matchIdx, teamName:team.name};
+
+  document.getElementById('modal-title').textContent =
+    team.name + ' — Journée ' + (matchIdx+1);
+
+  // Pre-fill from stored data
+  var existing = matchDetails[lg] && matchDetails[lg][teamIdx] && matchDetails[lg][teamIdx][matchIdx];
+  var bm = existing ? existing.bm : 0;
+  var be = existing ? existing.be : 0;
+  document.getElementById('m-bm').value = bm;
+  document.getElementById('m-be').value = be;
+
+  // Pré-remplir les buteurs depuis données existantes
+  var existingScorers = existing ? (existing.scorers || {}) : {};
+  var scorerEntries = [];
+  Object.keys(existingScorers).forEach(function(pidx){
+    var g = existingScorers[pidx];
+    if(g > 0){
+      var p = ALL[parseInt(pidx)];
+      if(p) scorerEntries.push({idx: parseInt(pidx), name: p.name, goals: g});
+    }
+  });
+  renderScorerList(scorerEntries);
+  document.getElementById('scorer-search').value = '';
+  document.getElementById('scorer-suggestions').style.display = 'none';
+
+  updatePreview();
+  document.getElementById('st-modal').classList.add('open');
+}
+
+function updatePreview(){
+  var bm = parseInt(document.getElementById('m-bm').value)||0;
+  var be = parseInt(document.getElementById('m-be').value)||0;
+  var pts = bm>be?3:bm===be?1:0;
+  var result = bm>be?'Victoire ✅':bm===be?'Nul 🟡':'Défaite ❌';
+  var ptsColor = pts===3?'#3ecf8e':pts===1?'#f5c842':'#f76f6f';
+  document.getElementById('preview-score').textContent = bm + ' — ' + be;
+  document.getElementById('preview-pts').innerHTML =
+    '<span style="color:'+ptsColor+'">'+result+' &nbsp;·&nbsp; '+pts+' pt'+(pts!==1?'s':'')+'</span>';
+}
+
+function saveMatch(){
+  if(!modalCtx) return;
+  var bm = parseInt(document.getElementById('m-bm').value)||0;
+  var be = parseInt(document.getElementById('m-be').value)||0;
+  var pts = bm>be?3:bm===be?1:0;
+
+  // Collect scorers depuis les entrées de la liste
+  var scorers = {};
+  document.querySelectorAll('#scorer-list .scorer-entry').forEach(function(row){
+    var pidx = row.getAttribute('data-idx');
+    var g = parseInt(row.querySelector('.scorer-goals-input').value)||0;
+    if(g > 0) scorers[pidx] = g;
+  });
+
+  var lg = modalCtx.lg, ti = modalCtx.teamIdx, mi = modalCtx.matchIdx;
+
+  // Store
+  if(!matchDetails[lg]) matchDetails[lg] = {};
+  if(!matchDetails[lg][ti]) matchDetails[lg][ti] = {};
+  matchDetails[lg][ti][mi] = {bm:bm, be:be, pts:pts, scorers:scorers};
+
+  // Update team match in S8_DATA
+  S8_DATA.leagues[lg][ti].matches[mi] = pts;
+
+  // Update player goals in S8_DATA
+  Object.keys(scorers).forEach(function(pidx){
+    // Find player in league list and update
+    var lgPlayers = S8_DATA.players[lg];
+    lgPlayers.forEach(function(p){
+      if(String(p.idx)===String(pidx)){
+        // Recalculate total S8 goals from all stored matches
+        var totalGoals = 0;
+        LG_ORDER.forEach(function(l){
+          var lgD = matchDetails[l]||{};
+          Object.keys(lgD).forEach(function(tIdx){
+            var tmD = lgD[tIdx];
+            Object.keys(tmD).forEach(function(mIdx){
+              var mScorers = tmD[mIdx].scorers||{};
+              if(mScorers[pidx]) totalGoals += mScorers[pidx];
+            });
+          });
+        });
+        // Base goals from original data (before any stored match)
+        var base = 0;
+        (S8_DATA.players[lg]||[]).forEach(function(pp){
+          if(String(pp.idx)===String(pidx)) base = pp.goals;
+        });
+        p.goals = totalGoals || p.goals;
+      }
+    });
+  });
+
+  saveToStorage();
+  closeModal();
+  renderLeague(curLg);
+  // Update nav badges
+  initNavBadges();
+}
+
+function clearMatch(){
+  if(!modalCtx) return;
+  var lg=modalCtx.lg, ti=modalCtx.teamIdx, mi=modalCtx.matchIdx;
+  if(matchDetails[lg] && matchDetails[lg][ti]) delete matchDetails[lg][ti][mi];
+  // Restore original points value (null for unplayed)
+  // We don't have original per-match data for stored matches, set to null
+  S8_DATA.leagues[lg][ti].matches[mi] = null;
+  saveToStorage();
+  closeModal();
+  renderLeague(curLg);
+  initNavBadges();
 }
 
 function closeModal(){
