@@ -2065,7 +2065,9 @@ function renderSaisonEnCours() {
   LG_NAMES.forEach(function(lg) {
     var color = LC[lg] || '#5a6080';
     var flag  = LF[lg]  || '';
-    var teams   = S8_DATA.leagues[lg] || [];
+    var teams   = (typeof getTeamData === 'function')
+      ? getTeamData(lg).sort(function(a,b){ return b.pts-a.pts || (b.bm-b.be)-(a.bm-a.be) || b.bm-a.bm; })
+      : S8_DATA.leagues[lg] || [];
     var scorers = (S8_DATA.players[lg] || []).filter(function(p){ return p.goals > 0; });
     var n = teams.length;
 
