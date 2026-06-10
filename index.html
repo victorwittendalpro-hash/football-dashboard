@@ -180,6 +180,10 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
 <style>
 .extra-pane { display: none; }
 .extra-pane.xpane-active { display: block; }
+
+.ligue-select { transition: background .2s, color .2s; }
+.ligue-select:hover { filter: brightness(1.2); }
+.ligue-select:focus { outline: none; box-shadow: 0 0 0 2px rgba(255,255,255,.1); }
 </style>
 </head>
 <body>
@@ -421,8 +425,9 @@ var GH = {
       clMatchDetails:    (typeof clMatchDetails    !== 'undefined') ? clMatchDetails    : {},
       clKoDetails:       (typeof clKoDetails       !== 'undefined') ? clKoDetails       : {},
       clKoBracket:       (typeof CL_KO_DATA        !== 'undefined') ? CL_KO_DATA.bracket : {},
-      currentSeasonNum:  (typeof currentSeasonNum  !== 'undefined') ? currentSeasonNum  : 8,
-      archives:          (typeof histArchives       !== 'undefined') ? histArchives       : [],
+      currentSeasonNum:       (typeof currentSeasonNum       !== 'undefined') ? currentSeasonNum       : 8,
+      archives:               (typeof histArchives            !== 'undefined') ? histArchives            : [],
+      playerLigueOverrides:   window._playerLigueOverrides || {},
     };
   }
 };
@@ -447,6 +452,23 @@ function ghApplyData(data) {
   if (data.archives) {
     histArchives = data.archives;
     initHistory(data.archives);
+  }
+  // Restaurer les overrides de ligue des joueurs
+  if (data.playerLigueOverrides) {
+    window._playerLigueOverrides = data.playerLigueOverrides;
+    Object.keys(data.playerLigueOverrides).forEach(function(pidx) {
+      var p = ALL[parseInt(pidx)];
+      if (p) p.ligue = data.playerLigueOverrides[pidx];
+    });
+    // Mettre à jour S8_DATA.players avec les nouvelles ligues
+    var LN_MAP = {PL:'Premier League', SA:'Serie A', LA:'Liga', L1:'Ligue 1', BU:'Bundesliga'};
+    // Reconstruire la liste des joueurs par ligue
+    Object.keys(LN_MAP).forEach(function(code) {
+      S8_DATA.players[LN_MAP[code]] = ALL
+        .map(function(p, idx){ return {idx:idx, name:p.name, goals:p.goals||0, ligue:p.ligue}; })
+        .filter(function(e){ return e.ligue === code; })
+        .sort(function(a,b){ return b.goals - a.goals; });
+    });
   }
   GH._showStatus('loaded');
 }
@@ -908,7 +930,20 @@ function renderTable() {
       <td><span class="cell-name" onclick="gotoPlayer(${globalIdx})">${p.name}</span></td>
       <td style="color:var(--txt2)">${p.age||'—'}</td>
       <td><span class="badge-post">${p.post||'—'}</span></td>
-      <td><span class="ligue-dot" style="background:${lc}"></span>${ln}</td>
+      <td>
+        <select class="ligue-select" data-idx="${globalIdx}"
+          onchange="updatePlayerLigue(${globalIdx}, this.value)"
+          style="background:${lc}22;border:1px solid ${lc}66;color:${lc};
+                 border-radius:5px;padding:2px 4px;font-size:11px;font-weight:700;
+                 cursor:pointer;outline:none;max-width:80px">
+          <option value="" ${!p.ligue?'selected':''} style="background:#13161e;color:#8b93b0">—</option>
+          <option value="PL"  ${p.ligue==='PL' ?'selected':''} style="background:#13161e;color:#4f8ef7">PL</option>
+          <option value="SA"  ${p.ligue==='SA' ?'selected':''} style="background:#13161e;color:#3ecf8e">Serie A</option>
+          <option value="LA"  ${p.ligue==='LA' ?'selected':''} style="background:#13161e;color:#a37af7">Liga</option>
+          <option value="L1"  ${p.ligue==='L1' ?'selected':''} style="background:#13161e;color:#f7944f">L1</option>
+          <option value="BU"  ${p.ligue==='BU' ?'selected':''} style="background:#13161e;color:#f76f6f">Bundesliga</option>
+        </select>
+      </td>
       <td>
         <div class="club-cell">
           ${clubLogo ? `<img src="${clubLogo}" class="club-mini-logo" onerror="this.style.display='none'">` : ''}
@@ -996,6 +1031,74 @@ function saveAddPlayer() {
   // Pour sauvegarder ALL il faudrait uploader index.html → on affiche un message
   var msg = '✓ Joueur "' + name + '" ajouté pour cette session.\n\nNote: pour rendre cet ajout permanent, re-télécharge le dashboard depuis ce lien et réupload-le sur GitHub.';
   alert(msg);
+}
+
+
+// ── Mise à jour du championnat d'un joueur ───────────────────────────────────
+function updatePlayerLigue(playerIdx, newLigue) {
+  var p = ALL[playerIdx];
+  if (!p) return;
+
+  var oldLigue = p.ligue;
+  p.ligue = newLigue;
+
+  // Mettre à jour la couleur du select immédiatement
+  var LN = {PL:'#4f8ef7', SA:'#3ecf8e', LA:'#a37af7', L1:'#f7944f', BU:'#f76f6f'};
+  var color = LN[newLigue] || '#5a6080';
+  var sel = document.querySelector('.ligue-select[data-idx="'+playerIdx+'"]');
+  if (sel) {
+    sel.style.background = color + '22';
+    sel.style.borderColor = color + '66';
+    sel.style.color = color;
+  }
+
+  // Mettre à jour S8_DATA.players :
+  // Retirer le joueur de l'ancienne ligue et l'ajouter à la nouvelle
+  if (oldLigue && oldLigue !== newLigue) {
+    var LN_MAP = {PL:'Premier League', SA:'Serie A', LA:'Liga', L1:'Ligue 1', BU:'Bundesliga'};
+    var oldLgName = LN_MAP[oldLigue];
+    var newLgName = LN_MAP[newLigue];
+
+    if (oldLgName && S8_DATA.players[oldLgName]) {
+      S8_DATA.players[oldLgName] = S8_DATA.players[oldLgName]
+        .filter(function(pl){ return pl.idx !== playerIdx; });
+    }
+
+    if (newLgName) {
+      if (!S8_DATA.players[newLgName]) S8_DATA.players[newLgName] = [];
+      // Récupérer les buts actuels du joueur si disponibles
+      var currentGoals = 0;
+      Object.values(matchDetails).forEach(function(lgD){
+        Object.values(lgD).forEach(function(teamD){
+          Object.values(teamD).forEach(function(matchD){
+            if (matchD.scorers && matchD.scorers[playerIdx])
+              currentGoals += matchD.scorers[playerIdx];
+          });
+        });
+      });
+      S8_DATA.players[newLgName].push({idx: playerIdx, name: p.name, goals: currentGoals});
+      // Trier par buts décroissants
+      S8_DATA.players[newLgName].sort(function(a,b){ return b.goals - a.goals; });
+    }
+  }
+
+  // Re-filtrer le tableau pour mettre à jour l'affichage
+  tblFilter();
+
+  // Sauvegarder sur GitHub (stocké dans data.json via playerLigueOverrides)
+  if (!window._playerLigueOverrides) window._playerLigueOverrides = {};
+  window._playerLigueOverrides[playerIdx] = newLigue;
+  GH.save();
+
+  // Notification discrète
+  var notif = document.createElement('div');
+  notif.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#3ecf8e;color:#0d0f14;'
+    + 'padding:.5rem 1rem;border-radius:7px;font-size:12px;font-weight:700;z-index:9999;'
+    + 'box-shadow:0 2px 12px rgba(0,0,0,.4)';
+  notif.textContent = '✓ ' + p.name + ' → ' + (newLigue || '—');
+  document.body.appendChild(notif);
+  setTimeout(function(){ notif.style.opacity='0'; notif.style.transition='opacity .4s'; }, 2000);
+  setTimeout(function(){ notif.remove(); }, 2500);
 }
 
 </script>
