@@ -102,5 +102,8 @@
     }
   },
   "currentSeasonNum": 8,
-  "archives": []
+  "archives": [],
+  "playerLigueOverrides": {
+    "164": "SA"
+  }
 }
