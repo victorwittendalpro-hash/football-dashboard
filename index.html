@@ -2047,13 +2047,39 @@ function renderSaisonEnCours() {
             'Ligue 1':'\ud83c\uddeb\ud83c\uddf7','Bundesliga':'\ud83c\udde9\ud83c\uddea','Liga':'\ud83c\uddea\ud83c\uddf8'};
   var LG_NAMES = ['Premier League','Serie A','Liga','Ligue 1','Bundesliga'];
 
-  var allScorers = [];
-  LG_NAMES.forEach(function(lg) {
-    (S8_DATA.players[lg] || []).forEach(function(p) {
-      if (p.goals > 0) allScorers.push({name:p.name, goals:p.goals, lg:lg});
+  // Top buteurs européens depuis ALL (source de vérité) + matchDetails
+  var LG_CODE_MAP = {'PL':'Premier League','SA':'Serie A','LA':'Liga','L1':'Ligue 1','BU':'Bundesliga'};
+  var euScorerMap = {};
+  // 1. Buts initiaux depuis ALL[i].seasons['S8']
+  ALL.forEach(function(p, pidx) {
+    var g = (p.seasons && p.seasons['S8']) || 0;
+    if (g <= 0) return;
+    var effectiveLigue = (window._playerLigueOverrides && window._playerLigueOverrides[pidx])
+      ? window._playerLigueOverrides[pidx] : p.ligue;
+    var lgName = LG_CODE_MAP[effectiveLigue] || effectiveLigue || '';
+    euScorerMap[pidx] = {name: p.name, goals: g, lg: lgName};
+  });
+  // 2. Ajouter les buts saisis dans matchDetails
+  Object.keys(matchDetails).forEach(function(mlg) {
+    var lgD = matchDetails[mlg];
+    Object.keys(lgD).forEach(function(tIdx) {
+      Object.keys(lgD[tIdx]).forEach(function(mIdx) {
+        var sc = (lgD[tIdx][mIdx].scorers) || {};
+        Object.keys(sc).forEach(function(pidx) {
+          var pi = parseInt(pidx);
+          var pp = ALL[pi];
+          if (!pp) return;
+          var effectiveLigue = (window._playerLigueOverrides && window._playerLigueOverrides[pi])
+            ? window._playerLigueOverrides[pi] : pp.ligue;
+          var lgName = LG_CODE_MAP[effectiveLigue] || '';
+          if (!euScorerMap[pi]) euScorerMap[pi] = {name: pp.name, goals: 0, lg: lgName};
+          euScorerMap[pi].goals += sc[pidx];
+        });
+      });
     });
   });
-  allScorers.sort(function(a,b){ return b.goals - a.goals; });
+  var allScorers = Object.values(euScorerMap)
+    .sort(function(a,b){ return b.goals - a.goals; });
   var topEU = allScorers[0] || {name:'\u2014', goals:0};
   var sn = currentSeasonNum || 8;
 
@@ -2072,7 +2098,40 @@ function renderSaisonEnCours() {
     var teams   = (typeof getTeamData === 'function')
       ? getTeamData(lg).sort(function(a,b){ return b.pts-a.pts || (b.bm-b.be)-(a.bm-a.be) || b.bm-a.bm; })
       : S8_DATA.leagues[lg] || [];
-    var scorers = (S8_DATA.players[lg] || []).filter(function(p){ return p.goals > 0; });
+    // Reconstruire les buteurs depuis ALL (source de vérité) + matchDetails
+    var LG_CODE = {'Premier League':'PL','Serie A':'SA','Liga':'LA','Ligue 1':'L1','Bundesliga':'BU'};
+    var lgCode  = LG_CODE[lg] || '';
+    var scorerMap = {};
+    // 1. Buts initiaux depuis ALL[i].seasons['S8']
+    ALL.forEach(function(p, pidx) {
+      var effectiveLigue = (window._playerLigueOverrides && window._playerLigueOverrides[pidx])
+        ? window._playerLigueOverrides[pidx] : p.ligue;
+      if (effectiveLigue !== lgCode) return;
+      var g = (p.seasons && p.seasons['S8']) || 0;
+      if (g > 0) scorerMap[pidx] = {name: p.name, goals: g};
+    });
+    // 2. Ajouter les buts saisis manuellement dans matchDetails
+    Object.keys(matchDetails).forEach(function(mlg) {
+      var lgD = matchDetails[mlg];
+      Object.keys(lgD).forEach(function(tIdx) {
+        Object.keys(lgD[tIdx]).forEach(function(mIdx) {
+          var sc = (lgD[tIdx][mIdx].scorers) || {};
+          Object.keys(sc).forEach(function(pidx) {
+            var pi = parseInt(pidx);
+            var pp = ALL[pi];
+            if (!pp) return;
+            var effectiveLigue = (window._playerLigueOverrides && window._playerLigueOverrides[pi])
+              ? window._playerLigueOverrides[pi] : pp.ligue;
+            if (effectiveLigue !== lgCode) return;
+            if (!scorerMap[pi]) scorerMap[pi] = {name: pp.name, goals: 0};
+            scorerMap[pi].goals += sc[pidx];
+          });
+        });
+      });
+    });
+    var scorers = Object.values(scorerMap)
+      .sort(function(a,b){ return b.goals - a.goals; })
+      .slice(0, 10);
     var n = teams.length;
 
     var standRows = teams.map(function(t, i) {
