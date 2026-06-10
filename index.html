@@ -433,6 +433,7 @@ var GH = {
       archives:               (typeof histArchives            !== 'undefined') ? histArchives            : [],
       playerLigueOverrides:   window._playerLigueOverrides || {},
       playerClubOverrides:    window._playerClubOverrides  || {},
+      elKoDetails:            (typeof elKoDetails !== 'undefined') ? elKoDetails : {},
     };
   }
 };
@@ -480,6 +481,10 @@ function ghApplyData(data) {
         .filter(function(e){ return ALL[e.idx] && ALL[e.idx].ligue === code; })
         .sort(function(a,b){ return b.goals - a.goals; });
     });
+  }
+  // Restaurer les résultats EL KO
+  if (data.elKoDetails && typeof elKoDetails !== 'undefined') {
+    elKoDetails = data.elKoDetails;
   }
   // Restaurer les overrides de club
   if (data.playerClubOverrides) {
@@ -3917,5 +3922,389 @@ clInitCL();
     </div>
   </div>
 </div>
+
+<div id="xpane-el" class="extra-pane" style="display:none">
+<style>
+#xpane-el{display:none}
+#xpane-el.on{display:block;padding:0}
+.el-wrap{display:grid;grid-template-columns:200px 1fr;height:calc(100vh - 98px);overflow:hidden}
+@media(max-width:700px){.el-wrap{grid-template-columns:1fr;height:auto}}
+.el-nav{background:#13161e;border-right:1px solid #252a38;display:flex;flex-direction:column;overflow:hidden}
+.el-nav-title{padding:.75rem 1rem;border-bottom:1px solid #252a38;display:flex;align-items:center;gap:.5rem}
+.el-nav-title span{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#f7944f}
+.el-nav-tabs{display:flex;flex-direction:column;padding:.4rem;gap:2px;overflow-y:auto}
+.el-tab{display:flex;align-items:center;gap:.5rem;padding:.5rem .6rem;border-radius:7px;cursor:pointer;border:1px solid transparent;transition:all .12s;font-size:12px;font-weight:500;color:#8b93b0}
+.el-tab:hover{background:#1a1e28;color:#e8eaf0}
+.el-tab.on{background:#1a1e28;border-color:#f7944f;color:#f7944f}
+.el-tab .el-tab-icon{font-size:1rem;width:20px;text-align:center}
+.el-panel{flex:1;overflow-y:auto;padding:0}
+.el-panel::-webkit-scrollbar{width:4px}
+.el-panel::-webkit-scrollbar-thumb{background:#252a38}
+.el-section-header{padding:.875rem 1.25rem;border-bottom:1px solid #252a38;background:#13161e;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:.75rem}
+.el-section-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff}
+.el-section-sub{font-size:12px;color:#5a6080}
+.el-content{padding:1rem 1.25rem;display:flex;flex-direction:column;gap:1rem}
+/* Scorer rows */
+.el-scorer-row{display:flex;align-items:center;gap:.5rem;padding:.4rem .75rem;border-bottom:1px solid #1a1e28}
+.el-scorer-rank{width:28px;text-align:center;font-weight:700;font-size:13px}
+.el-scorer-name{flex:1;font-size:13px;color:#e8eaf0}
+.el-scorer-goals{font-weight:700;color:#f7944f;font-size:16px;min-width:28px;text-align:right}
+.el-scorer-s8{font-size:10px;color:#f7944f;background:#f7944f18;border-radius:4px;padding:1px 5px;margin-left:4px}
+/* Finale rows */
+.el-finale-row{display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;border-bottom:1px solid #1a1e28;font-size:13px}
+.el-finale-row:hover{background:#1a1e2840}
+.el-finale-season{font-family:'Syne',sans-serif;font-weight:700;color:#f7944f;width:40px}
+.el-finale-trophy{font-size:1.2rem;width:24px;text-align:center}
+.el-finale-winner{flex:1;font-weight:600;color:#e8eaf0}
+.el-finale-vs{color:#5a6080;font-size:11px}
+.el-finale-runner{flex:1;color:#8b93b0}
+/* Stats badges */
+.el-wins-list{display:flex;flex-wrap:wrap;gap:.5rem;padding:1rem 1.25rem}
+.el-win-badge{background:#f7944f18;border:1px solid #f7944f44;border-radius:8px;padding:.4rem .75rem;display:flex;align-items:center;gap:.5rem}
+.el-win-badge-name{font-size:12px;font-weight:600;color:#e8eaf0}
+.el-win-badge-count{font-size:18px;font-weight:800;color:#f7944f;font-family:'Syne',sans-serif}
+/* KO bracket - réutilise les classes cl-ko */
+</style>
+<div class="el-wrap">
+  <div class="el-nav">
+    <div class="el-nav-title">
+      <span style="font-size:1.2rem">🟠</span>
+      <span>Europa League</span>
+    </div>
+    <div class="el-nav-tabs" id="el-tabs">
+      <div class="el-tab on" onclick="elNav('knockout')">
+        <span class="el-tab-icon">🏆</span> Phase Finale
+      </div>
+      <div class="el-tab" onclick="elNav('scorers')">
+        <span class="el-tab-icon">⚽</span> Buteurs
+      </div>
+      <div class="el-tab" onclick="elNav('history')">
+        <span class="el-tab-icon">📜</span> Palmarès
+      </div>
+    </div>
+    <div style="padding:.75rem;border-top:1px solid #252a38;margin-top:auto;font-size:10px;color:#5a6080;line-height:1.5">
+      <div style="font-weight:600;color:#8b93b0;margin-bottom:3px">Qualification</div>
+      5e-6e de chaque championnat (S-1) + 17e-22e de la phase CL
+    </div>
+  </div>
+  <div class="el-panel" id="el-panel">
+    <div style="display:flex;align-items:center;justify-content:center;height:200px;color:#5a6080;font-size:14px">
+      Chargement…
+    </div>
+  </div>
+</div>
+<!-- Modal résultats EL KO -->
+<div class="cl-ko-modal-backdrop" id="el-ko-modal" style="display:none">
+  <div class="cl-ko-modal">
+    <button class="cl-ko-modal-close" onclick="elKoCloseModal()">✕</button>
+    <div class="cl-ko-modal-title" id="el-ko-modal-title"></div>
+    <div class="cl-ko-modal-sub"  id="el-ko-modal-sub"></div>
+    <div class="cl-ko-legs">
+      <div class="cl-ko-leg">
+        <div class="cl-ko-leg-label" id="el-ko-l1-home-label"></div>
+        <input id="el-ko-l1-home" type="number" min="0" max="30" value="0" oninput="elKoUpdatePreview()">
+        <span class="cl-ko-leg-vs">–</span>
+        <input id="el-ko-l1-away" type="number" min="0" max="30" value="0" oninput="elKoUpdatePreview()">
+        <div class="cl-ko-leg-label" id="el-ko-l1-away-label"></div>
+      </div>
+      <div class="cl-ko-leg-title">Match retour</div>
+      <div class="cl-ko-leg">
+        <div class="cl-ko-leg-label" id="el-ko-l2-home-label"></div>
+        <input id="el-ko-l2-home" type="number" min="0" max="30" value="0" oninput="elKoUpdatePreview()">
+        <span class="cl-ko-leg-vs">–</span>
+        <input id="el-ko-l2-away" type="number" min="0" max="30" value="0" oninput="elKoUpdatePreview()">
+        <div class="cl-ko-leg-label" id="el-ko-l2-away-label"></div>
+      </div>
+    </div>
+    <div id="el-ko-preview" class="cl-ko-preview">
+      <div id="el-ko-agg-preview"   class="cl-ko-agg-preview"></div>
+      <div id="el-ko-winner-preview" class="cl-ko-winner-preview"></div>
+    </div>
+    <div id="el-ko-scorers" class="cl-ko-scorers-wrap"></div>
+    <div class="cl-ko-modal-actions">
+      <button class="cl-ko-btn-clear"  onclick="elKoClear()">Effacer</button>
+      <button class="cl-ko-btn-cancel" onclick="elKoCloseModal()">Annuler</button>
+      <button class="cl-ko-btn-save"   onclick="elKoSave()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+
+// ══════════════════════════════════════════════════════════════════
+// EUROPA LEAGUE
+// ══════════════════════════════════════════════════════════════════
+var EL_DATA    = {"scorers":[{"name":"Mbappe","total":24,"seasons":{"S5":4,"S6":6,"S7":8,"S8":6}},{"name":"E. Haaland","total":19,"seasons":{"S5":5,"S6":7,"S7":7}},{"name":"Retegui","total":12,"seasons":{"S6":5,"S7":7}},{"name":"Moïse Sahi","total":11,"seasons":{"S7":5,"S8":6}},{"name":"Madueke","total":10,"seasons":{"S7":4,"S8":6}},{"name":"M. Tel","total":9,"seasons":{"S7":4,"S8":5}}],"finales":[{"season":"S1","winner":"?","runner_up":"?"},{"season":"S2","winner":"?","runner_up":"?"},{"season":"S3","winner":"?","runner_up":"?"},{"season":"S4","winner":"?","runner_up":"?"},{"season":"S5","winner":"?","runner_up":"?"},{"season":"S6","winner":"?","runner_up":"?"},{"season":"S7","winner":"?","runner_up":"?"},{"season":"S8","winner":"Vainqueur","runner_up":"?"}]};
+var EL_KO_DATA = {"bracket":{"r16":[{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null}],"qf":[{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null}],"sf":[{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null}],"final":{"home":null,"away":null,"leg1":null,"leg2":null}}};
+var elView     = 'knockout';
+var elKoDetails   = {};
+var elKoModalCtx  = null;
+
+// ── Navigation ────────────────────────────────────────────────────
+function elNav(view) {
+  elView = view;
+  document.querySelectorAll('.el-tab').forEach(function(t, i) {
+    t.classList.toggle('on', ['knockout','scorers','history'][i] === view);
+  });
+  elRender();
+}
+
+function elRender() {
+  if (elView === 'knockout') elRenderKnockout();
+  else if (elView === 'scorers')  elRenderScorers();
+  else if (elView === 'history')  elRenderHistory();
+}
+
+// ── Knockout ──────────────────────────────────────────────────────
+function elKoWinner(match) {
+  if (!match || !match.leg1) return 'TBD';
+  var l1h = match.leg1.home_score != null ? match.leg1.home_score : (match.leg1.home || 0);
+  var l1a = match.leg1.away_score != null ? match.leg1.away_score : (match.leg1.away || 0);
+  var l2h = match.leg2 ? (match.leg2.home_score != null ? match.leg2.home_score : (match.leg2.home || 0)) : 0;
+  var l2a = match.leg2 ? (match.leg2.away_score != null ? match.leg2.away_score : (match.leg2.away || 0)) : 0;
+  var aggH = l1h + l2a, aggA = l1a + l2h;
+  if (aggH > aggA) return match.home;
+  if (aggA > aggH) return match.away;
+  return 'TBD';
+}
+
+function elKoAggregate(match) {
+  if (!match || !match.leg1) return null;
+  var l1h = match.leg1.home_score != null ? match.leg1.home_score : (match.leg1.home || 0);
+  var l1a = match.leg1.away_score != null ? match.leg1.away_score : (match.leg1.away || 0);
+  var l2h = match.leg2 ? (match.leg2.home_score != null ? match.leg2.home_score : (match.leg2.home || 0)) : 0;
+  var l2a = match.leg2 ? (match.leg2.away_score != null ? match.leg2.away_score : (match.leg2.away || 0)) : 0;
+  return {h: l1h + l2a, a: l1a + l2h};
+}
+
+function elKoPropagate() {
+  var b = EL_KO_DATA.bracket;
+  [[0,1],[2,3],[4,5],[6,7]].forEach(function(pair, qi) {
+    var w1 = elKoWinner(b.r16[pair[0]]);
+    var w2 = elKoWinner(b.r16[pair[1]]);
+    if (w1 && w1 !== 'TBD') b.qf[qi].home = w1;
+    if (w2 && w2 !== 'TBD') b.qf[qi].away = w2;
+  });
+  [[0,1],[2,3]].forEach(function(pair, si) {
+    var w1 = elKoWinner(b.qf[pair[0]]);
+    var w2 = elKoWinner(b.qf[pair[1]]);
+    if (w1 && w1 !== 'TBD') b.sf[si].home = w1;
+    if (w2 && w2 !== 'TBD') b.sf[si].away = w2;
+  });
+  var wSF1 = elKoWinner(b.sf[0]), wSF2 = elKoWinner(b.sf[1]);
+  if (wSF1 && wSF1 !== 'TBD') b.final.home = wSF1;
+  if (wSF2 && wSF2 !== 'TBD') b.final.away = wSF2;
+}
+
+function elRenderKnockout() {
+  elKoPropagate();
+  var b = EL_KO_DATA.bracket;
+  var rounds = [
+    {key:'r16', label:'1/8 de Finale',  matches: b.r16, count:8},
+    {key:'qf',  label:'Quarts de Finale', matches: b.qf,  count:4},
+    {key:'sf',  label:'Demi-Finales',   matches: b.sf,  count:2},
+    {key:'final',label:'Finale',         matches: [b.final], count:1},
+  ];
+
+  var html = '<div class="el-section-header">'
+    + '<span style="font-size:1.4rem">🟠</span>'
+    + '<div><div class="el-section-title">Phase Finale — Europa League S' + (currentSeasonNum||8) + '</div>'
+    + '<div class="el-section-sub">16 équipes · Cliquez sur un match pour saisir les résultats</div></div>'
+    + '</div><div class="el-content"><div class="cl-ko-wrap">';
+
+  rounds.forEach(function(round) {
+    html += '<div class="cl-ko-col">'
+      + '<div class="cl-ko-round-label">' + round.label + '</div>';
+
+    round.matches.forEach(function(match, mi) {
+      var mKey = round.key + '_' + mi;
+      var stored = elKoDetails[mKey];
+      if (stored) {
+        match.leg1 = stored.leg1;
+        match.leg2 = stored.leg2;
+      }
+      var hasL1 = !!(match.leg1 && (match.leg1.home_score != null || match.leg1.home != null));
+      var hasL2 = !!(match.leg2 && (match.leg2.home_score != null || match.leg2.home != null));
+      var status = !match.home ? 'pending'
+                 : (!hasL1 && !hasL2 ? 'not-started'
+                 : (!hasL2 ? 'first-leg' : 'done'));
+      var statusLabel = {'not-started':'Pas commencé','first-leg':'Retour à jouer',done:'Terminé'}[status] || '';
+      var statusColor = {'not-started':'#5a6080','first-leg':'#f7944f',done:'#3ecf8e'}[status] || 'transparent';
+      var w = status === 'done' ? elKoWinner(match) : '';
+      var agg = status !== 'not-started' ? elKoAggregate(match) : null;
+
+      html += '<div class="cl-ko-match cl-ko-' + status + '" onclick="elKoOpenMatch(\'' + mKey + '\',' + mi + ',\'' + round.key + '\')">';
+      if (!match.home) {
+        html += '<div class="cl-ko-team pending-team">À déterminer</div>'
+          + '<div class="cl-ko-team pending-team">À déterminer</div>';
+      } else {
+        var logoH = (typeof clubLogo === 'function') ? clubLogo(match.home, 14) : '';
+        var logoA = (typeof clubLogo === 'function') ? clubLogo(match.away, 14) : '';
+        html += '<div class="cl-ko-team' + (w===match.home?' cl-ko-winner':'') + '">'
+          + logoH + '<span>' + match.home + '</span>'
+          + (agg ? '<span class="cl-ko-score' + (agg.h>agg.a?' cl-ko-score-win':'') + '">' + agg.h + '</span>' : '')
+          + '</div>'
+          + '<div class="cl-ko-team' + (w===match.away?' cl-ko-winner':'') + '">'
+          + logoA + '<span>' + match.away + '</span>'
+          + (agg ? '<span class="cl-ko-score' + (agg.a>agg.h?' cl-ko-score-win':'') + '">' + agg.a + '</span>' : '')
+          + '</div>';
+      }
+      if (statusLabel) {
+        html += '<div class="cl-ko-status" style="color:' + statusColor + '">' + statusLabel + '</div>';
+      }
+      html += '</div>';
+    });
+
+    html += '</div>';
+  });
+
+  html += '</div></div>';
+  document.getElementById('el-panel').innerHTML = html;
+}
+
+// ── Saisie résultats KO ───────────────────────────────────────────
+function elKoOpenMatch(mKey, mi, roundKey) {
+  var b = EL_KO_DATA.bracket;
+  var match = {
+    r16: b.r16, qf: b.qf, sf: b.sf, final: [b.final]
+  }[roundKey];
+  if (!match) return;
+  match = Array.isArray(match) ? match[mi] : match[mi];
+  if (!match || !match.home) return;
+  elKoModalCtx = {mKey: mKey, match: match};
+  document.getElementById('el-ko-modal-title').textContent = match.home + '  vs  ' + match.away;
+  document.getElementById('el-ko-modal-sub').textContent = {
+    r16:'1/8 de Finale', qf:'Quart de Finale', sf:'Demi-Finale', final:'Finale'
+  }[roundKey] || '';
+  document.getElementById('el-ko-l1-home-label').textContent = match.home;
+  document.getElementById('el-ko-l1-away-label').textContent = match.away;
+  document.getElementById('el-ko-l2-home-label').textContent = match.away;
+  document.getElementById('el-ko-l2-away-label').textContent = match.home;
+  var stored = elKoDetails[mKey] || {};
+  var l1 = stored.leg1 || {};
+  var l2 = stored.leg2 || {};
+  document.getElementById('el-ko-l1-home').value = l1.home_score != null ? l1.home_score : 0;
+  document.getElementById('el-ko-l1-away').value = l1.away_score != null ? l1.away_score : 0;
+  document.getElementById('el-ko-l2-home').value = l2.home_score != null ? l2.home_score : 0;
+  document.getElementById('el-ko-l2-away').value = l2.away_score != null ? l2.away_score : 0;
+  document.getElementById('el-ko-modal').style.display = 'flex';
+  elKoUpdatePreview();
+}
+
+function elKoUpdatePreview() {
+  if (!elKoModalCtx) return;
+  var l1h = parseInt(document.getElementById('el-ko-l1-home').value)||0;
+  var l1a = parseInt(document.getElementById('el-ko-l1-away').value)||0;
+  var l2h = parseInt(document.getElementById('el-ko-l2-home').value)||0;
+  var l2a = parseInt(document.getElementById('el-ko-l2-away').value)||0;
+  var aggH = l1h + l2a, aggA = l1a + l2h;
+  var m = elKoModalCtx.match;
+  document.getElementById('el-ko-agg-preview').textContent = 'Total: ' + m.home + ' ' + aggH + ' – ' + aggA + ' ' + m.away;
+  var w = aggH > aggA ? m.home : aggA > aggH ? m.away : 'Égalité';
+  document.getElementById('el-ko-winner-preview').textContent = aggH !== aggA ? ('✓ ' + w + ' qualifié') : '⚖️ Égalité';
+}
+
+function elKoSave() {
+  if (!elKoModalCtx) return;
+  var mKey  = elKoModalCtx.mKey;
+  var match = elKoModalCtx.match;
+  var l1h = parseInt(document.getElementById('el-ko-l1-home').value)||0;
+  var l1a = parseInt(document.getElementById('el-ko-l1-away').value)||0;
+  var l2h = parseInt(document.getElementById('el-ko-l2-home').value)||0;
+  var l2a = parseInt(document.getElementById('el-ko-l2-away').value)||0;
+  var stored = {leg1:{home_score:l1h,away_score:l1a}, leg2:{home_score:l2h,away_score:l2a}};
+  elKoDetails[mKey] = stored;
+  match.leg1 = stored.leg1;
+  match.leg2 = stored.leg2;
+  GH.save();
+  elKoCloseModal();
+  elRenderKnockout();
+}
+
+function elKoClear() {
+  if (!elKoModalCtx) return;
+  delete elKoDetails[elKoModalCtx.mKey];
+  var m = elKoModalCtx.match;
+  m.leg1 = null; m.leg2 = null;
+  GH.save();
+  elKoCloseModal();
+  elRenderKnockout();
+}
+
+function elKoCloseModal() {
+  document.getElementById('el-ko-modal').style.display = 'none';
+  elKoModalCtx = null;
+}
+
+// ── Buteurs ───────────────────────────────────────────────────────
+function elRenderScorers() {
+  var scorers = EL_DATA.scorers.slice().sort(function(a,b){ return (b.total||0)-(a.total||0); });
+  var rows = scorers.slice(0,50).map(function(s, i) {
+    var c = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
+    var s8g = (s.seasons && s.seasons['S' + (currentSeasonNum||8)]) || 0;
+    return '<div class="el-scorer-row">'
+      + '<div class="el-scorer-rank" style="color:' + c + '">' + (i+1) + '</div>'
+      + '<div class="el-scorer-name">' + s.name + '</div>'
+      + '<div class="el-scorer-goals">' + (s.total||0) + '</div>'
+      + (s8g > 0 ? '<div class="el-scorer-s8">+' + s8g + ' S' + (currentSeasonNum||8) + '</div>' : '')
+      + '</div>';
+  }).join('');
+
+  document.getElementById('el-panel').innerHTML =
+    '<div class="el-section-header">'
+    + '<span style="font-size:1.4rem">⚽</span>'
+    + '<div><div class="el-section-title">Buteurs Europa League</div>'
+    + '<div class="el-section-sub">Classement cumulé toutes saisons</div></div>'
+    + '</div>'
+    + '<div class="el-content"><div class="cl-table-wrap">' + rows + '</div></div>';
+}
+
+// ── Palmarès ──────────────────────────────────────────────────────
+function elRenderHistory() {
+  var finales = EL_DATA.finales;
+  // Compter les victoires
+  var wins = {};
+  finales.forEach(function(f) {
+    if (f.winner && f.winner !== '?' && f.winner !== 'Vainqueur') {
+      wins[f.winner] = (wins[f.winner] || 0) + 1;
+    }
+  });
+  var winsArr = Object.keys(wins).map(function(k){ return {name:k, count:wins[k]}; })
+    .sort(function(a,b){ return b.count - a.count; });
+
+  var rows = finales.filter(function(f){ return f.winner !== 'Vainqueur'; }).map(function(f) {
+    var isTBD = f.winner === '?';
+    return '<div class="el-finale-row">'
+      + '<div class="el-finale-season">' + f.season + '</div>'
+      + '<div class="el-finale-trophy">' + (isTBD ? '❓' : '🟠') + '</div>'
+      + '<div class="el-finale-winner" style="color:' + (isTBD ? '#5a6080' : '#f7944f') + '">' + f.winner + '</div>'
+      + '<div class="el-finale-vs">vs</div>'
+      + '<div class="el-finale-runner">' + f.runner_up + '</div>'
+      + '</div>';
+  }).join('');
+
+  var badgesHtml = winsArr.map(function(w) {
+    return '<div class="el-win-badge">'
+      + '<div class="el-win-badge-count">' + w.count + '</div>'
+      + '<div class="el-win-badge-name">' + w.name + '</div>'
+      + '</div>';
+  }).join('');
+
+  document.getElementById('el-panel').innerHTML =
+    '<div class="el-section-header">'
+    + '<span style="font-size:1.4rem">📜</span>'
+    + '<div><div class="el-section-title">Palmarès Europa League</div>'
+    + '<div class="el-section-sub">Historique des finales</div></div>'
+    + '</div>'
+    + (winsArr.length ? '<div class="el-wins-list">' + badgesHtml + '</div>' : '')
+    + '<div class="cl-table-wrap">' + rows + '</div>';
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+function elInitEL() {
+  elRender();
+}
+
+</script>
 </body>
 </html>
