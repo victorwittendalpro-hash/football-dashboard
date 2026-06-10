@@ -117,5 +117,11 @@
     "145": "PL",
     "164": "SA",
     "195": "BU"
+  },
+  "playerClubOverrides": {
+    "142": {
+      "club": "Arsenal",
+      "season": "S8"
+    }
   }
 }
