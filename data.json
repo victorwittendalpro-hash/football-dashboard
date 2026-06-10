@@ -104,6 +104,7 @@
   "currentSeasonNum": 8,
   "archives": [],
   "playerLigueOverrides": {
+    "96": "PL",
     "164": "SA"
   }
 }
