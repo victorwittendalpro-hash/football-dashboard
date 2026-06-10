@@ -763,7 +763,6 @@ Chart.defaults.color = '#5a6080';
 initHeader();
 flt();
 sel(0);
-updateSeasonLabels();
 // Charger données GitHub
 GH.load(function(err, data) {
   if (err) { console.warn('GH load:', err); return; }
@@ -1627,27 +1626,28 @@ function scorerSearchInput(q) {
   var box = document.getElementById('scorer-suggestions');
   if (!q || q.length < 1) { box.style.display='none'; return; }
   var ql = q.toLowerCase();
-  // Recherche dans ALL (tous les joueurs)
   var matches = [];
   for (var i=0; i<ALL.length; i++) {
     if (ALL[i].name.toLowerCase().indexOf(ql) >= 0) {
-      matches.push({idx:i, name:ALL[i].name});
+      matches.push({idx:i, name:ALL[i].name, ligue:ALL[i].ligue||''});
       if (matches.length >= 8) break;
     }
   }
   if (!matches.length) { box.style.display='none'; return; }
+  window._scorerSugMatches = matches;
   box.innerHTML = matches.map(function(m, mi) {
-    return '<div class="sc-sug-item" data-mi="'+mi+'"'
-      +' style="padding:6px 10px;cursor:pointer;font-size:12px;color:#e8eaf0;border-bottom:1px solid #1a1e28"'
-      +' onmousedown="scorerSelect('+m.idx+', ''+m.name.replace(/'/g,"\'")+'')"'
-      +' onmouseover="scorerSugHover(this)">'
-      + m.name
-      + (ALL[m.idx].ligue ? ' <span style="color:#5a6080;font-size:10px">'+ALL[m.idx].ligue+'</span>' : '')
-      +'</div>';
+    var ligueBadge = m.ligue
+      ? ' <span style="color:#5a6080;font-size:10px">' + m.ligue + '</span>'
+      : '';
+    return '<div class="sc-sug-item" data-mi="' + mi + '"'
+      + ' style="padding:6px 10px;cursor:pointer;font-size:12px;color:#e8eaf0;border-bottom:1px solid #1a1e28"'
+      + ' onmousedown="scorerSelectByMi(' + mi + ')"'
+      + ' onmouseover="scorerSugHover(this)">'
+      + m.name + ligueBadge
+      + '</div>';
   }).join('');
   box.style.display = 'block';
 }
-
 function scorerSugHover(el) {
   document.querySelectorAll('.sc-sug-item').forEach(function(e){ e.style.background=''; });
   el.style.background = '#252a38';
@@ -1674,6 +1674,10 @@ function scorerSearchKey(e) {
   items.forEach(function(el,i){ el.style.background = i===_scorerSearchIdx?'#252a38':''; });
 }
 
+function scorerSelectByMi(mi) {
+  var m = window._scorerSugMatches && window._scorerSugMatches[mi];
+  if (m) scorerSelect(m.idx, m.name);
+}
 function scorerSelect(playerIdx, playerName) {
   // Vérifier si déjà dans la liste
   var exists = _scorerList.find(function(e){ return e.idx === playerIdx; });
