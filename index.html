@@ -1139,13 +1139,6 @@ function updatePlayerLigue(playerIdx, newLigue) {
 
 
     + 'box-shadow:0 2px 12px rgba(0,0,0,.4)';
-  notif.textContent = '✓ ' + p.name + ' → ' + (newLgName||'—')
-    + (currentGoals > 0 ? ' (' + currentGoals + ' buts)' : '');
-  document.body.appendChild(notif);
-  setTimeout(function(){ notif.style.opacity='0'; notif.style.transition='opacity .4s'; }, 3000);
-  setTimeout(function(){ notif.remove(); }, 3500);
-}
-
 </script>
 <style>
 #xpane-s8{display:none}
