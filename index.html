@@ -1212,7 +1212,7 @@ function clubEditorSearch(q) {
       + ' onmousedown="clubEditorSelectByIdx(' + ci + ')"'
       + ' onmouseover="clubSugHover(this)">'
       + (logo ? '<img src="' + logo + '" width="16" height="16" '
-              + 'style="object-fit:contain" onerror="this.style.display='none'">' : '')
+      + ' style="object-fit:contain">' : '')
       + '<span>' + c + '</span></div>';
   }).join('');
   box.style.display = 'block';
