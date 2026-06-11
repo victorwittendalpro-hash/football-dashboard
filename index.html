@@ -1511,7 +1511,72 @@ function saveClubEditor() {
   </div>
 </div>
 
-<script>
+<script>// ══════════════════════════════════════════════════════════════════
+// RÉSULTATS AUTOMATIQUES
+// ══════════════════════════════════════════════════════════════════
+
+// Équipes dont les résultats sont saisis MANUELLEMENT
+var MANUAL_TEAMS = {
+  'Premier League': ['Arsenal','Liverpool','Manchester City','Manchester United'],
+  'Ligue 1':        ['PSG','AS Monaco'],
+  'Bundesliga':     ['Dortmund','Frankfort'],
+  'Liga':           ['Real Madrid','FC Barcelone'],
+  'Serie A':        ['AC Milan','Inter Milan','Côme','Atalanta']
+};
+
+// Distribution des scores pour le tirage aléatoire
+var AUTO_SCORES_HOME = [0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,6];
+var AUTO_SCORES_AWAY = [5,3,2,3,2,0,0,2,1,3,4,0,3,4,1,1,2,1,2,0,0,0,0,1,3,4,2,1,1,5,4];
+
+function isManualTeam(lg, teamName) {
+  var manual = MANUAL_TEAMS[lg] || [];
+  return manual.indexOf(teamName) >= 0;
+}
+
+function randScore() {
+  var idx = Math.floor(Math.random() * AUTO_SCORES_HOME.length);
+  return {home: AUTO_SCORES_HOME[idx], away: AUTO_SCORES_AWAY[idx]};
+}
+
+// Générer et sauvegarder les résultats automatiques pour toutes les équipes
+// non-manuelles de la ligue `lg` à la journée `mi`
+function generateAutoResults(lg, mi) {
+  var teams = S8_DATA.leagues[lg];
+  if (!teams) return;
+
+  teams.forEach(function(t, ti) {
+    // Ignorer les équipes manuelles
+    if (isManualTeam(lg, t.name)) return;
+    // Ignorer si déjà joué
+    if (t.matches[mi] !== null && t.matches[mi] !== undefined) return;
+
+    // Tirer un score aléatoire (l'équipe à l'index pair reçoit, impair se déplace)
+    // Pour simplifier : tirage indépendant pour chaque équipe non-manuelle
+    var sc = randScore();
+    var bm = sc.home;
+    var be = sc.away;
+    var pts = bm > be ? 3 : bm === be ? 1 : 0;
+
+    // Enregistrer dans matchDetails
+    if (!matchDetails[lg])     matchDetails[lg]     = {};
+    if (!matchDetails[lg][ti]) matchDetails[lg][ti] = {};
+    matchDetails[lg][ti][mi] = {bm: bm, be: be, pts: pts, scorers: {}};
+
+    // Mettre à jour S8_DATA
+    S8_DATA.leagues[lg][ti].matches[mi] = pts;
+
+    // Mettre à jour bm/be de l'équipe
+    var totalBm = 0, totalBe = 0;
+    for (var k = 0; k < 17; k++) {
+      var mD = matchDetails[lg][ti] && matchDetails[lg][ti][k];
+      if (mD) { totalBm += mD.bm; totalBe += mD.be; }
+    }
+    S8_DATA.leagues[lg][ti].bm = totalBm;
+    S8_DATA.leagues[lg][ti].be = totalBe;
+  });
+}
+
+
 // ═══════════════════════════════════════════════════════
 // DATA
 // ═══════════════════════════════════════════════════════
@@ -2412,70 +2477,7 @@ function renderSaisonEnCours() {
 }
 
 
-// ══════════════════════════════════════════════════════════════════
-// RÉSULTATS AUTOMATIQUES
-// ══════════════════════════════════════════════════════════════════
 
-// Équipes dont les résultats sont saisis MANUELLEMENT
-var MANUAL_TEAMS = {
-  'Premier League': ['Arsenal','Liverpool','Manchester City','Manchester United'],
-  'Ligue 1':        ['PSG','AS Monaco'],
-  'Bundesliga':     ['Dortmund','Frankfort'],
-  'Liga':           ['Real Madrid','FC Barcelone'],
-  'Serie A':        ['AC Milan','Inter Milan','Côme','Atalanta']
-};
-
-// Distribution des scores pour le tirage aléatoire
-var AUTO_SCORES_HOME = [0,0,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,2,3,3,3,3,3,4,4,4,4,5,5,5,6];
-var AUTO_SCORES_AWAY = [5,3,2,3,2,0,0,2,1,3,4,0,3,4,1,1,2,1,2,0,0,0,0,1,3,4,2,1,1,5,4];
-
-function isManualTeam(lg, teamName) {
-  var manual = MANUAL_TEAMS[lg] || [];
-  return manual.indexOf(teamName) >= 0;
-}
-
-function randScore() {
-  var idx = Math.floor(Math.random() * AUTO_SCORES_HOME.length);
-  return {home: AUTO_SCORES_HOME[idx], away: AUTO_SCORES_AWAY[idx]};
-}
-
-// Générer et sauvegarder les résultats automatiques pour toutes les équipes
-// non-manuelles de la ligue `lg` à la journée `mi`
-function generateAutoResults(lg, mi) {
-  var teams = S8_DATA.leagues[lg];
-  if (!teams) return;
-
-  teams.forEach(function(t, ti) {
-    // Ignorer les équipes manuelles
-    if (isManualTeam(lg, t.name)) return;
-    // Ignorer si déjà joué
-    if (t.matches[mi] !== null && t.matches[mi] !== undefined) return;
-
-    // Tirer un score aléatoire (l'équipe à l'index pair reçoit, impair se déplace)
-    // Pour simplifier : tirage indépendant pour chaque équipe non-manuelle
-    var sc = randScore();
-    var bm = sc.home;
-    var be = sc.away;
-    var pts = bm > be ? 3 : bm === be ? 1 : 0;
-
-    // Enregistrer dans matchDetails
-    if (!matchDetails[lg])     matchDetails[lg]     = {};
-    if (!matchDetails[lg][ti]) matchDetails[lg][ti] = {};
-    matchDetails[lg][ti][mi] = {bm: bm, be: be, pts: pts, scorers: {}};
-
-    // Mettre à jour S8_DATA
-    S8_DATA.leagues[lg][ti].matches[mi] = pts;
-
-    // Mettre à jour bm/be de l'équipe
-    var totalBm = 0, totalBe = 0;
-    for (var k = 0; k < 17; k++) {
-      var mD = matchDetails[lg][ti] && matchDetails[lg][ti][k];
-      if (mD) { totalBm += mD.bm; totalBe += mD.be; }
-    }
-    S8_DATA.leagues[lg][ti].bm = totalBm;
-    S8_DATA.leagues[lg][ti].be = totalBe;
-  });
-}
 
 </script>
 </div>
