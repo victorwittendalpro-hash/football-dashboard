@@ -1922,26 +1922,29 @@ function saveMatch(){
   Object.keys(scorers).forEach(function(pidx) {
     var pi = parseInt(pidx);
 
-    // 1. Calculer le total de buts S8 depuis matchDetails (toutes ligues)
-    var totalFromDetails = 0;
+    // Calculer les buts S8 depuis matchDetails uniquement (source unique)
+    var goalsFromDetails = 0;
     LG_ORDER.forEach(function(l) {
       var lgD = matchDetails[l] || {};
       Object.keys(lgD).forEach(function(tIdx) {
         var tmD = lgD[tIdx];
         Object.keys(tmD).forEach(function(mIdx) {
           var mScorers = tmD[mIdx].scorers || {};
-          if (mScorers[pidx]) totalFromDetails += mScorers[pidx];
+          if (mScorers[pidx]) goalsFromDetails += mScorers[pidx];
         });
       });
     });
 
-    // 2. Buts initiaux depuis Excel (ALL[i].seasons['S8'])
-    var baseGoals = (ALL[pi] && ALL[pi].seasons && ALL[pi].seasons['S8']) || 0;
+    // Buts Excel originaux (immuables — on les conserve en _origS8 au premier passage)
+    if (ALL[pi] && ALL[pi]._origS8 === undefined) {
+      ALL[pi]._origS8 = (ALL[pi].seasons && ALL[pi].seasons['S8']) || 0;
+    }
+    var origGoals = (ALL[pi] && ALL[pi]._origS8) || 0;
 
-    // 3. Total = buts Excel + buts saisis manuellement
-    var totalGoals = baseGoals + totalFromDetails;
+    // Total S8 = buts Excel originaux + buts saisis manuellement
+    var totalGoals = origGoals + goalsFromDetails;
 
-    // 4. Mettre à jour S8_DATA.players
+    // Mettre à jour S8_DATA.players
     var lgPlayers = S8_DATA.players[lg] || [];
     lgPlayers.forEach(function(p) {
       if (String(p.idx) === String(pidx)) {
@@ -1949,10 +1952,13 @@ function saveMatch(){
       }
     });
 
-    // 5. Mettre à jour ALL[pi].seasons['S8'] pour fiche joueur + tableau comparatif
+    // Mettre à jour ALL[pi].seasons['S8'] et ALL[pi].total
     if (ALL[pi]) {
       if (!ALL[pi].seasons) ALL[pi].seasons = {};
+      var prevS8 = ALL[pi].seasons['S8'] || 0;
       ALL[pi].seasons['S8'] = totalGoals;
+      // Ajuster le total de carrière
+      ALL[pi].total = (ALL[pi].total || 0) - prevS8 + totalGoals;
     }
   });
 
@@ -1966,6 +1972,8 @@ function saveMatch(){
   closeModal();
   renderLeague(curLg);
   renderSaisonEnCours();
+  // Re-render tableau comparatif si visible
+  try { if (typeof tblFilter === 'function') tblFilter(); } catch(e) {}
   // Update nav badges
   initNavBadges();
 }
