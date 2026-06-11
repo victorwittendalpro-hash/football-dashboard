@@ -2,6 +2,18 @@
   "version": 1,
   "matchDetails": {
     "Premier League": {
+      "1": {
+        "8": {
+          "bm": 6,
+          "be": 0,
+          "pts": 3,
+          "scorers": {
+            "54": 2,
+            "91": 1,
+            "142": 2
+          }
+        }
+      },
       "3": {
         "8": {
           "bm": 3,
