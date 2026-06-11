@@ -1565,14 +1565,16 @@ function generateAutoResults(lg, mi) {
     // Mettre à jour S8_DATA
     S8_DATA.leagues[lg][ti].matches[mi] = pts;
 
-    // Mettre à jour bm/be de l'équipe
-    var totalBm = 0, totalBe = 0;
+    // Recalculer BM/BE depuis matchDetails pour cette équipe
+    var autoTotalBm = 0, autoTotalBe = 0;
+    var autoTmD = matchDetails[lg] && matchDetails[lg][ti] ? matchDetails[lg][ti] : {};
     for (var k = 0; k < 17; k++) {
-      var mD = matchDetails[lg][ti] && matchDetails[lg][ti][k];
-      if (mD) { totalBm += mD.bm; totalBe += mD.be; }
+      if (autoTmD[k]) { autoTotalBm += autoTmD[k].bm || 0; autoTotalBe += autoTmD[k].be || 0; }
     }
-    S8_DATA.leagues[lg][ti].bm = totalBm;
-    S8_DATA.leagues[lg][ti].be = totalBe;
+    if (autoTotalBm > 0 || autoTotalBe > 0) {
+      S8_DATA.leagues[lg][ti].bm = autoTotalBm;
+      S8_DATA.leagues[lg][ti].be = autoTotalBe;
+    }
   });
 }
 
@@ -1657,19 +1659,20 @@ function getTeamData(lg){
     });
     // Recalculate totals
     var totalPts = m.reduce(function(a,v){return a+(v||0);},0);
-    // Recalculate BM/BE from stored details
-    var totalBm = t.bm, totalBe = t.be;
-    // Only override if we have stored per-match data for ALL matches
-    var hasAny = Object.keys(tmD).length > 0;
-    if(hasAny){
-      // For matches in tmD, use stored BM/BE, for others use proportional estimate
-      var storedBm = 0, storedBe = 0;
-      Object.keys(tmD).forEach(function(mi){
-        storedBm += tmD[mi].bm || 0;
-        storedBe += tmD[mi].be || 0;
-      });
-      // Base BM/BE from original minus last match, plus stored
-      totalBm = t.bm; totalBe = t.be;
+    // Recalculate BM/BE :
+    // Pour chaque match dans matchDetails → utiliser le score saisi
+    // Pour les autres matchs → BM/BE impossible à déterminer, on laisse 0
+    var totalBm = 0, totalBe = 0;
+    for (var k = 0; k < t.matches.length; k++) {
+      if (tmD[k]) {
+        totalBm += tmD[k].bm || 0;
+        totalBe += tmD[k].be || 0;
+      }
+    }
+    // Si aucun matchDetail du tout, garder les valeurs Excel initiales
+    if (Object.keys(tmD).length === 0) {
+      totalBm = t.bm;
+      totalBe = t.be;
     }
     return {name:t.name, matches:m, bm:totalBm, be:totalBe, pts:totalPts, rawIdx:ti};
   });
@@ -1902,35 +1905,55 @@ function saveMatch(){
   if(!matchDetails[lg][ti]) matchDetails[lg][ti] = {};
   matchDetails[lg][ti][mi] = {bm:bm, be:be, pts:pts, scorers:scorers};
 
-  // Update team match in S8_DATA
+  // Mettre à jour S8_DATA pour cette équipe
   S8_DATA.leagues[lg][ti].matches[mi] = pts;
+  // Recalculer BM/BE depuis tous les matchDetails disponibles pour cette équipe
+  var newBm = 0, newBe = 0;
+  for (var k = 0; k < 17; k++) {
+    var mEntry = matchDetails[lg] && matchDetails[lg][ti] && matchDetails[lg][ti][k];
+    if (mEntry) { newBm += mEntry.bm || 0; newBe += mEntry.be || 0; }
+  }
+  if (newBm > 0 || newBe > 0) {
+    S8_DATA.leagues[lg][ti].bm = newBm;
+    S8_DATA.leagues[lg][ti].be = newBe;
+  }
 
-  // Update player goals in S8_DATA
-  Object.keys(scorers).forEach(function(pidx){
-    // Find player in league list and update
-    var lgPlayers = S8_DATA.players[lg];
-    lgPlayers.forEach(function(p){
-      if(String(p.idx)===String(pidx)){
-        // Recalculate total S8 goals from all stored matches
-        var totalGoals = 0;
-        LG_ORDER.forEach(function(l){
-          var lgD = matchDetails[l]||{};
-          Object.keys(lgD).forEach(function(tIdx){
-            var tmD = lgD[tIdx];
-            Object.keys(tmD).forEach(function(mIdx){
-              var mScorers = tmD[mIdx].scorers||{};
-              if(mScorers[pidx]) totalGoals += mScorers[pidx];
-            });
-          });
+  // Mettre à jour les buts S8 pour chaque buteur saisi
+  Object.keys(scorers).forEach(function(pidx) {
+    var pi = parseInt(pidx);
+
+    // 1. Calculer le total de buts S8 depuis matchDetails (toutes ligues)
+    var totalFromDetails = 0;
+    LG_ORDER.forEach(function(l) {
+      var lgD = matchDetails[l] || {};
+      Object.keys(lgD).forEach(function(tIdx) {
+        var tmD = lgD[tIdx];
+        Object.keys(tmD).forEach(function(mIdx) {
+          var mScorers = tmD[mIdx].scorers || {};
+          if (mScorers[pidx]) totalFromDetails += mScorers[pidx];
         });
-        // Base goals from original data (before any stored match)
-        var base = 0;
-        (S8_DATA.players[lg]||[]).forEach(function(pp){
-          if(String(pp.idx)===String(pidx)) base = pp.goals;
-        });
-        p.goals = totalGoals || p.goals;
+      });
+    });
+
+    // 2. Buts initiaux depuis Excel (ALL[i].seasons['S8'])
+    var baseGoals = (ALL[pi] && ALL[pi].seasons && ALL[pi].seasons['S8']) || 0;
+
+    // 3. Total = buts Excel + buts saisis manuellement
+    var totalGoals = baseGoals + totalFromDetails;
+
+    // 4. Mettre à jour S8_DATA.players
+    var lgPlayers = S8_DATA.players[lg] || [];
+    lgPlayers.forEach(function(p) {
+      if (String(p.idx) === String(pidx)) {
+        p.goals = totalGoals;
       }
     });
+
+    // 5. Mettre à jour ALL[pi].seasons['S8'] pour fiche joueur + tableau comparatif
+    if (ALL[pi]) {
+      if (!ALL[pi].seasons) ALL[pi].seasons = {};
+      ALL[pi].seasons['S8'] = totalGoals;
+    }
   });
 
   saveToStorage();
