@@ -774,6 +774,16 @@
           "scorers": {}
         }
       }
+    },
+    "Ligue 1": {
+      "0": {
+        "7": {
+          "bm": 35,
+          "be": 4,
+          "pts": 3,
+          "scorers": {}
+        }
+      }
     }
   },
   "clMatchDetails": {},
