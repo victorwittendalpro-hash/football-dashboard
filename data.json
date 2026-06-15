@@ -1323,8 +1323,8 @@
   "snMatchData": {
     "cdm": {
       "qualifMatches": {
-        "Algérie_1": {
-          "home": "Algérie",
+        "AlgÃ©rie_1": {
+          "home": "AlgÃ©rie",
           "away": "Inde",
           "score_h": 6,
           "score_a": 0,
@@ -1332,7 +1332,7 @@
         },
         "Colombie_0": {
           "home": "Colombie",
-          "away": "Péru",
+          "away": "Pérou",
           "score_h": 4,
           "score_a": 1,
           "scorers": {}
@@ -1347,8 +1347,8 @@
             "104": 1
           }
         },
-        "Sénégal_0": {
-          "home": "Sénégal",
+        "SÃ©nÃ©gal_0": {
+          "home": "SÃ©nÃ©gal",
           "away": "Nigeria",
           "score_h": 3,
           "score_a": 1,
@@ -1361,8 +1361,8 @@
           "score_a": 0,
           "scorers": {}
         },
-        "Grèce_0": {
-          "home": "Grèce",
+        "GrÃ¨ce_0": {
+          "home": "GrÃ¨ce",
           "away": "Egypte",
           "score_h": 3,
           "score_a": 2,
