@@ -1,1 +1,1353 @@
-{"version":1,"matchDetails":{"Premier League":{"0":{"7":{"bm":36,"be":3,"pts":3,"scorers":{}},"8":{"bm":8,"be":0,"pts":3,"scorers":{"1":1,"23":2,"98":2,"99":3}}},"1":{"7":{"bm":2,"be":0,"pts":3,"scorers":{}},"8":{"bm":32,"be":3,"pts":3,"scorers":{"54":2,"91":1,"142":2}}},"2":{"7":{"bm":28,"be":3,"pts":3,"scorers":{}},"8":{"bm":5,"be":0,"pts":3,"scorers":{"144":2}}},"3":{"7":{"bm":26,"be":10,"pts":3,"scorers":{}},"8":{"bm":3,"be":1,"pts":3,"scorers":{"136":1}}},"4":{"6":{"bm":21,"be":10,"pts":3,"scorers":{}},"8":{"bm":3,"be":0,"pts":3,"scorers":{}}},"5":{"4":{"bm":0,"be":3,"pts":0,"scorers":{}},"7":{"bm":11,"be":9,"pts":3,"scorers":{}},"8":{"bm":1,"be":3,"pts":0,"scorers":{}}},"6":{"1":{"bm":0,"be":11,"pts":0,"scorers":{}},"4":{"bm":24,"be":0,"pts":3,"scorers":{}},"8":{"bm":3,"be":0,"pts":3,"scorers":{}}},"7":{"5":{"bm":13,"be":14,"pts":0,"scorers":{}},"8":{"bm":0,"be":3,"pts":0,"scorers":{}}},"8":{"1":{"bm":10,"be":0,"pts":3,"scorers":{}},"3":{"bm":0,"be":13,"pts":0,"scorers":{}},"8":{"bm":3,"be":0,"pts":3,"scorers":{}}},"9":{"2":{"bm":0,"be":2,"pts":0,"scorers":{}},"4":{"bm":0,"be":3,"pts":0,"scorers":{}},"5":{"bm":12,"be":10,"pts":3,"scorers":{}},"7":{"bm":3,"be":0,"pts":3,"scorers":{}},"8":{"bm":0,"be":5,"pts":0,"scorers":{}}},"10":{"1":{"bm":19,"be":14,"pts":3,"scorers":{}},"8":{"bm":0,"be":2,"pts":0,"scorers":{}}},"11":{"6":{"bm":0,"be":1,"pts":0,"scorers":{}},"7":{"bm":14,"be":13,"pts":3,"scorers":{}},"8":{"bm":2,"be":4,"pts":0,"scorers":{}}},"12":{"4":{"bm":0,"be":17,"pts":0,"scorers":{}},"5":{"bm":16,"be":0,"pts":3,"scorers":{}},"8":{"bm":0,"be":3,"pts":0,"scorers":{}}},"13":{"0":{"bm":0,"be":15,"pts":0,"scorers":{}},"2":{"bm":13,"be":0,"pts":3,"scorers":{}},"8":{"bm":0,"be":2,"pts":0,"scorers":{}}},"14":{"1":{"bm":0,"be":22,"pts":0,"scorers":{}},"2":{"bm":19,"be":0,"pts":3,"scorers":{}},"8":{"bm":1,"be":0,"pts":3,"scorers":{}}}},"Liga":{"0":{"7":{"bm":21,"be":5,"pts":3,"scorers":{}},"8":{"bm":2,"be":0,"pts":3,"scorers":{"15":1,"108":1}}},"1":{"6":{"bm":30,"be":12,"pts":3,"scorers":{}},"8":{"bm":2,"be":1,"pts":3,"scorers":{"3":2}}},"2":{"7":{"bm":25,"be":21,"pts":3,"scorers":{}},"8":{"bm":0,"be":3,"pts":0,"scorers":{}}},"3":{"7":{"bm":19,"be":10,"pts":3,"scorers":{}},"8":{"bm":3,"be":0,"pts":3,"scorers":{}}},"4":{"5":{"bm":19,"be":16,"pts":3,"scorers":{}},"8":{"bm":4,"be":3,"pts":3,"scorers":{}}},"5":{"6":{"bm":20,"be":12,"pts":3,"scorers":{}},"8":{"bm":1,"be":0,"pts":3,"scorers":{}}},"6":{"7":{"bm":25,"be":21,"pts":3,"scorers":{}},"8":{"bm":1,"be":0,"pts":3,"scorers":{}}},"7":{"8":{"bm":0,"be":0,"pts":1,"scorers":{}}},"8":{"5":{"bm":16,"be":15,"pts":3,"scorers":{}},"8":{"bm":4,"be":3,"pts":3,"scorers":{}}},"9":{"6":{"bm":12,"be":17,"pts":0,"scorers":{}},"8":{"bm":4,"be":2,"pts":3,"scorers":{}}},"10":{"7":{"bm":14,"be":22,"pts":0,"scorers":{}},"8":{"bm":1,"be":3,"pts":0,"scorers":{}}},"11":{"8":{"bm":0,"be":0,"pts":1,"scorers":{}}},"12":{"5":{"bm":11,"be":17,"pts":0,"scorers":{}},"8":{"bm":2,"be":1,"pts":3,"scorers":{}}},"13":{"7":{"bm":13,"be":21,"pts":0,"scorers":{}},"8":{"bm":3,"be":0,"pts":3,"scorers":{}}},"14":{"7":{"bm":13,"be":32,"pts":0,"scorers":{}},"8":{"bm":5,"be":1,"pts":3,"scorers":{}}}},"Bundesliga":{"0":{"7":{"bm":31,"be":9,"pts":3,"scorers":{}},"8":{"bm":2,"be":1,"pts":3,"scorers":{"100":1}}},"1":{"4":{"bm":0,"be":0,"pts":1,"scorers":{"199":7}},"7":{"bm":35,"be":7,"pts":3,"scorers":{}},"8":{"bm":4,"be":2,"pts":3,"scorers":{"90":2,"92":1,"199":1}}},"2":{"6":{"bm":24,"be":5,"pts":3,"scorers":{}},"7":{"bm":2,"be":1,"pts":3,"scorers":{}},"8":{"bm":0,"be":2,"pts":0,"scorers":{}}},"3":{"6":{"bm":13,"be":7,"pts":3,"scorers":{}},"7":{"bm":2,"be":4,"pts":0,"scorers":{}},"8":{"bm":0,"be":5,"pts":0,"scorers":{}}},"4":{"6":{"bm":24,"be":17,"pts":3,"scorers":{}},"7":{"bm":4,"be":3,"pts":3,"scorers":{}},"8":{"bm":5,"be":5,"pts":1,"scorers":{}}},"5":{"6":{"bm":20,"be":9,"pts":3,"scorers":{}},"7":{"bm":5,"be":5,"pts":1,"scorers":{}},"8":{"bm":3,"be":0,"pts":3,"scorers":{}}},"6":{"6":{"bm":13,"be":5,"pts":3,"scorers":{}},"7":{"bm":2,"be":4,"pts":0,"scorers":{}},"8":{"bm":2,"be":4,"pts":0,"scorers":{}}},"7":{"4":{"bm":22,"be":15,"pts":3,"scorers":{}},"7":{"bm":1,"be":3,"pts":0,"scorers":{}},"8":{"bm":1,"be":0,"pts":3,"scorers":{}}},"8":{"6":{"bm":13,"be":8,"pts":3,"scorers":{}},"7":{"bm":0,"be":3,"pts":0,"scorers":{}},"8":{"bm":3,"be":0,"pts":3,"scorers":{}}},"9":{"5":{"bm":16,"be":9,"pts":3,"scorers":{}},"7":{"bm":5,"be":1,"pts":3,"scorers":{}},"8":{"bm":1,"be":3,"pts":0,"scorers":{}}},"10":{"5":{"bm":13,"be":11,"pts":3,"scorers":{}},"7":{"bm":4,"be":1,"pts":3,"scorers":{}},"8":{"bm":5,"be":5,"pts":1,"scorers":{}}},"11":{"3":{"bm":10,"be":9,"pts":3,"scorers":{}},"7":{"bm":1,"be":1,"pts":1,"scorers":{}},"8":{"bm":0,"be":2,"pts":0,"scorers":{}}},"12":{"2":{"bm":13,"be":17,"pts":0,"scorers":{}},"7":{"bm":0,"be":2,"pts":0,"scorers":{}},"8":{"bm":2,"be":2,"pts":1,"scorers":{}}},"13":{"4":{"bm":12,"be":17,"pts":0,"scorers":{}},"7":{"bm":2,"be":1,"pts":3,"scorers":{}},"8":{"bm":2,"be":1,"pts":3,"scorers":{}}},"14":{"4":{"bm":5,"be":18,"pts":0,"scorers":{}},"7":{"bm":0,"be":0,"pts":1,"scorers":{}},"8":{"bm":2,"be":2,"pts":1,"scorers":{}}}},"Ligue 1":{"0":{"7":{"bm":35,"be":4,"pts":3,"scorers":{}},"8":{"bm":2,"be":1,"pts":3,"scorers":{"12":1,"25":1}}},"1":{"7":{"bm":33,"be":7,"pts":3,"scorers":{}},"8":{"bm":5,"be":1,"pts":3,"scorers":{}}},"2":{"7":{"bm":17,"be":12,"pts":3,"scorers":{}},"8":{"bm":0,"be":2,"pts":0,"scorers":{}}},"3":{"7":{"bm":24,"be":11,"pts":3,"scorers":{}},"8":{"bm":1,"be":0,"pts":3,"scorers":{}}},"4":{"7":{"bm":20,"be":11,"pts":3,"scorers":{}},"8":{"bm":1,"be":2,"pts":0,"scorers":{}}},"5":{"5":{"bm":22,"be":16,"pts":3,"scorers":{}},"8":{"bm":1,"be":3,"pts":0,"scorers":{}}},"6":{"7":{"bm":20,"be":10,"pts":3,"scorers":{}},"8":{"bm":1,"be":1,"pts":1,"scorers":{}}},"7":{"5":{"bm":18,"be":10,"pts":3,"scorers":{}},"8":{"bm":4,"be":3,"pts":3,"scorers":{}}},"8":{"5":{"bm":14,"be":23,"pts":0,"scorers":{}},"8":{"bm":2,"be":2,"pts":1,"scorers":{}}},"9":{"7":{"bm":20,"be":18,"pts":3,"scorers":{}},"8":{"bm":0,"be":3,"pts":0,"scorers":{}}},"10":{"5":{"bm":14,"be":14,"pts":1,"scorers":{}},"8":{"bm":0,"be":3,"pts":0,"scorers":{}}},"11":{"6":{"bm":26,"be":21,"pts":3,"scorers":{}},"8":{"bm":2,"be":1,"pts":3,"scorers":{}}},"12":{"4":{"bm":13,"be":15,"pts":0,"scorers":{}},"8":{"bm":2,"be":1,"pts":3,"scorers":{}}},"13":{"7":{"bm":16,"be":18,"pts":0,"scorers":{}},"8":{"bm":3,"be":0,"pts":3,"scorers":{}}},"14":{"7":{"bm":15,"be":27,"pts":0,"scorers":{}},"8":{"bm":1,"be":2,"pts":0,"scorers":{}}}},"Serie A":{"0":{"8":{"bm":2,"be":1,"pts":3,"scorers":{"138":1,"187":1}}},"1":{"8":{"bm":5,"be":0,"pts":3,"scorers":{"7":1,"26":1,"65":1,"168":1}}},"2":{"8":{"bm":2,"be":3,"pts":0,"scorers":{}}},"3":{"8":{"bm":0,"be":3,"pts":0,"scorers":{}}},"4":{"8":{"bm":2,"be":3,"pts":0,"scorers":{"188":1,"196":1}}},"5":{"8":{"bm":2,"be":1,"pts":3,"scorers":{}}},"6":{"8":{"bm":5,"be":5,"pts":1,"scorers":{}}},"7":{"8":{"bm":1,"be":0,"pts":3,"scorers":{}}},"8":{"8":{"bm":1,"be":3,"pts":0,"scorers":{}}},"9":{"8":{"bm":3,"be":0,"pts":3,"scorers":{}}},"10":{"8":{"bm":1,"be":2,"pts":0,"scorers":{}}},"11":{"8":{"bm":1,"be":2,"pts":0,"scorers":{}}},"12":{"8":{"bm":2,"be":1,"pts":3,"scorers":{}}},"13":{"8":{"bm":2,"be":2,"pts":1,"scorers":{}}},"14":{"8":{"bm":4,"be":4,"pts":1,"scorers":{}}}}},"clMatchDetails":{},"clKoDetails":{},"clKoBracket":{"r16":[{"home":"FC Barcelone","away":"Feyenoord","leg1":null,"leg2":null},{"home":"Liverpool","away":"Majorque","leg1":null,"leg2":null},{"home":"Inter Milan","away":"PSV Heindoven","leg1":null,"leg2":null},{"home":"Manchester City","away":"OGC Nice","leg1":null,"leg2":null},{"home":"PSG","away":"AS Roma","leg1":null,"leg2":null},{"home":"Sporting Lisbonne","away":"Manchester United","leg1":null,"leg2":null},{"home":"Arsenal","away":"Real Madrid","leg1":null,"leg2":null},{"home":"Benfica","away":"Dortmund","leg1":null,"leg2":null}],"qf":[{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null}],"sf":[{"home":null,"away":null,"leg1":null,"leg2":null},{"home":null,"away":null,"leg1":null,"leg2":null}],"final":{"home":null,"away":null,"leg1":null,"leg2":null}},"currentSeasonNum":8,"archives":[],"playerLigueOverrides":{"1":"PL","34":"PL","56":"PL","58":"SA","77":"L1","90":"BU","95":"LA","121":"LA","126":"PL","136":"PL","145":"PL","156":"PL","164":"SA","167":"L1","195":"BU"},"playerClubOverrides":{"142":{"club":"Arsenal","season":"S8"}},"elKoDetails":{},"cupData":{"eng":{"name":"Coupe d'Angleterre","emoji":"🏴‍","color":"#4f8ef7","league":"Premier League","matches":{},"history":[]},"fra":{"name":"Coupe de France","emoji":"🇫🇷","color":"#f7944f","league":"Ligue 1","matches":{},"history":[]},"ita":{"name":"Coupe d'Italie","emoji":"🇮🇹","color":"#3ecf8e","league":"Serie A","matches":{},"history":[]},"esp":{"name":"Coupe d'Espagne","emoji":"🇪🇸","color":"#a37af7","league":"Liga","matches":{},"history":[]},"ger":{"name":"Coupe d'Allemagne","emoji":"🇩🇪","color":"#f76f6f","league":"Bundesliga","matches":{},"history":[]},"sec":{"name":"Supercoupe d'Europe","emoji":"🌟","color":"#f5c842","league":"Europe","matches":{},"history":[]}},"snMatchData":{"cdm":{"qualifMatches":{},"groupMatches":{},"koMatches":{}},"euro":{"qualifMatches":{},"groupMatches":{},"koMatches":{}},"copa":{"qualifMatches":{},"groupMatches":{},"koMatches":{}},"can":{"qualifMatches":{},"groupMatches":{},"koMatches":{}}}}
+{
+  "version": 1,
+  "matchDetails": {
+    "Premier League": {
+      "0": {
+        "7": {
+          "bm": 36,
+          "be": 3,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 8,
+          "be": 0,
+          "pts": 3,
+          "scorers": {
+            "1": 1,
+            "23": 2,
+            "98": 2,
+            "99": 3
+          }
+        }
+      },
+      "1": {
+        "7": {
+          "bm": 2,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 32,
+          "be": 3,
+          "pts": 3,
+          "scorers": {
+            "54": 2,
+            "91": 1,
+            "142": 2
+          }
+        }
+      },
+      "2": {
+        "7": {
+          "bm": 28,
+          "be": 3,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 5,
+          "be": 0,
+          "pts": 3,
+          "scorers": {
+            "144": 2
+          }
+        }
+      },
+      "3": {
+        "7": {
+          "bm": 26,
+          "be": 10,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 3,
+          "be": 1,
+          "pts": 3,
+          "scorers": {
+            "136": 1
+          }
+        }
+      },
+      "4": {
+        "6": {
+          "bm": 21,
+          "be": 10,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "5": {
+        "4": {
+          "bm": 0,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 11,
+          "be": 9,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 1,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "6": {
+        "1": {
+          "bm": 0,
+          "be": 11,
+          "pts": 0,
+          "scorers": {}
+        },
+        "4": {
+          "bm": 24,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "7": {
+        "5": {
+          "bm": 13,
+          "be": 14,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 0,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "8": {
+        "1": {
+          "bm": 10,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        },
+        "3": {
+          "bm": 0,
+          "be": 13,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "9": {
+        "2": {
+          "bm": 0,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
+        },
+        "4": {
+          "bm": 0,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        },
+        "5": {
+          "bm": 12,
+          "be": 10,
+          "pts": 3,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 0,
+          "be": 5,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "10": {
+        "1": {
+          "bm": 19,
+          "be": 14,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 0,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "11": {
+        "6": {
+          "bm": 0,
+          "be": 1,
+          "pts": 0,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 14,
+          "be": 13,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 2,
+          "be": 4,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "12": {
+        "4": {
+          "bm": 0,
+          "be": 17,
+          "pts": 0,
+          "scorers": {}
+        },
+        "5": {
+          "bm": 16,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 0,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "13": {
+        "0": {
+          "bm": 0,
+          "be": 15,
+          "pts": 0,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 13,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 0,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "14": {
+        "1": {
+          "bm": 0,
+          "be": 22,
+          "pts": 0,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 19,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 1,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      }
+    },
+    "Liga": {
+      "0": {
+        "7": {
+          "bm": 21,
+          "be": 5,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 2,
+          "be": 0,
+          "pts": 3,
+          "scorers": {
+            "15": 1,
+            "108": 1
+          }
+        }
+      },
+      "1": {
+        "6": {
+          "bm": 30,
+          "be": 12,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {
+            "3": 2
+          }
+        }
+      },
+      "2": {
+        "7": {
+          "bm": 25,
+          "be": 21,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 0,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "3": {
+        "7": {
+          "bm": 19,
+          "be": 10,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "4": {
+        "5": {
+          "bm": 19,
+          "be": 16,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 4,
+          "be": 3,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "5": {
+        "6": {
+          "bm": 20,
+          "be": 12,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 1,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "6": {
+        "7": {
+          "bm": 25,
+          "be": 21,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 1,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "7": {
+        "8": {
+          "bm": 0,
+          "be": 0,
+          "pts": 1,
+          "scorers": {}
+        }
+      },
+      "8": {
+        "5": {
+          "bm": 16,
+          "be": 15,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 4,
+          "be": 3,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "9": {
+        "6": {
+          "bm": 12,
+          "be": 17,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 4,
+          "be": 2,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "10": {
+        "7": {
+          "bm": 14,
+          "be": 22,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 1,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "11": {
+        "8": {
+          "bm": 0,
+          "be": 0,
+          "pts": 1,
+          "scorers": {}
+        }
+      },
+      "12": {
+        "5": {
+          "bm": 11,
+          "be": 17,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "13": {
+        "7": {
+          "bm": 13,
+          "be": 21,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "14": {
+        "7": {
+          "bm": 13,
+          "be": 32,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 5,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        }
+      }
+    },
+    "Bundesliga": {
+      "0": {
+        "7": {
+          "bm": 31,
+          "be": 9,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {
+            "100": 1
+          }
+        }
+      },
+      "1": {
+        "4": {
+          "bm": 0,
+          "be": 0,
+          "pts": 1,
+          "scorers": {
+            "199": 7
+          }
+        },
+        "7": {
+          "bm": 35,
+          "be": 7,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 4,
+          "be": 2,
+          "pts": 3,
+          "scorers": {
+            "90": 2,
+            "92": 1,
+            "199": 1
+          }
+        }
+      },
+      "2": {
+        "6": {
+          "bm": 24,
+          "be": 5,
+          "pts": 3,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 0,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "3": {
+        "6": {
+          "bm": 13,
+          "be": 7,
+          "pts": 3,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 2,
+          "be": 4,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 0,
+          "be": 5,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "4": {
+        "6": {
+          "bm": 24,
+          "be": 17,
+          "pts": 3,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 4,
+          "be": 3,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 5,
+          "be": 5,
+          "pts": 1,
+          "scorers": {}
+        }
+      },
+      "5": {
+        "6": {
+          "bm": 20,
+          "be": 9,
+          "pts": 3,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 5,
+          "be": 5,
+          "pts": 1,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "6": {
+        "6": {
+          "bm": 13,
+          "be": 5,
+          "pts": 3,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 2,
+          "be": 4,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 2,
+          "be": 4,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "7": {
+        "4": {
+          "bm": 22,
+          "be": 15,
+          "pts": 3,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 1,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 1,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "8": {
+        "6": {
+          "bm": 13,
+          "be": 8,
+          "pts": 3,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 0,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "9": {
+        "5": {
+          "bm": 16,
+          "be": 9,
+          "pts": 3,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 5,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 1,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "10": {
+        "5": {
+          "bm": 13,
+          "be": 11,
+          "pts": 3,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 4,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 5,
+          "be": 5,
+          "pts": 1,
+          "scorers": {}
+        }
+      },
+      "11": {
+        "3": {
+          "bm": 10,
+          "be": 9,
+          "pts": 3,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 1,
+          "be": 1,
+          "pts": 1,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 0,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "12": {
+        "2": {
+          "bm": 13,
+          "be": 17,
+          "pts": 0,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 0,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 2,
+          "be": 2,
+          "pts": 1,
+          "scorers": {}
+        }
+      },
+      "13": {
+        "4": {
+          "bm": 12,
+          "be": 17,
+          "pts": 0,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "14": {
+        "4": {
+          "bm": 5,
+          "be": 18,
+          "pts": 0,
+          "scorers": {}
+        },
+        "7": {
+          "bm": 0,
+          "be": 0,
+          "pts": 1,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 2,
+          "be": 2,
+          "pts": 1,
+          "scorers": {}
+        }
+      }
+    },
+    "Ligue 1": {
+      "0": {
+        "7": {
+          "bm": 35,
+          "be": 4,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {
+            "12": 1,
+            "25": 1
+          }
+        }
+      },
+      "1": {
+        "7": {
+          "bm": 33,
+          "be": 7,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 5,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "2": {
+        "7": {
+          "bm": 17,
+          "be": 12,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 0,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "3": {
+        "7": {
+          "bm": 24,
+          "be": 11,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 1,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "4": {
+        "7": {
+          "bm": 20,
+          "be": 11,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 1,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "5": {
+        "5": {
+          "bm": 22,
+          "be": 16,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 1,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "6": {
+        "7": {
+          "bm": 20,
+          "be": 10,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 1,
+          "be": 1,
+          "pts": 1,
+          "scorers": {}
+        }
+      },
+      "7": {
+        "5": {
+          "bm": 18,
+          "be": 10,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 4,
+          "be": 3,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "8": {
+        "5": {
+          "bm": 14,
+          "be": 23,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 2,
+          "be": 2,
+          "pts": 1,
+          "scorers": {}
+        }
+      },
+      "9": {
+        "7": {
+          "bm": 20,
+          "be": 18,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 0,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "10": {
+        "5": {
+          "bm": 14,
+          "be": 14,
+          "pts": 1,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 0,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "11": {
+        "6": {
+          "bm": 26,
+          "be": 21,
+          "pts": 3,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "12": {
+        "4": {
+          "bm": 13,
+          "be": 15,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "13": {
+        "7": {
+          "bm": 16,
+          "be": 18,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "14": {
+        "7": {
+          "bm": 15,
+          "be": 27,
+          "pts": 0,
+          "scorers": {}
+        },
+        "8": {
+          "bm": 1,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
+        }
+      }
+    },
+    "Serie A": {
+      "0": {
+        "8": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {
+            "138": 1,
+            "187": 1
+          }
+        }
+      },
+      "1": {
+        "8": {
+          "bm": 5,
+          "be": 0,
+          "pts": 3,
+          "scorers": {
+            "7": 1,
+            "26": 1,
+            "65": 1,
+            "168": 1
+          }
+        }
+      },
+      "2": {
+        "8": {
+          "bm": 2,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "3": {
+        "8": {
+          "bm": 0,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "4": {
+        "8": {
+          "bm": 2,
+          "be": 3,
+          "pts": 0,
+          "scorers": {
+            "188": 1,
+            "196": 1
+          }
+        }
+      },
+      "5": {
+        "8": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "6": {
+        "8": {
+          "bm": 5,
+          "be": 5,
+          "pts": 1,
+          "scorers": {}
+        }
+      },
+      "7": {
+        "8": {
+          "bm": 1,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "8": {
+        "8": {
+          "bm": 1,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "9": {
+        "8": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "10": {
+        "8": {
+          "bm": 1,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "11": {
+        "8": {
+          "bm": 1,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "12": {
+        "8": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "13": {
+        "8": {
+          "bm": 2,
+          "be": 2,
+          "pts": 1,
+          "scorers": {}
+        }
+      },
+      "14": {
+        "8": {
+          "bm": 4,
+          "be": 4,
+          "pts": 1,
+          "scorers": {}
+        }
+      }
+    }
+  },
+  "clMatchDetails": {},
+  "clKoDetails": {},
+  "clKoBracket": {
+    "r16": [
+      {
+        "home": "FC Barcelone",
+        "away": "Feyenoord",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "Liverpool",
+        "away": "Majorque",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "Inter Milan",
+        "away": "PSV Heindoven",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "Manchester City",
+        "away": "OGC Nice",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "PSG",
+        "away": "AS Roma",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "Sporting Lisbonne",
+        "away": "Manchester United",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "Arsenal",
+        "away": "Real Madrid",
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": "Benfica",
+        "away": "Dortmund",
+        "leg1": null,
+        "leg2": null
+      }
+    ],
+    "qf": [
+      {
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
+      }
+    ],
+    "sf": [
+      {
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
+      },
+      {
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
+      }
+    ],
+    "final": {
+      "home": null,
+      "away": null,
+      "leg1": null,
+      "leg2": null
+    }
+  },
+  "currentSeasonNum": 8,
+  "archives": [],
+  "playerLigueOverrides": {
+    "1": "PL",
+    "34": "PL",
+    "56": "PL",
+    "58": "SA",
+    "77": "L1",
+    "90": "BU",
+    "95": "LA",
+    "121": "LA",
+    "126": "PL",
+    "136": "PL",
+    "145": "PL",
+    "156": "PL",
+    "164": "SA",
+    "167": "L1",
+    "195": "BU"
+  },
+  "playerClubOverrides": {
+    "142": {
+      "club": "Arsenal",
+      "season": "S8"
+    }
+  },
+  "elKoDetails": {},
+  "cupData": {
+    "eng": {
+      "name": "Coupe d'Angleterre",
+      "emoji": "🏴‍",
+      "color": "#4f8ef7",
+      "league": "Premier League",
+      "matches": {},
+      "history": []
+    },
+    "fra": {
+      "name": "Coupe de France",
+      "emoji": "🇫🇷",
+      "color": "#f7944f",
+      "league": "Ligue 1",
+      "matches": {},
+      "history": []
+    },
+    "ita": {
+      "name": "Coupe d'Italie",
+      "emoji": "🇮🇹",
+      "color": "#3ecf8e",
+      "league": "Serie A",
+      "matches": {},
+      "history": []
+    },
+    "esp": {
+      "name": "Coupe d'Espagne",
+      "emoji": "🇪🇸",
+      "color": "#a37af7",
+      "league": "Liga",
+      "matches": {},
+      "history": []
+    },
+    "ger": {
+      "name": "Coupe d'Allemagne",
+      "emoji": "🇩🇪",
+      "color": "#f76f6f",
+      "league": "Bundesliga",
+      "matches": {},
+      "history": []
+    },
+    "sec": {
+      "name": "Supercoupe d'Europe",
+      "emoji": "🌟",
+      "color": "#f5c842",
+      "league": "Europe",
+      "matches": {},
+      "history": []
+    }
+  },
+  "snMatchData": {
+    "cdm": {
+      "qualifMatches": {
+        "0_0": {
+          "home": "Algérie",
+          "away": "Inde",
+          "score_h": 6,
+          "score_a": 0,
+          "scorers": {}
+        }
+      },
+      "groupMatches": {},
+      "koMatches": {}
+    },
+    "euro": {
+      "qualifMatches": {},
+      "groupMatches": {},
+      "koMatches": {}
+    },
+    "copa": {
+      "qualifMatches": {},
+      "groupMatches": {},
+      "koMatches": {}
+    },
+    "can": {
+      "qualifMatches": {},
+      "groupMatches": {},
+      "koMatches": {}
+    }
+  }
+}
