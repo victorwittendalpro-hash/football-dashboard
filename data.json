@@ -1329,6 +1329,13 @@
           "score_h": 6,
           "score_a": 0,
           "scorers": {}
+        },
+        "1_0": {
+          "home": "Colombie",
+          "away": "Pérou",
+          "score_h": 4,
+          "score_a": 1,
+          "scorers": {}
         }
       },
       "groupMatches": {},
