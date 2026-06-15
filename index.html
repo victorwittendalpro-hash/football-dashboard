@@ -5120,10 +5120,10 @@ function cupUpdatePlayerTrophies(winnerTeam, cupId, sn) {
 // ══════════════════════════════════════════════════════════════════
 // ONGLET SÉLECTIONS NATIONALES
 // ══════════════════════════════════════════════════════════════════
-var SN_DATA = {"palmares":{"EURO":[{"season":"S-3","winner":"Portugal"},{"season":"S2","winner":"Ukraine"},{"season":"S6","winner":"France"},{"season":"S8","winner":"?"}],"COPA":[{"season":"S-3","winner":"Brésil"},{"season":"S2","winner":"Argentine"},{"season":"S6","winner":"Brésil"},{"season":"S8","winner":"?"}],"CDM":[{"season":"S-1","winner":"France"},{"season":"S4","winner":"Côte d'Ivoire"},{"season":"S8","winner":"?"}],"CAN":[{"season":"S-3","winner":"Egypte"},{"season":"S2","winner":"Egypte"},{"season":"S6","winner":"Côte d'Ivoire"},{"season":"S8","winner":"?"}]},"qualifs_cdm":[{"pays":"Algérie","pts":3,"bm":6,"be":0,"qualifie":true},{"pays":"Colombie","pts":3,"bm":4,"be":1,"qualifie":true},{"pays":"Turquie","pts":3,"bm":2,"be":0,"qualifie":true},{"pays":"Sénégal","pts":3,"bm":3,"be":1,"qualifie":true},{"pays":"Australie","pts":3,"bm":2,"be":0,"qualifie":true},{"pays":"Grèce","pts":3,"bm":3,"be":2,"qualifie":true},{"pays":"Angleterre","pts":0,"bm":0,"be":0},{"pays":"Danemark","pts":0,"bm":0,"be":0},{"pays":"Pologne","pts":0,"bm":0,"be":0},{"pays":"Albanie","pts":0,"bm":0,"be":0},{"pays":"Allemagne","pts":0,"bm":0,"be":0},{"pays":"Pays-Bas","pts":0,"bm":0,"be":0},{"pays":"Irlande","pts":0,"bm":0,"be":0},{"pays":"Croatie","pts":0,"bm":0,"be":0},{"pays":"France","pts":0,"bm":0,"be":0},{"pays":"Serbie","pts":0,"bm":0,"be":0},{"pays":"Ukraine","pts":0,"bm":0,"be":0},{"pays":"Espagne","pts":0,"bm":0,"be":0},{"pays":"Suède","pts":0,"bm":0,"be":0},{"pays":"Georgie","pts":0,"bm":0,"be":0},{"pays":"Portugal","pts":0,"bm":0,"be":0},{"pays":"Pays de Galles","pts":0,"bm":0,"be":0},{"pays":"Belgique","pts":0,"bm":0,"be":0},{"pays":"Italie","pts":0,"bm":0,"be":0},{"pays":"Suisse","pts":0,"bm":0,"be":0},{"pays":"Norvège","pts":0,"bm":0,"be":0},{"pays":"Macédoine","pts":0,"bm":0,"be":0},{"pays":"Argentine","pts":0,"bm":0,"be":0},{"pays":"Bolivie","pts":0,"bm":0,"be":0},{"pays":"Uruguay","pts":0,"bm":0,"be":0},{"pays":"Mexique","pts":0,"bm":0,"be":0},{"pays":"Chili","pts":0,"bm":0,"be":0},{"pays":"Brésil","pts":0,"bm":0,"be":0},{"pays":"Maroc","pts":0,"bm":0,"be":0},{"pays":"Côte d'Ivoire","pts":0,"bm":0,"be":0},{"pays":"Tunisie","pts":0,"bm":0,"be":0},{"pays":"Japon","pts":0,"bm":0,"be":0},{"pays":"Equateur","pts":0,"bm":0,"be":0},{"pays":"Etats-unis","pts":0,"bm":0,"be":0},{"pays":"Botswana","pts":0,"bm":0,"be":0},{"pays":"Corée du Sud","pts":0,"bm":0,"be":0},{"pays":"Cuba","pts":0,"bm":0,"be":0},{"pays":"Canada","pts":0,"bm":0,"be":0},{"pays":"Cap Vert","pts":0,"bm":0,"be":0},{"pays":"Egypte","pts":0,"bm":0,"be":0},{"pays":"Nigeria","pts":0,"bm":0,"be":0},{"pays":"Ghana","pts":0,"bm":0,"be":0},{"pays":"Zimbabwe","pts":0,"bm":0,"be":0},{"pays":"Pérou","pts":0,"bm":0,"be":0},{"pays":"Inde","pts":0,"bm":0,"be":0}],"poules_cdm":{"A":{"teams":["Angleterre","Pays-Bas","Portugal","Colombie"],"matches":{}},"B":{"teams":["Ukraine","Brésil","France","Argentine"],"matches":{}},"C":{"teams":["Allemagne","Argentine","Portugal","Maroc"],"matches":{}},"D":{"teams":["Espagne","Brésil","Côte d'Ivoire","Algérie"],"matches":{}},"E":{"teams":["France","Pays-Bas","Allemagne","Sénégal"],"matches":{}},"F":{"teams":["?","?","?","?"],"matches":{}}},"buteurs":[{"name":"Harrisson","euro":4,"copa":0,"cdm":6,"amical":39,"total":49},{"name":"Brobbey","euro":17,"copa":0,"cdm":8,"amical":14,"total":39},{"name":"Gonçalo Ramos","euro":9,"copa":0,"cdm":3,"amical":27,"total":39},{"name":"Dilrosun","euro":2,"copa":0,"cdm":14,"amical":23,"total":39},{"name":"Mbappe","euro":9,"copa":0,"cdm":11,"amical":11,"total":31},{"name":"Mudrik","euro":9,"copa":0,"cdm":10,"amical":7,"total":26},{"name":"Gedson","euro":11,"copa":0,"cdm":0,"amical":12,"total":23},{"name":"Paulinho","euro":0,"copa":8,"cdm":5,"amical":3,"total":16},{"name":"Williams Jr.","euro":5,"copa":0,"cdm":0,"amical":7,"total":12},{"name":"Fekir","euro":4,"copa":0,"cdm":5,"amical":2,"total":11},{"name":"Rafael Leao","euro":5,"copa":0,"cdm":0,"amical":4,"total":9},{"name":"Gonçalo Ramos","euro":9,"copa":0,"cdm":3,"amical":27,"total":9},{"name":"Wahi","euro":2,"copa":0,"cdm":0,"amical":1,"total":3},{"name":"Ounahi","euro":3,"copa":0,"cdm":0,"amical":0,"total":3},{"name":"Frimpong","euro":2,"copa":0,"cdm":0,"amical":0,"total":2},{"name":"T. Hernandez","euro":2,"copa":0,"cdm":0,"amical":0,"total":2},{"name":"B. Diaz","euro":1,"copa":0,"cdm":0,"amical":5,"total":6},{"name":"Dilrosun","euro":2,"copa":0,"cdm":14,"amical":23,"total":39},{"name":"Gakpo","euro":1,"copa":0,"cdm":0,"amical":1,"total":2},{"name":"Isra Sala","euro":2,"copa":0,"cdm":0,"amical":3,"total":5},{"name":"J. Alvarez","euro":0,"copa":4,"cdm":0,"amical":0,"total":4},{"name":"Richarlison","euro":0,"copa":3,"cdm":0,"amical":0,"total":3},{"name":"Messi","euro":0,"copa":3,"cdm":0,"amical":0,"total":3},{"name":"Garnacho","euro":0,"copa":0,"cdm":0,"amical":2,"total":2}]};
+var SN_DATA = {"palmares":{"EURO":[{"season":"S-3","winner":"Portugal"},{"season":"S2","winner":"Ukraine"},{"season":"S6","winner":"France"},{"season":"S8","winner":"?"}],"COPA":[{"season":"S-3","winner":"Brésil"},{"season":"S2","winner":"Argentine"},{"season":"S6","winner":"Brésil"},{"season":"S8","winner":"?"}],"CDM":[{"season":"S-1","winner":"France"},{"season":"S4","winner":"Côte d'Ivoire"},{"season":"S8","winner":"?"}],"CAN":[{"season":"S-3","winner":"Egypte"},{"season":"S2","winner":"Egypte"},{"season":"S6","winner":"Côte d'Ivoire"},{"season":"S8","winner":"?"}]},"qualifs_cdm":[{"pays":"Algérie","continent":"afrique","pts":0,"bm":0,"be":0},{"pays":"Colombie","continent":"amerique","pts":0,"bm":0,"be":0},{"pays":"Turquie","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Sénégal","continent":"afrique","pts":0,"bm":0,"be":0},{"pays":"Australie","continent":"asie","pts":0,"bm":0,"be":0},{"pays":"Grèce","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Angleterre","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Danemark","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Pologne","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Albanie","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Allemagne","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Pays-Bas","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Irlande","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Croatie","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"France","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Serbie","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Ukraine","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Espagne","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Suède","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Georgie","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Portugal","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Pays de Galles","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Belgique","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Italie","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Suisse","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Norvège","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Macédoine","continent":"europe","pts":0,"bm":0,"be":0},{"pays":"Argentine","continent":"amerique","pts":0,"bm":0,"be":0},{"pays":"Bolivie","continent":"amerique","pts":0,"bm":0,"be":0},{"pays":"Uruguay","continent":"amerique","pts":0,"bm":0,"be":0},{"pays":"Mexique","continent":"amerique","pts":0,"bm":0,"be":0},{"pays":"Chili","continent":"amerique","pts":0,"bm":0,"be":0},{"pays":"Brésil","continent":"amerique","pts":0,"bm":0,"be":0},{"pays":"Maroc","continent":"afrique","pts":0,"bm":0,"be":0},{"pays":"Côte d'Ivoire","continent":"afrique","pts":0,"bm":0,"be":0},{"pays":"Tunisie","continent":"afrique","pts":0,"bm":0,"be":0},{"pays":"Japon","continent":"asie","pts":0,"bm":0,"be":0},{"pays":"Equateur","continent":"amerique","pts":0,"bm":0,"be":0},{"pays":"Etats-unis","continent":"amerique","pts":0,"bm":0,"be":0},{"pays":"Botswana","continent":"afrique","pts":0,"bm":0,"be":0},{"pays":"Corée du Sud","continent":"asie","pts":0,"bm":0,"be":0},{"pays":"Cuba","continent":"amerique","pts":0,"bm":0,"be":0},{"pays":"Canada","continent":"amerique","pts":0,"bm":0,"be":0},{"pays":"Cap Vert","continent":"afrique","pts":0,"bm":0,"be":0},{"pays":"Egypte","continent":"afrique","pts":0,"bm":0,"be":0},{"pays":"Nigeria","continent":"afrique","pts":0,"bm":0,"be":0},{"pays":"Ghana","continent":"afrique","pts":0,"bm":0,"be":0},{"pays":"Zimbabwe","continent":"afrique","pts":0,"bm":0,"be":0},{"pays":"Pérou","continent":"amerique","pts":0,"bm":0,"be":0},{"pays":"Inde","continent":"asie","pts":0,"bm":0,"be":0}],"poules_cdm":{"A":{"teams":["Angleterre","Pays-Bas","Portugal","Colombie"],"matches":{}},"B":{"teams":["Ukraine","Brésil","France","Argentine"],"matches":{}},"C":{"teams":["Allemagne","Argentine","Portugal","Maroc"],"matches":{}},"D":{"teams":["Espagne","Brésil","Côte d'Ivoire","Algérie"],"matches":{}},"E":{"teams":["France","Pays-Bas","Allemagne","Sénégal"],"matches":{}},"F":{"teams":["?","?","?","?"],"matches":{}}},"buteurs":[{"name":"Harrisson","euro":4,"copa":0,"cdm":6,"amical":39,"total":49},{"name":"Brobbey","euro":17,"copa":0,"cdm":8,"amical":14,"total":39},{"name":"Gonçalo Ramos","euro":9,"copa":0,"cdm":3,"amical":27,"total":39},{"name":"Dilrosun","euro":2,"copa":0,"cdm":14,"amical":23,"total":39},{"name":"Mbappe","euro":9,"copa":0,"cdm":11,"amical":11,"total":31},{"name":"Mudrik","euro":9,"copa":0,"cdm":10,"amical":7,"total":26},{"name":"Gedson","euro":11,"copa":0,"cdm":0,"amical":12,"total":23},{"name":"Paulinho","euro":0,"copa":8,"cdm":5,"amical":3,"total":16},{"name":"Williams Jr.","euro":5,"copa":0,"cdm":0,"amical":7,"total":12},{"name":"Fekir","euro":4,"copa":0,"cdm":5,"amical":2,"total":11},{"name":"Rafael Leao","euro":5,"copa":0,"cdm":0,"amical":4,"total":9},{"name":"Gonçalo Ramos","euro":9,"copa":0,"cdm":3,"amical":27,"total":9},{"name":"Wahi","euro":2,"copa":0,"cdm":0,"amical":1,"total":3},{"name":"Ounahi","euro":3,"copa":0,"cdm":0,"amical":0,"total":3},{"name":"Frimpong","euro":2,"copa":0,"cdm":0,"amical":0,"total":2},{"name":"T. Hernandez","euro":2,"copa":0,"cdm":0,"amical":0,"total":2},{"name":"B. Diaz","euro":1,"copa":0,"cdm":0,"amical":5,"total":6},{"name":"Dilrosun","euro":2,"copa":0,"cdm":14,"amical":23,"total":39},{"name":"Gakpo","euro":1,"copa":0,"cdm":0,"amical":1,"total":2},{"name":"Isra Sala","euro":2,"copa":0,"cdm":0,"amical":3,"total":5},{"name":"J. Alvarez","euro":0,"copa":4,"cdm":0,"amical":0,"total":4},{"name":"Richarlison","euro":0,"copa":3,"cdm":0,"amical":0,"total":3},{"name":"Messi","euro":0,"copa":3,"cdm":0,"amical":0,"total":3},{"name":"Garnacho","euro":0,"copa":0,"cdm":0,"amical":2,"total":2}]};
 
 // Données saisies (matchs de poule, KO, qualifs)
-var snMatchData = {cdm:{groupMatches:{},koMatches:{}}, euro:{groupMatches:{},koMatches:{}}, copa:{groupMatches:{},koMatches:{}}, can:{groupMatches:{},koMatches:{}}};
+var snMatchData = {cdm:{qualifMatches:{},groupMatches:{},koMatches:{}},euro:{qualifMatches:{},groupMatches:{},koMatches:{}},copa:{qualifMatches:{},groupMatches:{},koMatches:{}},can:{qualifMatches:{},groupMatches:{},koMatches:{}}};
 
 var snView     = 'cdm';
 var snSubView  = 'groupes';
@@ -5290,35 +5290,104 @@ function snRenderGroupes(cfg) {
 
 // ── Qualifications CDM ───────────────────────────────────────────
 function snRenderQualifs(cfg) {
-  var q = SN_DATA.qualifs_cdm;
-  var sn = currentSeasonNum || 8;
+  var q    = SN_DATA.qualifs_cdm;
+  var sn   = currentSeasonNum || 8;
+  var qm   = (snMatchData[cfg.id] && snMatchData[cfg.id].qualifMatches) || {};
   var panel = document.getElementById('sn-panel');
+
+  // Calculer pts/bm/be depuis snMatchData.qualifMatches
+  var stats = {}; // pays -> {pts,bm,be,played}
+  q.forEach(function(p){ stats[p.pays] = {pts:0,bm:0,be:0,played:0}; });
+  Object.keys(qm).forEach(function(key) {
+    var m = qm[key];
+    if (m.score_h == null || m.score_a == null) return;
+    if (!stats[m.home]) stats[m.home] = {pts:0,bm:0,be:0,played:0};
+    if (!stats[m.away]) stats[m.away] = {pts:0,bm:0,be:0,played:0};
+    stats[m.home].bm += m.score_h; stats[m.home].be += m.score_a; stats[m.home].played++;
+    stats[m.away].bm += m.score_a; stats[m.away].be += m.score_h; stats[m.away].played++;
+    if (m.score_h > m.score_a)      { stats[m.home].pts += 3; }
+    else if (m.score_h === m.score_a){ stats[m.home].pts += 1; stats[m.away].pts += 1; }
+    else                             { stats[m.away].pts += 3; }
+  });
+
+  // Trier par pts desc, puis diff, puis bm
+  var sorted = q.slice().sort(function(a,b) {
+    var sa = stats[a.pays]||{pts:0,bm:0,be:0};
+    var sb = stats[b.pays]||{pts:0,bm:0,be:0};
+    return sb.pts - sa.pts || (sb.bm-sb.be)-(sa.bm-sa.be) || sb.bm - sa.bm;
+  });
+
+  // Header + sous-nav
   var h = snSubnavHTML(cfg, 'qualifs')
     + '<div class="sn-sec-hdr"><span style="font-size:1.4rem">' + cfg.icon + '</span>'
     + '<div><div class="sn-sec-title">' + cfg.label + ' S' + sn + ' — Qualifications</div>'
-    + '<div class="sn-sec-sub">50 nations · Matchs aller-retour</div></div></div>'
-    + '<div class="sn-content"><table class="sn-table"><thead><tr>'
-    + '<th>#</th><th>Pays</th><th>Pts</th><th>BM</th><th>BE</th><th>Diff</th><th></th>'
-    + '</tr></thead><tbody>'
-    + q.map(function(p, i) {
-        var diff = (p.bm||0)-(p.be||0);
-        var qualClass = p.qualifie ? ' class="sn-q-qualifie"' : '';
-        return '<tr' + qualClass + '>'
-          +'<td style="color:#5a6080;font-size:11px">'+(i+1)+'</td>'
-          +'<td style="color:#e8eaf0;font-weight:'+(p.qualifie?700:400)+'">' + p.pays + '</td>'
-          +'<td style="font-weight:700;color:' + cfg.color + '">' + (p.pts||0) + '</td>'
-          +'<td style="color:#8b93b0">' + (p.bm||0) + '</td>'
-          +'<td style="color:#8b93b0">' + (p.be||0) + '</td>'
-          +'<td style="color:'+(diff>0?'#3ecf8e':diff<0?'#f76f6f':'#5a6080')+'">'+(diff>0?'+':'')+diff+'</td>'
-          +'<td>' + (p.qualifie ? '<span style="font-size:10px;background:#3ecf8e22;color:#3ecf8e;border-radius:4px;padding:1px 5px">✓ Qualifié</span>' : '') + '</td>'
-          +'</tr>';
-      }).join('')
-    + '</tbody></table></div>';
+    + '<div class="sn-sec-sub">50 nations · 3 matchs chacune · Les 24 premières se qualifient pour les poules</div></div>'
+    + '</div>';
+
+  // Classement général
+  h += '<div style="padding:.5rem 1.25rem;display:flex;justify-content:space-between;align-items:center">'
+    + '<div style="font-size:11px;font-weight:700;color:#5a6080;text-transform:uppercase">Classement général</div>'
+    + '</div>'
+    + '<div style="overflow-x:auto"><table class="sn-table" style="min-width:500px">'
+    + '<thead><tr><th style="width:32px">#</th><th>Pays</th><th>Cont.</th>'
+    + '<th>Pts</th><th>J</th><th>BM</th><th>BE</th><th>Diff</th><th></th></tr></thead><tbody>';
+
+  sorted.forEach(function(p, i) {
+    var st = stats[p.pays] || {pts:0,bm:0,be:0,played:0};
+    var diff = st.bm - st.be;
+    var qualifie = i < 24;
+    var rowBg = qualifie ? 'background:' + cfg.color + '10;border-left:2px solid ' + cfg.color : '';
+    var rank_c = i===0?'#f5c842':i<3?cfg.color:i<24?'#3ecf8e':'#5a6080';
+    h += '<tr style="' + rowBg + '">'
+      + '<td style="font-weight:700;color:' + rank_c + ';text-align:center">' + (i+1) + '</td>'
+      + '<td style="color:#e8eaf0;font-weight:' + (qualifie?700:400) + '">' + p.pays + '</td>'
+      + '<td style="font-size:10px;color:#5a6080">' + (p.continent||'') + '</td>'
+      + '<td style="font-weight:700;color:' + cfg.color + '">' + st.pts + '</td>'
+      + '<td style="color:#8b93b0">' + st.played + '</td>'
+      + '<td style="color:#8b93b0">' + st.bm + '</td>'
+      + '<td style="color:#8b93b0">' + st.be + '</td>'
+      + '<td style="color:' + (diff>0?'#3ecf8e':diff<0?'#f76f6f':'#5a6080') + '">'
+        + (diff>0?'+':'') + diff + '</td>'
+      + '<td>' + (qualifie?'<span style="font-size:9px;background:#3ecf8e22;color:#3ecf8e;border-radius:3px;padding:1px 5px">✓</span>':'') + '</td>'
+      + '</tr>';
+  });
+  h += '</tbody></table></div>';
+
+  // Matchs de qualif par pays
+  h += '<div style="padding:.75rem 1.25rem .25rem">'
+    + '<div style="font-size:11px;font-weight:700;color:#5a6080;text-transform:uppercase;margin-bottom:.5rem">Matchs de qualification</div>'
+    + '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:.5rem">';
+
+  q.forEach(function(p) {
+    var st = stats[p.pays] || {pts:0,bm:0,be:0,played:0};
+    var matchRows = '';
+    for (var mi = 0; mi < 3; mi++) {
+      var key = p.pays + '_' + mi;
+      var m   = qm[key];
+      var scoreLabel = m && m.score_h != null ? m.score_h + '-' + m.score_a : '—';
+      var scoreColor = m ? '#e8eaf0' : '#3a4460';
+      var oppLabel   = m ? m.away : 'Match ' + (mi+1);
+      matchRows += '<div style="display:flex;align-items:center;justify-content:space-between;'
+        + 'padding:3px 8px;border-radius:5px;cursor:pointer;font-size:11px;'
+        + 'background:#0d0f1499" onclick="snOpenQualifMatch(\'' + cfg.id + '\',\'' + p.pays + '\',' + mi + ')">'
+        + '<span style="color:#8b93b0;min-width:14px">' + (mi+1) + '</span>'
+        + '<span style="flex:1;color:#e8eaf0;margin:0 6px">' + oppLabel + '</span>'
+        + '<span style="font-weight:700;color:' + scoreColor + '">' + scoreLabel + '</span>'
+        + '</div>';
+    }
+    h += '<div style="background:#13161e;border:1px solid #252a38;border-radius:8px;overflow:hidden">'
+      + '<div style="padding:5px 8px;border-bottom:1px solid #252a38;display:flex;justify-content:space-between;align-items:center">'
+      + '<span style="font-size:12px;font-weight:700;color:#e8eaf0">' + p.pays + '</span>'
+      + '<span style="font-size:10px;color:' + cfg.color + ';font-weight:700">' + st.pts + ' pts</span>'
+      + '</div>'
+      + matchRows
+      + '</div>';
+  });
+
+  h += '</div></div>';
   panel.innerHTML = h;
   snAttachSubnav();
 }
-
-// ── Phase finale (KO) ────────────────────────────────────────────
 function snRenderKO(cfg) {
   var sn = currentSeasonNum || 8;
   var panel = document.getElementById('sn-panel');
@@ -5494,6 +5563,54 @@ function snOpenKO(compId, round, idx) {
   snModalPreview();
 }
 
+
+
+function snOpenQualifMatch(compId, pays, matchIdx) {
+  var key = pays + '_' + matchIdx;
+  var qm  = (snMatchData[compId] && snMatchData[compId].qualifMatches) || {};
+  var stored = qm[key] || {};
+  snModalCtx = {type:'qualif', compId, pays, matchIdx, key,
+    home: stored.home || pays, away: stored.away || '?'};
+  snScorerEntries = [];
+  if (stored.scorers) {
+    Object.keys(stored.scorers).forEach(function(pidx) {
+      var p = ALL[parseInt(pidx)];
+      if (p) snScorerEntries.push({idx:parseInt(pidx), name:p.name, goals:stored.scorers[pidx]});
+    });
+  }
+  document.getElementById('sn-modal-title').textContent = pays + ' — Match ' + (matchIdx+1) + ' de qualification';
+
+  // Champ adversaire éditable
+  var oppHtml = '<div style="font-size:11px;color:#5a6080;margin-bottom:3px">Adversaire</div>'
+    + '<input id="sn-qualif-opp" type="text" value="' + (stored.away||'') + '"'
+    + ' placeholder="Nom du pays adversaire…"'
+    + ' style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;'
+    + 'border-radius:6px;padding:.4rem .75rem;color:#e8eaf0;font-size:12px;outline:none;margin-bottom:.75rem">';
+
+  document.getElementById('sn-modal-home').textContent = pays;
+  document.getElementById('sn-modal-away').textContent = stored.away || '?';
+  document.getElementById('sn-score-h').value = stored.score_h != null ? stored.score_h : 0;
+  document.getElementById('sn-score-a').value = stored.score_a != null ? stored.score_a : 0;
+
+  // Injecter le champ adversaire avant les scores
+  var titleEl = document.getElementById('sn-modal-title');
+  if (titleEl && titleEl.nextSibling) {
+    var oppDiv = document.createElement('div');
+    oppDiv.id = 'sn-qualif-opp-wrap';
+    oppDiv.style.marginBottom = '.75rem';
+    oppDiv.innerHTML = oppHtml;
+    var existing = document.getElementById('sn-qualif-opp-wrap');
+    if (existing) existing.parentNode.removeChild(existing);
+    titleEl.parentNode.insertBefore(oppDiv, titleEl.nextSibling);
+  }
+
+  snRenderScorerList();
+  document.getElementById('sn-scorer-input').value = '';
+  document.getElementById('sn-scorer-sug').style.display = 'none';
+  document.getElementById('sn-modal').style.display = 'flex';
+  snModalPreview();
+}
+
 function snCloseModal() { document.getElementById('sn-modal').style.display='none'; snModalCtx=null; }
 
 function snModalPreview() {
@@ -5571,7 +5688,20 @@ function snSaveMatch() {
   snScorerEntries.forEach(function(e){if(e.goals>0)scorers[e.idx]=e.goals;});
   var entry={home:ctx.home,away:ctx.away,score_h:sh,score_a:sa,scorers:scorers};
 
-  if(ctx.type==='group'){
+  if(ctx.type==='qualif'){
+    // Récupérer l'adversaire saisi
+    var oppInput = document.getElementById('sn-qualif-opp');
+    var opp = oppInput ? oppInput.value.trim() : ctx.away;
+    if (!opp) opp = 'Adversaire';
+    entry.home = ctx.pays;
+    entry.away = opp;
+    if(!snMatchData[ctx.compId]) snMatchData[ctx.compId]={qualifMatches:{},groupMatches:{},koMatches:{}};
+    if(!snMatchData[ctx.compId].qualifMatches) snMatchData[ctx.compId].qualifMatches={};
+    snMatchData[ctx.compId].qualifMatches[ctx.key]=entry;
+    // Nettoyer le champ adversaire du DOM
+    var ow = document.getElementById('sn-qualif-opp-wrap');
+    if(ow) ow.parentNode.removeChild(ow);
+  } else if(ctx.type==='group'){
     if(!snMatchData[ctx.compId]) snMatchData[ctx.compId]={groupMatches:{},koMatches:{}};
     if(!snMatchData[ctx.compId].groupMatches[ctx.group]) snMatchData[ctx.compId].groupMatches[ctx.group]={};
     snMatchData[ctx.compId].groupMatches[ctx.group][ctx.matchKey]=entry;
