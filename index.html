@@ -107,6 +107,8 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
 .tro-bu{background:#2a1a0d;border-color:#3d2a1a;color:#f7b07a}
 .tro-cl{background:#2a250d;border-color:#3d3a1a;color:#f7d87a}
 .tro-el{background:#0d2a2a;border-color:#1a3d3d;color:#7af7f7}
+.tro-cup{background:#f5c84222;color:#f5c842;border-color:#f5c84266}
+.tro-sec{background:#f5c84233;color:#f5c842;border-color:#f5c842}
 .tro-season{font-size:9px;opacity:.65;margin-left:.2rem}
 .no-tro{font-size:12px;color:var(--txt3);padding:.25rem 0}
 /* Career timeline */
@@ -227,6 +229,7 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
   <button class="tab-btn" id="tab-btn-season" onclick="switchTab('season')">✏️ Saisie résultats</button>
   <button class="tab-btn" onclick="switchTab('cl')">⭐ Champions League</button>
   <button class="tab-btn" onclick="switchTab('el')">🟠 Europa League</button>
+  <button class="tab-btn" onclick="switchTab('cups')">🏆 Coupes</button>
   <button class="tab-btn" onclick="switchTab('history')">📚 Historique</button>
 </div>
 <div id="tab-profiles" class="tab-pane active">
@@ -444,6 +447,7 @@ var GH = {
       playerLigueOverrides:   window._playerLigueOverrides || {},
       playerClubOverrides:    window._playerClubOverrides  || {},
       elKoDetails:            (typeof elKoDetails !== 'undefined') ? elKoDetails : {},
+      cupData:              (typeof CUP_DATA !== 'undefined') ? CUP_DATA : {},
     };
   }
 };
@@ -490,6 +494,15 @@ function ghApplyData(data) {
         .map(function(p, idx){ return {idx:idx, name:p.name, goals:goalsIndex[idx]||0}; })
         .filter(function(e){ return ALL[e.idx] && ALL[e.idx].ligue === code; })
         .sort(function(a,b){ return b.goals - a.goals; });
+    });
+  }
+  // Restaurer les données des Coupes
+  if (data.cupData && typeof CUP_DATA !== 'undefined') {
+    Object.keys(data.cupData).forEach(function(id) {
+      if (CUP_DATA[id]) {
+        CUP_DATA[id].matches = data.cupData[id].matches || {};
+        CUP_DATA[id].history = data.cupData[id].history || [];
+      }
     });
   }
   // Restaurer les résultats EL KO
@@ -541,6 +554,8 @@ const TCLASS = {
   'Liga':'tro-lg',
   'Bundesliga':'tro-bu',
   'Europa League':'tro-el',
+  'Coupe nationale':'tro-cup',
+  'Supercoupe Europe':'tro-sec',
 };
 const TEMI = {
   'Champions League':'⭐',
@@ -549,6 +564,8 @@ const TEMI = {
   'Premier League':'🏴‍',
   'Liga':'🇪🇸',
   'Bundesliga':'🇩🇪',
+  'Coupe nationale':'🏆',
+  'Supercoupe Europe':'🌟',
   'Europa League':'🏺',
 };
 const LC = {PL:'#4f8ef7',SA:'#3ecf8e',L1:'#f7944f',BU:'#f76f6f',LA:'#a37af7'};
@@ -4481,6 +4498,473 @@ function elRenderHistory() {
 function elInitEL() {
   elRender();
 }
+
+</script>
+
+<div id="xpane-cups" class="extra-pane" style="display:none">
+<style>
+#xpane-cups{display:none}
+#xpane-cups.on{display:block;padding:0}
+.cups-wrap{display:grid;grid-template-columns:210px 1fr;height:calc(100vh - 98px);overflow:hidden}
+@media(max-width:700px){.cups-wrap{grid-template-columns:1fr;height:auto}}
+.cups-nav{background:#13161e;border-right:1px solid #252a38;display:flex;flex-direction:column;overflow-y:auto}
+.cups-nav-title{padding:.75rem 1rem;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#5a6080;border-bottom:1px solid #252a38}
+.cups-tab{display:flex;align-items:center;gap:.6rem;padding:.55rem .75rem;cursor:pointer;border-left:3px solid transparent;font-size:13px;font-weight:500;color:#8b93b0;transition:all .12s}
+.cups-tab:hover{background:#1a1e28;color:#e8eaf0}
+.cups-tab.on{border-left-color:var(--cup-color,#f5c842);color:#e8eaf0;background:#1a1e2855}
+.cups-tab .cups-emoji{font-size:1.1rem;width:22px;text-align:center}
+.cups-panel{flex:1;overflow-y:auto;padding:0}
+/* Sub-nav (Match / Historique) */
+.cup-subnav{display:flex;gap:0;border-bottom:1px solid #252a38;background:#13161e;position:sticky;top:0;z-index:10}
+.cup-subtab{flex:1;padding:.55rem 0;text-align:center;font-size:12px;font-weight:600;color:#5a6080;cursor:pointer;border-bottom:2px solid transparent;transition:all .12s}
+.cup-subtab.on{color:#e8eaf0;border-bottom-color:var(--cup-color,#f5c842)}
+.cup-subtab:hover{color:#e8eaf0;background:#1a1e2820}
+/* Match card */
+.cup-match-card{margin:1rem 1.25rem;background:#13161e;border:1px solid #252a38;border-radius:12px;overflow:hidden}
+.cup-match-header{padding:.75rem 1rem;border-bottom:1px solid #252a38;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#5a6080}
+.cup-teams{display:flex;align-items:center;padding:1rem 1.25rem;gap:1rem}
+.cup-team{flex:1;display:flex;flex-direction:column;align-items:center;gap:.4rem}
+.cup-team-logo{width:48px;height:48px;object-fit:contain}
+.cup-team-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#e8eaf0;text-align:center}
+.cup-team-badge{font-size:11px;color:#5a6080;text-align:center}
+.cup-score-area{display:flex;flex-direction:column;align-items:center;gap:.25rem;min-width:80px}
+.cup-score{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:900;color:#fff;letter-spacing:.05em}
+.cup-score-sep{color:#5a6080;font-size:1.2rem;margin:0 4px}
+.cup-vs{font-size:11px;color:#5a6080;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+.cup-winner-badge{margin:.25rem 1.25rem .75rem;display:flex;align-items:center;gap:.5rem;padding:.4rem .75rem;border-radius:6px;font-size:12px;font-weight:600;background:#f5c84220;color:#f5c842;border:1px solid #f5c84240}
+/* Scorers */
+.cup-scorers-section{padding:.75rem 1.25rem;border-top:1px solid #252a38}
+.cup-scorers-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#5a6080;margin-bottom:.5rem}
+.cup-scorer-row{display:flex;align-items:center;gap:.5rem;padding:.25rem 0;font-size:13px}
+.cup-scorer-name{flex:1;color:#e8eaf0}
+.cup-scorer-goals{font-weight:700;color:#f5c842;min-width:20px;text-align:right}
+/* Edit buttons */
+.cup-edit-btn{display:block;width:calc(100% - 2.5rem);margin:.75rem 1.25rem;padding:.5rem;background:#1a1e28;border:1px solid #252a38;border-radius:7px;color:#8b93b0;font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s}
+.cup-edit-btn:hover{border-color:#4f8ef7;color:#4f8ef7}
+/* History */
+.cup-history-list{padding:.75rem 1.25rem}
+.cup-hist-row{display:flex;align-items:center;gap:.75rem;padding:.5rem .75rem;border-radius:7px;font-size:13px;margin-bottom:4px}
+.cup-hist-row:hover{background:#1a1e2840}
+.cup-hist-season{font-family:'Syne',sans-serif;font-weight:700;color:var(--cup-color,#f5c842);width:40px}
+.cup-hist-trophy{font-size:1.1rem;width:22px;text-align:center}
+.cup-hist-winner{flex:1;font-weight:600;color:#e8eaf0}
+.cup-hist-score{color:#5a6080;font-size:12px}
+.cup-hist-runner{flex:1;color:#8b93b0}
+</style>
+<div class="cups-wrap">
+  <div class="cups-nav">
+    <div class="cups-nav-title">🏆 Coupes</div>
+    <div id="cups-tabs-list">
+      <!-- populated by JS -->
+    </div>
+  </div>
+  <div class="cups-panel" id="cups-panel">
+    <div style="display:flex;align-items:center;justify-content:center;height:200px;color:#5a6080">
+      Sélectionnez une coupe
+    </div>
+  </div>
+</div>
+<!-- Modal saisie résultat coupe -->
+<div id="cup-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:10003;align-items:center;justify-content:center">
+  <div style="background:#13161e;border:1px solid #252a38;border-radius:14px;padding:1.5rem;width:420px;max-width:95vw;max-height:90vh;overflow-y:auto">
+    <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:1rem" id="cup-modal-title"></div>
+    <!-- Équipes -->
+    <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">
+      <div style="flex:1;text-align:center">
+        <div id="cup-modal-home" style="font-weight:700;font-size:13px;color:#e8eaf0"></div>
+        <input id="cup-score-home" type="number" min="0" max="20" value="0"
+          style="width:60px;margin-top:4px;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.4rem;color:#e8eaf0;font-size:1.2rem;font-weight:700;text-align:center;outline:none"
+          oninput="cupModalUpdatePreview()">
+      </div>
+      <div style="font-size:1.4rem;color:#5a6080;font-weight:700">—</div>
+      <div style="flex:1;text-align:center">
+        <div id="cup-modal-away" style="font-weight:700;font-size:13px;color:#e8eaf0"></div>
+        <input id="cup-score-away" type="number" min="0" max="20" value="0"
+          style="width:60px;margin-top:4px;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.4rem;color:#e8eaf0;font-size:1.2rem;font-weight:700;text-align:center;outline:none"
+          oninput="cupModalUpdatePreview()">
+      </div>
+    </div>
+    <!-- Preview vainqueur -->
+    <div id="cup-modal-preview" style="text-align:center;font-size:12px;color:#5a6080;margin-bottom:1rem;min-height:18px"></div>
+    <!-- Buteurs -->
+    <div style="margin-bottom:.75rem">
+      <div style="font-size:11px;font-weight:700;color:#5a6080;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">⚽ Buteurs</div>
+      <div style="position:relative">
+        <input id="cup-scorer-search" type="text" autocomplete="off" placeholder="Rechercher un joueur..."
+          style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.45rem .75rem;color:#e8eaf0;font-size:13px;outline:none"
+          oninput="cupScorerSearch(this.value)" onkeydown="cupScorerKey(event)">
+        <div id="cup-scorer-sug" style="display:none;position:absolute;top:100%;left:0;right:0;background:#13161e;border:1px solid #3a4460;border-radius:0 0 6px 6px;max-height:150px;overflow-y:auto;z-index:300"></div>
+      </div>
+      <div id="cup-scorer-list" style="margin-top:.5rem;display:flex;flex-direction:column;gap:4px;max-height:150px;overflow-y:auto"></div>
+    </div>
+    <div style="display:flex;gap:.5rem;justify-content:flex-end">
+      <button onclick="closeCupModal()" style="background:#252a38;border:none;border-radius:7px;padding:.5rem 1.2rem;color:#8b93b0;cursor:pointer;font-size:12px">Annuler</button>
+      <button onclick="saveCupMatch()" style="background:#4f8ef7;border:none;border-radius:7px;padding:.5rem 1.2rem;color:#fff;cursor:pointer;font-size:12px;font-weight:700">Enregistrer</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+
+// ══════════════════════════════════════════════════════════════════
+// ONGLET COUPES
+// ══════════════════════════════════════════════════════════════════
+var CUP_DATA = {"eng":{"name":"Coupe d'Angleterre","emoji":"🏴‍","color":"#4f8ef7","league":"Premier League","matches":{},"history":[]},"fra":{"name":"Coupe de France","emoji":"🇫🇷","color":"#f7944f","league":"Ligue 1","matches":{},"history":[]},"ita":{"name":"Coupe d'Italie","emoji":"🇮🇹","color":"#3ecf8e","league":"Serie A","matches":{},"history":[]},"esp":{"name":"Coupe d'Espagne","emoji":"🇪🇸","color":"#a37af7","league":"Liga","matches":{},"history":[]},"ger":{"name":"Coupe d'Allemagne","emoji":"🇩🇪","color":"#f76f6f","league":"Bundesliga","matches":{},"history":[]},"sec":{"name":"Supercoupe d'Europe","emoji":"🌟","color":"#f5c842","league":"Europe","matches":{},"history":[]}};
+
+var cupsCfg = [
+  {id:"eng", name:"Coupe d'Angleterre", emoji:"🏴‍",  color:"#4f8ef7", league:"Premier League"},
+  {id:"fra", name:"Coupe de France",    emoji:"🇫🇷",        color:"#f7944f", league:"Ligue 1"},
+  {id:"ita", name:"Coupe d'Italie",    emoji:"🇮🇹",        color:"#3ecf8e", league:"Serie A"},
+  {id:"esp", name:"Coupe d'Espagne",   emoji:"🇪🇸",        color:"#a37af7", league:"Liga"},
+  {id:"ger", name:"Coupe d'Allemagne", emoji:"🇩🇪",        color:"#f76f6f", league:"Bundesliga"},
+  {id:"sec", name:"Supercoupe Europe",  emoji:"🌟",          color:"#f5c842", league:"Europe"}
+];
+
+var curCupId   = null;
+var curCupView = 'match'; // 'match' ou 'history'
+var cupModalCtx = null;
+var cupSugList  = [];
+var cupSugIdx   = -1;
+var cupScorerEntries = []; // [{idx,name,goals}]
+
+// ── Init & Navigation ────────────────────────────────────────────
+function cupsInit() {
+  var list = document.getElementById('cups-tabs-list');
+  if (!list) return;
+  list.innerHTML = cupsCfg.map(function(c) {
+    return '<div class="cups-tab" id="cups-tab-'+c.id+'" style="--cup-color:'+c.color+'" onclick="cupsSelectCup(''+c.id+'')">'
+      + '<span class="cups-emoji">'+c.emoji+'</span>'
+      + '<span>'+c.name+'</span>'
+      + '</div>';
+  }).join('');
+  if (!curCupId) cupsSelectCup('eng');
+}
+
+function cupsSelectCup(id) {
+  curCupId   = id;
+  curCupView = 'match';
+  document.querySelectorAll('.cups-tab').forEach(function(t) { t.classList.remove('on'); });
+  var tab = document.getElementById('cups-tab-'+id);
+  if (tab) tab.classList.add('on');
+  cupsRender();
+}
+
+function cupsSubNav(view) {
+  curCupView = view;
+  cupsRender();
+}
+
+function cupsRender() {
+  if (!curCupId) return;
+  if (curCupView === 'match')   cupsRenderMatch();
+  else                           cupsRenderHistory();
+}
+
+// ── Rendu vue Match ──────────────────────────────────────────────
+function cupsRenderMatch() {
+  var cfg    = cupsCfg.find(function(c){return c.id===curCupId;});
+  var data   = CUP_DATA[curCupId];
+  var sn     = 'S' + (currentSeasonNum||8);
+  var match  = data.matches[sn] || null;
+  var panel  = document.getElementById('cups-panel');
+  if (!cfg || !panel) return;
+
+  // Déduire les équipes selon la coupe
+  var teams = cupsGetTeams(cfg);
+
+  var homeTeam = match ? match.home : (teams[0]||'À déterminer');
+  var awayTeam = match ? match.away : (teams[1]||'À déterminer');
+  var hasResult = match && (match.score_home != null);
+  var winner = hasResult ? (match.score_home > match.score_away ? homeTeam : match.score_home < match.score_away ? awayTeam : 'Égalité') : null;
+
+  // Scorers saisis
+  var scorersHtml = '';
+  if (match && match.scorers && Object.keys(match.scorers).length > 0) {
+    scorersHtml = '<div class="cup-scorers-section">'
+      + '<div class="cup-scorers-title">⚽ Buteurs</div>'
+      + Object.keys(match.scorers).map(function(pidx) {
+          var p = ALL[parseInt(pidx)];
+          return '<div class="cup-scorer-row">'
+            + '<span class="cup-scorer-name">'+(p?p.name:'Joueur '+pidx)+'</span>'
+            + '<span class="cup-scorer-goals">'+match.scorers[pidx]+'</span>'
+            + '</div>';
+        }).join('')
+      + '</div>';
+  }
+
+  var winnerBadge = winner ? '<div class="cup-winner-badge">🏆 Vainqueur : ' + winner + '</div>' : '';
+  var homeLogo = (typeof clubLogo==='function') ? clubLogo(homeTeam,48) : '';
+  var awayLogo = (typeof clubLogo==='function') ? clubLogo(awayTeam,48) : '';
+
+  panel.innerHTML = '<div class="cup-subnav" style="--cup-color:'+cfg.color+'">'
+    + '<div class="cup-subtab '+(curCupView==='match'?'on':'')+'" onclick="cupsSubNav('match')">🏆 Match</div>'
+    + '<div class="cup-subtab '+(curCupView==='history'?'on':'')+'" onclick="cupsSubNav('history')">📜 Historique</div>'
+    + '</div>'
+    + '<div class="cup-match-card" style="margin-top:1rem">'
+    + '<div class="cup-match-header">'+cfg.emoji+' '+cfg.name+' — '+sn+'</div>'
+    + '<div class="cup-teams">'
+    + '<div class="cup-team">'+(homeLogo||'<div style="width:48px;height:48px;border-radius:50%;background:#252a38;display:flex;align-items:center;justify-content:center;font-size:1.5rem">🏠</div>')
+    + '<div class="cup-team-name">'+homeTeam+'</div>'
+    + '<div class="cup-team-badge">'+(cfg.league==='Europe'?'Vainqueur CL':'1er du championnat')+'</div>'
+    + '</div>'
+    + '<div class="cup-score-area">'
+    + (hasResult
+        ? '<div class="cup-score"><span style="color:'+(match.score_home>match.score_away?cfg.color:'#e8eaf0')+'">'+match.score_home+'</span><span class="cup-score-sep">–</span><span style="color:'+(match.score_away>match.score_home?cfg.color:'#e8eaf0')+'">'+match.score_away+'</span></div>'
+        : '<div class="cup-vs">VS</div>')
+    + '</div>'
+    + '<div class="cup-team">'+(awayLogo||'<div style="width:48px;height:48px;border-radius:50%;background:#252a38;display:flex;align-items:center;justify-content:center;font-size:1.5rem">✈️</div>')
+    + '<div class="cup-team-name">'+awayTeam+'</div>'
+    + '<div class="cup-team-badge">'+(cfg.league==='Europe'?'Vainqueur EL':'2ème du championnat')+'</div>'
+    + '</div>'
+    + '</div>'
+    + winnerBadge
+    + scorersHtml
+    + '</div>'
+    + '<button class="cup-edit-btn" onclick="openCupModal()">'+(hasResult?'✏️ Modifier le résultat':'➕ Saisir le résultat')+'</button>';
+}
+
+// ── Déduire les équipes participantes ────────────────────────────
+function cupsGetTeams(cfg) {
+  if (cfg.league === 'Europe') {
+    // CL winner vs EL winner de la saison en cours
+    var clWin = cupsGetCupWinner('cl');
+    var elWin = cupsGetCupWinner('el');
+    return [clWin || 'Vainqueur CL', elWin || 'Vainqueur EL'];
+  }
+  // Championnat national : lire le classement S8 depuis getTeamData
+  var teams = (typeof getTeamData === 'function') ? getTeamData(cfg.league) : [];
+  if (teams.length >= 2) return [teams[0].name, teams[1].name];
+  return ['1er', '2ème'];
+}
+
+function cupsGetCupWinner(cup) {
+  // CL : chercher dans CL_DATA.finales la saison courante
+  var sn = 'S' + (currentSeasonNum||8);
+  if (cup === 'cl' && typeof CL_DATA !== 'undefined') {
+    var f = CL_DATA.finales.find(function(f){ return f.season===sn; });
+    return (f && f.winner !== 'Vainqueur' && f.winner !== '?') ? f.winner : null;
+  }
+  if (cup === 'el' && typeof EL_DATA !== 'undefined') {
+    var f2 = EL_DATA.finales.find(function(f){ return f.season===sn; });
+    return (f2 && f2.winner !== 'Vainqueur' && f2.winner !== '?') ? f2.winner : null;
+  }
+  return null;
+}
+
+// ── Rendu Historique ─────────────────────────────────────────────
+function cupsRenderHistory() {
+  var cfg   = cupsCfg.find(function(c){return c.id===curCupId;});
+  var data  = CUP_DATA[curCupId];
+  var panel = document.getElementById('cups-panel');
+  if (!cfg || !panel) return;
+
+  var history = (data.history || []).slice().sort(function(a,b){
+    return String(b.season).localeCompare(String(a.season));
+  });
+
+  // Comptage des victoires
+  var wins = {};
+  history.forEach(function(h){ if(h.winner&&h.winner!=='?') wins[h.winner]=(wins[h.winner]||0)+1; });
+  var winsArr = Object.keys(wins).map(function(k){return{name:k,n:wins[k]};}).sort(function(a,b){return b.n-a.n;});
+
+  var badgesHtml = winsArr.length ? '<div style="display:flex;flex-wrap:wrap;gap:.4rem;padding:.75rem 1.25rem;border-bottom:1px solid #252a38">'
+    + winsArr.map(function(w){
+        return '<div style="background:'+cfg.color+'18;border:1px solid '+cfg.color+'44;border-radius:7px;padding:.3rem .75rem;display:flex;align-items:center;gap:.4rem">'
+          +'<span style="font-size:1.1rem;font-weight:800;color:'+cfg.color+'">'+w.n+'×</span>'
+          +'<span style="font-size:12px;color:#e8eaf0">'+w.name+'</span>'+'</div>';
+      }).join('')
+    + '</div>' : '';
+
+  var rows = history.length ? history.map(function(h){
+    return '<div class="cup-hist-row" style="--cup-color:'+cfg.color+'">'
+      +'<div class="cup-hist-season">'+h.season+'</div>'
+      +'<div class="cup-hist-trophy">'+cfg.emoji+'</div>'
+      +'<div class="cup-hist-winner">'+h.winner+'</div>'
+      +'<div class="cup-hist-score">'+((h.score_home!=null)?h.score_home+'-'+h.score_away:'')+'</div>'
+      +'<div class="cup-hist-runner">'+h.runner_up+'</div>'
+      +'</div>';
+  }).join('')
+  : '<div style="padding:1.5rem;text-align:center;color:#5a6080">Aucun historique</div>';
+
+  panel.innerHTML = '<div class="cup-subnav" style="--cup-color:'+cfg.color+'">'
+    + '<div class="cup-subtab '+(curCupView==='match'?'on':'')+'" onclick="cupsSubNav('match')">🏆 Match</div>'
+    + '<div class="cup-subtab '+(curCupView==='history'?'on':'')+'" onclick="cupsSubNav('history')">📜 Historique</div>'
+    + '</div>'
+    + '<div style="padding:.75rem 1.25rem;border-bottom:1px solid #252a38">'
+    + '<div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff">'+cfg.emoji+' '+cfg.name+'</div>'
+    + '<div style="font-size:12px;color:#5a6080">Palmarès des finales</div>'
+    + '</div>'
+    + badgesHtml
+    + '<div class="cup-history-list">'+rows+'</div>';
+}
+
+// ── Modal saisie ─────────────────────────────────────────────────
+function openCupModal() {
+  var cfg    = cupsCfg.find(function(c){return c.id===curCupId;});
+  var data   = CUP_DATA[curCupId];
+  var sn     = 'S'+(currentSeasonNum||8);
+  var match  = data.matches[sn] || {};
+  var teams  = cupsGetTeams(cfg);
+
+  cupModalCtx = {cupId: curCupId, sn: sn, teams: teams};
+  cupScorerEntries = [];
+
+  document.getElementById('cup-modal-title').textContent = cfg.name + ' — ' + sn;
+  document.getElementById('cup-modal-home').textContent = teams[0];
+  document.getElementById('cup-modal-away').textContent = teams[1];
+  document.getElementById('cup-score-home').value = match.score_home != null ? match.score_home : 0;
+  document.getElementById('cup-score-away').value = match.score_away != null ? match.score_away : 0;
+
+  // Pré-remplir buteurs
+  if (match.scorers) {
+    Object.keys(match.scorers).forEach(function(pidx) {
+      var p = ALL[parseInt(pidx)];
+      if (p) cupScorerEntries.push({idx:parseInt(pidx), name:p.name, goals:match.scorers[pidx]});
+    });
+  }
+  cupRenderScorerList();
+  document.getElementById('cup-scorer-search').value = '';
+  document.getElementById('cup-scorer-sug').style.display = 'none';
+  document.getElementById('cup-modal').style.display = 'flex';
+  cupModalUpdatePreview();
+}
+
+function closeCupModal() {
+  document.getElementById('cup-modal').style.display = 'none';
+  cupModalCtx = null;
+}
+
+function cupModalUpdatePreview() {
+  var sh = parseInt(document.getElementById('cup-score-home').value)||0;
+  var sa = parseInt(document.getElementById('cup-score-away').value)||0;
+  var ctx = cupModalCtx;
+  if (!ctx) return;
+  var w = sh > sa ? ctx.teams[0] : sa > sh ? ctx.teams[1] : 'Égalité';
+  var prev = document.getElementById('cup-modal-preview');
+  prev.textContent = sh !== sa ? '🏆 Vainqueur : ' + w : '⚖️ Match nul';
+  prev.style.color = sh !== sa ? '#f5c842' : '#5a6080';
+}
+
+// Scorers dans le modal
+function cupRenderScorerList() {
+  document.getElementById('cup-scorer-list').innerHTML = cupScorerEntries.map(function(e,i){
+    return '<div style="display:flex;align-items:center;gap:8px;background:#0d0f14;border-radius:6px;padding:4px 8px">'
+      +'<span style="flex:1;font-size:12px;color:#e8eaf0">'+e.name+'</span>'
+      +'<input type="number" min="0" max="20" value="'+e.goals+'" class="cup-scorer-goals-input"'
+      +' style="width:52px;background:#13161e;border:1px solid #3a4460;border-radius:4px;padding:2px 6px;color:#f5c842;font-size:13px;text-align:center;outline:none"'
+      +' oninput="cupScorerEntries['+i+'].goals=parseInt(this.value)||0">'
+      +'<button onclick="cupScorerEntries.splice('+i+',1);cupRenderScorerList()" style="background:none;border:none;color:#5a6080;cursor:pointer;font-size:14px;padding:0 2px">✕</button>'
+      +'</div>';
+  }).join('') || '<div style="font-size:11px;color:#5a6080;padding:4px">Aucun buteur</div>';
+}
+
+function cupScorerSearch(q) {
+  cupSugIdx = -1;
+  var box = document.getElementById('cup-scorer-sug');
+  if (!q) { box.style.display='none'; return; }
+  var ql = q.toLowerCase();
+  cupSugList = [];
+  for (var i=0; i<ALL.length; i++) {
+    if (ALL[i].name.toLowerCase().indexOf(ql) >= 0) {
+      cupSugList.push({idx:i, name:ALL[i].name});
+      if (cupSugList.length >= 8) break;
+    }
+  }
+  if (!cupSugList.length) { box.style.display='none'; return; }
+  box.innerHTML = cupSugList.map(function(m,mi){
+    return '<div style="padding:6px 10px;cursor:pointer;font-size:12px;color:#e8eaf0;border-bottom:1px solid #1a1e28"'
+      +' onmousedown="cupScorerSelect('+mi+')" onmouseover="this.style.background='#252a38'" onmouseout="this.style.background=''">'+m.name+'</div>';
+  }).join('');
+  box.style.display = 'block';
+}
+
+function cupScorerKey(e) {
+  if (e.key==='Enter') {
+    e.preventDefault();
+    if (cupSugIdx >= 0) cupScorerSelect(cupSugIdx);
+    else if (cupSugList.length===1) cupScorerSelect(0);
+  } else if (e.key==='ArrowDown') { e.preventDefault(); cupSugIdx=Math.min(cupSugIdx+1,cupSugList.length-1); }
+  else if (e.key==='ArrowUp')   { e.preventDefault(); cupSugIdx=Math.max(cupSugIdx-1,0); }
+  else if (e.key==='Escape')    { document.getElementById('cup-scorer-sug').style.display='none'; }
+}
+
+function cupScorerSelect(mi) {
+  var m = cupSugList[mi];
+  if (!m) return;
+  if (!cupScorerEntries.find(function(e){return e.idx===m.idx;})) {
+    cupScorerEntries.push({idx:m.idx, name:m.name, goals:1});
+    cupRenderScorerList();
+  }
+  document.getElementById('cup-scorer-search').value = '';
+  document.getElementById('cup-scorer-sug').style.display = 'none';
+}
+
+// ── Sauvegarder le résultat ───────────────────────────────────────
+function saveCupMatch() {
+  if (!cupModalCtx) return;
+  var ctx  = cupModalCtx;
+  var sh   = parseInt(document.getElementById('cup-score-home').value)||0;
+  var sa   = parseInt(document.getElementById('cup-score-away').value)||0;
+  var home = ctx.teams[0], away = ctx.teams[1];
+  var winner = sh > sa ? home : sa > sh ? away : null;
+
+  // Scorers
+  var scorers = {};
+  cupScorerEntries.forEach(function(e){ if(e.goals>0) scorers[e.idx]=e.goals; });
+
+  // Sauvegarder dans CUP_DATA
+  CUP_DATA[ctx.cupId].matches[ctx.sn] = {
+    home: home, away: away,
+    score_home: sh, score_away: sa,
+    scorers: scorers, winner: winner
+  };
+
+  // Mettre à jour l'historique
+  var hist = CUP_DATA[ctx.cupId].history;
+  var existing = hist.findIndex(function(h){return h.season===ctx.sn;});
+  var entry = {season:ctx.sn, winner:winner||'Égalité', runner_up:winner?(winner===home?away:home):'—', score_home:sh, score_away:sa};
+  if (existing >= 0) hist[existing] = entry; else hist.push(entry);
+
+  // Mettre à jour les trophées des joueurs de l'équipe gagnante (t_CH ou autre)
+  if (winner) {
+    cupUpdatePlayerTrophies(winner, ctx.cupId, ctx.sn);
+  }
+
+  // Mettre à jour les buts des buteurs
+  Object.keys(scorers).forEach(function(pidx) {
+    var pi = parseInt(pidx);
+    if (ALL[pi]) {
+      ALL[pi].total = (ALL[pi].total || 0) + scorers[pidx];
+    }
+  });
+
+  // Sauvegarder
+  GH.save();
+  closeCupModal();
+  cupsRender();
+  // Mettre à jour la fiche joueur si ouverte
+  try { if (typeof ai!=='undefined' && ai>=0) renderProfile(ai); } catch(e){}
+}
+
+function cupUpdatePlayerTrophies(winnerTeam, cupId, sn) {
+  // Trouver tous les joueurs de l'équipe gagnante
+  // (currentClub ou club de la saison sn)
+  ALL.forEach(function(p, i) {
+    var club = (p.career && p.career[sn]) || p.currentClub;
+    if (club !== winnerTeam) return;
+    // Incrémenter t_CH (coupe nationale) ou t_SN (supercoupe)
+    if (cupId === 'sec') {
+      p.t_total = (p.t_total||0) + 1;
+    } else {
+      p.CH = (p.CH||0) + 1;
+      p.t_total = (p.t_total||0) + 1;
+    }
+  });
+}
+
+// ── GH.collectData — inclure CUP_DATA ────────────────────────────
+// (appelé via override ci-dessous)
 
 </script>
 </body>
