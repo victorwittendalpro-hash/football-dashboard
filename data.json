@@ -1353,6 +1353,13 @@
           "score_h": 3,
           "score_a": 1,
           "scorers": {}
+        },
+        "Australie_0": {
+          "home": "Australie",
+          "away": "Zimbabwe",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {}
         }
       },
       "groupMatches": {},
