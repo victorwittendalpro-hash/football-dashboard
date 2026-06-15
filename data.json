@@ -1367,6 +1367,13 @@
           "score_h": 3,
           "score_a": 2,
           "scorers": {}
+        },
+        "Algérie_0": {
+          "home": "Algérie",
+          "away": "Inde",
+          "score_h": 6,
+          "score_a": 0,
+          "scorers": {}
         }
       },
       "groupMatches": {},
