@@ -510,7 +510,10 @@ function ghApplyData(data) {
       }
     });
   }
+  // Recalculer les buts S8 de tous les joueurs depuis matchDetails restauré
+  try { rebuildPlayerGoalsFromDetails(); } catch(e) {}
   try { renderSaisonEnCours(); } catch(e) {}
+  try { if (typeof tblFilter === 'function') tblFilter(); } catch(e) {}
   GH._showStatus('loaded');
 }
 
@@ -1314,6 +1317,60 @@ function saveClubEditor() {
   setTimeout(function() { notif.style.opacity = '0'; notif.style.transition = 'opacity .4s'; }, 3000);
   setTimeout(function() { notif.remove(); }, 3500);
   closeClubEditor();
+}
+
+
+// ══════════════════════════════════════════════════════════════════
+// RECONSTRUCTION DES BUTS S8 DEPUIS matchDetails (au rechargement)
+// ══════════════════════════════════════════════════════════════════
+function rebuildPlayerGoalsFromDetails() {
+  if (!matchDetails || typeof matchDetails !== 'object') return;
+
+  // Calculer les buts saisis pour chaque joueur depuis matchDetails
+  var goalsByPlayer = {}; // pidx (string) → total buts saisis
+  Object.keys(matchDetails).forEach(function(lg) {
+    var lgD = matchDetails[lg];
+    Object.keys(lgD).forEach(function(tIdx) {
+      var tmD = lgD[tIdx];
+      Object.keys(tmD).forEach(function(mIdx) {
+        var sc = (tmD[mIdx].scorers) || {};
+        Object.keys(sc).forEach(function(pidx) {
+          goalsByPlayer[pidx] = (goalsByPlayer[pidx] || 0) + sc[pidx];
+        });
+      });
+    });
+  });
+
+  // Mettre à jour ALL[i] pour chaque joueur avec des buts saisis
+  Object.keys(goalsByPlayer).forEach(function(pidx) {
+    var pi = parseInt(pidx);
+    var p  = ALL[pi];
+    if (!p) return;
+
+    // Conserver les buts Excel originaux (_origS8)
+    if (p._origS8 === undefined) {
+      p._origS8 = (p.seasons && p.seasons['S8']) || 0;
+    }
+
+    var newS8 = p._origS8 + goalsByPlayer[pidx];
+
+    // Mettre à jour seasons['S8'] et total
+    if (!p.seasons) p.seasons = {};
+    var prevS8   = p.seasons['S8'] || 0;
+    p.seasons['S8'] = newS8;
+    p.total = (p.total || 0) - prevS8 + newS8;
+
+    // Mettre à jour S8_DATA.players
+    if (typeof S8_DATA !== 'undefined' && S8_DATA.players) {
+      var LN_MAP = {PL:'Premier League',SA:'Serie A',LA:'Liga',L1:'Ligue 1',BU:'Bundesliga'};
+      var lgName  = LN_MAP[p.ligue] || '';
+      if (lgName && S8_DATA.players[lgName]) {
+        S8_DATA.players[lgName].forEach(function(pl) {
+          if (pl.idx === pi) pl.goals = newS8;
+        });
+      }
+    }
+  });
 }
 
 </script>
