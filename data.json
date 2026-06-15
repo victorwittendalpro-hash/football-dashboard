@@ -1269,5 +1269,85 @@
       "season": "S8"
     }
   },
-  "elKoDetails": {}
+  "elKoDetails": {},
+  "cupData": {
+    "eng": {
+      "name": "Coupe d'Angleterre",
+      "emoji": "🏴‍",
+      "color": "#4f8ef7",
+      "league": "Premier League",
+      "matches": {},
+      "history": []
+    },
+    "fra": {
+      "name": "Coupe de France",
+      "emoji": "🇫🇷",
+      "color": "#f7944f",
+      "league": "Ligue 1",
+      "matches": {},
+      "history": []
+    },
+    "ita": {
+      "name": "Coupe d'Italie",
+      "emoji": "🇮🇹",
+      "color": "#3ecf8e",
+      "league": "Serie A",
+      "matches": {},
+      "history": []
+    },
+    "esp": {
+      "name": "Coupe d'Espagne",
+      "emoji": "🇪🇸",
+      "color": "#a37af7",
+      "league": "Liga",
+      "matches": {},
+      "history": []
+    },
+    "ger": {
+      "name": "Coupe d'Allemagne",
+      "emoji": "🇩🇪",
+      "color": "#f76f6f",
+      "league": "Bundesliga",
+      "matches": {},
+      "history": []
+    },
+    "sec": {
+      "name": "Supercoupe d'Europe",
+      "emoji": "🌟",
+      "color": "#f5c842",
+      "league": "Europe",
+      "matches": {},
+      "history": []
+    }
+  },
+  "snMatchData": {
+    "cdm": {
+      "qualifMatches": {
+        "Algérie_1": {
+          "home": "Algérie",
+          "away": "Inde",
+          "score_h": 6,
+          "score_a": 0,
+          "scorers": {}
+        }
+      },
+      "groupMatches": {},
+      "koMatches": {}
+    },
+    "euro": {
+      "qualifMatches": {},
+      "groupMatches": {},
+      "koMatches": {}
+    },
+    "copa": {
+      "qualifMatches": {},
+      "groupMatches": {},
+      "koMatches": {}
+    },
+    "can": {
+      "qualifMatches": {},
+      "groupMatches": {},
+      "koMatches": {}
+    }
+  }
 }
