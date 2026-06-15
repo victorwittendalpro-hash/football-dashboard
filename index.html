@@ -5620,7 +5620,7 @@ function snOpenKO(compId, round, idx) {
 function snOpenQualifMatch(compId, pi, matchIdx) {
   var pObj = SN_DATA.qualifs_cdm[pi] || {};
   var pays = pObj.pays || '?';
-  var key = pays + '_' + matchIdx;
+  var key = pi + '_' + matchIdx;
   var qm  = (snMatchData[compId] && snMatchData[compId].qualifMatches) || {};
   var stored = qm[key] || {};
   snModalCtx = {type:'qualif', compId, pays, matchIdx, key,
