@@ -396,6 +396,22 @@ var GH = {
     if (self.saving) { setTimeout(function(){self._doSave();}, 3000); return; }
     self.saving = true;
     self._showStatus('saving');
+    // Fetch le SHA actuel avant de sauvegarder pour éviter les conflits 409
+    var shaXhr = new XMLHttpRequest();
+    shaXhr.open('GET', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file + '?ref=' + decodeURIComponent(self.branch), true);
+    shaXhr.setRequestHeader('Authorization', 'token ' + self.token);
+    shaXhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+    shaXhr.onload = function() {
+      if (shaXhr.status === 200) {
+        try { self.sha = JSON.parse(shaXhr.responseText).sha; } catch(e) {}
+      }
+      self._doWrite();
+    };
+    shaXhr.onerror = function() { self._doWrite(); };
+    shaXhr.send();
+  },
+  _doWrite: function() {
+    var self = this;
     var data = self.collectData();
     var content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
     var body = {message:'Update data', content:content};
@@ -414,7 +430,7 @@ var GH = {
         self._showStatus('saved');
       } else {
         self._showStatus('error');
-        console.error('GH save error:', xhr.status);
+        console.error('GH save error:', xhr.status, xhr.responseText.slice(0,200));
       }
     };
     xhr.onerror = function() { self.saving = false; self._showStatus('error'); };
