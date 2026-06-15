@@ -1336,6 +1336,16 @@
           "score_h": 4,
           "score_a": 1,
           "scorers": {}
+        },
+        "Turquie_0": {
+          "home": "Turquie",
+          "away": "Ghana",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {
+            "97": 1,
+            "104": 1
+          }
         }
       },
       "groupMatches": {},
