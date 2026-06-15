@@ -1346,6 +1346,13 @@
             "97": 1,
             "104": 1
           }
+        },
+        "Sénégal_0": {
+          "home": "Sénégal",
+          "away": "Nigeria",
+          "score_h": 3,
+          "score_a": 1,
+          "scorers": {}
         }
       },
       "groupMatches": {},
