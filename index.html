@@ -5213,70 +5213,124 @@ function snAttachSubnav() {
 // ── Poules ───────────────────────────────────────────────────────
 function snRenderGroupes(cfg) {
   var panel = document.getElementById('sn-panel');
+  var sn    = currentSeasonNum || 8;
+  var gm    = (snMatchData[cfg.id] && snMatchData[cfg.id].groupMatches) || {};
   var poules = SN_DATA.poules_cdm;
-  var sn = currentSeasonNum || 8;
-  var h = snSubnavHTML(cfg, 'groupes')
-    + '<div class="sn-sec-hdr"><span style="font-size:1.4rem">' + cfg.icon + '</span>'
-    + '<div><div class="sn-sec-title">' + cfg.label + ' S' + sn + ' — Poules</div>'
-    + '<div class="sn-sec-sub">6 poules de 4 équipes · Les 2 premiers de chaque poule + 4 meilleurs 3èmes se qualifient</div></div>'
-    + '</div><div class="sn-content"><div class="sn-poule-grid">';
+  var groups = Object.keys(poules);
 
-  Object.keys(poules).forEach(function(g) {
-    var poule = poules[g];
-    var teams = poule.teams || [];
-    // Calculer pts depuis snMatchData
-    var pts = {};
-    var bm = {}, be = {};
-    teams.forEach(function(t){ pts[t]=0; bm[t]=0; be[t]=0; });
-    var gMatches = (snMatchData.cdm && snMatchData.cdm.groupMatches && snMatchData.cdm.groupMatches[g]) || {};
-    Object.values(gMatches).forEach(function(m) {
-      if (m.score_h != null && m.score_a != null) {
-        bm[m.home] = (bm[m.home]||0) + m.score_h;
-        be[m.home] = (be[m.home]||0) + m.score_a;
-        bm[m.away] = (bm[m.away]||0) + m.score_a;
-        be[m.away] = (be[m.away]||0) + m.score_h;
-        if (m.score_h > m.score_a) { pts[m.home]=(pts[m.home]||0)+3; }
-        else if (m.score_h === m.score_a) { pts[m.home]=(pts[m.home]||0)+1; pts[m.away]=(pts[m.away]||0)+1; }
-        else { pts[m.away]=(pts[m.away]||0)+3; }
+  // Calculer stats de tous les pays dans toutes les poules
+  var allStats = {}; // pays -> {pts,bm,be,played,poule}
+  groups.forEach(function(g) {
+    var teams = (poules[g] && poules[g].teams) || [];
+    teams.forEach(function(t) { allStats[t] = {pts:0,bm:0,be:0,played:0,poule:g}; });
+    var gMatches = gm[g] || {};
+    Object.keys(gMatches).forEach(function(key) {
+      var m = gMatches[key];
+      if (m.score_h == null || m.score_a == null) return;
+      if (allStats[m.home]) {
+        allStats[m.home].bm += m.score_h; allStats[m.home].be += m.score_a; allStats[m.home].played++;
+        if      (m.score_h > m.score_a) allStats[m.home].pts += 3;
+        else if (m.score_h === m.score_a) allStats[m.home].pts += 1;
+      }
+      if (allStats[m.away]) {
+        allStats[m.away].bm += m.score_a; allStats[m.away].be += m.score_h; allStats[m.away].played++;
+        if      (m.score_a > m.score_h) allStats[m.away].pts += 3;
+        else if (m.score_h === m.score_a) allStats[m.away].pts += 1;
       }
     });
-    var sorted = teams.slice().sort(function(a,b){ return (pts[b]||0)-(pts[a]||0) || (bm[b]-be[b])-(bm[a]-be[a]); });
+  });
 
-    // Matchs de la poule (6 combinaisons)
+  // Classement général consolidé (toutes poules)
+  var allTeams = Object.keys(allStats);
+  var sortedAll = allTeams.slice().sort(function(a,b) {
+    var sa=allStats[a], sb=allStats[b];
+    return sb.pts-sa.pts || (sb.bm-sb.be)-(sa.bm-sa.be) || sb.bm-sa.bm;
+  });
+
+  var h = snSubnavHTML(cfg, 'groupes')
+    + '<div class="sn-sec-hdr"><span style="font-size:1.4rem">' + cfg.icon + '</span>'
+    + '<div><div class="sn-sec-title">' + cfg.label + ' S' + sn + ' — Phase de poules</div>'
+    + '<div class="sn-sec-sub">6 poules · Règle : pas 2 pays du même continent · Les 16 premiers au classement général se qualifient</div></div></div>'
+    + '<div class="sn-content">';
+
+  // ── Classement général ──────────────────────────────────────────────────────
+  h += '<div style="background:#13161e;border:1px solid #252a38;border-radius:10px;overflow:hidden;margin-bottom:.75rem">'
+    + '<div style="padding:.5rem .875rem;border-bottom:1px solid #252a38;font-family:Syne,sans-serif;font-size:12px;font-weight:700;color:' + cfg.color + '">🏆 Classement général — Toutes poules</div>'
+    + '<div style="overflow-x:auto"><table class="sn-table" style="min-width:480px"><thead><tr>'
+    + '<th>#</th><th>Pays</th><th>Poule</th><th>Pts</th><th>J</th><th>BM</th><th>BE</th><th>+/-</th></tr></thead><tbody>'
+    + sortedAll.map(function(t, i) {
+        var s=allStats[t], diff=s.bm-s.be;
+        var q16 = i < 16;
+        var rc  = i===0?'#f5c842':i<3?cfg.color:q16?'#3ecf8e':'#5a6080';
+        var bg  = q16 ? 'background:' + cfg.color + '0a' : '';
+        return '<tr style="' + bg + '">'
+          +'<td style="font-weight:700;color:'+rc+';text-align:center">'+(i+1)+'</td>'
+          +'<td style="color:#e8eaf0;font-weight:'+(q16?700:400)+'">'+t+'</td>'
+          +'<td style="color:#5a6080;font-size:11px">'+s.poule+'</td>'
+          +'<td style="font-weight:700;color:'+cfg.color+'">'+s.pts+'</td>'
+          +'<td style="color:#8b93b0">'+s.played+'</td>'
+          +'<td style="color:#8b93b0">'+s.bm+'</td>'
+          +'<td style="color:#8b93b0">'+s.be+'</td>'
+          +'<td style="color:'+(diff>0?'#3ecf8e':diff<0?'#f76f6f':'#5a6080')+'">'+(diff>0?'+':'')+diff+'</td>'
+          +'</tr>';
+      }).join('')
+    + '</tbody></table></div></div>';
+
+  // ── Poules individuelles ────────────────────────────────────────────────────
+  h += '<div class="sn-poule-grid">';
+  groups.forEach(function(g) {
+    var poule  = poules[g];
+    var teams  = (poule && poule.teams) || [];
+    var gMatches = gm[g] || {};
+
+    // Classer les équipes de cette poule
+    var sortedG = teams.slice().sort(function(a,b) {
+      var sa=allStats[a]||{pts:0,bm:0,be:0}, sb=allStats[b]||{pts:0,bm:0,be:0};
+      return sb.pts-sa.pts||(sb.bm-sb.be)-(sa.bm-sa.be)||sb.bm-sa.bm;
+    });
+
+    // Générer les 6 combinaisons de matchs
     var matchups = [];
-    for (var i=0; i<teams.length; i++) {
-      for (var j=i+1; j<teams.length; j++) {
-        matchups.push([teams[i], teams[j]]);
-      }
-    }
+    for (var i=0;i<teams.length;i++) for(var j=i+1;j<teams.length;j++) matchups.push([teams[i],teams[j]]);
+
+    // Vérifier contrainte continentale
+    var continents = {};
+    teams.forEach(function(t) {
+      var p = SN_DATA.qualifs_cdm.find(function(q){return q.pays===t;});
+      continents[t] = p ? p.continent : 'inconnu';
+    });
+    var contVals = Object.values(continents);
+    var contSet  = {};
+    contVals.forEach(function(c){contSet[c]=(contSet[c]||0)+1;});
+    var contOk   = !Object.values(contSet).some(function(n){return n>1;});
 
     h += '<div class="sn-poule-card">'
-      + '<div class="sn-poule-hdr"><span>Poule ' + g + '</span><span style="font-size:10px;color:#5a6080">' + teams.length + ' équipes</span></div>'
-      + '<table class="sn-table"><thead><tr>'
-      + '<th>#</th><th>Équipe</th><th>Pts</th><th>BM</th><th>BE</th><th>Diff</th>'
-      + '</tr></thead><tbody>'
-      + sorted.map(function(t,i){
-          var c = i<2 ? cfg.color : '#8b93b0';
-          var diff = (bm[t]||0)-(be[t]||0);
-          return '<tr><td style="color:'+c+';font-weight:700">'+(i+1)+'</td>'
+      + '<div class="sn-poule-hdr"><span>Poule ' + g + '</span>'
+      + '<span style="font-size:10px;color:' + (contOk?'#3ecf8e':'#f76f6f') + '">'
+      + (contOk ? '✓ Continents OK' : '⚠ Même continent!') + '</span></div>'
+      + '<table class="sn-table"><thead><tr><th>#</th><th>Pays</th><th>Pts</th><th>BM</th><th>BE</th></tr></thead><tbody>'
+      + sortedG.map(function(t,i){
+          var st=allStats[t]||{pts:0,bm:0,be:0};
+          var rc=i<2?cfg.color:'#8b93b0';
+          return '<tr><td style="font-weight:700;color:'+rc+';text-align:center">'+(i+1)+'</td>'
             +'<td style="color:#e8eaf0">'+t+'</td>'
-            +'<td style="color:'+cfg.color+';font-weight:700">'+(pts[t]||0)+'</td>'
-            +'<td style="color:#8b93b0">'+(bm[t]||0)+'</td>'
-            +'<td style="color:#8b93b0">'+(be[t]||0)+'</td>'
-            +'<td style="color:'+(diff>0?'#3ecf8e':diff<0?'#f76f6f':'#5a6080')+'">'+(diff>0?'+':'')+diff+'</td>'
+            +'<td style="font-weight:700;color:'+cfg.color+'">'+st.pts+'</td>'
+            +'<td style="color:#8b93b0">'+st.bm+'</td>'
+            +'<td style="color:#8b93b0">'+st.be+'</td>'
             +'</tr>';
         }).join('')
       + '</tbody></table>'
-      + '<div style="border-top:1px solid #252a38;padding:.5rem .75rem">'
-      + matchups.map(function(pair, mi) {
-          var key = g + '_' + mi;
-          var mData = gMatches[key];
-          var score = mData ? mData.score_h+'-'+mData.score_a : '–';
-          var color = mData ? '#e8eaf0' : '#5a6080';
-          return '<div style="display:flex;justify-content:space-between;align-items:center;font-size:11px;'
-            +'padding:2px 0;cursor:pointer;border-radius:4px" onclick="snOpenMatch(\'cdm\',\''+g+'\',\''+key+'\',\''+pair[0]+'\',\''+pair[1]+'\')">'
+      + '<div style="border-top:1px solid #252a38;padding:.4rem .6rem">'
+      + matchups.map(function(pair,mi){
+          var key=g+'_'+mi;
+          var m=gMatches[key];
+          var score=m&&m.score_h!=null ? m.score_h+'-'+m.score_a : '—';
+          var sc=m?'#e8eaf0':'#3a4460';
+          return '<div style="display:flex;align-items:center;justify-content:space-between;'
+            +'padding:3px 4px;border-radius:4px;cursor:pointer;font-size:11px" '
+            +'onclick="snOpenMatch(\''+cfg.id+'\',\''+g+'\',\''+key+'\',\''+pair[0]+'\',\''+pair[1]+'\')">'
             +'<span style="flex:1;text-align:right;color:#e8eaf0">'+pair[0]+'</span>'
-            +'<span style="margin:0 8px;font-weight:700;color:'+color+';min-width:30px;text-align:center">'+score+'</span>'
+            +'<span style="margin:0 8px;font-weight:700;color:'+sc+';min-width:28px;text-align:center">'+score+'</span>'
             +'<span style="flex:1;color:#e8eaf0">'+pair[1]+'</span>'
             +'</div>';
         }).join('')
@@ -5287,8 +5341,6 @@ function snRenderGroupes(cfg) {
   panel.innerHTML = h;
   snAttachSubnav();
 }
-
-// ── Qualifications CDM ───────────────────────────────────────────
 function snRenderQualifs(cfg) {
   var q    = SN_DATA.qualifs_cdm;
   var sn   = currentSeasonNum || 8;
