@@ -1972,8 +1972,10 @@ function saveMatch(){
   closeModal();
   renderLeague(curLg);
   renderSaisonEnCours();
-  // Re-render tableau comparatif si visible
+  // Re-render tableau comparatif
   try { if (typeof tblFilter === 'function') tblFilter(); } catch(e) {}
+  // Re-render fiche joueur si ouverte
+  try { if (typeof ai !== 'undefined' && ai >= 0 && typeof renderProfile === 'function') renderProfile(ai); } catch(e) {}
   // Update nav badges
   initNavBadges();
 }
