@@ -870,6 +870,9 @@ function switchTab(tab) {
   if (extraPane) extraPane.style.display = 'block';
   event.currentTarget.classList.add('active');
   if (tab === 'table') initTable();
+  if (tab === 's8')    { try { renderSaisonEnCours(); } catch(e) {} }
+  if (tab === 'el')    { try { elInitEL(); }           catch(e) {} }
+  if (tab === 'cups')  { try { cupsInit(); }           catch(e) {} }
 }
 
 // ===== TABLE =====
