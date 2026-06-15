@@ -4605,7 +4605,10 @@ function elInitEL() {
 </div>
 </div>
 
-<script>
+<script>function cupsNavMatch(){cupsSubNav('match');}
+function cupsNavHistory(){cupsSubNav('history');}
+
+
 
 // ══════════════════════════════════════════════════════════════════
 // ONGLET COUPES
@@ -4633,14 +4636,16 @@ function cupsInit() {
   var list = document.getElementById('cups-tabs-list');
   if (!list) return;
   list.innerHTML = cupsCfg.map(function(c) {
-    return '<div class="cups-tab" id="cups-tab-'+c.id+'" style="--cup-color:'+c.color+'" onclick="cupsSelectCup(''+c.id+'')">'
-      + '<span class="cups-emoji">'+c.emoji+'</span>'
-      + '<span>'+c.name+'</span>'
-      + '</div>';
+    return '<div class="cups-tab" id="cups-tab-' + c.id
+      + '" data-cupid="' + c.id + '" style="--cup-color:' + c.color + '">'
+      + '<span class="cups-emoji">' + c.emoji + '</span>'
+      + '<span>' + c.name + '</span></div>';
   }).join('');
+  list.querySelectorAll('.cups-tab').forEach(function(el) {
+    el.addEventListener('click', function() { cupsSelectCup(this.getAttribute('data-cupid')); });
+  });
   if (!curCupId) cupsSelectCup('eng');
 }
-
 function cupsSelectCup(id) {
   curCupId   = id;
   curCupView = 'match';
@@ -4698,8 +4703,8 @@ function cupsRenderMatch() {
   var awayLogo = (typeof clubLogo==='function') ? clubLogo(awayTeam,48) : '';
 
   panel.innerHTML = '<div class="cup-subnav" style="--cup-color:'+cfg.color+'">'
-    + '<div class="cup-subtab '+(curCupView==='match'?'on':'')+'" onclick="cupsSubNav('match')">🏆 Match</div>'
-    + '<div class="cup-subtab '+(curCupView==='history'?'on':'')+'" onclick="cupsSubNav('history')">📜 Historique</div>'
+    + '<div class="cup-subtab '+(curCupView==='match'?'on':'')+'" onclick="cupsNavMatch()">🏆 Match</div>'
+    + '<div class="cup-subtab '+(curCupView==='history'?'on':'')+'" onclick="cupsNavHistory()">📜 Historique</div>'
     + '</div>'
     + '<div class="cup-match-card" style="margin-top:1rem">'
     + '<div class="cup-match-header">'+cfg.emoji+' '+cfg.name+' — '+sn+'</div>'
@@ -4788,11 +4793,11 @@ function cupsRenderHistory() {
   : '<div style="padding:1.5rem;text-align:center;color:#5a6080">Aucun historique</div>';
 
   panel.innerHTML = '<div class="cup-subnav" style="--cup-color:'+cfg.color+'">'
-    + '<div class="cup-subtab '+(curCupView==='match'?'on':'')+'" onclick="cupsSubNav('match')">🏆 Match</div>'
-    + '<div class="cup-subtab '+(curCupView==='history'?'on':'')+'" onclick="cupsSubNav('history')">📜 Historique</div>'
+    + '<div class="cup-subtab '+(curCupView==='match'?'on':'')+'" onclick="cupsNavMatch()">🏆 Match</div>'
+    + '<div class="cup-subtab '+(curCupView==='history'?'on':'')+'" onclick="cupsNavHistory()">📜 Historique</div>'
     + '</div>'
     + '<div style="padding:.75rem 1.25rem;border-bottom:1px solid #252a38">'
-    + '<div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff">'+cfg.emoji+' '+cfg.name+'</div>'
+    + '<div style="font-family:Syne,sans-serif;font-size:1.1rem;font-weight:800;color:#fff">'+cfg.emoji+' '+cfg.name+'</div>'
     + '<div style="font-size:12px;color:#5a6080">Palmarès des finales</div>'
     + '</div>'
     + badgesHtml
@@ -4848,37 +4853,59 @@ function cupModalUpdatePreview() {
 
 // Scorers dans le modal
 function cupRenderScorerList() {
-  document.getElementById('cup-scorer-list').innerHTML = cupScorerEntries.map(function(e,i){
+  var el = document.getElementById('cup-scorer-list');
+  if (!el) return;
+  if (!cupScorerEntries.length) {
+    el.innerHTML = '<div style="font-size:11px;color:#5a6080;padding:4px">Aucun buteur</div>';
+    return;
+  }
+  el.innerHTML = cupScorerEntries.map(function(e, i) {
     return '<div style="display:flex;align-items:center;gap:8px;background:#0d0f14;border-radius:6px;padding:4px 8px">'
-      +'<span style="flex:1;font-size:12px;color:#e8eaf0">'+e.name+'</span>'
-      +'<input type="number" min="0" max="20" value="'+e.goals+'" class="cup-scorer-goals-input"'
-      +' style="width:52px;background:#13161e;border:1px solid #3a4460;border-radius:4px;padding:2px 6px;color:#f5c842;font-size:13px;text-align:center;outline:none"'
-      +' oninput="cupScorerEntries['+i+'].goals=parseInt(this.value)||0">'
-      +'<button onclick="cupScorerEntries.splice('+i+',1);cupRenderScorerList()" style="background:none;border:none;color:#5a6080;cursor:pointer;font-size:14px;padding:0 2px">✕</button>'
-      +'</div>';
-  }).join('') || '<div style="font-size:11px;color:#5a6080;padding:4px">Aucun buteur</div>';
+      + '<span style="flex:1;font-size:12px;color:#e8eaf0">' + e.name + '</span>'
+      + '<input type="number" min="0" max="20" value="' + e.goals
+      + '" data-i="' + i + '" class="cup-g-inp" style="width:52px;background:#13161e;'
+      + 'border:1px solid #3a4460;border-radius:4px;padding:2px 6px;color:#f5c842;font-size:13px;text-align:center;outline:none">'
+      + '<button data-i="' + i + '" class="cup-rm-btn" style="background:none;border:none;color:#5a6080;cursor:pointer;font-size:14px">x</button>'
+      + '</div>';
+  }).join('');
+  el.querySelectorAll('.cup-g-inp').forEach(function(inp) {
+    inp.addEventListener('input', function() {
+      var ix = parseInt(this.getAttribute('data-i'));
+      if (cupScorerEntries[ix]) cupScorerEntries[ix].goals = parseInt(this.value) || 0;
+    });
+  });
+  el.querySelectorAll('.cup-rm-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      cupScorerEntries.splice(parseInt(this.getAttribute('data-i')), 1);
+      cupRenderScorerList();
+    });
+  });
 }
-
 function cupScorerSearch(q) {
   cupSugIdx = -1;
   var box = document.getElementById('cup-scorer-sug');
-  if (!q) { box.style.display='none'; return; }
+  if (!q) { box.style.display = 'none'; return; }
   var ql = q.toLowerCase();
   cupSugList = [];
-  for (var i=0; i<ALL.length; i++) {
+  for (var i = 0; i < ALL.length; i++) {
     if (ALL[i].name.toLowerCase().indexOf(ql) >= 0) {
-      cupSugList.push({idx:i, name:ALL[i].name});
+      cupSugList.push({idx: i, name: ALL[i].name});
       if (cupSugList.length >= 8) break;
     }
   }
-  if (!cupSugList.length) { box.style.display='none'; return; }
-  box.innerHTML = cupSugList.map(function(m,mi){
-    return '<div style="padding:6px 10px;cursor:pointer;font-size:12px;color:#e8eaf0;border-bottom:1px solid #1a1e28"'
-      +' onmousedown="cupScorerSelect('+mi+')" onmouseover="this.style.background='#252a38'" onmouseout="this.style.background=''">'+m.name+'</div>';
+  if (!cupSugList.length) { box.style.display = 'none'; return; }
+  box.innerHTML = cupSugList.map(function(m, mi) {
+    return '<div class="cup-sug-item" data-mi="' + mi + '"'
+      + ' style="padding:6px 10px;cursor:pointer;font-size:12px;color:#e8eaf0;border-bottom:1px solid #1a1e28">'
+      + m.name + '</div>';
   }).join('');
+  box.querySelectorAll('.cup-sug-item').forEach(function(el) {
+    el.addEventListener('mousedown', function() { cupScorerSelect(parseInt(this.getAttribute('data-mi'))); });
+    el.addEventListener('mouseover', function() { this.style.background = '#252a38'; });
+    el.addEventListener('mouseout',  function() { this.style.background = ''; });
+  });
   box.style.display = 'block';
 }
-
 function cupScorerKey(e) {
   if (e.key==='Enter') {
     e.preventDefault();
