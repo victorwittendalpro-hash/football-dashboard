@@ -1381,6 +1381,13 @@
           "score_h": 3,
           "score_a": 1,
           "scorers": {}
+        },
+        "Grèce_0": {
+          "home": "Grèce",
+          "away": "Egypte",
+          "score_h": 3,
+          "score_a": 2,
+          "scorers": {}
         }
       },
       "groupMatches": {},
