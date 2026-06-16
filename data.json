@@ -1427,6 +1427,13 @@
           "scorers": {
             "164": 1
           }
+        },
+        "34_0": {
+          "home": "Côte d'Ivoire",
+          "away": "Etats-Unis",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {}
         }
       },
       "groupMatches": {},
