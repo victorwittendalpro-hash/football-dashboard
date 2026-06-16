@@ -372,7 +372,7 @@ var GH = {
         var resp = JSON.parse(xhr.responseText);
         self.sha = resp.sha;
         try {
-          var content = JSON.parse(atob(resp.content.replace(/\n/g, '')));
+          var content = JSON.parse(decodeURIComponent(escape(atob(resp.content.replace(/\n/g, '')))));
           callback(null, content);
         } catch(e) { callback('Parse error'); }
       } else if (xhr.status === 404) {
