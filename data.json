@@ -1246,29 +1246,8 @@
   },
   "currentSeasonNum": 8,
   "archives": [],
-  "playerLigueOverrides": {
-    "1": "PL",
-    "34": "PL",
-    "56": "PL",
-    "58": "SA",
-    "77": "L1",
-    "90": "BU",
-    "95": "LA",
-    "121": "LA",
-    "126": "PL",
-    "136": "PL",
-    "145": "PL",
-    "156": "PL",
-    "164": "SA",
-    "167": "L1",
-    "195": "BU"
-  },
-  "playerClubOverrides": {
-    "142": {
-      "club": "Arsenal",
-      "season": "S8"
-    }
-  },
+  "playerLigueOverrides": {},
+  "playerClubOverrides": {},
   "elKoDetails": {},
   "cupData": {
     "eng": {
@@ -1328,13 +1307,6 @@
           "away": "Inde",
           "score_h": 6,
           "score_a": 0,
-          "scorers": {}
-        },
-        "6_0": {
-          "home": "Angleterre",
-          "away": "Japon",
-          "score_h": 1,
-          "score_a": 2,
           "scorers": {}
         }
       },
