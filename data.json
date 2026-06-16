@@ -1418,6 +1418,15 @@
           "scorers": {
             "81": 1
           }
+        },
+        "10_0": {
+          "home": "Allemagne",
+          "away": "Irlande",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {
+            "164": 1
+          }
         }
       },
       "groupMatches": {},
