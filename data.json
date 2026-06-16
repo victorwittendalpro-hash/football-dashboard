@@ -1357,6 +1357,13 @@
           "score_h": 5,
           "score_a": 0,
           "scorers": {}
+        },
+        "30_0": {
+          "home": "Mexique",
+          "away": "Georgie",
+          "score_h": 1,
+          "score_a": 3,
+          "scorers": {}
         }
       },
       "groupMatches": {},
