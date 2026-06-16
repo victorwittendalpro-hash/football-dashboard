@@ -1336,6 +1336,27 @@
           "score_h": 2,
           "score_a": 0,
           "scorers": {}
+        },
+        "5_0": {
+          "home": "Grèce",
+          "away": "Egypte",
+          "score_h": 3,
+          "score_a": 2,
+          "scorers": {}
+        },
+        "6_0": {
+          "home": "Angleterre",
+          "away": "Japon",
+          "score_h": 1,
+          "score_a": 2,
+          "scorers": {}
+        },
+        "8_0": {
+          "home": "Pologne",
+          "away": "Bostwana",
+          "score_h": 5,
+          "score_a": 0,
+          "scorers": {}
         }
       },
       "groupMatches": {},
