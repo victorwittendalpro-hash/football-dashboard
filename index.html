@@ -413,6 +413,8 @@ var GH = {
   _doWrite: function() {
     var self = this;
     var data = self.collectData();
+    // Sauvegarder localement avant le PUT (filet de sécurité)
+    self._saveLocal(data);
     var content;
     try {
       content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
@@ -497,6 +499,18 @@ var GH = {
     }
   },
 
+  _saveLocal: function(data) {
+    try {
+      localStorage.setItem('fb_dashboard_backup', JSON.stringify(data));
+      localStorage.setItem('fb_dashboard_backup_ts', Date.now().toString());
+    } catch(e) {}
+  },
+  _loadLocal: function() {
+    try {
+      var s = localStorage.getItem('fb_dashboard_backup');
+      return s ? JSON.parse(s) : null;
+    } catch(e) { return null; }
+  },
   collectData: function() {
     return {
       version: 1,
@@ -560,7 +574,27 @@ function ghApplyData(data) {
     });
   }
   if (data.snMatchData && typeof snMatchData !== 'undefined') {
-    snMatchData = data.snMatchData;
+    // Fusionner avec localStorage si plus récent
+    var localData = GH._loadLocal ? GH._loadLocal() : null;
+    var localTs   = parseInt(localStorage.getItem('fb_dashboard_backup_ts') || '0');
+    var serverSn  = data.snMatchData;
+    if (localData && localData.snMatchData && localTs > 0) {
+      // Compter les matchs dans chaque source pour garder le plus complet
+      var countKeys = function(obj) {
+        var n = 0;
+        Object.keys(obj).forEach(function(comp) {
+          var c = obj[comp];
+          ['qualifMatches','groupMatches','koMatches'].forEach(function(t) {
+            if (c[t]) n += Object.keys(c[t]).length;
+          });
+        });
+        return n;
+      };
+      if (countKeys(localData.snMatchData) >= countKeys(serverSn)) {
+        serverSn = localData.snMatchData;
+      }
+    }
+    snMatchData = serverSn;
   }
   // Restaurer les données des Coupes
   if (data.cupData && typeof CUP_DATA !== 'undefined') {
