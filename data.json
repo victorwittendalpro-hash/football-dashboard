@@ -1364,6 +1364,13 @@
           "score_h": 1,
           "score_a": 3,
           "scorers": {}
+        },
+        "28_0": {
+          "home": "Bolivie",
+          "away": "Canada",
+          "score_h": 5,
+          "score_a": 1,
+          "scorers": {}
         }
       },
       "groupMatches": {},
