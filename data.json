@@ -1434,6 +1434,13 @@
           "score_h": 2,
           "score_a": 0,
           "scorers": {}
+        },
+        "27_0": {
+          "home": "Argentine",
+          "away": "Suède",
+          "score_h": 0,
+          "score_a": 2,
+          "scorers": {}
         }
       },
       "groupMatches": {},
