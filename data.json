@@ -1371,6 +1371,23 @@
           "score_h": 5,
           "score_a": 1,
           "scorers": {}
+        },
+        "26_0": {
+          "home": "Macédoine",
+          "away": "Suisse",
+          "score_h": 6,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "22_0": {
+          "home": "Belgique",
+          "away": "Chili",
+          "score_h": 5,
+          "score_a": 1,
+          "scorers": {
+            "108": 2,
+            "188": 2
+          }
         }
       },
       "groupMatches": {},
