@@ -1388,6 +1388,15 @@
             "108": 2,
             "188": 2
           }
+        },
+        "32_0": {
+          "home": "Brésil",
+          "away": "Equateur",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {
+            "126": 1
+          }
         }
       },
       "groupMatches": {},
