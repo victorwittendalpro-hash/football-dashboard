@@ -1322,6 +1322,20 @@
           "score_h": 3,
           "score_a": 1,
           "scorers": {}
+        },
+        "4_0": {
+          "home": "Australie",
+          "away": "Zimbabwe",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "2_0": {
+          "home": "Turquie",
+          "away": "Ghana",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {}
         }
       },
       "groupMatches": {},
