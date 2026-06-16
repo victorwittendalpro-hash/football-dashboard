@@ -1336,6 +1336,13 @@
           "score_h": 4,
           "score_a": 1,
           "scorers": {}
+        },
+        "6_0": {
+          "home": "Angleterre",
+          "away": "Japon",
+          "score_h": 1,
+          "score_a": 2,
+          "scorers": {}
         }
       },
       "groupMatches": {},
