@@ -1397,6 +1397,18 @@
           "scorers": {
             "126": 1
           }
+        },
+        "14_0": {
+          "home": "France",
+          "away": "Pays de Galles",
+          "score_h": 6,
+          "score_a": 0,
+          "scorers": {
+            "3": 2,
+            "5": 1,
+            "14": 2,
+            "56": 1
+          }
         }
       },
       "groupMatches": {},
