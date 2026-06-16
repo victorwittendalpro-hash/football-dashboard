@@ -413,7 +413,15 @@ var GH = {
   _doWrite: function() {
     var self = this;
     var data = self.collectData();
-    var content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    var content;
+    try {
+      content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+    } catch(encErr) {
+      self.saving = false;
+      self._showStatus('error');
+      console.error('GH encode error:', encErr);
+      return;
+    }
     var body = {message:'Update data', content:content};
     if (self.sha) body.sha = self.sha;
     body.branch = decodeURIComponent(self.branch);
@@ -423,12 +431,49 @@ var GH = {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
     xhr.onload = function() {
-      self.saving = false;
       if (xhr.status === 200 || xhr.status === 201) {
+        self.saving = false;
         var resp = JSON.parse(xhr.responseText);
         self.sha = resp.content.sha;
         self._showStatus('saved');
+      } else if (xhr.status === 409 || xhr.status === 422) {
+        // SHA conflit ou manquant — refetch le SHA et retenter une fois
+        console.warn('GH SHA conflict (' + xhr.status + '), retrying...');
+        var retryXhr = new XMLHttpRequest();
+        retryXhr.open('GET', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file + '?ref=' + decodeURIComponent(self.branch), true);
+        retryXhr.setRequestHeader('Authorization', 'token ' + self.token);
+        retryXhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+        retryXhr.onload = function() {
+          if (retryXhr.status === 200) {
+            try { self.sha = JSON.parse(retryXhr.responseText).sha; } catch(e) {}
+          }
+          // Retenter le PUT avec le nouveau SHA
+          var body2 = {message:'Update data', content:content};
+          if (self.sha) body2.sha = self.sha;
+          body2.branch = decodeURIComponent(self.branch);
+          var xhr2 = new XMLHttpRequest();
+          xhr2.open('PUT', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file, true);
+          xhr2.setRequestHeader('Authorization', 'token ' + self.token);
+          xhr2.setRequestHeader('Content-Type', 'application/json');
+          xhr2.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+          xhr2.onload = function() {
+            self.saving = false;
+            if (xhr2.status === 200 || xhr2.status === 201) {
+              var resp2 = JSON.parse(xhr2.responseText);
+              self.sha = resp2.content.sha;
+              self._showStatus('saved');
+            } else {
+              self._showStatus('error');
+              console.error('GH retry error:', xhr2.status, xhr2.responseText.slice(0,200));
+            }
+          };
+          xhr2.onerror = function() { self.saving = false; self._showStatus('error'); };
+          xhr2.send(JSON.stringify(body2));
+        };
+        retryXhr.onerror = function() { self.saving = false; self._showStatus('error'); };
+        retryXhr.send();
       } else {
+        self.saving = false;
         self._showStatus('error');
         console.error('GH save error:', xhr.status, xhr.responseText.slice(0,200));
       }
