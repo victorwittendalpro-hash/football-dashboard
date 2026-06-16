@@ -1360,6 +1360,13 @@
           "score_h": 3,
           "score_a": 1,
           "scorers": {}
+        },
+        "0_1": {
+          "home": "Algérie",
+          "away": "France",
+          "score_h": 1,
+          "score_a": 2,
+          "scorers": {}
         }
       },
       "groupMatches": {},
