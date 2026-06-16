@@ -1329,44 +1329,6 @@
           "score_h": 6,
           "score_a": 0,
           "scorers": {}
-        },
-        "1_0": {
-          "home": "Colombie",
-          "away": "Pérou",
-          "score_h": 4,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "6_0": {
-          "home": "Angleterre",
-          "away": "Japon",
-          "score_h": 1,
-          "score_a": 2,
-          "scorers": {}
-        },
-        "2_0": {
-          "home": "Turquie",
-          "away": "Ghana",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {
-            "97": 1,
-            "104": 1
-          }
-        },
-        "3_0": {
-          "home": "Sénégal",
-          "away": "Nigeria",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "0_1": {
-          "home": "Algérie",
-          "away": "France",
-          "score_h": 1,
-          "score_a": 2,
-          "scorers": {}
         }
       },
       "groupMatches": {},
