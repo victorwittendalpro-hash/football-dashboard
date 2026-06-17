@@ -1453,12 +1453,19 @@
         },
         "33_0": {
           "home": "Maroc",
-          "away": "Cap vert",
+          "away": "Cap Vert",
           "score_h": 2,
           "score_a": 1,
           "scorers": {
             "34": 1
           }
+        },
+        "29_0": {
+          "home": "Uruguay",
+          "away": "Corée du sud",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {}
         }
       },
       "groupMatches": {},
