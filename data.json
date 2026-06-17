@@ -1475,6 +1475,13 @@
           "scorers": {
             "142": 1
           }
+        },
+        "16_0": {
+          "home": "Ukraine",
+          "away": "Albanie",
+          "score_h": 0,
+          "score_a": 0,
+          "scorers": {}
         }
       },
       "groupMatches": {},
