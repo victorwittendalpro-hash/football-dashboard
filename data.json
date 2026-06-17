@@ -1450,6 +1450,15 @@
           "scorers": {
             "121": 2
           }
+        },
+        "33_0": {
+          "home": "Maroc",
+          "away": "Cap vert",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {
+            "34": 1
+          }
         }
       },
       "groupMatches": {},
