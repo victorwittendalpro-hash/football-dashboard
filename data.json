@@ -1462,7 +1462,7 @@
         },
         "29_0": {
           "home": "Uruguay",
-          "away": "Corée du sud",
+          "away": "Corée du Sud",
           "score_h": 2,
           "score_a": 1,
           "scorers": {}
@@ -1482,6 +1482,17 @@
           "score_h": 0,
           "score_a": 0,
           "scorers": {}
+        },
+        "20_0": {
+          "home": "Portugal",
+          "away": "Cuba",
+          "score_h": 6,
+          "score_a": 2,
+          "scorers": {
+            "1": 1,
+            "48": 1,
+            "136": 2
+          }
         }
       },
       "groupMatches": {},
