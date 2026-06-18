@@ -1502,6 +1502,15 @@
           "scorers": {
             "128": 1
           }
+        },
+        "20_1": {
+          "home": "Portugal",
+          "away": "Zimbabwe",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {
+            "136": 1
+          }
         }
       },
       "groupMatches": {},
