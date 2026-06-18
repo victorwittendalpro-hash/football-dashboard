@@ -1493,6 +1493,15 @@
             "48": 1,
             "136": 2
           }
+        },
+        "25_0": {
+          "home": "Norvège",
+          "away": "Croatie",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {
+            "128": 1
+          }
         }
       },
       "groupMatches": {},
