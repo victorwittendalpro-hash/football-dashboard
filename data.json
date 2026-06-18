@@ -1528,6 +1528,16 @@
             "15": 2,
             "142": 1
           }
+        },
+        "32_1": {
+          "home": "Brésil",
+          "away": "Irlande",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {
+            "144": 1,
+            "145": 1
+          }
         }
       },
       "groupMatches": {},
