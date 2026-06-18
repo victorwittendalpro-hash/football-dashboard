@@ -1559,6 +1559,20 @@
           "score_h": 1,
           "score_a": 0,
           "scorers": {}
+        },
+        "49_0": {
+          "home": "Inde",
+          "away": "Chili",
+          "score_h": 2,
+          "score_a": 3,
+          "scorers": {}
+        },
+        "26_1": {
+          "home": "Macédoine",
+          "away": "Pays de Galles",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {}
         }
       },
       "groupMatches": {},
