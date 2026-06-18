@@ -1545,6 +1545,20 @@
           "score_h": 1,
           "score_a": 2,
           "scorers": {}
+        },
+        "45_0": {
+          "home": "Nigeria",
+          "away": "Canada",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "15_0": {
+          "home": "Serbie",
+          "away": "Tunisie",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {}
         }
       },
       "groupMatches": {},
