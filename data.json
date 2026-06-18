@@ -1511,6 +1511,13 @@
           "scorers": {
             "136": 1
           }
+        },
+        "4_1": {
+          "home": "Australie",
+          "away": "Etats-Unis",
+          "score_h": 1,
+          "score_a": 4,
+          "scorers": {}
         }
       },
       "groupMatches": {},
