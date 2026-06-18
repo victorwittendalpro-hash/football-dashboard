@@ -1538,6 +1538,13 @@
             "144": 1,
             "145": 1
           }
+        },
+        "9_0": {
+          "home": "Albanie",
+          "away": "Ghana",
+          "score_h": 1,
+          "score_a": 2,
+          "scorers": {}
         }
       },
       "groupMatches": {},
