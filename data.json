@@ -1611,6 +1611,16 @@
           "score_h": 4,
           "score_a": 0,
           "scorers": {}
+        },
+        "6_1": {
+          "home": "Angleterre",
+          "away": "Equateur",
+          "score_h": 3,
+          "score_a": 1,
+          "scorers": {
+            "92": 1,
+            "157": 1
+          }
         }
       },
       "groupMatches": {},
