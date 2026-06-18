@@ -1594,6 +1594,23 @@
           "score_h": 3,
           "score_a": 1,
           "scorers": {}
+        },
+        "2_1": {
+          "home": "Turquie",
+          "away": "Mexique",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {
+            "97": 1,
+            "104": 1
+          }
+        },
+        "27_1": {
+          "home": "Argentine",
+          "away": "Adversaire",
+          "score_h": 4,
+          "score_a": 0,
+          "scorers": {}
         }
       },
       "groupMatches": {},
