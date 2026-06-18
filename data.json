@@ -1505,7 +1505,7 @@
         },
         "20_1": {
           "home": "Portugal",
-          "away": "Zimbabwe",
+          "away": "Botswana",
           "score_h": 2,
           "score_a": 0,
           "scorers": {
@@ -1578,6 +1578,20 @@
           "home": "Croatie",
           "away": "Suisse",
           "score_h": 0,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "47_0": {
+          "home": "Zimbabwe",
+          "away": "Pologne",
+          "score_h": 6,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "5_1": {
+          "home": "Grèce",
+          "away": "Georgie",
+          "score_h": 3,
           "score_a": 1,
           "scorers": {}
         }
