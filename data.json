@@ -1621,6 +1621,15 @@
             "92": 1,
             "157": 1
           }
+        },
+        "7_0": {
+          "home": "Danemark",
+          "away": "Sénégal",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {
+            "23": 1
+          }
         }
       },
       "groupMatches": {},
