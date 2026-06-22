@@ -1784,6 +1784,15 @@
           "score_h": 3,
           "score_a": 1,
           "scorers": {}
+        },
+        "6_2": {
+          "home": "Angleterre",
+          "away": "Georgie",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {
+            "192": 1
+          }
         }
       },
       "groupMatches": {},
