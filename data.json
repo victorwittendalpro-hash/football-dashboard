@@ -1693,6 +1693,13 @@
           "score_h": 4,
           "score_a": 1,
           "scorers": {}
+        },
+        "33_1": {
+          "home": "Maroc",
+          "away": "Suède",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {}
         }
       },
       "groupMatches": {},
