@@ -1707,6 +1707,20 @@
           "score_h": 0,
           "score_a": 4,
           "scorers": {}
+        },
+        "45_1": {
+          "home": "Nigeria",
+          "away": "Mexique",
+          "score_h": 0,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "49_1": {
+          "home": "Inde",
+          "away": "Corée du Sud",
+          "score_h": 0,
+          "score_a": 1,
+          "scorers": {}
         }
       },
       "groupMatches": {},
