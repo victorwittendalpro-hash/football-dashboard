@@ -1637,6 +1637,13 @@
           "score_h": 1,
           "score_a": 1,
           "scorers": {}
+        },
+        "1_1": {
+          "home": "Colombie",
+          "away": "Egypte",
+          "score_h": 4,
+          "score_a": 1,
+          "scorers": {}
         }
       },
       "groupMatches": {},
