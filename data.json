@@ -1686,6 +1686,13 @@
             "138": 1,
             "187": 1
           }
+        },
+        "48_0": {
+          "home": "Pérou",
+          "away": "Norvège",
+          "score_h": 4,
+          "score_a": 1,
+          "scorers": {}
         }
       },
       "groupMatches": {},
