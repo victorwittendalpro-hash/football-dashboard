@@ -1770,6 +1770,20 @@
           "score_h": 3,
           "score_a": 1,
           "scorers": {}
+        },
+        "18_0": {
+          "home": "Suède",
+          "away": "Pologne",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "36_1": {
+          "home": "Japon",
+          "away": "Ukraine",
+          "score_h": 3,
+          "score_a": 1,
+          "scorers": {}
         }
       },
       "groupMatches": {},
