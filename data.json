@@ -1661,6 +1661,13 @@
           "score_h": 2,
           "score_a": 0,
           "scorers": {}
+        },
+        "29_1": {
+          "home": "Uruguay",
+          "away": "Bolivie",
+          "score_h": 0,
+          "score_a": 4,
+          "scorers": {}
         }
       },
       "groupMatches": {},
