@@ -1668,6 +1668,13 @@
           "score_h": 0,
           "score_a": 4,
           "scorers": {}
+        },
+        "36_0": {
+          "home": "Japon",
+          "away": "Corée du sud",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {}
         }
       },
       "groupMatches": {},
