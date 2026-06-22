@@ -1735,6 +1735,20 @@
           "score_h": 2,
           "score_a": 1,
           "scorers": {}
+        },
+        "48_1": {
+          "home": "Pérou",
+          "away": "Maroc",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "34_1": {
+          "home": "Côte d'Ivoire",
+          "away": "Ghana",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {}
         }
       },
       "groupMatches": {},
