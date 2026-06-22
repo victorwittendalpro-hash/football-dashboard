@@ -1721,6 +1721,20 @@
           "score_h": 0,
           "score_a": 1,
           "scorers": {}
+        },
+        "4_2": {
+          "home": "Australie",
+          "away": "Equateur",
+          "score_h": 2,
+          "score_a": 3,
+          "scorers": {}
+        },
+        "43_0": {
+          "home": "Cap Vert",
+          "away": "Chili",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {}
         }
       },
       "groupMatches": {},
