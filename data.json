@@ -1671,10 +1671,21 @@
         },
         "36_0": {
           "home": "Japon",
-          "away": "Corée du sud",
+          "away": "Corée du Sud",
           "score_h": 2,
           "score_a": 1,
           "scorers": {}
+        },
+        "23_1": {
+          "home": "Italie",
+          "away": "Cuba",
+          "score_h": 3,
+          "score_a": 0,
+          "scorers": {
+            "121": 1,
+            "138": 1,
+            "187": 1
+          }
         }
       },
       "groupMatches": {},
