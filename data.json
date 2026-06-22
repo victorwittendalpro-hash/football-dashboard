@@ -1749,6 +1749,13 @@
           "score_h": 1,
           "score_a": 0,
           "scorers": {}
+        },
+        "12_0": {
+          "home": "Irlande",
+          "away": "Grèce",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {}
         }
       },
       "groupMatches": {},
