@@ -1654,6 +1654,13 @@
             "47": 1,
             "56": 2
           }
+        },
+        "0_1": {
+          "home": "Algérie",
+          "away": "Allemagne",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {}
         }
       },
       "groupMatches": {},
