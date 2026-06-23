@@ -1857,5 +1857,36 @@
       "koMatches": {}
     }
   },
-  "customPlayers": []
+  "customPlayers": [
+    {
+      "rank": 200,
+      "name": "Jaminton Campaz",
+      "nameRaw": "Jaminton Campaz",
+      "age": 25,
+      "post": "AiG",
+      "ligue": "",
+      "currentClub": "Rosario Central",
+      "career": {
+        "S8": "Rosario Central"
+      },
+      "total": 10,
+      "CL": 0,
+      "SN": 0,
+      "CH": 10,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S8": 10
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true
+    }
+  ]
 }
