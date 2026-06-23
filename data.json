@@ -1942,6 +1942,36 @@
       "t_total": 0,
       "_custom": true,
       "_origSN": 0
+    },
+    {
+      "rank": 201,
+      "name": "Moreira Jr.",
+      "nameRaw": "Moreira Jr.",
+      "age": 21,
+      "post": "AiD",
+      "ligue": "L1",
+      "currentClub": "AS Monaco",
+      "career": {
+        "S8": "AS Monaco"
+      },
+      "total": 8,
+      "CL": 0,
+      "SN": 0,
+      "CH": 8,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S8": 8
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true
     }
   ]
 }
