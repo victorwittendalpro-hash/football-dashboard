@@ -1829,6 +1829,13 @@
           "score_h": 0,
           "score_a": 2,
           "scorers": {}
+        },
+        "1_2": {
+          "home": "Colombie",
+          "away": "Pays de Galles",
+          "score_h": 2,
+          "score_a": 2,
+          "scorers": {}
         }
       },
       "groupMatches": {},
@@ -1849,5 +1856,6 @@
       "groupMatches": {},
       "koMatches": {}
     }
-  }
+  },
+  "customPlayers": []
 }
