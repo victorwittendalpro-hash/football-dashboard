@@ -1314,7 +1314,9 @@
           "away": "Pérou",
           "score_h": 4,
           "score_a": 1,
-          "scorers": {}
+          "scorers": {
+            "199": 3
+          }
         },
         "3_0": {
           "home": "Sénégal",
@@ -1643,7 +1645,9 @@
           "away": "Egypte",
           "score_h": 4,
           "score_a": 1,
-          "scorers": {}
+          "scorers": {
+            "199": 2
+          }
         },
         "14_1": {
           "home": "France",
@@ -1835,7 +1839,18 @@
           "away": "Pays de Galles",
           "score_h": 2,
           "score_a": 2,
-          "scorers": {}
+          "scorers": {
+            "199": 2
+          }
+        },
+        "25_1": {
+          "home": "Norvège",
+          "away": "Canada",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {
+            "128": 1
+          }
         }
       },
       "groupMatches": {},
@@ -1869,9 +1884,9 @@
       "career": {
         "S8": "Rosario Central"
       },
-      "total": 10,
+      "total": 17,
       "CL": 0,
-      "SN": 0,
+      "SN": 7,
       "CH": 10,
       "EU": 0,
       "CP": 0,
@@ -1886,7 +1901,8 @@
       "t_cl": 0,
       "t_el": 0,
       "t_total": 0,
-      "_custom": true
+      "_custom": true,
+      "_origSN": 0
     }
   ]
 }
