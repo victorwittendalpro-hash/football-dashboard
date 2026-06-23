@@ -1388,7 +1388,8 @@
           "score_a": 1,
           "scorers": {
             "108": 2,
-            "188": 2
+            "188": 2,
+            "200": 1
           }
         },
         "32_0": {
@@ -1954,9 +1955,9 @@
       "career": {
         "S8": "AS Monaco"
       },
-      "total": 8,
+      "total": 9,
       "CL": 0,
-      "SN": 0,
+      "SN": 1,
       "CH": 8,
       "EU": 0,
       "CP": 0,
@@ -1971,7 +1972,8 @@
       "t_cl": 0,
       "t_el": 0,
       "t_total": 0,
-      "_custom": true
+      "_custom": true,
+      "_origSN": 0
     }
   ]
 }
