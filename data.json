@@ -1869,6 +1869,17 @@
           "scorers": {
             "97": 1
           }
+        },
+        "17_1": {
+          "home": "Espagne",
+          "away": "Portugal",
+          "score_h": 3,
+          "score_a": 1,
+          "scorers": {
+            "1": 1,
+            "15": 2,
+            "16": 1
+          }
         }
       },
       "groupMatches": {},
