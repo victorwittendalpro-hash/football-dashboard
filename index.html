@@ -307,6 +307,7 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
     <select class="tbl-sel" id="tbl-club">
       <option value="">Tous clubs actuels</option>
     </select>
+      <button id="btn-add-player" onclick="openAddPlayerModal()" style="background:#4f8ef7;border:none;border-radius:7px;padding:.5rem 1rem;color:#fff;font-size:12px;font-weight:700;cursor:pointer;margin-left:auto">➕ Ajouter un joueur</button>
     <select class="tbl-sel" id="tbl-rows">
       <option value="25">25 / page</option>
       <option value="50" selected>50 / page</option>
@@ -525,6 +526,7 @@ var GH = {
       elKoDetails:            (typeof elKoDetails !== 'undefined') ? elKoDetails : {},
       cupData:              (typeof CUP_DATA !== 'undefined') ? CUP_DATA : {},
       snMatchData:          (typeof snMatchData !== 'undefined') ? snMatchData : {},
+      customPlayers:        window._customPlayers || [],
     };
   }
 };
@@ -627,6 +629,23 @@ function ghApplyData(data) {
   try { rebuildPlayerGoalsFromDetails(); } catch(e) {}
   // Recalculer les buts en sélection depuis snMatchData restauré
   try { rebuildSnGoalsFromMatches(); } catch(e) {}
+  // Restaurer les joueurs ajoutés manuellement (persistance)
+  if (data.customPlayers && data.customPlayers.length) {
+    window._customPlayers = data.customPlayers;
+    data.customPlayers.forEach(function(cp) {
+      if (!ALL.some(function(p){ return p.name === cp.name; })) {
+        var idx = ALL.length;
+        ALL.push(cp);
+        if (cp.ligue) {
+          var LN_MAP2 = {PL:'Premier League', SA:'Serie A', LA:'Liga', L1:'Ligue 1', BU:'Bundesliga'};
+          var lgName2 = LN_MAP2[cp.ligue];
+          if (lgName2 && S8_DATA.players[lgName2] && !S8_DATA.players[lgName2].some(function(p){return p.idx===idx;})) {
+            S8_DATA.players[lgName2].push({idx: idx, name: cp.name, goals: (cp.seasons && cp.seasons['S'+(currentSeasonNum||8)]) || 0});
+          }
+        }
+      }
+    });
+  }
   try { renderSaisonEnCours(); } catch(e) {}
   try { if (typeof tblFilter === 'function') tblFilter(); } catch(e) {}
   GH._showStatus('loaded');
@@ -6073,6 +6092,171 @@ function snSaveMatch() {
 
 // ── GH integration ───────────────────────────────────────────────
 // snMatchData est sauvegardé/restauré via GH.collectData/ghApplyData
+
+</script>
+
+<div id="add-player-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:10010;align-items:center;justify-content:center">
+  <div style="background:#13161e;border:1px solid #252a38;border-radius:14px;padding:1.5rem;width:480px;max-width:95vw;max-height:90vh;overflow-y:auto">
+    <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:1rem">➕ Ajouter un joueur</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.6rem">
+      <div>
+        <label style="font-size:11px;color:#5a6080;display:block;margin-bottom:3px">Nom *</label>
+        <input id="ap-name" type="text" placeholder="ex: Haaland"
+          style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.5rem .65rem;color:#e8eaf0;font-size:13px;outline:none">
+      </div>
+      <div>
+        <label style="font-size:11px;color:#5a6080;display:block;margin-bottom:3px">Âge</label>
+        <input id="ap-age" type="number" min="15" max="45" placeholder="25"
+          style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.5rem .65rem;color:#e8eaf0;font-size:13px;outline:none">
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.6rem">
+      <div>
+        <label style="font-size:11px;color:#5a6080;display:block;margin-bottom:3px">Poste</label>
+        <select id="ap-post" style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.5rem .65rem;color:#e8eaf0;font-size:13px;outline:none">
+          <option value="GB">GB — Gardien</option>
+          <option value="DC">DC — Défenseur central</option>
+          <option value="DD">DD — Défenseur droit</option>
+          <option value="DG">DG — Défenseur gauche</option>
+          <option value="Mdf">Mdf — Milieu défensif</option>
+          <option value="MR">MR — Milieu relayeur</option>
+          <option value="MO">MO — Milieu offensif</option>
+          <option value="AiD">AiD — Ailier droit</option>
+          <option value="AiG">AiG — Ailier gauche</option>
+          <option value="AC">AC — Attaquant central</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size:11px;color:#5a6080;display:block;margin-bottom:3px">Championnat</label>
+        <select id="ap-ligue" style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.5rem .65rem;color:#e8eaf0;font-size:13px;outline:none">
+          <option value="PL">Premier League</option>
+          <option value="L1">Ligue 1</option>
+          <option value="LA">Liga</option>
+          <option value="SA">Serie A</option>
+          <option value="BU">Bundesliga</option>
+          <option value="">— Hors des 5 grands championnats —</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="margin-bottom:.6rem">
+      <label style="font-size:11px;color:#5a6080;display:block;margin-bottom:3px">Club actuel *</label>
+      <input id="ap-club" type="text" placeholder="ex: Manchester City" list="ap-club-list"
+        style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.5rem .65rem;color:#e8eaf0;font-size:13px;outline:none">
+      <datalist id="ap-club-list"></datalist>
+    </div>
+
+    <div style="margin-bottom:.6rem">
+      <label style="font-size:11px;color:#5a6080;display:block;margin-bottom:3px">Buts marqués cette saison (S8, optionnel)</label>
+      <input id="ap-s8-goals" type="number" min="0" max="60" placeholder="0"
+        style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.5rem .65rem;color:#e8eaf0;font-size:13px;outline:none">
+    </div>
+
+    <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:1rem">
+      <input id="ap-emoji-info" type="text" disabled value="Étoiles/médailles de trophées ajoutables après création"
+        style="width:100%;box-sizing:border-box;background:#0d0f1466;border:1px dashed #3a4460;border-radius:6px;padding:.4rem .65rem;color:#5a6080;font-size:11px;outline:none">
+    </div>
+
+    <div id="ap-error" style="display:none;color:#f76f6f;font-size:12px;margin-bottom:.75rem"></div>
+
+    <div style="display:flex;gap:.5rem;justify-content:flex-end">
+      <button onclick="closeAddPlayerModal()" style="background:#252a38;border:none;border-radius:7px;padding:.55rem 1.2rem;color:#8b93b0;cursor:pointer;font-size:12px">Annuler</button>
+      <button onclick="submitAddPlayer()" style="background:#4f8ef7;border:none;border-radius:7px;padding:.55rem 1.2rem;color:#fff;cursor:pointer;font-size:12px;font-weight:700">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+// ══════════════════════════════════════════════════════════════════
+// AJOUT D'UN NOUVEAU JOUEUR (permanent, sauvegardé sur GitHub)
+// ══════════════════════════════════════════════════════════════════
+function openAddPlayerModal() {
+  // Peupler la liste des clubs existants pour l'autocomplete
+  var list = document.getElementById('ap-club-list');
+  if (list && !list.dataset.filled) {
+    var clubs = Array.from(new Set(ALL.map(function(p){return p.currentClub;}).filter(Boolean))).sort();
+    list.innerHTML = clubs.map(function(c){ return '<option value="' + c + '">'; }).join('');
+    list.dataset.filled = '1';
+  }
+  document.getElementById('ap-name').value = '';
+  document.getElementById('ap-age').value = '';
+  document.getElementById('ap-post').value = 'AC';
+  document.getElementById('ap-ligue').value = 'PL';
+  document.getElementById('ap-club').value = '';
+  document.getElementById('ap-s8-goals').value = '';
+  document.getElementById('ap-error').style.display = 'none';
+  document.getElementById('add-player-modal').style.display = 'flex';
+}
+
+function closeAddPlayerModal() {
+  document.getElementById('add-player-modal').style.display = 'none';
+}
+
+function submitAddPlayer() {
+  var name  = document.getElementById('ap-name').value.trim();
+  var age   = parseInt(document.getElementById('ap-age').value) || 0;
+  var post  = document.getElementById('ap-post').value;
+  var ligue = document.getElementById('ap-ligue').value;
+  var club  = document.getElementById('ap-club').value.trim();
+  var s8g   = parseInt(document.getElementById('ap-s8-goals').value) || 0;
+
+  var errEl = document.getElementById('ap-error');
+  if (!name) { errEl.textContent = 'Le nom est obligatoire.'; errEl.style.display = 'block'; return; }
+  if (!club) { errEl.textContent = 'Le club actuel est obligatoire.'; errEl.style.display = 'block'; return; }
+  if (ALL.some(function(p){ return p.name.toLowerCase() === name.toLowerCase(); })) {
+    errEl.textContent = 'Un joueur portant ce nom existe déjà.';
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+
+  var sn = 'S' + (currentSeasonNum || 8);
+  var newPlayer = {
+    rank: ALL.length + 1,
+    name: name,
+    nameRaw: name,
+    age: age,
+    post: post,
+    ligue: ligue,
+    currentClub: club,
+    career: (function(){ var c = {}; c[sn] = club; return c; })(),
+    total: s8g,
+    CL: 0, SN: 0, CH: s8g, EU: 0, CP: 0,
+    seasons: (function(){ var s = {}; s[sn] = s8g; return s; })(),
+    t_sa: 0, t_l1: 0, t_pl: 0, t_lg: 0, t_bu: 0, t_cl: 0, t_el: 0, t_total: 0,
+    _custom: true // marque les joueurs ajoutés manuellement (pour la persistance)
+  };
+
+  var newIdx = ALL.length;
+  ALL.push(newPlayer);
+
+  // Ajouter dans S8_DATA.players[ligue] si une ligue des 5 grands championnats est choisie
+  if (ligue) {
+    var LN_MAP = {PL:'Premier League', SA:'Serie A', LA:'Liga', L1:'Ligue 1', BU:'Bundesliga'};
+    var lgName = LN_MAP[ligue];
+    if (lgName && S8_DATA.players[lgName]) {
+      S8_DATA.players[lgName].push({idx: newIdx, name: name, goals: s8g});
+    }
+  }
+
+  // Sauvegarder la liste des joueurs ajoutés manuellement pour la persistance GitHub
+  window._customPlayers = window._customPlayers || [];
+  window._customPlayers.push(newPlayer);
+
+  GH.save();
+  closeAddPlayerModal();
+
+  // Re-render les vues concernées
+  try { flt(); } catch(e) {}
+  try { initHeader(); } catch(e) {}
+  try { if (typeof tblFilter === 'function') tblFilter(); } catch(e) {}
+  try { sel(newIdx); } catch(e) {}
+
+  alert(name + ' a été ajouté avec succès ! (Club: ' + club + ')');
+}
 
 </script>
 </body>
