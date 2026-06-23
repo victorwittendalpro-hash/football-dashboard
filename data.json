@@ -1822,6 +1822,13 @@
             "23": 1,
             "98": 2
           }
+        },
+        "23_2": {
+          "home": "Italie",
+          "away": "Suisse",
+          "score_h": 0,
+          "score_a": 2,
+          "scorers": {}
         }
       },
       "groupMatches": {},
