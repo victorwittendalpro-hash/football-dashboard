@@ -5306,11 +5306,102 @@ function snAttachSubnav() {
 }
 
 // ── Poules ───────────────────────────────────────────────────────
+
+// ── Calculer les 24 équipes qualifiées depuis les qualifications ────────────
+function snGetQualifiedTeams(compId) {
+  var q  = SN_DATA.qualifs_cdm;
+  var qm = (snMatchData[compId] && snMatchData[compId].qualifMatches) || {};
+  var stats = {};
+  q.forEach(function(p) { stats[p.pays] = {pts:0,bm:0,be:0,continent:p.continent}; });
+  Object.keys(qm).forEach(function(key) {
+    var m = qm[key];
+    if (m.score_h == null || m.score_a == null) return;
+    if (!stats[m.home]) stats[m.home] = {pts:0,bm:0,be:0,continent:'inconnu'};
+    if (!stats[m.away]) stats[m.away] = {pts:0,bm:0,be:0,continent:'inconnu'};
+    stats[m.home].bm += m.score_h; stats[m.home].be += m.score_a;
+    stats[m.away].bm += m.score_a; stats[m.away].be += m.score_h;
+    if      (m.score_h > m.score_a) stats[m.home].pts += 3;
+    else if (m.score_h === m.score_a) { stats[m.home].pts += 1; stats[m.away].pts += 1; }
+    else                              stats[m.away].pts += 3;
+  });
+  var sorted = q.slice().sort(function(a,b) {
+    var sa = stats[a.pays], sb = stats[b.pays];
+    return sb.pts - sa.pts || (sb.bm-sb.be)-(sa.bm-sa.be) || sb.bm - sa.bm;
+  });
+  return sorted.slice(0, 24).map(function(p) {
+    return {pays: p.pays, continent: p.continent};
+  });
+}
+
+// ── Répartir les 24 qualifiés dans 6 poules de 4, en évitant si possible ────
+// deux équipes du même continent dans une poule
+function snBuildGroups(qualified) {
+  var GROUP_NAMES = ['A','B','C','D','E','F'];
+  var groups = {};
+  GROUP_NAMES.forEach(function(g) { groups[g] = []; });
+
+  // Trier par continent pour répartir au mieux (round-robin par continent)
+  var byContinent = {};
+  qualified.forEach(function(t) {
+    var c = t.continent || 'inconnu';
+    if (!byContinent[c]) byContinent[c] = [];
+    byContinent[c].push(t.pays);
+  });
+  var continents = Object.keys(byContinent);
+
+  // Distribution round-robin : à chaque tour, piocher un pays d'un continent
+  // différent de ceux déjà présents dans la poule cible quand c'est possible
+  var groupIdx = 0;
+  var remaining = qualified.slice();
+
+  // Algorithme glouton : pour chaque pays restant, placer dans la première
+  // poule qui n'a pas encore ce continent (et qui n'est pas pleine)
+  // Trier les pays en mélangeant les continents pour favoriser la diversité
+  var queue = [];
+  var maxLen = Math.max.apply(null, continents.map(function(c){return byContinent[c].length;}));
+  for (var round = 0; round < maxLen; round++) {
+    continents.forEach(function(c) {
+      if (byContinent[c][round]) queue.push({pays: byContinent[c][round], continent: c});
+    });
+  }
+
+  queue.forEach(function(team) {
+    // Chercher une poule sans ce continent et pas pleine
+    var placed = false;
+    for (var gi = 0; gi < GROUP_NAMES.length; gi++) {
+      var g = GROUP_NAMES[gi];
+      if (groups[g].length >= 4) continue;
+      var hasContinent = groups[g].some(function(t) { return t.continent === team.continent; });
+      if (!hasContinent) {
+        groups[g].push(team);
+        placed = true;
+        break;
+      }
+    }
+    if (!placed) {
+      // Aucune poule sans ce continent disponible → placer dans la première poule non pleine
+      for (var gi2 = 0; gi2 < GROUP_NAMES.length; gi2++) {
+        var g2 = GROUP_NAMES[gi2];
+        if (groups[g2].length < 4) { groups[g2].push(team); break; }
+      }
+    }
+  });
+
+  var result = {};
+  GROUP_NAMES.forEach(function(g) {
+    result[g] = {teams: groups[g].map(function(t){return t.pays;})};
+  });
+  return result;
+}
+
 function snRenderGroupes(cfg) {
   var panel = document.getElementById('sn-panel');
   var sn    = currentSeasonNum || 8;
   var gm    = (snMatchData[cfg.id] && snMatchData[cfg.id].groupMatches) || {};
-  var poules = SN_DATA.poules_cdm;
+  // Poules construites dynamiquement depuis les 24 qualifiés (CDM uniquement)
+  var poules = cfg.id === 'cdm'
+    ? snBuildGroups(snGetQualifiedTeams(cfg.id))
+    : SN_DATA.poules_cdm;
   var groups = Object.keys(poules);
 
   // Calculer stats de tous les pays dans toutes les poules
@@ -5345,7 +5436,7 @@ function snRenderGroupes(cfg) {
   var h = snSubnavHTML(cfg, 'groupes')
     + '<div class="sn-sec-hdr"><span style="font-size:1.4rem">' + cfg.icon + '</span>'
     + '<div><div class="sn-sec-title">' + cfg.label + ' S' + sn + ' — Phase de poules</div>'
-    + '<div class="sn-sec-sub">6 poules · Règle : pas 2 pays du même continent · Les 16 premiers au classement général se qualifient</div></div></div>'
+    + '<div class="sn-sec-sub">Poules générées depuis les 24 qualifiés · Règle : pas 2 pays du même continent (si possible) · Les 16 premiers au classement général se qualifient</div></div></div>'
     + '<div class="sn-content">';
 
   // ── Classement général ──────────────────────────────────────────────────────
