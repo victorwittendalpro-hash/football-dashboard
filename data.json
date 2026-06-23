@@ -1314,7 +1314,9 @@
           "away": "Pérou",
           "score_h": 4,
           "score_a": 1,
-          "scorers": {}
+          "scorers": {
+            "199": 3
+          }
         },
         "3_0": {
           "home": "Sénégal",
