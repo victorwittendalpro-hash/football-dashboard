@@ -1880,6 +1880,16 @@
             "15": 2,
             "16": 1
           }
+        },
+        "47_1": {
+          "home": "Zimbabwe",
+          "away": "Etats-unis",
+          "score_h": 2,
+          "score_a": 2,
+          "scorers": {
+            "24": 1,
+            "198": 2
+          }
         }
       },
       "groupMatches": {},
