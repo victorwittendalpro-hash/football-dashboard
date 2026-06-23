@@ -1851,6 +1851,15 @@
           "scorers": {
             "128": 1
           }
+        },
+        "29_2": {
+          "home": "Uruguay",
+          "away": "Cuba",
+          "score_h": 6,
+          "score_a": 2,
+          "scorers": {
+            "78": 3
+          }
         }
       },
       "groupMatches": {},
