@@ -1900,6 +1900,15 @@
           "scorers": {
             "188": 1
           }
+        },
+        "14_2": {
+          "home": "France",
+          "away": "Sénégal",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {
+            "3": 1
+          }
         }
       },
       "groupMatches": {},
