@@ -265,7 +265,7 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
     </div>
     <div style="display:flex;align-items:center;gap:6px;padding:0 .75rem .4rem">
       <div class="count-badge" id="cnt" style="flex:1"></div>
-      <button onclick="openAddPlayer()" title="Ajouter un joueur" style="background:#1a1e28;border:1px solid #252a38;border-radius:6px;padding:3px 8px;color:#4f8ef7;cursor:pointer;font-size:11px;font-weight:600;white-space:nowrap">➕ Ajouter</button>
+      <button onclick="openAddPlayerModal()" title="Ajouter un joueur" style="background:#1a1e28;border:1px solid #252a38;border-radius:6px;padding:3px 8px;color:#4f8ef7;cursor:pointer;font-size:11px;font-weight:600;white-space:nowrap">➕ Ajouter</button>
     </div>
     <div class="player-list" id="plist"></div>
   </div>
@@ -1198,38 +1198,6 @@ function gotoPlayer(idx) {
 
 
 // ── Ajout de joueur ──────────────────────────────────────────────────────────
-function openAddPlayer() {
-  var m = document.getElementById('add-player-modal');
-  m.style.display = 'flex';
-}
-function closeAddPlayer() {
-  document.getElementById('add-player-modal').style.display = 'none';
-  ['ap-name','ap-age','ap-club'].forEach(function(id){ document.getElementById(id).value=''; });
-}
-function saveAddPlayer() {
-  var name  = document.getElementById('ap-name').value.trim();
-  var age   = parseInt(document.getElementById('ap-age').value) || null;
-  var post  = document.getElementById('ap-post').value;
-  var ligue = document.getElementById('ap-ligue').value;
-  var club  = document.getElementById('ap-club').value.trim();
-  if (!name) { alert('Le nom est obligatoire'); return; }
-  var newPlayer = {
-    rank: ALL.length + 1, name: name, nameRaw: name,
-    age: age, post: post, ligue: ligue, currentClub: club,
-    career: {}, total: 0, CL: 0, SN: 0, CH: 0, EU: 0, CP: 0,
-    seasons: {}, t_sa:0, t_l1:0, t_pl:0, t_lg:0, t_bu:0, t_cl:0, t_el:0, t_total:0
-  };
-  ALL.push(newPlayer);
-  filt = ALL.slice();
-  flt();
-  sel(ALL.length - 1);
-  closeAddPlayer();
-  // Sauvegarder sur GitHub (le dashboard complet avec le nouveau joueur)
-  // Note: on sauvegarde juste les données dynamiques, pas ALL
-  // Pour sauvegarder ALL il faudrait uploader index.html → on affiche un message
-  var msg = '✓ Joueur "' + name + '" ajouté pour cette session.\n\nNote: pour rendre cet ajout permanent, re-télécharge le dashboard depuis ce lien et réupload-le sur GitHub.';
-  alert(msg);
-}
 
 
 // ── Mise à jour du championnat d'un joueur ───────────────────────────────────
@@ -4102,38 +4070,6 @@ clInitCL();
 </div>
 
 <!-- Modal ajout joueur -->
-<div id="add-player-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:10000;align-items:center;justify-content:center">
-  <div style="background:#13161e;border:1px solid #252a38;border-radius:12px;padding:1.5rem;width:340px;max-width:95vw">
-    <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:1rem">➕ Ajouter un joueur</div>
-    <div style="display:flex;flex-direction:column;gap:.75rem">
-      <input id="ap-name"  type="text"   placeholder="Nom du joueur"    style="background:#0d0f14;border:1px solid #252a38;border-radius:6px;padding:.5rem .75rem;color:#e8eaf0;font-size:13px;outline:none">
-      <input id="ap-age"   type="number" placeholder="Âge"             style="background:#0d0f14;border:1px solid #252a38;border-radius:6px;padding:.5rem .75rem;color:#e8eaf0;font-size:13px;outline:none">
-      <select id="ap-post" style="background:#0d0f14;border:1px solid #252a38;border-radius:6px;padding:.5rem .75rem;color:#e8eaf0;font-size:13px;outline:none">
-        <option value="">Poste</option>
-        <option value="AT">Attaquant</option>
-        <option value="MO">Milieu offensif</option>
-        <option value="MDF">Milieu défensif</option>
-        <option value="DC">Défenseur central</option>
-        <option value="LB">Latéral</option>
-        <option value="GB">Gardien</option>
-      </select>
-      <select id="ap-ligue" style="background:#0d0f14;border:1px solid #252a38;border-radius:6px;padding:.5rem .75rem;color:#e8eaf0;font-size:13px;outline:none">
-        <option value="">Championnat</option>
-        <option value="PL">Premier League</option>
-        <option value="SA">Serie A</option>
-        <option value="LA">Liga</option>
-        <option value="L1">Ligue 1</option>
-        <option value="BU">Bundesliga</option>
-      </select>
-      <input id="ap-club" type="text" placeholder="Club actuel" style="background:#0d0f14;border:1px solid #252a38;border-radius:6px;padding:.5rem .75rem;color:#e8eaf0;font-size:13px;outline:none">
-    </div>
-    <div style="display:flex;gap:.5rem;margin-top:1rem;justify-content:flex-end">
-      <button onclick="closeAddPlayer()" style="background:#252a38;border:none;border-radius:6px;padding:.5rem 1rem;color:#8b93b0;cursor:pointer;font-size:12px">Annuler</button>
-      <button onclick="saveAddPlayer()" style="background:#4f8ef7;border:none;border-radius:6px;padding:.5rem 1rem;color:#fff;cursor:pointer;font-size:12px;font-weight:600">Ajouter</button>
-    </div>
-  </div>
-</div>
-
 
 <!-- Modal clôture de saison -->
 <div id="close-season-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:10001;align-items:center;justify-content:center">
