@@ -1860,6 +1860,15 @@
           "scorers": {
             "78": 3
           }
+        },
+        "0_2": {
+          "home": "Algérie",
+          "away": "Turquie",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {
+            "97": 1
+          }
         }
       },
       "groupMatches": {},
