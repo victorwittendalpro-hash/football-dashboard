@@ -625,6 +625,8 @@ function ghApplyData(data) {
   }
   // Recalculer les buts S8 de tous les joueurs depuis matchDetails restauré
   try { rebuildPlayerGoalsFromDetails(); } catch(e) {}
+  // Recalculer les buts en sélection depuis snMatchData restauré
+  try { rebuildSnGoalsFromMatches(); } catch(e) {}
   try { renderSaisonEnCours(); } catch(e) {}
   try { if (typeof tblFilter === 'function') tblFilter(); } catch(e) {}
   GH._showStatus('loaded');
@@ -5685,31 +5687,46 @@ function snGetR16Team(i, side) {
 function snRenderScorers(cfg) {
   var sn = currentSeasonNum || 8;
   var panel = document.getElementById('sn-panel');
-  var scorers = SN_DATA.buteurs.slice().sort(function(a,b){ return b.total-a.total; });
+
+  // Buteurs Excel originaux (palmarès historique pour cette compétition)
+  var compKey = {cdm:'cdm', euro:'euro', copa:'copa', can:'can'}[cfg.id];
+  var excelScorers = SN_DATA.buteurs
+    .filter(function(s) { return (s[compKey] || 0) > 0; })
+    .map(function(s) { return {name: s.name, goals: s[compKey], idx: null}; });
+
+  // Buteurs saisis en direct pour cette compétition
+  var liveScorers = snComputeScorers(cfg.id);
+
+  // Fusionner : si un joueur a des buts saisis ET dans Excel pour la même compét,
+  // on additionne (les saisis viennent en plus des éditions précédentes connues)
+  var merged = {};
+  excelScorers.forEach(function(s) {
+    merged[s.name] = {name: s.name, goals: s.goals};
+  });
+  liveScorers.forEach(function(s) {
+    if (merged[s.name]) merged[s.name].goals += s.goals;
+    else merged[s.name] = {name: s.name, goals: s.goals};
+  });
+
+  var scorers = Object.values(merged).sort(function(a, b) { return b.goals - a.goals; });
+
   var h = snSubnavHTML(cfg, 'scorers')
     + '<div class="sn-sec-hdr"><span style="font-size:1.4rem">⚽</span>'
-    + '<div><div class="sn-sec-title">Buteurs en Sélection</div>'
-    + '<div class="sn-sec-sub">Toutes compétitions confondues</div></div></div>'
+    + '<div><div class="sn-sec-title">Buteurs — ' + cfg.label + '</div>'
+    + '<div class="sn-sec-sub">Historique + buts saisis en S' + sn + '</div></div></div>'
     + '<div class="sn-content">'
-    + scorers.filter(function(s){return s.total>0;}).map(function(s,i){
-        var c = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
-        var detail = [];
-        if(s.euro>0) detail.push('EURO:'+s.euro);
-        if(s.copa>0) detail.push('COPA:'+s.copa);
-        if(s.cdm>0)  detail.push('CDM:'+s.cdm);
+    + (scorers.length ? scorers.map(function(s, i) {
+        var c = i === 0 ? '#f5c842' : i === 1 ? '#c0c0c0' : i === 2 ? '#cd7f32' : '#8b93b0';
         return '<div class="sn-sc-row">'
-          +'<div class="sn-sc-rank" style="color:'+c+'">'+(i+1)+'</div>'
-          +'<div class="sn-sc-name">'+s.name+'</div>'
-          +'<div class="sn-sc-goals">'+s.total+'</div>'
-          +'<div class="sn-sc-detail">'+detail.join(' ')+'</div>'
-          +'</div>';
-      }).join('')
+          + '<div class="sn-sc-rank" style="color:' + c + '">' + (i + 1) + '</div>'
+          + '<div class="sn-sc-name">' + s.name + '</div>'
+          + '<div class="sn-sc-goals">' + s.goals + '</div>'
+          + '</div>';
+      }).join('') : '<div style="padding:1.5rem;text-align:center;color:#5a6080">Aucun buteur enregistré</div>')
     + '</div>';
   panel.innerHTML = h;
   snAttachSubnav();
 }
-
-// ── Palmarès ─────────────────────────────────────────────────────
 function snRenderPalmares(cfg) {
   var panel = document.getElementById('sn-panel');
   var pal = SN_DATA.palmares;
@@ -5754,6 +5771,98 @@ function snRenderPalmares(cfg) {
 }
 
 // ── Modal saisie match ────────────────────────────────────────────
+
+// ── Recalculer les buts en sélection de tous les joueurs depuis snMatchData ──
+function rebuildSnGoalsFromMatches() {
+  if (!snMatchData) return;
+  var goalsByPlayer = {}; // pidx (string) -> total buts SN saisis
+
+  Object.keys(snMatchData).forEach(function(compId) {
+    var comp = snMatchData[compId];
+    if (!comp) return;
+    ['qualifMatches','groupMatches','koMatches'].forEach(function(bucket) {
+      var matches = comp[bucket];
+      if (!matches) return;
+      // groupMatches est imbriqué par poule: {A:{key:match}, B:{...}}
+      if (bucket === 'groupMatches') {
+        Object.keys(matches).forEach(function(g) {
+          Object.keys(matches[g] || {}).forEach(function(key) {
+            var m = matches[g][key];
+            var sc = (m && m.scorers) || {};
+            Object.keys(sc).forEach(function(pidx) {
+              goalsByPlayer[pidx] = (goalsByPlayer[pidx] || 0) + sc[pidx];
+            });
+          });
+        });
+      } else {
+        Object.keys(matches).forEach(function(key) {
+          var m = matches[key];
+          var sc = (m && m.scorers) || {};
+          Object.keys(sc).forEach(function(pidx) {
+            goalsByPlayer[pidx] = (goalsByPlayer[pidx] || 0) + sc[pidx];
+          });
+        });
+      }
+    });
+  });
+
+  // Conserver les buts SN originaux (Excel) une seule fois, puis ajouter les saisis
+  Object.keys(goalsByPlayer).forEach(function(pidx) {
+    var pi = parseInt(pidx);
+    var p  = ALL[pi];
+    if (!p) return;
+    if (p._origSN === undefined) p._origSN = p.SN || 0;
+    var newSN = p._origSN + goalsByPlayer[pidx];
+    var prevSN = p.SN || 0;
+    p.SN = newSN;
+    p.total = (p.total || 0) - prevSN + newSN;
+  });
+
+  // Pour les joueurs sans but saisi mais ayant un _origSN déjà mémorisé,
+  // s'assurer qu'on ne les a pas oubliés (cas où tous leurs buts ont été retirés)
+  ALL.forEach(function(p, pi) {
+    if (p._origSN !== undefined && !goalsByPlayer.hasOwnProperty(String(pi))) {
+      var prevSN = p.SN || 0;
+      p.SN = p._origSN;
+      p.total = (p.total || 0) - prevSN + p._origSN;
+    }
+  });
+}
+
+// ── Classement des buteurs en sélection, calculé depuis snMatchData ─────────
+function snComputeScorers(compId) {
+  var goalsByPlayer = {}; // pidx -> total pour cette compétition
+  var comp = snMatchData[compId];
+  if (!comp) return [];
+  ['qualifMatches','groupMatches','koMatches'].forEach(function(bucket) {
+    var matches = comp[bucket];
+    if (!matches) return;
+    if (bucket === 'groupMatches') {
+      Object.keys(matches).forEach(function(g) {
+        Object.keys(matches[g] || {}).forEach(function(key) {
+          var m = matches[g][key];
+          var sc = (m && m.scorers) || {};
+          Object.keys(sc).forEach(function(pidx) {
+            goalsByPlayer[pidx] = (goalsByPlayer[pidx] || 0) + sc[pidx];
+          });
+        });
+      });
+    } else {
+      Object.keys(matches).forEach(function(key) {
+        var m = matches[key];
+        var sc = (m && m.scorers) || {};
+        Object.keys(sc).forEach(function(pidx) {
+          goalsByPlayer[pidx] = (goalsByPlayer[pidx] || 0) + sc[pidx];
+        });
+      });
+    }
+  });
+  return Object.keys(goalsByPlayer).map(function(pidx) {
+    var p = ALL[parseInt(pidx)];
+    return {idx: parseInt(pidx), name: p ? p.name : 'Joueur ' + pidx, goals: goalsByPlayer[pidx]};
+  }).sort(function(a, b) { return b.goals - a.goals; });
+}
+
 function snOpenMatch(compId, group, matchKey, home, away) {
   snModalCtx = {type:'group', compId, group, matchKey, home, away};
   snScorerEntries = [];
@@ -5951,18 +6060,15 @@ function snSaveMatch() {
     snMatchData[ctx.compId].koMatches[ctx.key]=entry;
   }
 
-  // Mettre à jour les buts en SN des joueurs
-  Object.keys(scorers).forEach(function(pidx){
-    var pi=parseInt(pidx);
-    if(ALL[pi]){
-      if(!ALL[pi].sn_goals) ALL[pi].sn_goals=0;
-      // On ne cumule pas ici — géré via snMatchData au rechargement
-    }
-  });
+  // Recalculer les buts en sélection de tous les joueurs concernés
+  rebuildSnGoalsFromMatches();
 
   GH.save();
   snCloseModal();
   snRender();
+  // Re-render la fiche joueur si ouverte + le tableau comparatif
+  try { if (typeof ai !== 'undefined' && ai >= 0 && typeof renderProfile === 'function') renderProfile(ai); } catch(e) {}
+  try { if (typeof tblFilter === 'function') tblFilter(); } catch(e) {}
 }
 
 // ── GH integration ───────────────────────────────────────────────
