@@ -1246,7 +1246,9 @@
   },
   "currentSeasonNum": 8,
   "archives": [],
-  "playerLigueOverrides": {},
+  "playerLigueOverrides": {
+    "195": "BU"
+  },
   "playerClubOverrides": {},
   "elKoDetails": {},
   "cupData": {
