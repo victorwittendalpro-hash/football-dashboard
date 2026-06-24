@@ -1247,6 +1247,7 @@
   "currentSeasonNum": 8,
   "archives": [],
   "playerLigueOverrides": {
+    "164": "SA",
     "195": "BU"
   },
   "playerClubOverrides": {},
