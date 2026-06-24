@@ -1247,8 +1247,11 @@
   "currentSeasonNum": 8,
   "archives": [],
   "playerLigueOverrides": {
+    "90": "BU",
+    "147": "SA",
     "164": "SA",
-    "195": "BU"
+    "195": "BU",
+    "196": "SA"
   },
   "playerClubOverrides": {},
   "elKoDetails": {},
