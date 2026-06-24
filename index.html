@@ -2583,12 +2583,13 @@ function renderSaisonEnCours() {
     var LG_CODE = {'Premier League':'PL','Serie A':'SA','Liga':'LA','Ligue 1':'L1','Bundesliga':'BU'};
     var lgCode  = LG_CODE[lg] || '';
     var scorerMap = {};
-    // 1. Buts initiaux depuis ALL[i].seasons['S8']
+    // 1. Buts Excel originaux (base immuable, AVANT les saisies manuelles)
     ALL.forEach(function(p, pidx) {
       var effectiveLigue = (window._playerLigueOverrides && window._playerLigueOverrides[pidx])
         ? window._playerLigueOverrides[pidx] : p.ligue;
       if (effectiveLigue !== lgCode) return;
-      var g = (p.seasons && p.seasons['S8']) || 0;
+      // Utiliser _origS8 (valeur Excel figée) si disponible, sinon seasons['S8'] (pas encore modifié)
+      var g = (p._origS8 !== undefined) ? p._origS8 : ((p.seasons && p.seasons['S8']) || 0);
       if (g > 0) scorerMap[pidx] = {name: p.name, goals: g};
     });
     // 2. Ajouter les buts saisis manuellement dans matchDetails
