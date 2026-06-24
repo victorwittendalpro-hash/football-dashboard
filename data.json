@@ -1247,7 +1247,12 @@
   "currentSeasonNum": 8,
   "archives": [],
   "playerLigueOverrides": {
+    "34": "PL",
+    "39": "PL",
     "90": "BU",
+    "121": "LA",
+    "136": "PL",
+    "145": "PL",
     "147": "SA",
     "164": "SA",
     "195": "BU",
