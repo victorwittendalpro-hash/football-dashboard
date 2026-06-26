@@ -493,8 +493,8 @@ var GH = {
   _showStatus: function(state) {
     var el = document.getElementById('gh-status');
     if (!el) return;
-    var icons = {saving:'⏳ Sauvegarde...', saved:'✓ Sauvegardé', error:'✗ Erreur sync', loaded:'✓ Connecté'};
-    var colors = {saving:'#f7944f', saved:'#3ecf8e', error:'#f76f6f', loaded:'#3ecf8e'};
+    var icons = {saving:'⏳ Sauvegarde...', saved:'✓ Sauvegardé', error:'✗ Erreur sync', loaded:'✓ Connecté', synced:'🔄 Mis à jour'};
+    var colors = {saving:'#f7944f', saved:'#3ecf8e', error:'#f76f6f', loaded:'#3ecf8e', synced:'#4f8ef7'};
     el.textContent = icons[state] || '✓ Sync';
     el.style.color = colors[state] || '#3ecf8e';
     if (state === 'saved' || state === 'loaded') {
