@@ -4434,70 +4434,100 @@ function elKoPropagate() {
 function elRenderKnockout() {
   elKoPropagate();
   var b = EL_KO_DATA.bracket;
+  var sn = currentSeasonNum || 8;
+
+  var html = '<div class="cl-section-header">'
+    + '<span style="font-size:1.4rem">🟠</span>'
+    + '<div><div class="cl-section-title">Phase Finale — Europa League S' + sn + '</div>'
+    + '<div class="cl-section-sub">16 équipes · Cliquez sur un match pour saisir les résultats (aller + retour)</div></div>'
+    + '</div>'
+    + '<div class="cl-content">'
+    + '<div class="cl-ko-wrap">';
+
   var rounds = [
-    {key:'r16', label:'1/8 de Finale',  matches: b.r16, count:8},
-    {key:'qf',  label:'Quarts de Finale', matches: b.qf,  count:4},
-    {key:'sf',  label:'Demi-Finales',   matches: b.sf,  count:2},
-    {key:'final',label:'Finale',         matches: [b.final], count:1},
+    {key:'r16',   label:'1/8 de Finale',  matches: b.r16, count:8},
+    {key:'qf',    label:'1/4 de Finale',  matches: b.qf,  count:4},
+    {key:'sf',    label:'Demi-Finales',   matches: b.sf,  count:2},
+    {key:'final', label:'Finale',         matches: [b.final], count:1},
   ];
 
-  var html = '<div class="el-section-header">'
-    + '<span style="font-size:1.4rem">🟠</span>'
-    + '<div><div class="el-section-title">Phase Finale — Europa League S' + (currentSeasonNum||8) + '</div>'
-    + '<div class="el-section-sub">16 équipes · Cliquez sur un match pour saisir les résultats</div></div>'
-    + '</div><div class="el-content"><div class="cl-ko-wrap">';
-
+  html += '<div class="cl-bracket">';
   rounds.forEach(function(round) {
-    html += '<div class="cl-ko-col">'
-      + '<div class="cl-ko-round-label">' + round.label + '</div>';
+    html += '<div class="cl-bracket-col">'
+      + '<div class="cl-bracket-label">' + round.label + '</div>'
+      + '<div class="cl-bracket-matches" style="--count:' + round.count + '">';
 
     round.matches.forEach(function(match, mi) {
-      var mKey = round.key + '_' + mi;
+      var mKey = round.key === 'final' ? 'final' : round.key + '_' + mi;
       var stored = elKoDetails[mKey];
       if (stored) {
         match.leg1 = stored.leg1;
         match.leg2 = stored.leg2;
       }
-      var hasL1 = !!(match.leg1 && (match.leg1.home_score != null || match.leg1.home != null));
-      var hasL2 = !!(match.leg2 && (match.leg2.home_score != null || match.leg2.home != null));
-      var status = !match.home ? 'pending'
-                 : (!hasL1 && !hasL2 ? 'not-started'
-                 : (!hasL2 ? 'first-leg' : 'done'));
-      var statusLabel = {'not-started':'Pas commencé','first-leg':'Retour à jouer',done:'Terminé'}[status] || '';
-      var statusColor = {'not-started':'#5a6080','first-leg':'#f7944f',done:'#3ecf8e'}[status] || 'transparent';
-      var w = status === 'done' ? elKoWinner(match) : '';
-      var agg = status !== 'not-started' ? elKoAggregate(match) : null;
+      var agg    = elKoAggregate(match);
+      var winner = (match.leg1 && match.leg2) ? elKoWinner(match) : '';
+      var hasL1  = !!(match.leg1 && (match.leg1.home_score != null || match.leg1.home != null));
+      var hasL2  = !!(match.leg2 && (match.leg2.home_score != null || match.leg2.home != null));
+      var status = !match.home ? 'pending' : (!hasL1 && !hasL2 ? 'not-started' : (!hasL2 ? 'first-leg' : 'done'));
+      var statusLabel = {pending:'', 'not-started':'Pas commencé', 'first-leg':'Retour à jouer', done:'Terminé'}[status];
+      var statusColor = {'not-started':'#5a6080', 'first-leg':'#f7944f', done:'#3ecf8e'}[status] || 'transparent';
 
       html += '<div class="cl-ko-match cl-ko-' + status + '" onclick="elKoOpenMatch(\'' + mKey + '\',' + mi + ',\'' + round.key + '\')">';
+
       if (!match.home) {
-        html += '<div class="cl-ko-team pending-team">À déterminer</div>'
-          + '<div class="cl-ko-team pending-team">À déterminer</div>';
+        html += '<div class="cl-ko-tbd"><span>À déterminer</span></div>';
       } else {
+        var hWin = winner === match.home;
+        var aWin = winner === match.away;
         var logoH = (typeof clubLogo === 'function') ? clubLogo(match.home, 14) : '';
         var logoA = (typeof clubLogo === 'function') ? clubLogo(match.away, 14) : '';
-        html += '<div class="cl-ko-team' + (w===match.home?' cl-ko-winner':'') + '">'
-          + logoH + '<span>' + match.home + '</span>'
-          + (agg ? '<span class="cl-ko-score' + (agg.h>agg.a?' cl-ko-score-win':'') + '">' + agg.h + '</span>' : '')
-          + '</div>'
-          + '<div class="cl-ko-team' + (w===match.away?' cl-ko-winner':'') + '">'
-          + logoA + '<span>' + match.away + '</span>'
-          + (agg ? '<span class="cl-ko-score' + (agg.a>agg.h?' cl-ko-score-win':'') + '">' + agg.a + '</span>' : '')
+
+        // Équipe domicile
+        html += '<div class="cl-ko-team ' + (hWin ? 'winner' : '') + '">'
+          + '<span class="cl-ko-name">' + logoH + match.home + '</span>'
+          + (agg ? '<span class="cl-ko-agg ' + (hWin ? 'cl-ko-win-score' : '') + '">' + agg.h + '</span>' : '')
           + '</div>';
+
+        // Détail des deux manches
+        if (agg) {
+          html += '<div class="cl-ko-scores">';
+          if (match.leg1) html += '<div class="cl-ko-leg"><span class="cl-ko-leg-label">A</span>' + (match.leg1.home_score != null ? match.leg1.home_score : 0) + '-' + (match.leg1.away_score != null ? match.leg1.away_score : 0) + '</div>';
+          if (match.leg2) html += '<div class="cl-ko-leg"><span class="cl-ko-leg-label">R</span>' + (match.leg2.home_score != null ? match.leg2.home_score : 0) + '-' + (match.leg2.away_score != null ? match.leg2.away_score : 0) + '</div>';
+          html += '</div>';
+        } else {
+          html += '<div class="cl-ko-vs">VS</div>';
+        }
+
+        // Équipe extérieur
+        html += '<div class="cl-ko-team ' + (aWin ? 'winner' : '') + '">'
+          + '<span class="cl-ko-name">' + logoA + match.away + '</span>'
+          + (agg ? '<span class="cl-ko-agg ' + (aWin ? 'cl-ko-win-score' : '') + '">' + agg.a + '</span>' : '')
+          + '</div>';
+
+        if (statusLabel) {
+          html += '<div class="cl-ko-status" style="color:' + statusColor + '">' + statusLabel + '</div>';
+        }
       }
-      if (statusLabel) {
-        html += '<div class="cl-ko-status" style="color:' + statusColor + '">' + statusLabel + '</div>';
-      }
-      html += '</div>';
+      html += '</div>'; // cl-ko-match
     });
 
-    html += '</div>';
+    html += '</div></div>'; // matches + col
   });
 
-  html += '</div></div>';
+  // Trophée du champion
+  var champion = (b.final.leg1 && b.final.leg2) ? elKoWinner(b.final) : '';
+  html += '<div class="cl-bracket-col cl-bracket-col-trophy">'
+    + '<div class="cl-bracket-label">Champion</div>'
+    + '<div class="cl-bracket-trophy">'
+    + (champion && champion !== 'TBD'
+        ? '<div class="cl-trophy-winner">🏆<div>' + champion + '</div></div>'
+        : '<div class="cl-trophy-pending">🏆<div>?</div></div>')
+    + '</div></div>';
+
+  html += '</div></div></div>'; // bracket + content + wrap
+
   document.getElementById('el-panel').innerHTML = html;
 }
-
-// ── Saisie résultats KO ───────────────────────────────────────────
 function elKoOpenMatch(mKey, mi, roundKey) {
   var b = EL_KO_DATA.bracket;
   var match = {
