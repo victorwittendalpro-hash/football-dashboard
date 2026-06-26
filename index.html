@@ -436,28 +436,62 @@ var GH = {
     }, 15000);
   },
 
+  _deepCount: function(obj) {
+    if (obj === null || obj === undefined) return 0;
+    if (typeof obj !== 'object') return 1;
+    var n = 0;
+    if (Array.isArray(obj)) {
+      obj.forEach(function(v) { n += GH._deepCount(v); });
+    } else {
+      Object.keys(obj).forEach(function(k) { n += GH._deepCount(obj[k]); });
+    }
+    return n;
+  },
+  _mergeRemote: function(local, remote) {
+    if (!remote) return local;
+    var merged = {};
+    var allKeys = Object.keys(Object.assign({}, local, remote));
+    allKeys.forEach(function(key) {
+      if (key === 'currentSeasonNum') {
+        merged[key] = Math.max(local[key] || 0, remote[key] || 0);
+        return;
+      }
+      if (key === 'version') { merged[key] = local[key] || remote[key] || 1; return; }
+      var localCount  = GH._deepCount(local[key]);
+      var remoteCount = GH._deepCount(remote[key]);
+      merged[key] = (remoteCount > localCount) ? remote[key] : local[key];
+    });
+    return merged;
+  },
   _doSave: function() {
     var self = this;
     if (self.saving) { setTimeout(function(){self._doSave();}, 3000); return; }
     self.saving = true;
     self._showStatus('saving');
-    // Fetch le SHA actuel avant de sauvegarder pour éviter les conflits 409
     var shaXhr = new XMLHttpRequest();
     shaXhr.open('GET', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file + '?ref=' + decodeURIComponent(self.branch), true);
     shaXhr.setRequestHeader('Authorization', 'token ' + self.token);
     shaXhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
     shaXhr.onload = function() {
+      var remoteData = null;
       if (shaXhr.status === 200) {
-        try { self.sha = JSON.parse(shaXhr.responseText).sha; } catch(e) {}
+        try {
+          var resp = JSON.parse(shaXhr.responseText);
+          self.sha = resp.sha;
+          remoteData = JSON.parse(decodeURIComponent(escape(atob(resp.content.replace(/\n/g, '')))));
+        } catch(e) {}
       }
-      self._doWrite();
+      self._doWrite(remoteData);
     };
-    shaXhr.onerror = function() { self._doWrite(); };
+    shaXhr.onerror = function() { self._doWrite(null); };
     shaXhr.send();
   },
-  _doWrite: function() {
+  _doWrite: function(remoteData) {
     var self = this;
     var data = self.collectData();
+    if (remoteData) {
+      data = self._mergeRemote(data, remoteData);
+    }
     // Sauvegarder localement avant le PUT (filet de sécurité)
     self._saveLocal(data);
     var content;
