@@ -396,6 +396,45 @@ var GH = {
     if (self.saveTimer) clearTimeout(self.saveTimer);
     self._doSave();
   },
+  startPolling: function() {
+    var self = this;
+    if (self._pollTimer) return;
+    self._pollTimer = setInterval(function() {
+      if (self.saving || self.saveTimer) return;
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', self.url(), true);
+      xhr.setRequestHeader('Authorization', 'token ' + self.token);
+      xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+      xhr.onload = function() {
+        if (xhr.status !== 200) return;
+        try {
+          var resp = JSON.parse(xhr.responseText);
+          if (resp.sha === self.sha) return;
+          var content = JSON.parse(decodeURIComponent(escape(atob(resp.content.replace(/\n/g, '')))));
+          self.sha = resp.sha;
+          if (typeof ghApplyData === 'function') {
+            ghApplyData(content);
+            self._showStatus('synced');
+            try {
+              var activeTab = document.querySelector('.extra-pane[style*="block"]');
+              if (activeTab) {
+                var tabId = activeTab.id.replace('xpane-', '');
+                if (tabId === 's8'   && typeof renderSaisonEnCours === 'function') renderSaisonEnCours();
+                else if (tabId === 'cl'   && typeof clRender === 'function') clRender();
+                else if (tabId === 'el'   && typeof elRender === 'function') elRender();
+                else if (tabId === 'cups' && typeof cupsRender === 'function') cupsRender();
+                else if (tabId === 'sn'   && typeof snRender === 'function') snRender();
+              }
+              if (typeof tblFilter === 'function') tblFilter();
+              if (typeof ai !== 'undefined' && ai >= 0 && typeof renderProfile === 'function') renderProfile(ai);
+            } catch(e) {}
+          }
+        } catch(e) { console.warn('Poll parse error:', e); }
+      };
+      xhr.onerror = function() {};
+      xhr.send();
+    }, 15000);
+  },
 
   _doSave: function() {
     var self = this;
@@ -976,6 +1015,7 @@ sel(0);
 GH.load(function(err, data) {
   if (err) { console.warn('GH load:', err); return; }
   ghApplyData(data);
+  GH.startPolling();
   // Re-render après chargement si onglet actif
   var activeTab = document.querySelector('.extra-pane[style*="block"]');
   if (activeTab) {
