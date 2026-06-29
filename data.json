@@ -1914,10 +1914,11 @@
       },
       "leg2": {
         "home_score": 0,
-        "away_score": 0
+        "away_score": 5
       },
       "scorers": {
-        "9": 1
+        "138": 4,
+        "164": 2
       }
     },
     "r16_5": {
