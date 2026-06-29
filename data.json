@@ -2568,6 +2568,36 @@
       "_custom": true,
       "_origSN": 0,
       "_origS8": 8
+    },
+    {
+      "rank": 202,
+      "name": "Matheus Martins",
+      "nameRaw": "Matheus Martins",
+      "age": 22,
+      "post": "AiG",
+      "ligue": "SA",
+      "currentClub": "Côme",
+      "career": {
+        "S8": "Côme"
+      },
+      "total": 5,
+      "CL": 0,
+      "SN": 0,
+      "CH": 5,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S8": 5
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true
     }
   ],
   "awardsData": {
