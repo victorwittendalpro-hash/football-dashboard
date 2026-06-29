@@ -232,6 +232,7 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
   <button class="tab-btn" onclick="switchTab('cups')">🏆 Coupes</button>
   <button class="tab-btn" onclick="switchTab('sn')">🌍 Sélections</button>
   <button class="tab-btn" onclick="switchTab('history')">📚 Historique</button>
+  <button class="tab-btn" onclick="switchTab('awards')">🏅 Récompenses</button>
 </div>
 <div id="tab-profiles" class="tab-pane active">
 <div class="layout">
@@ -605,6 +606,7 @@ var GH = {
       cupData:              (typeof CUP_DATA !== 'undefined') ? CUP_DATA : {},
       snMatchData:          (typeof snMatchData !== 'undefined') ? snMatchData : {},
       customPlayers:        window._customPlayers || [],
+      awardsData:           (typeof AWARDS_DATA !== 'undefined') ? AWARDS_DATA : {},
     };
   }
 };
@@ -707,6 +709,11 @@ function ghApplyData(data) {
   try { rebuildPlayerGoalsFromDetails(); } catch(e) {}
   // Recalculer les buts en sélection depuis snMatchData restauré
   try { rebuildSnGoalsFromMatches(); } catch(e) {}
+  if (data.awardsData && typeof AWARDS_DATA !== 'undefined') {
+    Object.keys(data.awardsData).forEach(function(compId) {
+      if (AWARDS_DATA[compId]) AWARDS_DATA[compId] = data.awardsData[compId];
+    });
+  }
   // Restaurer les joueurs ajoutés manuellement (persistance)
   if (data.customPlayers && data.customPlayers.length) {
     window._customPlayers = data.customPlayers;
@@ -1074,6 +1081,7 @@ function switchTab(tab) {
   if (tab === 'el')    { try { elInitEL(); }           catch(e) {} }
   if (tab === 'cups')  { try { cupsInit(); }           catch(e) {} }
   if (tab === 'sn')    { try { snInit(); }             catch(e) {} }
+  if (tab === 'awards'){ try { awardsInit(); }         catch(e) {} }
 }
 
 // ===== TABLE =====
@@ -6511,6 +6519,245 @@ function executeCloseEuroSeason() {
     + (q.clWinner ? '🏆 Champions League : ' + q.clWinner + '\n' : '')
     + (q.elWinner ? '🟠 Europa League : ' + q.elWinner + '\n' : '')
     + '\n' + q.cl.length + ' équipes qualifiées en CL, ' + q.el.length + ' en EL pour S' + (sn+1) + '.');
+}
+
+</script>
+
+<div id="xpane-awards" class="extra-pane" style="display:none">
+<style>
+#xpane-awards{display:none}
+.aw-wrap{display:grid;grid-template-columns:200px 1fr;height:calc(100vh - 98px);overflow:hidden}
+@media(max-width:700px){.aw-wrap{grid-template-columns:1fr;height:auto}}
+.aw-nav{background:#13161e;border-right:1px solid #252a38;display:flex;flex-direction:column;overflow-y:auto}
+.aw-nav-title{padding:.75rem 1rem;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#5a6080;border-bottom:1px solid #252a38}
+.aw-tab{display:flex;align-items:center;gap:.5rem;padding:.55rem .75rem;cursor:pointer;border-left:3px solid transparent;font-size:12px;font-weight:500;color:#8b93b0;transition:all .12s}
+.aw-tab:hover{background:#1a1e28;color:#e8eaf0}
+.aw-tab.on{border-left-color:var(--aw-color,#f5c842);color:#e8eaf0;background:#1a1e2855}
+.aw-tab .aw-icon{font-size:1rem;width:22px;text-align:center}
+.aw-panel{flex:1;overflow-y:auto}
+.aw-panel::-webkit-scrollbar{width:4px}
+.aw-panel::-webkit-scrollbar-thumb{background:#252a38}
+.aw-sec-hdr{padding:.875rem 1.25rem;border-bottom:1px solid #252a38;background:#13161e;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:.75rem}
+.aw-sec-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff}
+.aw-sec-sub{font-size:12px;color:#5a6080}
+.aw-content{padding:1rem 1.25rem}
+.aw-row{display:flex;align-items:center;gap:.875rem;padding:.65rem .875rem;background:#13161e;border:1px solid #252a38;border-radius:10px;margin-bottom:.5rem;transition:border-color .15s}
+.aw-row:hover{border-color:var(--aw-color,#f5c842)}
+.aw-row.empty{opacity:.55;border-style:dashed}
+.aw-season{font-family:'Syne',sans-serif;font-weight:800;color:var(--aw-color,#f5c842);width:46px;font-size:13px;flex-shrink:0}
+.aw-trophy{font-size:1.3rem;flex-shrink:0}
+.aw-name{flex:1;font-size:14px;font-weight:700;color:#e8eaf0}
+.aw-meta{font-size:11px;color:#5a6080}
+.aw-edit-btn{background:none;border:1px solid #252a38;border-radius:6px;padding:.3rem .6rem;color:#5a6080;cursor:pointer;font-size:11px;flex-shrink:0;transition:all .15s}
+.aw-edit-btn:hover{border-color:var(--aw-color,#f5c842);color:var(--aw-color,#f5c842)}
+.aw-rank-card{display:flex;align-items:center;gap:.75rem;padding:.6rem .875rem;background:#13161e;border:1px solid #252a38;border-radius:10px;margin-bottom:.4rem}
+.aw-rank-num{width:24px;text-align:center;font-weight:800;font-size:13px}
+.aw-rank-name{flex:1;font-size:13px;font-weight:600;color:#e8eaf0}
+.aw-rank-count{display:flex;gap:.3rem}
+.aw-rank-badge{font-size:11px;background:#1a1e28;border-radius:5px;padding:2px 7px;font-weight:700}
+</style>
+<div class="aw-wrap">
+  <div class="aw-nav">
+    <div class="aw-nav-title">🏅 Récompenses</div>
+    <div id="aw-tabs-list"></div>
+  </div>
+  <div class="aw-panel" id="aw-panel">
+    <div style="display:flex;align-items:center;justify-content:center;height:200px;color:#5a6080">Chargement…</div>
+  </div>
+</div>
+<!-- Modal édition récompense -->
+<div id="aw-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:10006;align-items:center;justify-content:center">
+  <div style="background:#13161e;border:1px solid #252a38;border-radius:14px;padding:1.5rem;width:380px;max-width:95vw">
+    <div style="font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:800;color:#fff;margin-bottom:1rem" id="aw-modal-title"></div>
+    <div style="margin-bottom:.6rem">
+      <label style="font-size:11px;color:#5a6080;display:block;margin-bottom:3px">Joueur</label>
+      <input id="aw-name" type="text" placeholder="ex: Mbappe"
+        style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.5rem .65rem;color:#e8eaf0;font-size:13px;outline:none">
+    </div>
+    <div style="margin-bottom:.6rem">
+      <label style="font-size:11px;color:#5a6080;display:block;margin-bottom:3px">Nationalité</label>
+      <input id="aw-nat" type="text" placeholder="ex: France"
+        style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.5rem .65rem;color:#e8eaf0;font-size:13px;outline:none">
+    </div>
+    <div style="margin-bottom:1rem">
+      <label style="font-size:11px;color:#5a6080;display:block;margin-bottom:3px">Club (cette saison)</label>
+      <input id="aw-club" type="text" placeholder="ex: PSG"
+        style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.5rem .65rem;color:#e8eaf0;font-size:13px;outline:none">
+    </div>
+    <div style="display:flex;gap:.5rem;justify-content:flex-end">
+      <button onclick="awCloseModal()" style="background:#252a38;border:none;border-radius:7px;padding:.5rem 1.1rem;color:#8b93b0;cursor:pointer;font-size:12px">Annuler</button>
+      <button onclick="awSaveAward()" style="background:var(--aw-color,#f5c842);border:none;border-radius:7px;padding:.5rem 1.1rem;color:#0d0f14;cursor:pointer;font-size:12px;font-weight:700">Enregistrer</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+
+// ══════════════════════════════════════════════════════════════════
+// RÉCOMPENSES — BALLON D'OR / GOLDEN BOY
+// ══════════════════════════════════════════════════════════════════
+var AWARDS_DATA = {"ballon_dor":[{"season":"S-4","name":"Gedson","nat":"Portugal","club":"AS Roma"},{"season":"S-3","name":"Messi","nat":"Argentine","club":"FC Barcelone"},{"season":"S-2","name":"Fekir","nat":"France","club":"Manchester United"},{"season":"S-1","name":"Mbappe","nat":"France","club":"PSG"},{"season":"S1","name":"Paulinho","nat":"Brésil","club":"FC Barcelone"},{"season":"S2","name":"Brobbey","nat":"Pays-Bas","club":"Inter Milan"},{"season":"S3","name":"Mbappe","nat":"France","club":"Real Madrid"},{"season":"S4","name":"Traorè","nat":"Côte d'Ivoire","club":"Manchester United"},{"season":"S5","name":"Brobbey","nat":"Pays-Bas","club":"Arsenal"},{"season":"S6","name":"Brobbey","nat":"Pays-Bas","club":"Arsenal"},{"season":"S7","name":null,"nat":null,"club":null}],"golden_boy":[{"season":"S-4","name":"Mbappe","nat":"France","club":"PSG"},{"season":"S-3","name":"Paulinho","nat":"Brésil","club":"AC Milan"},{"season":"S-2","name":"Traorè","nat":"Côte d'Ivoire","club":"Manchester United"},{"season":"S-1","name":"Haaland","nat":"Norvège","club":"AS Roma"},{"season":"S1","name":"Brobbey","nat":"Pays-Bas","club":"Inter Milan"},{"season":"S2","name":"Wahi","nat":"France","club":"OGC Nice"},{"season":"S3","name":"Vitor Roque","nat":"Brésil","club":"AC Milan"},{"season":"S4","name":"Adingra","nat":"Côte d'Ivoire","club":"Manchester United"},{"season":"S5","name":"L. Yamal","nat":"Espagne","club":"FC Barcelone"},{"season":"S6","name":"D. Doué","nat":"France","club":"FC Barcelone"},{"season":"S7","name":null,"nat":null,"club":null}]};
+
+var awCfg = [
+  {id:'ballon_dor', label:"Ballon d'Or",   icon:'🏆', color:'#f5c842', sub:"Meilleur joueur du monde"},
+  {id:'golden_boy',  label:'Golden Boy',    icon:'⭐', color:'#4f8ef7', sub:'Meilleur jeune joueur'},
+  {id:'ranking',     label:'Classement',    icon:'📊', color:'#3ecf8e', sub:'Joueurs les plus titrés'},
+];
+
+var awView = 'ballon_dor';
+var awModalCtx = null;
+
+function awardsInit() {
+  var list = document.getElementById('aw-tabs-list');
+  if (!list) return;
+  list.innerHTML = awCfg.map(function(c) {
+    return '<div class="aw-tab" id="aw-tab-' + c.id + '" data-awid="' + c.id + '" style="--aw-color:' + c.color + '">'
+      + '<span class="aw-icon">' + c.icon + '</span><span>' + c.label + '</span></div>';
+  }).join('');
+  list.querySelectorAll('.aw-tab').forEach(function(el) {
+    el.addEventListener('click', function() { awSelect(this.getAttribute('data-awid')); });
+  });
+  awSelect(awView);
+}
+
+function awSelect(id) {
+  awView = id;
+  document.querySelectorAll('.aw-tab').forEach(function(t) { t.classList.remove('on'); });
+  var tab = document.getElementById('aw-tab-' + id);
+  if (tab) tab.classList.add('on');
+  awRender();
+}
+
+function awCfgById(id) { return awCfg.find(function(c){ return c.id === id; }); }
+
+function awSeasonSort(a, b) {
+  // Trie les saisons type 'S-4','S1','S2'... dans l'ordre chronologique
+  function val(s) {
+    var neg = s.indexOf('-') === 1;
+    var n = parseInt(s.replace('S','').replace('-',''));
+    return neg ? -n : n;
+  }
+  return val(a) - val(b);
+}
+
+function awRender() {
+  var cfg = awCfgById(awView);
+  if (!cfg) return;
+  if (awView === 'ranking') awRenderRanking(cfg);
+  else awRenderList(cfg);
+}
+
+function awRenderList(cfg) {
+  var panel = document.getElementById('aw-panel');
+  var entries = (AWARDS_DATA[cfg.id] || []).slice().sort(function(a,b) { return awSeasonSort(a.season, b.season); });
+
+  var h = '<div class="aw-sec-hdr" style="--aw-color:' + cfg.color + '"><span style="font-size:1.4rem">' + cfg.icon + '</span>'
+    + '<div><div class="aw-sec-title">' + cfg.label + '</div>'
+    + '<div class="aw-sec-sub">' + cfg.sub + ' · depuis S-4</div></div></div>'
+    + '<div class="aw-content" style="--aw-color:' + cfg.color + '">';
+
+  entries.forEach(function(e) {
+    var isEmpty = !e.name;
+    h += '<div class="aw-row' + (isEmpty?' empty':'') + '" style="--aw-color:' + cfg.color + '">'
+      + '<div class="aw-season">' + e.season + '</div>'
+      + '<div class="aw-trophy">' + (isEmpty ? '❔' : cfg.icon) + '</div>'
+      + '<div style="flex:1">'
+      + '<div class="aw-name">' + (e.name || 'À définir') + '</div>'
+      + (e.nat || e.club ? '<div class="aw-meta">' + [e.nat, e.club].filter(Boolean).join(' · ') + '</div>' : '')
+      + '</div>'
+      + '<button class="aw-edit-btn" data-season="' + e.season + '" data-comp="' + cfg.id + '">' + (isEmpty ? '➕ Ajouter' : '✏️ Modifier') + '</button>'
+      + '</div>';
+  });
+
+  h += '</div>';
+  panel.innerHTML = h;
+  panel.querySelectorAll('.aw-edit-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      awOpenModal(this.getAttribute('data-comp'), this.getAttribute('data-season'));
+    });
+  });
+}
+
+function awRenderRanking(cfg) {
+  var panel = document.getElementById('aw-panel');
+  var counts = {}; // name -> {bo: n, gb: n}
+  ['ballon_dor', 'golden_boy'].forEach(function(compId) {
+    (AWARDS_DATA[compId] || []).forEach(function(e) {
+      if (!e.name) return;
+      if (!counts[e.name]) counts[e.name] = {bo: 0, gb: 0};
+      if (compId === 'ballon_dor') counts[e.name].bo++;
+      else counts[e.name].gb++;
+    });
+  });
+
+  var ranked = Object.keys(counts).map(function(name) {
+    var c = counts[name];
+    return {name: name, bo: c.bo, gb: c.gb, total: c.bo + c.gb};
+  }).sort(function(a, b) { return b.total - a.total || b.bo - a.bo; });
+
+  var h = '<div class="aw-sec-hdr" style="--aw-color:' + cfg.color + '"><span style="font-size:1.4rem">' + cfg.icon + '</span>'
+    + '<div><div class="aw-sec-title">Classement des plus titrés</div>'
+    + '<div class="aw-sec-sub">Cumul Ballon d\'Or 🏆 + Golden Boy ⭐</div></div></div>'
+    + '<div class="aw-content" style="--aw-color:' + cfg.color + '">';
+
+  if (!ranked.length) {
+    h += '<div style="padding:1.5rem;text-align:center;color:#5a6080">Aucune récompense enregistrée</div>';
+  } else {
+    ranked.forEach(function(r, i) {
+      var rc = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
+      h += '<div class="aw-rank-card">'
+        + '<div class="aw-rank-num" style="color:' + rc + '">' + (i+1) + '</div>'
+        + '<div class="aw-rank-name">' + r.name + '</div>'
+        + '<div class="aw-rank-count">'
+        + (r.bo > 0 ? '<span class="aw-rank-badge" style="color:#f5c842">🏆×' + r.bo + '</span>' : '')
+        + (r.gb > 0 ? '<span class="aw-rank-badge" style="color:#4f8ef7">⭐×' + r.gb + '</span>' : '')
+        + '</div>'
+        + '</div>';
+    });
+  }
+
+  h += '</div>';
+  panel.innerHTML = h;
+}
+
+// ── Modal édition ─────────────────────────────────────────────────
+function awOpenModal(compId, season) {
+  var cfg = awCfgById(compId);
+  var entry = (AWARDS_DATA[compId] || []).find(function(e) { return e.season === season; });
+  awModalCtx = {compId: compId, season: season};
+  document.getElementById('aw-modal-title').textContent = cfg.label + ' — ' + season;
+  document.getElementById('aw-name').value = (entry && entry.name) || '';
+  document.getElementById('aw-nat').value  = (entry && entry.nat)  || '';
+  document.getElementById('aw-club').value = (entry && entry.club) || '';
+  document.getElementById('aw-modal').style.setProperty('--aw-color', cfg.color);
+  document.getElementById('aw-modal').style.display = 'flex';
+}
+
+function awCloseModal() {
+  document.getElementById('aw-modal').style.display = 'none';
+  awModalCtx = null;
+}
+
+function awSaveAward() {
+  if (!awModalCtx) return;
+  var name = document.getElementById('aw-name').value.trim();
+  var nat  = document.getElementById('aw-nat').value.trim();
+  var club = document.getElementById('aw-club').value.trim();
+
+  var list = AWARDS_DATA[awModalCtx.compId];
+  var entry = list.find(function(e) { return e.season === awModalCtx.season; });
+  if (entry) {
+    entry.name = name || null;
+    entry.nat  = nat  || null;
+    entry.club = club || null;
+  } else {
+    list.push({season: awModalCtx.season, name: name || null, nat: nat || null, club: club || null});
+  }
+
+  GH.saveNow();
+  awCloseModal();
+  awRender();
 }
 
 </script>
