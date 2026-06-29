@@ -2605,9 +2605,9 @@ function renderSaisonEnCours() {
   // Top buteurs européens depuis ALL (source de vérité) + matchDetails
   var LG_CODE_MAP = {'PL':'Premier League','SA':'Serie A','LA':'Liga','L1':'Ligue 1','BU':'Bundesliga'};
   var euScorerMap = {};
-  // 1. Buts initiaux depuis ALL[i].seasons['S8']
+  // 1. Buts Excel originaux (base immuable, AVANT les saisies manuelles)
   ALL.forEach(function(p, pidx) {
-    var g = (p.seasons && p.seasons['S8']) || 0;
+    var g = (p._origS8 !== undefined) ? p._origS8 : ((p.seasons && p.seasons['S8']) || 0);
     if (g <= 0) return;
     var effectiveLigue = (window._playerLigueOverrides && window._playerLigueOverrides[pidx])
       ? window._playerLigueOverrides[pidx] : p.ligue;
