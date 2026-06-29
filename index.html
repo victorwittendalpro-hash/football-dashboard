@@ -4774,16 +4774,53 @@ function elKoCloseModal() {
 }
 
 // ── Buteurs ───────────────────────────────────────────────────────
+// Calcule les buts marqués en direct dans la phase finale EL (toutes manches confondues)
+function elComputeLiveScorers() {
+  var goalsByPlayer = {}; // pidx (string) -> total buts saisis en phase finale
+  Object.keys(elKoDetails).forEach(function(mKey) {
+    var m = elKoDetails[mKey];
+    var sc = (m && m.scorers) || {};
+    Object.keys(sc).forEach(function(pidx) {
+      goalsByPlayer[pidx] = (goalsByPlayer[pidx] || 0) + sc[pidx];
+    });
+  });
+  return goalsByPlayer;
+}
+
 function elRenderScorers() {
-  var scorers = EL_DATA.scorers.slice().sort(function(a,b){ return (b.total||0)-(a.total||0); });
+  var sn = currentSeasonNum || 8;
+
+  // 1. Buteurs historiques (palmarès Excel des saisons précédentes)
+  var merged = {}; // name -> {name, total, seasons}
+  EL_DATA.scorers.forEach(function(s) {
+    merged[s.name] = {name: s.name, total: s.total || 0, seasons: s.seasons || {}};
+  });
+
+  // 2. Ajouter les buts saisis en direct dans la phase finale en cours (résolu via ALL)
+  var liveGoals = elComputeLiveScorers();
+  Object.keys(liveGoals).forEach(function(pidx) {
+    var p = ALL[parseInt(pidx)];
+    var name = p ? p.name : 'Joueur ' + pidx;
+    var g = liveGoals[pidx];
+    if (merged[name]) {
+      merged[name].total += g;
+      merged[name].seasons = merged[name].seasons || {};
+      merged[name].seasons['S' + sn] = (merged[name].seasons['S' + sn] || 0) + g;
+    } else {
+      var seasons = {}; seasons['S' + sn] = g;
+      merged[name] = {name: name, total: g, seasons: seasons};
+    }
+  });
+
+  var scorers = Object.values(merged).sort(function(a,b){ return (b.total||0)-(a.total||0); });
   var rows = scorers.slice(0,50).map(function(s, i) {
     var c = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
-    var s8g = (s.seasons && s.seasons['S' + (currentSeasonNum||8)]) || 0;
+    var s8g = (s.seasons && s.seasons['S' + sn]) || 0;
     return '<div class="el-scorer-row">'
       + '<div class="el-scorer-rank" style="color:' + c + '">' + (i+1) + '</div>'
       + '<div class="el-scorer-name">' + s.name + '</div>'
       + '<div class="el-scorer-goals">' + (s.total||0) + '</div>'
-      + (s8g > 0 ? '<div class="el-scorer-s8">+' + s8g + ' S' + (currentSeasonNum||8) + '</div>' : '')
+      + (s8g > 0 ? '<div class="el-scorer-s8">+' + s8g + ' S' + sn + '</div>' : '')
       + '</div>';
   }).join('');
 
@@ -4791,7 +4828,7 @@ function elRenderScorers() {
     '<div class="el-section-header">'
     + '<span style="font-size:1.4rem">⚽</span>'
     + '<div><div class="el-section-title">Buteurs Europa League</div>'
-    + '<div class="el-section-sub">Classement cumulé toutes saisons</div></div>'
+    + '<div class="el-section-sub">Classement cumulé toutes saisons + buts en direct S' + sn + '</div></div>'
     + '</div>'
     + '<div class="el-content"><div class="cl-table-wrap">' + rows + '</div></div>';
 }
