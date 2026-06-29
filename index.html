@@ -4321,6 +4321,16 @@ clInitCL();
       <div style="font-weight:600;color:#8b93b0;margin-bottom:3px">Qualification</div>
       5e-6e de chaque championnat (S-1) + 17e-22e de la phase CL
     </div>
+    <div style="padding:.75rem;border-top:1px solid #252a38">
+      <button onclick="confirmCloseEuroSeason()"
+        style="width:100%;background:#1a1e28;border:1px solid #f76f6f;border-radius:7px;
+               padding:.5rem;color:#f76f6f;font-size:12px;font-weight:600;cursor:pointer;
+               transition:all .2s"
+        onmouseover="this.style.background='#f76f6f22'"
+        onmouseout="this.style.background='#1a1e28'">
+        🏁 Clôturer la saison
+      </button>
+    </div>
   </div>
   <div class="el-panel" id="el-panel">
     <div style="display:flex;align-items:center;justify-content:center;height:200px;color:#5a6080;font-size:14px">
@@ -6302,6 +6312,195 @@ function submitAddPlayer() {
 
   // Sauvegarde immédiate (sans debounce ni alert bloquant) pour garantir la persistance
   GH.saveNow();
+}
+
+</script>
+
+<div id="close-euro-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:10001;align-items:center;justify-content:center">
+  <div style="background:#13161e;border:1px solid #f76f6f44;border-radius:14px;padding:2rem;width:420px;max-width:95vw;text-align:center">
+    <div style="font-size:2.5rem;margin-bottom:.75rem">🏁</div>
+    <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:.5rem">
+      Clôturer la saison S<span id="close-euro-season-num"></span> ?
+    </div>
+    <div id="close-euro-preview" style="font-size:13px;color:#8b93b0;margin-bottom:1rem;line-height:1.6;text-align:left;background:#0d0f14;border-radius:8px;padding:.75rem"></div>
+    <div style="font-size:12px;color:#8b93b0;margin-bottom:1.5rem;line-height:1.6">
+      Le palmarès sera mis à jour avec le vainqueur et le finaliste.<br>
+      Les phases de ligue CL et les brackets KO seront régénérés selon les nouvelles qualifications.<br>
+      Le numéro de saison passera à <strong id="close-euro-next-season" style="color:#e8eaf0"></strong>.
+    </div>
+    <div style="background:#0d0f14;border-radius:8px;padding:.75rem;margin-bottom:1.5rem;font-size:12px;color:#5a6080">
+      ⚠️ Cette action est irréversible
+    </div>
+    <div style="display:flex;gap:.75rem;justify-content:center">
+      <button onclick="document.getElementById('close-euro-modal').style.display='none'"
+        style="background:#252a38;border:none;border-radius:8px;padding:.6rem 1.5rem;color:#8b93b0;cursor:pointer;font-size:13px">
+        Annuler
+      </button>
+      <button onclick="executeCloseEuroSeason()"
+        style="background:#f76f6f;border:none;border-radius:8px;padding:.6rem 1.5rem;color:#fff;cursor:pointer;font-size:13px;font-weight:700">
+        Clôturer
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+// ══════════════════════════════════════════════════════════════════
+// CLÔTURE DE SAISON — CHAMPIONS LEAGUE / EUROPA LEAGUE
+// ══════════════════════════════════════════════════════════════════
+
+// Calcule les listes de qualifiés CL et EL pour la saison suivante,
+// à partir des classements de championnat et des vainqueurs CL/EL sortants.
+function computeEuroQualifications() {
+  var clWinner = (CL_KO_DATA.bracket.final.leg1 && CL_KO_DATA.bracket.final.leg2)
+    ? clKoWinner(CL_KO_DATA.bracket.final) : null;
+  var elWinner = (EL_KO_DATA.bracket.final.leg1 && EL_KO_DATA.bracket.final.leg2)
+    ? elKoWinner(EL_KO_DATA.bracket.final) : null;
+  if (clWinner === 'TBD') clWinner = null;
+  if (elWinner === 'TBD') elWinner = null;
+
+  var clQualified = [];
+  var elQualified = [];
+
+  if (clWinner) clQualified.push(clWinner);
+  if (elWinner && elWinner !== clWinner) clQualified.push(elWinner);
+
+  LG_ORDER.forEach(function(lg) {
+    var standing = getTeamData(lg); // déjà trié par classement
+    var top4    = standing.slice(0, 4).map(function(t) { return t.name; });
+    var fifth   = standing[4] ? standing[4].name : null;
+    var sixth   = standing[5] ? standing[5].name : null;
+    var seventh = standing[6] ? standing[6].name : null;
+    var eighth  = standing[7] ? standing[7].name : null;
+
+    var clWinnerInTop4 = clWinner && top4.indexOf(clWinner) >= 0;
+    var elWinnerInTop4 = elWinner && elWinner !== clWinner && top4.indexOf(elWinner) >= 0;
+
+    top4.forEach(function(name) {
+      if (clQualified.indexOf(name) < 0) clQualified.push(name);
+    });
+
+    // CL : vainqueur CL/EL déjà en top4 de SON championnat → libère 5e (puis 6e) place CL
+    var clFreedSlots = (clWinnerInTop4 ? 1 : 0) + (elWinnerInTop4 ? 1 : 0);
+    var promotedToCL = [];
+    if (clFreedSlots >= 1 && fifth) { clQualified.push(fifth); promotedToCL.push(fifth); }
+    if (clFreedSlots >= 2 && sixth) { clQualified.push(sixth); promotedToCL.push(sixth); }
+
+    // EL : 5e/6e qualifiés directs, sauf s'ils viennent d'être promus en CL
+    if (fifth && promotedToCL.indexOf(fifth) < 0 && elQualified.indexOf(fifth) < 0) elQualified.push(fifth);
+    if (sixth && promotedToCL.indexOf(sixth) < 0 && elQualified.indexOf(sixth) < 0) elQualified.push(sixth);
+
+    // EL : vainqueur CL/EL qui était déjà qualifié EL via la 5e/6e place (pas via top4 CL)
+    // → libère 7e (puis 8e) place EL
+    var clWinnerWasEl56 = clWinner && [fifth, sixth].indexOf(clWinner) >= 0;
+    var elWinnerWasEl56 = elWinner && elWinner !== clWinner && [fifth, sixth].indexOf(elWinner) >= 0;
+    var elFreedSlots = (clWinnerWasEl56 ? 1 : 0) + (elWinnerWasEl56 ? 1 : 0);
+    if (elFreedSlots >= 1 && seventh) elQualified.push(seventh);
+    if (elFreedSlots >= 2 && eighth)  elQualified.push(eighth);
+  });
+
+  return {cl: clQualified, el: elQualified, clWinner: clWinner, elWinner: elWinner};
+}
+
+function confirmCloseEuroSeason() {
+  var sn = currentSeasonNum || 8;
+  document.getElementById('close-euro-season-num').textContent = sn;
+  document.getElementById('close-euro-next-season').textContent = 'S' + (sn + 1);
+
+  var q = computeEuroQualifications();
+  var preview = '<div style="margin-bottom:.5rem"><strong style="color:#f5c842">🏆 Vainqueur CL :</strong> '
+    + (q.clWinner || '<span style="color:#5a6080">finale non jouée</span>') + '</div>'
+    + '<div style="margin-bottom:.5rem"><strong style="color:#f7944f">🟠 Vainqueur EL :</strong> '
+    + (q.elWinner || '<span style="color:#5a6080">finale non jouée</span>') + '</div>'
+    + '<div><strong style="color:#e8eaf0">Qualifiés CL S' + (sn+1) + ' :</strong> ' + q.cl.length + ' équipes</div>'
+    + '<div><strong style="color:#e8eaf0">Qualifiés EL S' + (sn+1) + ' :</strong> ' + q.el.length + ' équipes</div>';
+  document.getElementById('close-euro-preview').innerHTML = preview;
+
+  document.getElementById('close-euro-modal').style.display = 'flex';
+}
+
+function executeCloseEuroSeason() {
+  document.getElementById('close-euro-modal').style.display = 'none';
+
+  var sn = currentSeasonNum || 8;
+  var q = computeEuroQualifications();
+
+  // 1. Mettre à jour le palmarès CL
+  var clFinalEntry = CL_DATA.finales.find(function(f) { return f.season === 'S' + sn; });
+  var clRunnerUp = (function() {
+    var b = CL_KO_DATA.bracket.final;
+    if (!b.home || !b.away || !q.clWinner) return '?';
+    return q.clWinner === b.home ? b.away : b.home;
+  })();
+  if (clFinalEntry) {
+    clFinalEntry.winner = q.clWinner || clFinalEntry.winner;
+    clFinalEntry.runner_up = clRunnerUp;
+  } else {
+    CL_DATA.finales.push({season: 'S' + sn, winner: q.clWinner || '?', runner_up: clRunnerUp});
+  }
+
+  // 2. Mettre à jour le palmarès EL
+  var elFinalEntry = EL_DATA.finales.find(function(f) { return f.season === 'S' + sn; });
+  var elRunnerUp = (function() {
+    var b = EL_KO_DATA.bracket.final;
+    if (!b.home || !b.away || !q.elWinner) return '?';
+    return q.elWinner === b.home ? b.away : b.home;
+  })();
+  if (elFinalEntry) {
+    elFinalEntry.winner = q.elWinner || elFinalEntry.winner;
+    elFinalEntry.runner_up = elRunnerUp;
+  } else {
+    EL_DATA.finales.push({season: 'S' + sn, winner: q.elWinner || '?', runner_up: elRunnerUp});
+  }
+
+  // 3. Régénérer la phase de ligue CL (36 équipes, stats à zéro)
+  CL_DATA.teams = q.cl.slice(0, 36).map(function(name, i) {
+    return {rank: i + 1, name: name, pts: 0, m1: null, m2: null, m3: null, m4: null, bm: 0, be: 0, played: 0};
+  });
+  CL_KO_DATA.teams_qualified = [];
+  clMatchDetails = {};
+  try { localStorage.setItem('cl_match_details', JSON.stringify(clMatchDetails)); } catch(e) {}
+
+  // 4. Réinitialiser le bracket KO CL
+  CL_KO_DATA.bracket = {
+    r16: Array.from({length:8}, function(){ return {home:null, away:null, leg1:null, leg2:null}; }),
+    qf:  Array.from({length:4}, function(){ return {home:null, away:null, leg1:null, leg2:null}; }),
+    sf:  Array.from({length:2}, function(){ return {home:null, away:null, leg1:null, leg2:null}; }),
+    final: {home:null, away:null, leg1:null, leg2:null}
+  };
+  clKoDetails = {};
+  try { localStorage.setItem('cl_ko_details', JSON.stringify(clKoDetails)); } catch(e) {}
+
+  // 5. Réinitialiser le bracket KO EL (pas de phase de ligue pour EL, juste KO direct)
+  // Les 16 qualifiés EL alimentent directement le R16 — on les stocke pour info,
+  // l'utilisateur effectuera le tirage manuellement comme pour CL.
+  EL_KO_DATA.teams_qualified = q.el.slice(0, 16);
+  EL_KO_DATA.bracket = {
+    r16: Array.from({length:8}, function(){ return {home:null, away:null, leg1:null, leg2:null}; }),
+    qf:  Array.from({length:4}, function(){ return {home:null, away:null, leg1:null, leg2:null}; }),
+    sf:  Array.from({length:2}, function(){ return {home:null, away:null, leg1:null, leg2:null}; }),
+    final: {home:null, away:null, leg1:null, leg2:null}
+  };
+  elKoDetails = {};
+
+  // 6. Incrémenter le numéro de saison (cohérence globale avec Saisie S8)
+  currentSeasonNum = sn + 1;
+  try { updateSeasonLabels(); } catch(e) {}
+
+  // 7. Re-render les vues CL/EL
+  try { clRender(); } catch(e) {}
+  try { elRender(); } catch(e) {}
+  try { renderSaisonEnCours(); } catch(e) {}
+  try { if (typeof tblFilter === 'function') tblFilter(); } catch(e) {}
+
+  // 8. Sauvegarder immédiatement
+  GH.saveNow();
+
+  alert('Saison S' + sn + ' clôturée !\n\n'
+    + (q.clWinner ? '🏆 Champions League : ' + q.clWinner + '\n' : '')
+    + (q.elWinner ? '🟠 Europa League : ' + q.elWinner + '\n' : '')
+    + '\n' + q.cl.length + ' équipes qualifiées en CL, ' + q.el.length + ' en EL pour S' + (sn+1) + '.');
 }
 
 </script>
