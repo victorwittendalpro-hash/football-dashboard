@@ -4386,6 +4386,7 @@ clInitCL();
     <div id="el-ko-scorers" class="cl-ko-scorers-wrap"></div>
     <div class="cl-ko-modal-actions">
       <button class="cl-ko-btn-clear"  onclick="elKoClear()">Effacer</button>
+      <button class="cl-ko-btn-cancel" style="background:#1a1e28;border:1px solid #4f8ef7;color:#4f8ef7" onclick="elKoRandomize()">🎲 Tirage aléatoire</button>
       <button class="cl-ko-btn-cancel" onclick="elKoCloseModal()">Annuler</button>
       <button class="cl-ko-btn-save"   onclick="elKoSave()">Enregistrer</button>
     </div>
@@ -4594,6 +4595,17 @@ function elKoUpdatePreview() {
   document.getElementById('el-ko-agg-preview').textContent = 'Total: ' + m.home + ' ' + aggH + ' – ' + aggA + ' ' + m.away;
   var w = aggH > aggA ? m.home : aggA > aggH ? m.away : 'Égalité';
   document.getElementById('el-ko-winner-preview').textContent = aggH !== aggA ? ('✓ ' + w + ' qualifié') : '⚖️ Égalité';
+}
+
+function elKoRandomize() {
+  if (!elKoModalCtx) return;
+  var legA = randScore(); // match aller
+  var legR = randScore(); // match retour
+  document.getElementById('el-ko-l1-home').value = legA.home;
+  document.getElementById('el-ko-l1-away').value = legA.away;
+  document.getElementById('el-ko-l2-home').value = legR.home;
+  document.getElementById('el-ko-l2-away').value = legR.away;
+  elKoUpdatePreview();
 }
 
 function elKoSave() {
