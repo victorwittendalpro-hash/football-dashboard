@@ -2598,6 +2598,66 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true
+    },
+    {
+      "rank": 203,
+      "name": "Pio Esposito",
+      "nameRaw": "Pio Esposito",
+      "age": 20,
+      "post": "AC",
+      "ligue": "SA",
+      "currentClub": "Côme",
+      "career": {
+        "S8": "Côme"
+      },
+      "total": 6,
+      "CL": 0,
+      "SN": 0,
+      "CH": 6,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S8": 6
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true
+    },
+    {
+      "rank": 204,
+      "name": "Cuiabano",
+      "nameRaw": "Cuiabano",
+      "age": 22,
+      "post": "DG",
+      "ligue": "SA",
+      "currentClub": "Côme",
+      "career": {
+        "S8": "Côme"
+      },
+      "total": 4,
+      "CL": 0,
+      "SN": 0,
+      "CH": 4,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S8": 4
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true
     }
   ],
   "awardsData": {
