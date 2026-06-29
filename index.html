@@ -4357,38 +4357,43 @@ clInitCL();
   </div>
 </div>
 <!-- Modal résultats EL KO -->
-<div class="cl-ko-modal-backdrop" id="el-ko-modal" style="display:none">
-  <div class="cl-ko-modal">
-    <button class="cl-ko-modal-close" onclick="elKoCloseModal()">✕</button>
-    <div class="cl-ko-modal-title" id="el-ko-modal-title"></div>
-    <div class="cl-ko-modal-sub"  id="el-ko-modal-sub"></div>
-    <div class="cl-ko-legs">
-      <div class="cl-ko-leg">
-        <div class="cl-ko-leg-label" id="el-ko-l1-home-label"></div>
+<div class="cl-modal-backdrop" id="el-ko-modal" onclick="if(event.target===this)elKoCloseModal()">
+  <div class="cl-modal">
+    <button class="cl-modal-close" onclick="elKoCloseModal()">✕</button>
+    <h3 id="el-ko-modal-title"></h3>
+    <div class="cl-modal-sub" id="el-ko-modal-sub"></div>
+    <div class="cl-form-row">
+      <div class="cl-form-group">
+        <label id="el-ko-l1-home-label"></label>
         <input id="el-ko-l1-home" type="number" min="0" max="30" value="0" oninput="elKoUpdatePreview()">
-        <span class="cl-ko-leg-vs">–</span>
+      </div>
+      <div class="cl-form-group">
+        <label id="el-ko-l1-away-label"></label>
         <input id="el-ko-l1-away" type="number" min="0" max="30" value="0" oninput="elKoUpdatePreview()">
-        <div class="cl-ko-leg-label" id="el-ko-l1-away-label"></div>
       </div>
-      <div class="cl-ko-leg-title">Match retour</div>
-      <div class="cl-ko-leg">
-        <div class="cl-ko-leg-label" id="el-ko-l2-home-label"></div>
+    </div>
+    <div style="text-align:center;font-size:11px;color:#5a6080;margin-bottom:.5rem">Match retour</div>
+    <div class="cl-form-row">
+      <div class="cl-form-group">
+        <label id="el-ko-l2-home-label"></label>
         <input id="el-ko-l2-home" type="number" min="0" max="30" value="0" oninput="elKoUpdatePreview()">
-        <span class="cl-ko-leg-vs">–</span>
+      </div>
+      <div class="cl-form-group">
+        <label id="el-ko-l2-away-label"></label>
         <input id="el-ko-l2-away" type="number" min="0" max="30" value="0" oninput="elKoUpdatePreview()">
-        <div class="cl-ko-leg-label" id="el-ko-l2-away-label"></div>
       </div>
     </div>
-    <div id="el-ko-preview" class="cl-ko-preview">
-      <div id="el-ko-agg-preview"   class="cl-ko-agg-preview"></div>
-      <div id="el-ko-winner-preview" class="cl-ko-winner-preview"></div>
+    <div class="cl-result-preview">
+      <div class="cl-res-score" id="el-ko-agg-preview">— : —</div>
+      <div class="cl-res-pts" id="el-ko-winner-preview"></div>
     </div>
-    <div id="el-ko-scorers" class="cl-ko-scorers-wrap"></div>
-    <div class="cl-ko-modal-actions">
-      <button class="cl-ko-btn-clear"  onclick="elKoClear()">Effacer</button>
-      <button class="cl-ko-btn-cancel" style="background:#1a1e28;border:1px solid #4f8ef7;color:#4f8ef7" onclick="elKoRandomize()">🎲 Tirage aléatoire</button>
-      <button class="cl-ko-btn-cancel" onclick="elKoCloseModal()">Annuler</button>
-      <button class="cl-ko-btn-save"   onclick="elKoSave()">Enregistrer</button>
+    <div style="font-size:11px;font-weight:700;color:#5a6080;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem">⚽ Buteurs</div>
+    <div id="el-ko-scorers" style="max-height:220px;overflow-y:auto;margin-bottom:.875rem"></div>
+    <div class="cl-modal-actions">
+      <button class="cl-btn-clear"  onclick="elKoClear()">Effacer</button>
+      <button class="cl-btn-cancel" style="border-color:#4f8ef7;color:#4f8ef7" onclick="elKoRandomize()">🎲 Tirage aléatoire</button>
+      <button class="cl-btn-cancel" onclick="elKoCloseModal()">Annuler</button>
+      <button class="cl-btn-save"   onclick="elKoSave()">✓ Enregistrer</button>
     </div>
   </div>
 </div>
@@ -4566,13 +4571,13 @@ function elKoOpenMatch(mKey, mi, roundKey) {
   if (!match || !match.home) return;
   elKoModalCtx = {mKey: mKey, match: match};
   document.getElementById('el-ko-modal-title').textContent = match.home + '  vs  ' + match.away;
-  document.getElementById('el-ko-modal-sub').textContent = {
+  document.getElementById('el-ko-modal-sub').textContent = ({
     r16:'1/8 de Finale', qf:'Quart de Finale', sf:'Demi-Finale', final:'Finale'
-  }[roundKey] || '';
+  }[roundKey] || '') + ' — Match aller & retour';
   document.getElementById('el-ko-l1-home-label').textContent = match.home;
   document.getElementById('el-ko-l1-away-label').textContent = match.away;
-  document.getElementById('el-ko-l2-home-label').textContent = match.away;
-  document.getElementById('el-ko-l2-away-label').textContent = match.home;
+  document.getElementById('el-ko-l2-home-label').textContent = match.away + ' (dom.)';
+  document.getElementById('el-ko-l2-away-label').textContent = match.home + ' (ext.)';
   var stored = elKoDetails[mKey] || {};
   var l1 = stored.leg1 || {};
   var l2 = stored.leg2 || {};
@@ -4580,7 +4585,17 @@ function elKoOpenMatch(mKey, mi, roundKey) {
   document.getElementById('el-ko-l1-away').value = l1.away_score != null ? l1.away_score : 0;
   document.getElementById('el-ko-l2-home').value = l2.home_score != null ? l2.home_score : 0;
   document.getElementById('el-ko-l2-away').value = l2.away_score != null ? l2.away_score : 0;
-  document.getElementById('el-ko-modal').style.display = 'flex';
+
+  // Liste des buteurs (top 30 buteurs EL connus, pré-rempli depuis elKoDetails[mKey].scorers)
+  var topScorers = EL_DATA.scorers.slice(0, 30);
+  var storedScorers = stored.scorers || {};
+  document.getElementById('el-ko-scorers').innerHTML = topScorers.map(function(s, si) {
+    return '<div class="cl-scorer-input-row"><span class="cl-scorer-input-name">' + s.name + '</span>'
+      + '<div class="cl-scorer-input-goals"><input type="number" min="0" max="10" value="' + (storedScorers[si] || 0) + '" data-si="' + si + '"></div>'
+      + '</div>';
+  }).join('');
+
+  document.getElementById('el-ko-modal').classList.add('open');
   elKoUpdatePreview();
 }
 
@@ -4616,7 +4631,12 @@ function elKoSave() {
   var l1a = parseInt(document.getElementById('el-ko-l1-away').value)||0;
   var l2h = parseInt(document.getElementById('el-ko-l2-home').value)||0;
   var l2a = parseInt(document.getElementById('el-ko-l2-away').value)||0;
-  var stored = {leg1:{home_score:l1h,away_score:l1a}, leg2:{home_score:l2h,away_score:l2a}};
+  var scorers = {};
+  document.querySelectorAll('#el-ko-scorers input[data-si]').forEach(function(inp) {
+    var g = parseInt(inp.value)||0;
+    if (g > 0) scorers[inp.getAttribute('data-si')] = g;
+  });
+  var stored = {leg1:{home_score:l1h,away_score:l1a}, leg2:{home_score:l2h,away_score:l2a}, scorers:scorers};
   elKoDetails[mKey] = stored;
   match.leg1 = stored.leg1;
   match.leg2 = stored.leg2;
@@ -4636,7 +4656,8 @@ function elKoClear() {
 }
 
 function elKoCloseModal() {
-  document.getElementById('el-ko-modal').style.display = 'none';
+  var m = document.getElementById('el-ko-modal');
+  if (m) m.classList.remove('open');
   elKoModalCtx = null;
 }
 
