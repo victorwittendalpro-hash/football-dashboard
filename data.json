@@ -1841,7 +1841,18 @@
       "season": "S8"
     }
   },
-  "elKoDetails": {},
+  "elKoDetails": {
+    "r16_0": {
+      "leg1": {
+        "home_score": 6,
+        "away_score": 4
+      },
+      "leg2": {
+        "home_score": 1,
+        "away_score": 3
+      }
+    }
+  },
   "cupData": {
     "eng": {
       "name": "Coupe d'Angleterre",
