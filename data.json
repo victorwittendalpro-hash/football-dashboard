@@ -1448,6 +1448,14 @@
           "be": 3,
           "pts": 0,
           "scorers": {}
+        },
+        "9": {
+          "bm": 3,
+          "be": 3,
+          "pts": 1,
+          "scorers": {
+            "202": 2
+          }
         }
       },
       "3": {
@@ -2610,14 +2618,14 @@
       "career": {
         "S8": "Côme"
       },
-      "total": 6,
+      "total": 8,
       "CL": 0,
       "SN": 0,
       "CH": 6,
       "EU": 0,
       "CP": 0,
       "seasons": {
-        "S8": 6
+        "S8": 8
       },
       "t_sa": 0,
       "t_l1": 0,
@@ -2627,7 +2635,8 @@
       "t_cl": 0,
       "t_el": 0,
       "t_total": 0,
-      "_custom": true
+      "_custom": true,
+      "_origS8": 6
     },
     {
       "rank": 204,
