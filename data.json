@@ -2476,5 +2476,143 @@
       "_origSN": 0,
       "_origS8": 8
     }
-  ]
+  ],
+  "awardsData": {
+    "ballon_dor": [
+      {
+        "season": "S-4",
+        "name": "Gedson",
+        "nat": "Portugal",
+        "club": "AS Roma"
+      },
+      {
+        "season": "S-3",
+        "name": "Messi",
+        "nat": "Argentine",
+        "club": "FC Barcelone"
+      },
+      {
+        "season": "S-2",
+        "name": "Fekir",
+        "nat": "France",
+        "club": "Manchester United"
+      },
+      {
+        "season": "S-1",
+        "name": "Mbappe",
+        "nat": "France",
+        "club": "PSG"
+      },
+      {
+        "season": "S1",
+        "name": "Paulinho",
+        "nat": "Brésil",
+        "club": "FC Barcelone"
+      },
+      {
+        "season": "S2",
+        "name": "Brobbey",
+        "nat": "Pays-Bas",
+        "club": "Inter Milan"
+      },
+      {
+        "season": "S3",
+        "name": "Mbappe",
+        "nat": "France",
+        "club": "Real Madrid"
+      },
+      {
+        "season": "S4",
+        "name": "Traorè",
+        "nat": "Côte d'Ivoire",
+        "club": "Manchester United"
+      },
+      {
+        "season": "S5",
+        "name": "Brobbey",
+        "nat": "Pays-Bas",
+        "club": "Arsenal"
+      },
+      {
+        "season": "S6",
+        "name": "Brobbey",
+        "nat": "Pays-Bas",
+        "club": "Arsenal"
+      },
+      {
+        "season": "S7",
+        "name": null,
+        "nat": null,
+        "club": null
+      }
+    ],
+    "golden_boy": [
+      {
+        "season": "S-4",
+        "name": "Mbappe",
+        "nat": "France",
+        "club": "PSG"
+      },
+      {
+        "season": "S-3",
+        "name": "Paulinho",
+        "nat": "Brésil",
+        "club": "AC Milan"
+      },
+      {
+        "season": "S-2",
+        "name": "Traorè",
+        "nat": "Côte d'Ivoire",
+        "club": "Manchester United"
+      },
+      {
+        "season": "S-1",
+        "name": "Haaland",
+        "nat": "Norvège",
+        "club": "AS Roma"
+      },
+      {
+        "season": "S1",
+        "name": "Brobbey",
+        "nat": "Pays-Bas",
+        "club": "Inter Milan"
+      },
+      {
+        "season": "S2",
+        "name": "Wahi",
+        "nat": "France",
+        "club": "OGC Nice"
+      },
+      {
+        "season": "S3",
+        "name": "Vitor Roque",
+        "nat": "Brésil",
+        "club": "AC Milan"
+      },
+      {
+        "season": "S4",
+        "name": "Adingra",
+        "nat": "Côte d'Ivoire",
+        "club": "Manchester United"
+      },
+      {
+        "season": "S5",
+        "name": "L. Yamal",
+        "nat": "Espagne",
+        "club": "FC Barcelone"
+      },
+      {
+        "season": "S6",
+        "name": "Doué",
+        "nat": "France",
+        "club": "FC Barcelone"
+      },
+      {
+        "season": "S7",
+        "name": null,
+        "nat": null,
+        "club": null
+      }
+    ]
+  }
 }
