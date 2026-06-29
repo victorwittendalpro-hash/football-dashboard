@@ -1637,6 +1637,10 @@
     "79": {
       "club": "Bayer Leverkusen",
       "season": "S8"
+    },
+    "199": {
+      "club": "Benfica",
+      "season": "S8"
     }
   },
   "elKoDetails": {},
@@ -2329,9 +2333,9 @@
       "age": 25,
       "post": "AiG",
       "ligue": "",
-      "currentClub": "Rosario Central",
+      "currentClub": "Benfica",
       "career": {
-        "S8": "Rosario Central"
+        "S8": "Benfica"
       },
       "total": 17,
       "CL": 0,
