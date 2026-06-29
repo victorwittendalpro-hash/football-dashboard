@@ -2895,6 +2895,16 @@ function renderSaisonEnCours() {
     <div class="cl-tab" onclick="clNav('knockout')"><span class="cl-tab-icon">🏆</span> Phase Finale</div>
     <div class="cl-tab" onclick="clNav('history')"><span class="cl-tab-icon">📜</span> Palmarès</div>
   </div>
+  <div style="padding:.75rem;border-top:1px solid #252a38;margin-top:auto">
+    <button onclick="confirmCloseEuroSeason()"
+      style="width:100%;background:#1a1e28;border:1px solid #f76f6f;border-radius:7px;
+             padding:.5rem;color:#f76f6f;font-size:12px;font-weight:600;cursor:pointer;
+             transition:all .2s"
+      onmouseover="this.style.background='#f76f6f22'"
+      onmouseout="this.style.background='#1a1e28'">
+      🏁 Clôturer la saison
+    </button>
+  </div>
 </div>
 
 <!-- Right panel -->
