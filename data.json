@@ -1636,14 +1636,35 @@
     }
   },
   "clMatchDetails": {},
-  "clKoDetails": {},
+  "clKoDetails": {
+    "r16_0": {
+      "leg1": {
+        "home_score": 2,
+        "away_score": 1
+      },
+      "leg2": {
+        "home_score": 0,
+        "away_score": 0
+      },
+      "scorers": {
+        "4": 1,
+        "17": 1
+      }
+    }
+  },
   "clKoBracket": {
     "r16": [
       {
         "home": "FC Barcelone",
         "away": "Feyenoord",
-        "leg1": null,
-        "leg2": null
+        "leg1": {
+          "home_score": 2,
+          "away_score": 1
+        },
+        "leg2": {
+          "home_score": 0,
+          "away_score": 0
+        }
       },
       {
         "home": "Liverpool",
@@ -1690,7 +1711,7 @@
     ],
     "qf": [
       {
-        "home": null,
+        "home": "FC Barcelone",
         "away": null,
         "leg1": null,
         "leg2": null
