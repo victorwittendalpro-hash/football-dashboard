@@ -4000,7 +4000,17 @@ function clKoModalHTML(){
     // Scorers
     +'<div class="cl-form-group" style="margin-bottom:.875rem">'
       +'<label>⚽ Buteurs (optionnel)</label>'
-      +'<div class="cl-scorer-list" id="cl-ko-scorers" style="max-height:150px"></div>'
+      +'<div style="position:relative;margin-bottom:.5rem">'
+        +'<input type="text" id="cl-ko-scorer-search" autocomplete="off"'
+          +' placeholder="Rechercher un joueur..."'
+          +' style="width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.45rem .75rem;color:#e8eaf0;font-size:13px;outline:none"'
+          +' oninput="clKoScorerSearchInput(this.value)"'
+          +' onkeydown="clKoScorerSearchKey(event)">'
+        +'<div id="cl-ko-scorer-suggestions"'
+          +' style="display:none;position:absolute;top:100%;left:0;right:0;background:#13161e;border:1px solid #3a4460;border-radius:0 0 6px 6px;max-height:180px;overflow-y:auto;z-index:200">'
+        +'</div>'
+      +'</div>'
+      +'<div id="cl-ko-scorers" style="display:flex;flex-direction:column;gap:4px;max-height:180px;overflow-y:auto"></div>'
     +'</div>'
     +'<div class="cl-modal-actions">'
       +'<button class="cl-btn-clear" onclick="clKoClear()">Effacer</button>'
@@ -4036,14 +4046,19 @@ function clKoOpenMatch(mKey, matchIdx){
   document.getElementById('cl-ko-l2-home').value = l2.home_score!=null?l2.home_score:0;
   document.getElementById('cl-ko-l2-away').value = l2.away_score!=null?l2.away_score:0;
 
-  // Scorers list
-  var topScorers = CL_DATA.scorers.slice(0,30);
+  // Pré-remplir les buteurs depuis les données existantes (recherche libre)
   var storedScorers = (clKoDetails[mKey]||{}).scorers||{};
-  document.getElementById('cl-ko-scorers').innerHTML = topScorers.map(function(s,si){
-    return '<div class="cl-scorer-input-row"><span class="cl-scorer-input-name">'+s.name+'</span>'
-      +'<div class="cl-scorer-input-goals"><input type="number" min="0" max="10" value="'+(storedScorers[si]||0)+'" data-si="'+si+'"></div>'
-      +'</div>';
-  }).join('');
+  var scorerEntries = [];
+  Object.keys(storedScorers).forEach(function(pidx) {
+    var g = storedScorers[pidx];
+    if (g > 0) {
+      var p = ALL[parseInt(pidx)];
+      if (p) scorerEntries.push({idx: parseInt(pidx), name: p.name, goals: g});
+    }
+  });
+  clKoRenderScorerList(scorerEntries);
+  document.getElementById('cl-ko-scorer-search').value = '';
+  document.getElementById('cl-ko-scorer-suggestions').style.display = 'none';
 
   clKoUpdatePreview();
   document.getElementById('cl-ko-modal').classList.add('open');
@@ -4064,6 +4079,106 @@ function clKoUpdatePreview(){
     '<span style="color:'+wColor+'">→ '+winner+'</span>';
 }
 
+
+// ── Recherche libre de buteurs pour la phase finale CL (tous joueurs) ────────
+var _clKoScorerList = [];
+var _clKoScorerSearchIdx = -1;
+window._clKoScorerSugMatches = [];
+
+function clKoScorerSearchInput(q) {
+  _clKoScorerSearchIdx = -1;
+  var box = document.getElementById('cl-ko-scorer-suggestions');
+  if (!q || q.length < 1) { box.style.display = 'none'; return; }
+  var ql = q.toLowerCase();
+  var matches = [];
+  for (var i = 0; i < ALL.length; i++) {
+    if (ALL[i].name.toLowerCase().indexOf(ql) >= 0) {
+      matches.push({idx: i, name: ALL[i].name, ligue: ALL[i].ligue || ''});
+      if (matches.length >= 8) break;
+    }
+  }
+  if (!matches.length) { box.style.display = 'none'; return; }
+  window._clKoScorerSugMatches = matches;
+  box.innerHTML = matches.map(function(m, mi) {
+    var ligueBadge = m.ligue ? ' <span style="color:#5a6080;font-size:10px">' + m.ligue + '</span>' : '';
+    return '<div class="clko-sc-sug-item" data-mi="' + mi + '"'
+      + ' style="padding:6px 10px;cursor:pointer;font-size:12px;color:#e8eaf0;border-bottom:1px solid #1a1e28"'
+      + ' onmousedown="clKoScorerSelectByMi(' + mi + ')"'
+      + ' onmouseover="clKoScorerSugHover(this)">'
+      + m.name + ligueBadge
+      + '</div>';
+  }).join('');
+  box.style.display = 'block';
+}
+
+function clKoScorerSearchKey(e) {
+  var box = document.getElementById('cl-ko-scorer-suggestions');
+  var items = box.querySelectorAll('.clko-sc-sug-item');
+  if (!items.length) return;
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    _clKoScorerSearchIdx = Math.min(_clKoScorerSearchIdx + 1, items.length - 1);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    _clKoScorerSearchIdx = Math.max(_clKoScorerSearchIdx - 1, 0);
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (_clKoScorerSearchIdx >= 0) items[_clKoScorerSearchIdx].dispatchEvent(new Event('mousedown'));
+    else if (items.length === 1) items[0].dispatchEvent(new Event('mousedown'));
+    return;
+  } else if (e.key === 'Escape') {
+    box.style.display = 'none'; return;
+  }
+  items.forEach(function(el, i) { el.style.background = i === _clKoScorerSearchIdx ? '#252a38' : ''; });
+}
+
+function clKoScorerSugHover(el) {
+  document.querySelectorAll('.clko-sc-sug-item').forEach(function(e) { e.style.background = ''; });
+  el.style.background = '#252a38';
+}
+
+function clKoScorerSelectByMi(mi) {
+  var m = window._clKoScorerSugMatches && window._clKoScorerSugMatches[mi];
+  if (m) clKoScorerSelect(m.idx, m.name);
+}
+
+function clKoScorerSelect(playerIdx, playerName) {
+  var exists = _clKoScorerList.find(function(e) { return e.idx === playerIdx; });
+  if (!exists) {
+    _clKoScorerList.push({idx: playerIdx, name: playerName, goals: 1});
+    clKoRenderScorerList(_clKoScorerList);
+  }
+  document.getElementById('cl-ko-scorer-search').value = '';
+  document.getElementById('cl-ko-scorer-suggestions').style.display = 'none';
+  document.getElementById('cl-ko-scorer-search').focus();
+}
+
+function clKoScorerUpdateGoals(i, val) {
+  if (_clKoScorerList[i]) _clKoScorerList[i].goals = parseInt(val) || 0;
+}
+
+function clKoScorerRemove(i) {
+  _clKoScorerList.splice(i, 1);
+  clKoRenderScorerList(_clKoScorerList);
+}
+
+function clKoRenderScorerList(entries) {
+  _clKoScorerList = entries;
+  var html = entries.map(function(e, i) {
+    return '<div style="display:flex;align-items:center;gap:8px;background:#0d0f14;border-radius:6px;padding:4px 8px">'
+      + '<span style="flex:1;font-size:12px;color:#e8eaf0">' + e.name + '</span>'
+      + '<input type="number" min="0" max="20" value="' + e.goals + '"'
+      + ' style="width:52px;background:#13161e;border:1px solid #3a4460;border-radius:4px;'
+      + 'padding:2px 6px;color:#f5c842;font-size:13px;text-align:center;outline:none"'
+      + ' oninput="clKoScorerUpdateGoals(' + i + ', this.value)">'
+      + '<button onclick="clKoScorerRemove(' + i + ')"'
+      + ' style="background:none;border:none;color:#5a6080;cursor:pointer;font-size:14px;padding:0 2px;line-height:1">✕</button>'
+      + '</div>';
+  }).join('');
+  document.getElementById('cl-ko-scorers').innerHTML = html
+    || '<div style="font-size:11px;color:#5a6080;padding:4px 0">Aucun buteur — recherche ci-dessus</div>';
+}
+
 function clKoSave(){
   if(!clKoModalCtx) return;
   var mKey=clKoModalCtx.mKey, match=clKoModalCtx.match;
@@ -4072,9 +4187,8 @@ function clKoSave(){
   var l2h=parseInt(document.getElementById('cl-ko-l2-home').value)||0;
   var l2a=parseInt(document.getElementById('cl-ko-l2-away').value)||0;
   var scorers={};
-  document.querySelectorAll('#cl-ko-scorers input[data-si]').forEach(function(inp){
-    var g=parseInt(inp.value)||0;
-    if(g>0) scorers[inp.getAttribute('data-si')]=g;
+  _clKoScorerList.forEach(function(e) {
+    if (e.goals > 0) scorers[e.idx] = e.goals;
   });
   var stored = {leg1:{home_score:l1h,away_score:l1a}, leg2:{home_score:l2h,away_score:l2a}, scorers:scorers};
   clKoDetails[mKey] = stored;
