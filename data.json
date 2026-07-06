@@ -1686,13 +1686,15 @@
         "away_score": 1
       },
       "leg2": {
-        "home_score": 0,
-        "away_score": 0
+        "home_score": 3,
+        "away_score": 4
       },
       "scorers": {
+        "5": 2,
         "12": 1,
         "25": 1,
         "62": 1,
+        "63": 2,
         "64": 1,
         "197": 1
       }
@@ -1811,8 +1813,8 @@
           "away_score": 1
         },
         "leg2": {
-          "home_score": 0,
-          "away_score": 0
+          "home_score": 3,
+          "away_score": 4
         }
       },
       {
