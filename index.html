@@ -3630,31 +3630,61 @@ function clRenderBarrage(){
 }
 
 // ── Buteurs CL ─────────────────────────────────────────
-function clRenderScorers(){
-  var scorers = CL_DATA.scorers.slice();
-  scorers.sort(function(a,b){ return (b.total||0)-(a.total||0); });
+function clComputeLiveScorers() {
+  // Agrège les buts de clKoDetails (phase finale) ET clMatchDetails (phase de ligue)
+  var goals = {};
+  // Phase finale KO
+  Object.keys(clKoDetails).forEach(function(mKey) {
+    var sc = (clKoDetails[mKey] && clKoDetails[mKey].scorers) || {};
+    Object.keys(sc).forEach(function(pidx) {
+      goals[pidx] = (goals[pidx] || 0) + sc[pidx];
+    });
+  });
+  // Phase de ligue
+  Object.keys(clMatchDetails).forEach(function(teamIdx) {
+    Object.keys(clMatchDetails[teamIdx]).forEach(function(mi) {
+      var sc = (clMatchDetails[teamIdx][mi] && clMatchDetails[teamIdx][mi].scorers) || {};
+      Object.keys(sc).forEach(function(pidx) {
+        goals[pidx] = (goals[pidx] || 0) + sc[pidx];
+      });
+    });
+  });
+  return goals;
+}
 
+function clRenderScorers(){
+  var sn = currentSeasonNum || 8;
+
+  // 1. Buteurs historiques Excel
+  var merged = {};
+  CL_DATA.scorers.forEach(function(s) {
+    merged[s.name] = {name: s.name, total: s.total || 0, seasons: s.seasons || {}};
+  });
+
+  // 2. Fusionner les buts saisis en direct (phase de ligue + phase finale)
+  var live = clComputeLiveScorers();
+  Object.keys(live).forEach(function(pidx) {
+    var p = ALL[parseInt(pidx)];
+    var name = p ? p.name : 'Joueur ' + pidx;
+    var g = live[pidx];
+    if (merged[name]) {
+      merged[name].total += g;
+      merged[name].seasons = merged[name].seasons || {};
+      merged[name].seasons['S' + sn] = (merged[name].seasons['S' + sn] || 0) + g;
+    } else {
+      var seasons = {}; seasons['S' + sn] = g;
+      merged[name] = {name: name, total: g, seasons: seasons};
+    }
+  });
+
+  var scorers = Object.values(merged).sort(function(a,b){ return (b.total||0)-(a.total||0); });
   var rows = scorers.slice(0,50).map(function(s,i){
     var c = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
-    var s8g = (s.seasons && s.seasons['S8']) ? s.seasons['S8'] : 0;
-    return '<div class="cl-scorer-row">'
-      +'<div class="cl-scorer-rank" style="color:'+c+'">'+(i+1)+'</div>'
-      +'<div class="cl-scorer-name">'+s.name+'</div>'
-      +'<div class="cl-scorer-goals" style="color:#f5c842">'+(s.total||0)+'</div>'
-      +(s8g>0?'<div class="cl-scorer-s8">+'+s8g+' S8</div>':'')
-    +'</div>';
-  }).join('');
+    var s8g = (s.seasons && s.seasons['S' + sn]) ? s.seasons['S' + sn] : 0;
+    return '<div class="cl-scorer-row">'      +'<div class="cl-scorer-rank" style="color:'+c+'">'+(i+1)+'</div>'      +'<div class="cl-scorer-name">'+s.name+'</div>'      +'<div class="cl-scorer-goals" style="color:#f5c842">'+(s.total||0)+'</div>'      +(s8g>0?'<div class="cl-scorer-s8">+'+s8g+' S'+sn+'</div>':'')    +'</div>';  }).join('');
 
   document.getElementById('cl-panel').innerHTML =
-    '<div class="cl-section-header">'
-      +'<span style="font-size:1.4rem">⚽</span>'
-      +'<div><div class="cl-section-title">Buteurs Champions League</div>'
-      +'<div class="cl-section-sub">Classement cumulé toutes saisons</div></div>'
-    +'</div>'
-    +'<div class="cl-content">'
-      +'<div class="cl-table-wrap">'+rows+'</div>'
-    +'</div>';
-}
+    '<div class="cl-section-header">'      +'<span style="font-size:1.4rem">⚽</span>'      +'<div><div class="cl-section-title">Buteurs Champions League</div>'      +'<div class="cl-section-sub">Classement cumulé toutes saisons + buts en direct S'+sn+'</div></div>'    +'</div>'    +'<div class="cl-content">'      +'<div class="cl-table-wrap">'+rows+'</div>'    +'</div>';}
 function clRenderHistory(){
   var rows = CL_DATA.finales.filter(function(f){return f.winner!=='Vainqueur';}).map(function(f){
     var isCurrent = f.winner==='?';
