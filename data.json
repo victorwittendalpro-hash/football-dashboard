@@ -1705,12 +1705,14 @@
         "away_score": 3
       },
       "leg2": {
-        "home_score": 0,
+        "home_score": 4,
         "away_score": 0
       },
       "scorers": {
-        "56": 2,
-        "136": 1
+        "22": 1,
+        "56": 4,
+        "136": 1,
+        "192": 1
       }
     },
     "r16_3": {
@@ -1826,7 +1828,7 @@
           "away_score": 3
         },
         "leg2": {
-          "home_score": 0,
+          "home_score": 4,
           "away_score": 0
         }
       },
