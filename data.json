@@ -3006,9 +3006,9 @@
       },
       {
         "season": "S7",
-        "name": "Yamal",
-        "nat": "Espagne",
-        "club": "FC Barcelone"
+        "name": null,
+        "nat": null,
+        "club": null
       }
     ],
     "golden_boy": [
@@ -3068,15 +3068,15 @@
       },
       {
         "season": "S6",
-        "name": "Doué",
+        "name": "D. Doué",
         "nat": "France",
         "club": "FC Barcelone"
       },
       {
         "season": "S7",
-        "name": null,
-        "nat": null,
-        "club": null
+        "name": "Kendry Paez",
+        "nat": "Equateur",
+        "club": "Inter Milan"
       }
     ]
   }
