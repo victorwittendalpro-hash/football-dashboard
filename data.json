@@ -1719,10 +1719,11 @@
         "away_score": 2
       },
       "leg2": {
-        "home_score": 0,
-        "away_score": 0
+        "home_score": 2,
+        "away_score": 2
       },
       "scorers": {
+        "70": 1,
         "177": 1
       }
     },
@@ -1801,8 +1802,8 @@
           "away_score": 2
         },
         "leg2": {
-          "home_score": 0,
-          "away_score": 0
+          "home_score": 2,
+          "away_score": 2
         }
       },
       {
