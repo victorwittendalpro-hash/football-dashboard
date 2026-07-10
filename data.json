@@ -3220,6 +3220,36 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true
+    },
+    {
+      "rank": 205,
+      "name": "W. Odobert",
+      "nameRaw": "W. Odobert",
+      "age": 21,
+      "post": "AiD",
+      "ligue": "BU",
+      "currentClub": "Dortmund",
+      "career": {
+        "S8": "Dortmund"
+      },
+      "total": 10,
+      "CL": 0,
+      "SN": 0,
+      "CH": 10,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S8": 10
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true
     }
   ],
   "awardsData": {
