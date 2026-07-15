@@ -2492,12 +2492,91 @@ function showSeasonClosedNotif(seasonName) {
 // ══════════════════════════════════════════════════════════════════
 
 var histArchives = [];   // tableau des saisons archivées
+
+// ══════════════════════════════════════════════════════════════════
+// HISTORIQUE — TITRES DE CHAMPION PAR CHAMPIONNAT
+// ══════════════════════════════════════════════════════════════════
+var LEAGUE_CHAMPS = [{"season":"S-4","PL":"Chelsea","LA":"Real Madrid","L1":"PSG","SA":"Juventus","BU":"Bayern Munich"},{"season":"S-3","PL":"Manchester City","LA":"Atletico Madrid","L1":"PSG","SA":"AC Milan","BU":"Bayern Munich"},{"season":"S-2","PL":"Arsenal","LA":"Real Madrid","L1":"PSG","SA":"AC Milan","BU":"Dortmund"},{"season":"S-1","PL":"Manchester United","LA":"FC Barcelone","L1":"PSG","SA":"AC Milan","BU":"Bayern Munich"},{"season":"S1","PL":"Arsenal","LA":"Real Madrid","L1":"OGC Nice","SA":"AS Roma","BU":"Dortmund"},{"season":"S2","PL":"Chelsea","LA":"Real Madrid","L1":"PSG","SA":"AC Milan","BU":"RB Leipzig"},{"season":"S3","PL":"Arsenal","LA":"Real Madrid","L1":"PSG","SA":"AS Roma","BU":"Bayern Munich"},{"season":"S4","PL":"Liverpool","LA":"Real Madrid","L1":"PSG","SA":"AS Roma","BU":"Bayern Munich"},{"season":"S5","PL":"Liverpool","LA":"FC Barcelone","L1":"PSG","SA":"Inter Milan","BU":"Bayern Munich"},{"season":"S6","PL":"Arsenal","LA":"FC Barcelone","L1":"PSG","SA":"Inter Milan","BU":"Bayer Leverkusen"},{"season":"S7","PL":"Liverpool","LA":"FC Barcelone","L1":"PSG","SA":"Inter Milan","BU":"Bayer Leverkusen"}];
+var LG_HIST_CFG   = [{"key":"PL","label":"Premier League","flag":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","color":"#4f8ef7"},{"key":"LA","label":"Liga","flag":"🇪🇸","color":"#a37af7"},{"key":"L1","label":"Ligue 1","flag":"🇫🇷","color":"#f7944f"},{"key":"SA","label":"Serie A","flag":"🇮🇹","color":"#3ecf8e"},{"key":"BU","label":"Bundesliga","flag":"🇩🇪","color":"#f76f6f"}];
+var CLUB_TITLES   = {"Chelsea":{"PL":2,"LA":0,"L1":0,"SA":0,"BU":0,"total":2},"Real Madrid":{"PL":0,"LA":6,"L1":0,"SA":0,"BU":0,"total":6},"PSG":{"PL":0,"LA":0,"L1":10,"SA":0,"BU":0,"total":10},"Juventus":{"PL":0,"LA":0,"L1":0,"SA":1,"BU":0,"total":1},"Bayern Munich":{"PL":0,"LA":0,"L1":0,"SA":0,"BU":6,"total":6},"Manchester City":{"PL":1,"LA":0,"L1":0,"SA":0,"BU":0,"total":1},"Atletico Madrid":{"PL":0,"LA":1,"L1":0,"SA":0,"BU":0,"total":1},"AC Milan":{"PL":0,"LA":0,"L1":0,"SA":4,"BU":0,"total":4},"Arsenal":{"PL":4,"LA":0,"L1":0,"SA":0,"BU":0,"total":4},"Dortmund":{"PL":0,"LA":0,"L1":0,"SA":0,"BU":2,"total":2},"Manchester United":{"PL":1,"LA":0,"L1":0,"SA":0,"BU":0,"total":1},"FC Barcelone":{"PL":0,"LA":4,"L1":0,"SA":0,"BU":0,"total":4},"OGC Nice":{"PL":0,"LA":0,"L1":1,"SA":0,"BU":0,"total":1},"AS Roma":{"PL":0,"LA":0,"L1":0,"SA":3,"BU":0,"total":3},"RB Leipzig":{"PL":0,"LA":0,"L1":0,"SA":0,"BU":1,"total":1},"Liverpool":{"PL":3,"LA":0,"L1":0,"SA":0,"BU":0,"total":3},"Inter Milan":{"PL":0,"LA":0,"L1":0,"SA":3,"BU":0,"total":3},"Bayer Leverkusen":{"PL":0,"LA":0,"L1":0,"SA":0,"BU":2,"total":2}};
+
+function histSeasonSort(a, b) {
+  function val(s) { var neg=s.indexOf('-')===1; var n=parseInt(s.replace('S','').replace('-','')); return neg?-n:n; }
+  return val(a) - val(b);
+}
+
+function histShowTitles() {
+  // Mettre à jour la nav
+  document.querySelectorAll('.hist-season-btn').forEach(function(b){ b.classList.remove('on'); });
+  var btn = document.getElementById('hist-btn-titles');
+  if (btn) btn.classList.add('on');
+
+  var panel = document.getElementById('hist-panel');
+  var LC = {};
+  LG_HIST_CFG.forEach(function(c){ LC[c.key] = c; });
+
+  // Saisons (ordre chronologique)
+  var seasons = LEAGUE_CHAMPS.slice().sort(function(a,b){ return histSeasonSort(a.season, b.season); });
+
+  // ── Tableau par championnat ───────────────────────────────────────
+  var tableHTML = LG_HIST_CFG.map(function(lg) {
+    var rows = seasons.map(function(row) {
+      var club = row[lg.key];
+      return '<tr>'
+        + '<td style="font-weight:700;color:#8b93b0;width:48px">' + row.season + '</td>'
+        + '<td style="color:#e8eaf0;font-weight:600">' + club + '</td>'
+        + '</tr>';
+    }).join('');
+    return '<div style="background:#13161e;border:1px solid #252a38;border-radius:10px;overflow:hidden">'
+      + '<div style="display:flex;align-items:center;gap:.5rem;padding:.6rem .875rem;border-bottom:1px solid #252a38;border-left:3px solid ' + lg.color + '">'
+      + '<span style="font-size:1rem">' + lg.flag + '</span>'
+      + '<span style="font-family:Syne,sans-serif;font-size:13px;font-weight:700;color:#e8eaf0;flex:1">' + lg.label + '</span>'
+      + '</div>'
+      + '<table style="width:100%;border-collapse:collapse;font-size:12px"><tbody>' + rows + '</tbody></table>'
+      + '</div>';
+  }).join('');
+
+  // ── Classement des clubs les plus titrés ────────────────────────
+  var ranked = Object.keys(CLUB_TITLES).map(function(club) {
+    return {club: club, data: CLUB_TITLES[club]};
+  }).sort(function(a,b){ return b.data.total - a.data.total; });
+
+  var rankRows = ranked.slice(0, 15).map(function(r, i) {
+    var rc = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
+    var badges = LG_HIST_CFG.filter(function(lg){ return r.data[lg.key] > 0; }).map(function(lg) {
+      return '<span style="font-size:11px;background:#1a1e28;border-radius:5px;padding:1px 7px;font-weight:700;color:' + lg.color + '">'
+        + lg.flag + ' ×' + r.data[lg.key] + '</span>';
+    }).join('');
+    return '<div style="display:flex;align-items:center;gap:.75rem;padding:.5rem .875rem;border-top:1px solid #1a1e28">'
+      + '<div style="width:22px;text-align:center;font-weight:800;font-size:13px;color:' + rc + '">' + (i+1) + '</div>'
+      + '<div style="flex:1;font-size:13px;font-weight:600;color:#e8eaf0">' + r.club + '</div>'
+      + '<div style="display:flex;gap:.3rem;flex-wrap:wrap">' + badges + '</div>'
+      + '<div style="font-weight:800;font-size:14px;color:#f5c842;min-width:28px;text-align:right">' + r.data.total + '</div>'
+      + '</div>';
+  }).join('');
+
+  panel.innerHTML =
+    '<div style="font-family:Syne,sans-serif;font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:1.25rem;display:flex;align-items:center;gap:.75rem">'
+    + '<span style="font-size:2rem">🏆</span><span>Titres de champion — S-4 à S7</span></div>'
+    // Classement clubs
+    + '<div style="background:#13161e;border:1px solid #252a38;border-radius:10px;overflow:hidden;margin-bottom:1.5rem">'
+    + '<div style="padding:.6rem .875rem;border-bottom:1px solid #252a38;font-size:11px;font-weight:700;color:#5a6080;text-transform:uppercase;letter-spacing:.06em">📊 Clubs les plus titrés</div>'
+    + rankRows
+    + '</div>'
+    // Grille par championnat
+    + '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem">'
+    + tableHTML + '</div>';
+}
+
 var histCurrentSeason = null;
 
 function initHistory(archives) {
   histArchives = archives || [];
   var list = document.getElementById('hist-seasons-list');
   if (!list) return;
+
+  // Afficher les titres de champion par défaut
+  histShowTitles();
 
   if (!histArchives.length) {
     list.innerHTML = '<div style="padding:.75rem 1rem;font-size:12px;color:#5a6080">Aucune saison</div>';
@@ -2519,9 +2598,12 @@ function initHistory(archives) {
 
 function histSelectSeason(seasonId) {
   histCurrentSeason = seasonId;
+  // Désélectionner le bouton Titres
+  var titlesBtn = document.getElementById('hist-btn-titles');
+  if (titlesBtn) titlesBtn.classList.remove('on');
   // Marquer le bouton actif
   document.querySelectorAll('.hist-season-btn').forEach(function(b){
-    b.classList.toggle('on', b.textContent.trim().startsWith(seasonId));
+    if (b.id !== 'hist-btn-titles') b.classList.toggle('on', b.textContent.trim().startsWith(seasonId));
   });
   // Trouver l'archive
   var archive = histArchives.find(function(a){ return a.season === seasonId; });
@@ -4367,6 +4449,12 @@ clInitCL();
 <div class="hist-wrap">
   <div class="hist-nav">
     <div class="hist-nav-title">📚 Historique</div>
+    <div style="padding:.4rem .75rem">
+      <div class="hist-season-btn on" id="hist-btn-titles" onclick="histShowTitles()" style="margin-bottom:2px">
+        🏆 Titres de champion
+      </div>
+    </div>
+    <div style="padding:.4rem .75rem .2rem;font-size:10px;color:#5a6080;text-transform:uppercase;letter-spacing:.07em">Saisons archivées</div>
     <div id="hist-seasons-list"><!-- populated by JS --></div>
   </div>
   <div class="hist-panel" id="hist-panel">
