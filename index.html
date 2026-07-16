@@ -2573,6 +2573,9 @@ function executeCloseSeason() {
     histArchives.push(archive);
   }
 
+  // ── Vieillissement : tous les joueurs gagnent 1 an ────────────────────────
+  ALL.forEach(function(p) { if (typeof p.age === 'number') p.age += 1; });
+
   // ── Réinitialiser la saison ──────────────────────────────────────────────
   currentSeasonNum++;
   matchDetails = {};
