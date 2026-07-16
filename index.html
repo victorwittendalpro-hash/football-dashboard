@@ -2413,33 +2413,143 @@ function confirmCloseSeason() {
 function executeCloseSeason() {
   document.getElementById('close-season-modal').style.display = 'none';
 
-  // 1. Construire l'archive de cette saison
-  var archive = {
-    season: 'S' + currentSeasonNum,
-    seasonNum: currentSeasonNum,
-    closedAt: new Date().toISOString().slice(0,10),
-    leagues: {},
-    scorers: {},
-    matchDetails: JSON.parse(JSON.stringify(matchDetails))
+  var sn  = 'S' + currentSeasonNum;
+
+  // ── Identifier les vainqueurs de tous les trophées ──────────────────────
+  // 1. Championnats (1er de chaque ligue)
+  var lgWinners = {}; // {lg: teamName}
+  LG_ORDER.forEach(function(lg) {
+    var teams = getTeamData(lg);
+    if (teams.length) lgWinners[lg] = teams[0].name;
+  });
+
+  // 2. Champions League
+  var clWinner = null;
+  try {
+    var clFinal = CL_KO_DATA.bracket.final;
+    if (clFinal.leg1 && clFinal.leg2) clWinner = clKoWinner(clFinal) || null;
+    if (clWinner === 'TBD') clWinner = null;
+  } catch(e) {}
+
+  // 3. Europa League
+  var elWinner = null;
+  try {
+    var elFinal = EL_KO_DATA.bracket.final;
+    if (elFinal.leg1 && elFinal.leg2) elWinner = elKoWinner(elFinal) || null;
+    if (elWinner === 'TBD') elWinner = null;
+  } catch(e) {}
+
+  // 4. Coupes nationales (CUP_DATA[id].matches[sn])
+  var cupWinners = {}; // {cupId: teamName}
+  if (typeof cupsCfg !== 'undefined' && typeof CUP_DATA !== 'undefined') {
+    cupsCfg.forEach(function(cfg) {
+      var match = (CUP_DATA[cfg.id] || {}).matches && CUP_DATA[cfg.id].matches[sn];
+      if (!match || match.score_home == null) return;
+      if (match.score_home > match.score_away) cupWinners[cfg.id] = match.home;
+      else if (match.score_away > match.score_home) cupWinners[cfg.id] = match.away;
+    });
+  }
+
+  // ── Mapping championnat → champ trophée joueur ───────────────────────────
+  var LG_TROPHY = {
+    'Premier League': 't_pl',
+    'Serie A':        't_sa',
+    'Ligue 1':        't_l1',
+    'Liga':           't_lg',
+    'Bundesliga':     't_bu'
   };
 
-  // Classements finaux
+  // ── Résumé des vainqueurs (pour notification + archive) ─────────────────
+  var winnersLog = {};
+  LG_ORDER.forEach(function(lg) { if (lgWinners[lg]) winnersLog[lg] = lgWinners[lg]; });
+  if (clWinner) winnersLog['Champions League'] = clWinner;
+  if (elWinner) winnersLog['Europa League']    = elWinner;
+  if (typeof cupsCfg !== 'undefined') {
+    cupsCfg.forEach(function(cfg) { if (cupWinners[cfg.id]) winnersLog[cfg.name] = cupWinners[cfg.id]; });
+  }
+
+  // ── Mettre à jour les trophées sur les fiches joueurs ───────────────────
+  ALL.forEach(function(p) {
+    var club = p.currentClub;
+    if (!club) return;
+
+    // Championnats
+    LG_ORDER.forEach(function(lg) {
+      if (lgWinners[lg] === club) {
+        var field = LG_TROPHY[lg];
+        p[field] = (p[field] || 0) + 1;
+        p.t_total = (p.t_total || 0) + 1;
+      }
+    });
+
+    // Champions League
+    if (clWinner && clWinner === club) {
+      p.t_cl = (p.t_cl || 0) + 1;
+      p.t_total = (p.t_total || 0) + 1;
+    }
+
+    // Europa League
+    if (elWinner && elWinner === club) {
+      p.t_el = (p.t_el || 0) + 1;
+      p.t_total = (p.t_total || 0) + 1;
+    }
+
+    // Coupes nationales (incrémente CH = coupes nationales)
+    var cupCount = 0;
+    if (typeof cupsCfg !== 'undefined') {
+      cupsCfg.forEach(function(cfg) {
+        if (cfg.id !== 'sec' && cupWinners[cfg.id] === club) cupCount++;
+        // Supercoupe Europe → EU
+        if (cfg.id === 'sec' && cupWinners['sec'] === club) {
+          p.EU = (p.EU || 0) + 1;
+          p.t_total = (p.t_total || 0) + 1;
+        }
+      });
+    }
+    if (cupCount > 0) {
+      p.CH = (p.CH || 0) + cupCount;
+      p.t_total = (p.t_total || 0) + cupCount;
+    }
+  });
+
+  // ── Mettre à jour LEAGUE_CHAMPS (historique des titres de champion) ───────
+  if (typeof LEAGUE_CHAMPS !== 'undefined') {
+    var lgCode = {'Premier League':'PL','Serie A':'SA','Ligue 1':'L1','Liga':'LA','Bundesliga':'BU'};
+    var row = {season: sn};
+    LG_ORDER.forEach(function(lg) { row[lgCode[lg]] = lgWinners[lg] || '?'; });
+    // Supprimer la ligne existante pour cette saison si elle existe déjà
+    LEAGUE_CHAMPS = LEAGUE_CHAMPS.filter(function(r){ return r.season !== sn; });
+    LEAGUE_CHAMPS.push(row);
+    // Mettre à jour CLUB_TITLES
+    if (typeof CLUB_TITLES !== 'undefined') {
+      LG_ORDER.forEach(function(lg) {
+        var club = lgWinners[lg];
+        if (!club) return;
+        if (!CLUB_TITLES[club]) CLUB_TITLES[club] = {PL:0,LA:0,L1:0,SA:0,BU:0,total:0};
+        CLUB_TITLES[club][lgCode[lg]] = (CLUB_TITLES[club][lgCode[lg]] || 0) + 1;
+        CLUB_TITLES[club].total = (CLUB_TITLES[club].total || 0) + 1;
+      });
+    }
+  }
+
+  // ── Construire l'archive ─────────────────────────────────────────────────
+  var archive = {
+    season:      sn,
+    seasonNum:   currentSeasonNum,
+    closedAt:    new Date().toISOString().slice(0,10),
+    leagues:     {},
+    scorers:     {},
+    matchDetails: JSON.parse(JSON.stringify(matchDetails)),
+    winners:     winnersLog
+  };
+
   LG_ORDER.forEach(function(lg) {
     var teams = getTeamData(lg);
     archive.leagues[lg] = teams.map(function(t, rank) {
-      return {
-        rank: rank + 1,
-        name: t.name,
-        pts:  t.pts,
-        bm:   t.bm,
-        be:   t.be,
-        diff: t.bm - t.be,
-        matches: t.matches
-      };
+      return {rank:rank+1, name:t.name, pts:t.pts, bm:t.bm, be:t.be, diff:t.bm-t.be, matches:t.matches};
     });
   });
 
-  // Buteurs (depuis matchDetails)
   var scorerTotals = {};
   LG_ORDER.forEach(function(lg) {
     var lgD = matchDetails[lg] || {};
@@ -2452,43 +2562,54 @@ function executeCloseSeason() {
       });
     });
   });
-  // Enrichir avec les noms
   Object.keys(scorerTotals).forEach(function(pidx) {
     var p = ALL[parseInt(pidx)];
-    if (p) archive.scorers[pidx] = { name: p.name, goals: scorerTotals[pidx], ligue: p.ligue };
+    if (p) archive.scorers[pidx] = {name:p.name, goals:scorerTotals[pidx], ligue:p.ligue};
   });
 
-  // 2. Incrémenter le numéro de saison
-  currentSeasonNum++;
+  // Ajouter l'archive à histArchives
+  if (typeof histArchives !== 'undefined') {
+    histArchives = histArchives.filter(function(a){ return a.season !== sn; });
+    histArchives.push(archive);
+  }
 
-  // 3. Remettre matchDetails à zéro
+  // ── Réinitialiser la saison ──────────────────────────────────────────────
+  currentSeasonNum++;
   matchDetails = {};
 
-  // 4. Remettre S8_DATA.matches à null pour la nouvelle saison
   LG_ORDER.forEach(function(lg) {
     var teams = S8_DATA.leagues[lg] || [];
     teams.forEach(function(t) {
       t.matches = t.matches.map(function() { return null; });
-      t.bm = 0;
-      t.be = 0;
+      t.bm = 0; t.be = 0;
     });
-    // Remettre les goals des joueurs à 0
     (S8_DATA.players[lg] || []).forEach(function(p) { p.goals = 0; });
   });
 
-  // 5. Mettre à jour les labels
-  updateSeasonLabels();
+  // Mettre à jour le career (club de la nouvelle saison = club actuel)
+  var newSn = 'S' + currentSeasonNum;
+  ALL.forEach(function(p) {
+    if (!p.career) p.career = {};
+    p.career[newSn] = p.currentClub;
+    // Réinitialiser les buts S8 en mémoire (_origS8 → garder la valeur actuelle finale)
+    p._origS8 = p.seasons && p.seasons['S' + (currentSeasonNum-1)] || 0;
+    if (!p.seasons) p.seasons = {};
+    p.seasons[newSn] = 0;
+  });
 
-  // 6. Re-render l'onglet saisie
+  updateSeasonLabels();
   initSeasonTool();
 
-  // 7. Sauvegarder sur GitHub (avec archive)
-  GH.save();
+  // Sauvegarder
+  GH.saveNow();
 
-  // Notification
+  // Rafraîchir l'historique et les fiches
+  try { initHistory(histArchives); } catch(e) {}
+  try { tblFilter(); } catch(e) {}
+  try { if (ai >= 0) renderProfile(ai); } catch(e) {}
+
   showSeasonClosedNotif('S' + (currentSeasonNum - 1));
 }
-
 function showSeasonClosedNotif(seasonName) {
   var notif = document.createElement('div');
   notif.style.cssText = 'position:fixed;top:60px;left:50%;transform:translateX(-50%);'
