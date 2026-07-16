@@ -357,6 +357,7 @@ var GH = {
   sha:   null,
   saving: false,
   saveTimer: null,
+  _pendingSave: false,   // une sauvegarde est en attente pendant qu'une autre tourne
 
   url: function() {
     return 'https://api.github.com/repos/' + this.user + '/' + this.repo
@@ -466,7 +467,11 @@ var GH = {
   },
   _doSave: function() {
     var self = this;
-    if (self.saving) { setTimeout(function(){self._doSave();}, 3000); return; }
+    if (self.saving) {
+      self._pendingSave = true; // mémoriser qu'une sauvegarde est en attente
+      return;
+    }
+    self._pendingSave = false;
     self.saving = true;
     self._showStatus('saving');
     var shaXhr = new XMLHttpRequest();
@@ -518,6 +523,7 @@ var GH = {
         var resp = JSON.parse(xhr.responseText);
         self.sha = resp.content.sha;
         self._showStatus('saved');
+        if (self._pendingSave) { self._pendingSave = false; setTimeout(function(){self._doSave();}, 100); }
       } else if (xhr.status === 409 || xhr.status === 422) {
         // SHA conflit ou manquant — refetch le SHA et retenter une fois
         console.warn('GH SHA conflict (' + xhr.status + '), retrying...');
@@ -548,8 +554,12 @@ var GH = {
               self._showStatus('error');
               console.error('GH retry error:', xhr2.status, xhr2.responseText.slice(0,200));
             }
+            if (self._pendingSave) { self._pendingSave = false; setTimeout(function(){self._doSave();}, 100); }
           };
-          xhr2.onerror = function() { self.saving = false; self._showStatus('error'); };
+          xhr2.onerror = function() {
+            self.saving = false; self._showStatus('error');
+            if (self._pendingSave) { self._pendingSave = false; setTimeout(function(){self._doSave();}, 100); }
+          };
           xhr2.send(JSON.stringify(body2));
         };
         retryXhr.onerror = function() { self.saving = false; self._showStatus('error'); };
@@ -560,7 +570,10 @@ var GH = {
         console.error('GH save error:', xhr.status, xhr.responseText.slice(0,200));
       }
     };
-    xhr.onerror = function() { self.saving = false; self._showStatus('error'); };
+    xhr.onerror = function() {
+      self.saving = false; self._showStatus('error');
+      if (self._pendingSave) { self._pendingSave = false; setTimeout(function(){self._doSave();}, 100); }
+    };
     xhr.send(JSON.stringify(body));
   },
 
