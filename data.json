@@ -4046,6 +4046,36 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true
+    },
+    {
+      "rank": 209,
+      "name": "G. Quenda",
+      "nameRaw": "G. Quenda",
+      "age": 18,
+      "post": "MR",
+      "ligue": "PL",
+      "currentClub": "Manchester City",
+      "career": {
+        "S8": "Manchester City"
+      },
+      "total": 6,
+      "CL": 0,
+      "SN": 0,
+      "CH": 6,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S8": 6
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true
     }
   ],
   "awardsData": {
