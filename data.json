@@ -3105,7 +3105,36 @@
       "color": "#4f8ef7",
       "league": "Premier League",
       "matches": {},
-      "history": []
+      "history": [
+        {
+          "season": "S5",
+          "winner": "Manchester United",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S6",
+          "winner": "Liverpool",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S7",
+          "winner": "Manchester United",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S8",
+          "winner": "Manchester City",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        }
+      ]
     },
     "fra": {
       "name": "Coupe de France",
@@ -3113,7 +3142,36 @@
       "color": "#f7944f",
       "league": "Ligue 1",
       "matches": {},
-      "history": []
+      "history": [
+        {
+          "season": "S5",
+          "winner": "OL",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S6",
+          "winner": "OM",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S7",
+          "winner": "PSG",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S8",
+          "winner": "PSG",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        }
+      ]
     },
     "ita": {
       "name": "Coupe d'Italie",
@@ -3121,7 +3179,36 @@
       "color": "#3ecf8e",
       "league": "Serie A",
       "matches": {},
-      "history": []
+      "history": [
+        {
+          "season": "S5",
+          "winner": "AC Milan",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S6",
+          "winner": "Inter Milan",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S7",
+          "winner": "Inter Milan",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S8",
+          "winner": "Inter Milan",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        }
+      ]
     },
     "esp": {
       "name": "Coupe d'Espagne",
@@ -3129,7 +3216,36 @@
       "color": "#a37af7",
       "league": "Liga",
       "matches": {},
-      "history": []
+      "history": [
+        {
+          "season": "S5",
+          "winner": "Real Madrid",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S6",
+          "winner": "FC Barcelone",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S7",
+          "winner": "FC Barcelone",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S8",
+          "winner": "FC Barcelone",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        }
+      ]
     },
     "ger": {
       "name": "Coupe d'Allemagne",
@@ -3137,7 +3253,36 @@
       "color": "#f76f6f",
       "league": "Bundesliga",
       "matches": {},
-      "history": []
+      "history": [
+        {
+          "season": "S5",
+          "winner": "Bayern Munich",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S6",
+          "winner": "Bayern Munich",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S7",
+          "winner": "Bayer Leverkusen",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S8",
+          "winner": "Bayern Munich",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        }
+      ]
     },
     "sec": {
       "name": "Supercoupe d'Europe",
@@ -3145,7 +3290,36 @@
       "color": "#f5c842",
       "league": "Europe",
       "matches": {},
-      "history": []
+      "history": [
+        {
+          "season": "S5",
+          "winner": "Manchester United",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S6",
+          "winner": "FC Barcelone",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S7",
+          "winner": "PSG",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S8",
+          "winner": "FC Barcelone",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        }
+      ]
     }
   },
   "snMatchData": {
