@@ -2576,6 +2576,28 @@ function executeCloseSeason() {
   // ── Vieillissement : tous les joueurs gagnent 1 an ────────────────────────
   ALL.forEach(function(p) { if (typeof p.age === 'number') p.age += 1; });
 
+  // ── Archiver les matchs de coupes et réinitialiser ─────────────────────────
+  var snClosed = 'S' + currentSeasonNum;
+  if (typeof cupsCfg !== 'undefined' && typeof CUP_DATA !== 'undefined') {
+    cupsCfg.forEach(function(cfg) {
+      var match = CUP_DATA[cfg.id].matches && CUP_DATA[cfg.id].matches[snClosed];
+      if (match && match.score_home != null) {
+        // Ajouter à l'historique si pas déjà présent
+        var hist = CUP_DATA[cfg.id].history;
+        var alreadyArchived = hist.some(function(h){ return h.season === snClosed; });
+        if (!alreadyArchived) {
+          var w = match.score_home > match.score_away ? match.home
+                : match.score_away > match.score_home ? match.away : null;
+          hist.push({season:snClosed, winner:w||'Égalité',
+            runner_up: w ? (w===match.home?match.away:match.home) : '—',
+            score_home: match.score_home, score_away: match.score_away});
+        }
+      }
+      // Vider le match de la saison clôturée
+      if (CUP_DATA[cfg.id].matches) delete CUP_DATA[cfg.id].matches[snClosed];
+    });
+  }
+
   // ── Réinitialiser la saison ──────────────────────────────────────────────
   currentSeasonNum++;
   matchDetails = {};
@@ -2645,6 +2667,8 @@ function histSeasonSort(a, b) {
 function histShowTitles() {
   // Mettre à jour la nav
   document.querySelectorAll('.hist-season-btn').forEach(function(b){ b.classList.remove('on'); });
+  var cupsBtn2 = document.getElementById('hist-btn-cups');
+  if (cupsBtn2) cupsBtn2.classList.remove('on');
   var btn = document.getElementById('hist-btn-titles');
   if (btn) btn.classList.add('on');
 
@@ -2733,11 +2757,90 @@ function initHistory(archives) {
   if (sorted.length) histSelectSeason(sorted[0].season);
 }
 
+
+function histShowCups() {
+  document.querySelectorAll('.hist-season-btn').forEach(function(b){ b.classList.remove('on'); });
+  var btn = document.getElementById('hist-btn-cups');
+  if (btn) btn.classList.add('on');
+
+  var panel = document.getElementById('hist-panel');
+  if (!panel) return;
+
+  var CUP_CFG = [
+    {id:'eng', name:"Coupe d'Angleterre", emoji:'🏴‍', color:'#4f8ef7'},
+    {id:'esp', name:"Coupe d'Espagne",    emoji:'🇪🇸',       color:'#a37af7'},
+    {id:'fra', name:"Coupe de France",    emoji:'🇫🇷',       color:'#f7944f'},
+    {id:'ita', name:"Coupe d'Italie",     emoji:'🇮🇹',       color:'#3ecf8e'},
+    {id:'ger', name:"Coupe d'Allemagne",  emoji:'🇩🇪',       color:'#f76f6f'},
+    {id:'sec', name:"Supercoupe d'Europe",emoji:'⭐',         color:'#f5c842'},
+  ];
+
+  // Classement des clubs les plus titrés (toutes coupes confondues)
+  var clubWins = {};
+  CUP_CFG.forEach(function(cfg) {
+    var hist = (typeof CUP_DATA !== 'undefined' && CUP_DATA[cfg.id]) ? CUP_DATA[cfg.id].history : [];
+    hist.forEach(function(h) {
+      if (!h.winner || h.winner === 'Égalité') return;
+      if (!clubWins[h.winner]) clubWins[h.winner] = {};
+      clubWins[h.winner][cfg.id] = (clubWins[h.winner][cfg.id] || 0) + 1;
+    });
+  });
+  var ranked = Object.keys(clubWins).map(function(club) {
+    var total = Object.values(clubWins[club]).reduce(function(a,b){return a+b;}, 0);
+    return {club:club, wins:clubWins[club], total:total};
+  }).sort(function(a,b){return b.total-a.total;});
+
+  var rankRows = ranked.slice(0,12).map(function(r, i) {
+    var rc = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
+    var badges = CUP_CFG.filter(function(cfg){ return r.wins[cfg.id]; }).map(function(cfg){
+      return '<span style="font-size:11px;background:#1a1e28;border-radius:5px;padding:1px 7px;font-weight:700;color:'+cfg.color+'">'+cfg.emoji+' ×'+r.wins[cfg.id]+'</span>';
+    }).join('');
+    return '<div style="display:flex;align-items:center;gap:.75rem;padding:.5rem .875rem;border-top:1px solid #1a1e28">'
+      + '<div style="width:22px;text-align:center;font-weight:800;font-size:13px;color:'+rc+'">'+(i+1)+'</div>'
+      + '<div style="flex:1;font-size:13px;font-weight:600;color:#e8eaf0">'+r.club+'</div>'
+      + '<div style="display:flex;gap:.3rem;flex-wrap:wrap">'+badges+'</div>'
+      + '<div style="font-weight:800;font-size:14px;color:#f5c842;min-width:24px;text-align:right">'+r.total+'</div>'
+      + '</div>';
+  }).join('');
+
+  // Tableau par coupe
+  var cupCards = CUP_CFG.map(function(cfg) {
+    var hist = (typeof CUP_DATA !== 'undefined' && CUP_DATA[cfg.id]) ? CUP_DATA[cfg.id].history : [];
+    var sorted = hist.slice().sort(function(a,b){ return String(b.season).localeCompare(String(a.season)); });
+    var rows = sorted.map(function(h){
+      return '<tr>'
+        + '<td style="font-weight:700;color:#8b93b0;width:48px;padding:.3rem .5rem">'+h.season+'</td>'
+        + '<td style="color:#e8eaf0;font-weight:600;padding:.3rem .5rem">'+h.winner+'</td>'
+        + '<td style="color:#5a6080;font-size:11px;padding:.3rem .5rem">'+(h.score_home!=null?h.score_home+'-'+h.score_away:'')+'</td>'
+        + '</tr>';
+    }).join('');
+    return '<div style="background:#13161e;border:1px solid #252a38;border-radius:10px;overflow:hidden">'
+      + '<div style="display:flex;align-items:center;gap:.5rem;padding:.6rem .875rem;border-bottom:1px solid #252a38;border-left:3px solid '+cfg.color+'">'
+      + '<span style="font-size:1rem">'+cfg.emoji+'</span>'
+      + '<span style="font-family:Syne,sans-serif;font-size:13px;font-weight:700;color:#e8eaf0;flex:1">'+cfg.name+'</span>'
+      + '</div>'
+      + (rows ? '<table style="width:100%;border-collapse:collapse;font-size:12px"><tbody>'+rows+'</tbody></table>'
+              : '<div style="padding:.75rem;font-size:11px;color:#5a6080">Aucun historique</div>')
+      + '</div>';
+  }).join('');
+
+  panel.innerHTML =
+    '<div style="font-family:Syne,sans-serif;font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:1.25rem;display:flex;align-items:center;gap:.75rem">'
+    + '<span style="font-size:2rem">🥇</span><span>Palmarès des Coupes</span></div>'
+    + (rankRows ? '<div style="background:#13161e;border:1px solid #252a38;border-radius:10px;overflow:hidden;margin-bottom:1.5rem">'
+      + '<div style="padding:.6rem .875rem;border-bottom:1px solid #252a38;font-size:11px;font-weight:700;color:#5a6080;text-transform:uppercase;letter-spacing:.06em">📊 Clubs les plus titrés</div>'
+      + rankRows + '</div>' : '')
+    + '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem">'
+    + cupCards + '</div>';
+}
+
 function histSelectSeason(seasonId) {
   histCurrentSeason = seasonId;
   // Désélectionner le bouton Titres
   var titlesBtn = document.getElementById('hist-btn-titles');
   if (titlesBtn) titlesBtn.classList.remove('on');
+  var cupsBtn = document.getElementById('hist-btn-cups');
+  if (cupsBtn) cupsBtn.classList.remove('on');
   // Marquer le bouton actif
   document.querySelectorAll('.hist-season-btn').forEach(function(b){
     if (b.id !== 'hist-btn-titles') b.classList.toggle('on', b.textContent.trim().startsWith(seasonId));
@@ -4590,6 +4693,9 @@ clInitCL();
       <div class="hist-season-btn on" id="hist-btn-titles" onclick="histShowTitles()" style="margin-bottom:2px">
         🏆 Titres de champion
       </div>
+      <div class="hist-season-btn" id="hist-btn-cups" onclick="histShowCups()" style="margin-bottom:2px">
+        🥇 Coupes
+      </div>
     </div>
     <div style="padding:.4rem .75rem .2rem;font-size:10px;color:#5a6080;text-transform:uppercase;letter-spacing:.07em">Saisons archivées</div>
     <div id="hist-seasons-list"><!-- populated by JS --></div>
@@ -5364,7 +5470,7 @@ function cupsNavHistory(){cupsSubNav('history');}
 // ══════════════════════════════════════════════════════════════════
 // ONGLET COUPES
 // ══════════════════════════════════════════════════════════════════
-var CUP_DATA = {"eng":{"name":"Coupe d'Angleterre","emoji":"🏴‍","color":"#4f8ef7","league":"Premier League","matches":{},"history":[]},"fra":{"name":"Coupe de France","emoji":"🇫🇷","color":"#f7944f","league":"Ligue 1","matches":{},"history":[]},"ita":{"name":"Coupe d'Italie","emoji":"🇮🇹","color":"#3ecf8e","league":"Serie A","matches":{},"history":[]},"esp":{"name":"Coupe d'Espagne","emoji":"🇪🇸","color":"#a37af7","league":"Liga","matches":{},"history":[]},"ger":{"name":"Coupe d'Allemagne","emoji":"🇩🇪","color":"#f76f6f","league":"Bundesliga","matches":{},"history":[]},"sec":{"name":"Supercoupe d'Europe","emoji":"🌟","color":"#f5c842","league":"Europe","matches":{},"history":[]}};
+var CUP_DATA = {"eng":{"name":"Coupe d'Angleterre","emoji":"🏴‍","color":"#4f8ef7","league":"Premier League","matches":{},"history":[{"season":"S5","winner":"Manchester United","runner_up":"?","score_home":null,"score_away":null},{"season":"S6","winner":"Liverpool","runner_up":"?","score_home":null,"score_away":null},{"season":"S7","winner":"Manchester United","runner_up":"?","score_home":null,"score_away":null},{"season":"S8","winner":"Manchester City","runner_up":"?","score_home":null,"score_away":null}]},"fra":{"name":"Coupe de France","emoji":"🇫🇷","color":"#f7944f","league":"Ligue 1","matches":{},"history":[{"season":"S5","winner":"OL","runner_up":"?","score_home":null,"score_away":null},{"season":"S6","winner":"OM","runner_up":"?","score_home":null,"score_away":null},{"season":"S7","winner":"PSG","runner_up":"?","score_home":null,"score_away":null},{"season":"S8","winner":"PSG","runner_up":"?","score_home":null,"score_away":null}]},"ita":{"name":"Coupe d'Italie","emoji":"🇮🇹","color":"#3ecf8e","league":"Serie A","matches":{},"history":[{"season":"S5","winner":"AC Milan","runner_up":"?","score_home":null,"score_away":null},{"season":"S6","winner":"Inter Milan","runner_up":"?","score_home":null,"score_away":null},{"season":"S7","winner":"Inter Milan","runner_up":"?","score_home":null,"score_away":null},{"season":"S8","winner":"Inter Milan","runner_up":"?","score_home":null,"score_away":null}]},"esp":{"name":"Coupe d'Espagne","emoji":"🇪🇸","color":"#a37af7","league":"Liga","matches":{},"history":[{"season":"S5","winner":"Real Madrid","runner_up":"?","score_home":null,"score_away":null},{"season":"S6","winner":"FC Barcelone","runner_up":"?","score_home":null,"score_away":null},{"season":"S7","winner":"FC Barcelone","runner_up":"?","score_home":null,"score_away":null},{"season":"S8","winner":"FC Barcelone","runner_up":"?","score_home":null,"score_away":null}]},"ger":{"name":"Coupe d'Allemagne","emoji":"🇩🇪","color":"#f76f6f","league":"Bundesliga","matches":{},"history":[{"season":"S5","winner":"Bayern Munich","runner_up":"?","score_home":null,"score_away":null},{"season":"S6","winner":"Bayern Munich","runner_up":"?","score_home":null,"score_away":null},{"season":"S7","winner":"Bayer Leverkusen","runner_up":"?","score_home":null,"score_away":null},{"season":"S8","winner":"Bayern Munich","runner_up":"?","score_home":null,"score_away":null}]},"sec":{"name":"Supercoupe d'Europe","emoji":"🌟","color":"#f5c842","league":"Europe","matches":{},"history":[{"season":"S5","winner":"Manchester United","runner_up":"?","score_home":null,"score_away":null},{"season":"S6","winner":"FC Barcelone","runner_up":"?","score_home":null,"score_away":null},{"season":"S7","winner":"PSG","runner_up":"?","score_home":null,"score_away":null},{"season":"S8","winner":"FC Barcelone","runner_up":"?","score_home":null,"score_away":null}]}};
 
 var cupsCfg = [
   {id:"eng", name:"Coupe d'Angleterre", emoji:"🏴‍",  color:"#4f8ef7", league:"Premier League"},
