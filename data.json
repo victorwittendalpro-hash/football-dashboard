@@ -4453,6 +4453,36 @@
       "t_total": 0,
       "_custom": true,
       "_origS8": 6
+    },
+    {
+      "rank": 210,
+      "name": "L. Bergval",
+      "nameRaw": "L. Bergval",
+      "age": 22,
+      "post": "MO",
+      "ligue": "BU",
+      "currentClub": "Dortmund",
+      "career": {
+        "S8": "Dortmund"
+      },
+      "total": 1,
+      "CL": 0,
+      "SN": 0,
+      "CH": 1,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S8": 1
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true
     }
   ],
   "awardsData": {
