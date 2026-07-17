@@ -7503,34 +7503,24 @@ function cbGoalsAtClub(p, club, pidx) {
   var seasons = p.seasons || {};
   var sn8     = 'S' + (currentSeasonNum || 8);
 
-  // 1. Buts en championnat (toutes saisons où le joueur était dans ce club)
+  // 1. Buts en championnat (toutes saisons, y compris S8 déjà mis à jour par
+  //    rebuildPlayerGoalsFromDetails — contient déjà les buts CL/EL saisis en live)
   Object.keys(career).forEach(function(sn) {
     if (career[sn] === club && seasons[sn]) total += seasons[sn];
   });
 
-  // 2. Buts CL historiques (S1-S8, du fichier Excel)
+  // 2. Buts CL historiques UNIQUEMENT pour les saisons PASSÉES (antérieures à S8)
+  //    → évite le double comptage avec seasons[sn8] qui les inclut déjà via rebuild
   var clGoals = CL_GOALS_BY_PLAYER[p.name] || {};
   Object.keys(clGoals).forEach(function(sn) {
+    if (sn === sn8) return; // S8 déjà dans seasons via rebuildPlayerGoalsFromDetails
     var club_sn = career[sn] || p.currentClub;
     if (club_sn === club) total += clGoals[sn];
   });
 
-  // 3. Buts CL en direct (S8 en cours, via clKoDetails + clMatchDetails)
-  // Uniquement si le joueur est actuellement dans ce club
-  if (p.currentClub === club && typeof pidx !== 'undefined') {
-    total += cbLiveEuroGoals(pidx, typeof clKoDetails !== 'undefined' ? clKoDetails : {});
-    // Phase de ligue CL
-    if (typeof clMatchDetails !== 'undefined') {
-      Object.values(clMatchDetails).forEach(function(teamMatches) {
-        Object.values(teamMatches).forEach(function(m) {
-          var sc = (m && m.scorers) || {};
-          if (sc[String(pidx)]) total += sc[String(pidx)];
-        });
-      });
-    }
-    // 4. Buts EL en direct (phase finale)
-    total += cbLiveEuroGoals(pidx, typeof elKoDetails !== 'undefined' ? elKoDetails : {});
-  }
+  // NOTE : les buts CL/EL en direct (clKoDetails, clMatchDetails, elKoDetails)
+  // sont déjà intégrés dans seasons[sn8] via rebuildPlayerGoalsFromDetails()
+  // → NE PAS les additionner ici pour éviter le double comptage
 
   return total;
 }
