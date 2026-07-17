@@ -7625,7 +7625,6 @@ function cbRenderPanel(clubName) {
 
   // Joueurs actuels vs anciens
   var currentPlayers = scorers.filter(function(s){ return s.isCurrent; });
-  var formerPlayers  = scorers.filter(function(s){ return !s.isCurrent && s.goals > 0; });
 
   // Stats du club
   var totalGoals   = scorers.reduce(function(acc,s){ return acc + s.goals; }, 0);
@@ -7637,18 +7636,19 @@ function cbRenderPanel(clubName) {
   if (currentPlayers.length) ligueCode = currentPlayers[0].ligue || '';
   var ligueName = {PL:'Premier League',SA:'Serie A',LA:'Liga',L1:'Ligue 1',BU:'Bundesliga'}[ligueCode] || '';
 
-  function renderRows(list, showPost) {
-    return list.map(function(s, i) {
-      var c = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
-      return '<div class="cb-scorer-row" onclick="sel(' + s.idx + ');switchTab(\'profiles\')">'
-        + '<div class="cb-scorer-rank" style="color:' + c + '">' + (i+1) + '</div>'
-        + '<div class="cb-scorer-name">' + s.name + '</div>'
-        + (showPost && s.post ? '<div class="cb-scorer-post">' + s.post + '</div>' : '')
-        + '<div class="cb-scorer-seasons">' + s.seasons + ' saison' + (s.seasons>1?'s':'') + '</div>'
-        + '<div class="cb-scorer-goals">' + s.goals + ' ⚽</div>'
-        + '</div>';
-    }).join('');
-  }
+  // Un seul classement général (actuels + anciens confondus)
+  var rows = scorers.map(function(s, i) {
+    var c = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
+    return '<div class="cb-scorer-row" onclick="sel(' + s.idx + ');switchTab(\'profiles\')">'
+      + '<div class="cb-scorer-rank" style="color:' + c + '">' + (i+1) + '</div>'
+      + '<div class="cb-scorer-name">' + s.name
+      + (s.post ? '<span class="cb-scorer-post" style="margin-left:.4rem">' + s.post + '</span>' : '')
+      + (!s.isCurrent ? '<span style="font-size:10px;color:#5a6080;margin-left:.3rem">ancien</span>' : '')
+      + '</div>'
+      + '<div class="cb-scorer-seasons">' + s.seasons + ' saison' + (s.seasons>1?'s':'') + '</div>'
+      + '<div class="cb-scorer-goals">' + s.goals + ' ⚽</div>'
+      + '</div>';
+  }).join('');
 
   var html = '<div class="cb-hdr">'
     + '<div style="font-size:1.4rem">🏟️</div>'
@@ -7656,22 +7656,14 @@ function cbRenderPanel(clubName) {
     + '<div class="cb-hdr-title">' + clubName + '</div>'
     + '<div class="cb-hdr-sub">' + (ligueName || 'Club') + ' · ' + totalPlayers + ' joueur' + (totalPlayers>1?'s':'') + ' actuels</div>'
     + '</div></div>'
-    // Stats
     + '<div class="cb-stats-row">'
     + '<div class="cb-stat-box"><div class="cb-stat-val">' + totalGoals + '</div><div class="cb-stat-lbl">Buts au club</div></div>'
-    + '<div class="cb-stat-box"><div class="cb-stat-val">' + totalPlayers + '</div><div class="cb-stat-lbl">Joueurs</div></div>'
+    + '<div class="cb-stat-box"><div class="cb-stat-val">' + totalPlayers + '</div><div class="cb-stat-lbl">Joueurs actuels</div></div>'
     + (topScorer ? '<div class="cb-stat-box" style="cursor:pointer" onclick="sel(' + topScorer.idx + ');switchTab(\'profiles\')">'
       + '<div class="cb-stat-val" style="font-size:1rem">' + topScorer.name + '</div>'
       + '<div class="cb-stat-lbl">Meilleur buteur (' + topScorer.goals + ')</div></div>' : '')
     + '</div>'
-    // Joueurs actuels
-    + (currentPlayers.length
-      ? '<div class="cb-section-lbl">Effectif actuel</div>' + renderRows(currentPlayers, true)
-      : '')
-    // Anciens joueurs avec buts
-    + (formerPlayers.length
-      ? '<div class="cb-section-lbl" style="margin-top:.5rem">Anciens joueurs</div>' + renderRows(formerPlayers, false)
-      : '');
+    + (rows || '<div style="padding:1.5rem;text-align:center;color:#5a6080">Aucun buteur enregistré</div>');
 
   panel.innerHTML = html;
 }
