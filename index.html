@@ -233,6 +233,7 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
   <button class="tab-btn" onclick="switchTab('sn')">🌍 Sélections</button>
   <button class="tab-btn" onclick="switchTab('history')">📚 Historique</button>
   <button class="tab-btn" onclick="switchTab('awards')">🏅 Récompenses</button>
+  <button class="tab-btn" onclick="switchTab('club')">🏟️ Clubs</button>
 </div>
 <div id="tab-profiles" class="tab-pane active">
 <div class="layout">
@@ -1095,6 +1096,7 @@ function switchTab(tab) {
   if (tab === 'cups')  { try { cupsInit(); }           catch(e) {} }
   if (tab === 'sn')    { try { snInit(); }             catch(e) {} }
   if (tab === 'awards'){ try { awardsInit(); }         catch(e) {} }
+  if (tab === 'club')  { try { cbInit(); }            catch(e) {} }
 }
 
 // ===== TABLE =====
@@ -7416,6 +7418,223 @@ function awSaveAward() {
   GH.saveNow();
   awCloseModal();
   awRender();
+}
+
+</script>
+
+<div id="xpane-club" class="extra-pane" style="display:none">
+<style>
+#xpane-club{display:none}
+.cb-wrap{display:grid;grid-template-columns:220px 1fr;height:calc(100vh - 98px);overflow:hidden}
+@media(max-width:700px){.cb-wrap{grid-template-columns:1fr;height:auto}}
+.cb-nav{background:#13161e;border-right:1px solid #252a38;display:flex;flex-direction:column;overflow:hidden}
+.cb-nav-title{padding:.75rem 1rem;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#5a6080;border-bottom:1px solid #252a38}
+.cb-search{padding:.5rem .75rem;border-bottom:1px solid #252a38}
+.cb-search input{width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.4rem .65rem;color:#e8eaf0;font-size:12px;outline:none}
+.cb-club-list{flex:1;overflow-y:auto}
+.cb-club-list::-webkit-scrollbar{width:3px}
+.cb-club-list::-webkit-scrollbar-thumb{background:#252a38}
+.cb-club-btn{display:flex;align-items:center;gap:.5rem;padding:.45rem .75rem;cursor:pointer;font-size:12px;font-weight:500;color:#8b93b0;border-left:3px solid transparent;transition:all .1s}
+.cb-club-btn:hover{background:#1a1e28;color:#e8eaf0}
+.cb-club-btn.on{border-left-color:#4f8ef7;color:#e8eaf0;background:#1a1e2855}
+.cb-club-badge{font-size:10px;background:#1a1e28;border-radius:4px;padding:1px 6px;color:#5a6080;margin-left:auto}
+.cb-panel{flex:1;overflow-y:auto}
+.cb-panel::-webkit-scrollbar{width:4px}
+.cb-panel::-webkit-scrollbar-thumb{background:#252a38}
+.cb-scorer-row{display:flex;align-items:center;gap:.75rem;padding:.5rem 1.25rem;border-bottom:1px solid #1a1e28;transition:background .1s}
+.cb-scorer-row:hover{background:#1a1e2840;cursor:pointer}
+.cb-scorer-rank{width:28px;text-align:center;font-weight:800;font-size:13px}
+.cb-scorer-name{flex:1;font-size:13px;font-weight:600;color:#e8eaf0}
+.cb-scorer-post{font-size:10px;color:#5a6080;background:#1a1e28;border-radius:4px;padding:1px 6px}
+.cb-scorer-seasons{font-size:11px;color:#5a6080;min-width:60px;text-align:right}
+.cb-scorer-goals{font-weight:800;font-size:15px;color:#4f8ef7;min-width:36px;text-align:right}
+.cb-hdr{padding:.875rem 1.25rem;border-bottom:1px solid #252a38;background:#13161e;position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:.75rem}
+.cb-hdr-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff}
+.cb-hdr-sub{font-size:12px;color:#5a6080}
+.cb-stats-row{display:flex;gap:1rem;padding:.75rem 1.25rem;border-bottom:1px solid #252a38;flex-wrap:wrap}
+.cb-stat-box{background:#0d0f14;border-radius:8px;padding:.5rem .875rem;text-align:center;flex:1;min-width:80px}
+.cb-stat-val{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;color:#4f8ef7}
+.cb-stat-lbl{font-size:10px;color:#5a6080;text-transform:uppercase;letter-spacing:.05em}
+.cb-section-lbl{padding:.5rem 1.25rem .3rem;font-size:10px;font-weight:700;color:#5a6080;text-transform:uppercase;letter-spacing:.06em}
+</style>
+<div class="cb-wrap">
+  <div class="cb-nav">
+    <div class="cb-nav-title">🏟️ Clubs</div>
+    <div class="cb-search">
+      <input type="text" id="cb-search-input" placeholder="Rechercher un club…"
+        oninput="cbFilterClubs(this.value)">
+    </div>
+    <div class="cb-club-list" id="cb-club-list"></div>
+  </div>
+  <div class="cb-panel" id="cb-panel">
+    <div style="display:flex;align-items:center;justify-content:center;height:200px;color:#5a6080">
+      Sélectionnez un club
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+
+// ══════════════════════════════════════════════════════════════════
+// ONGLET CLUBS — Classement des buteurs par club
+// ══════════════════════════════════════════════════════════════════
+var _cbCurrentClub = null;
+var _cbAllClubs    = [];  // liste triée de tous les clubs
+
+// Calcule les buts d'un joueur dans un club donné (toutes saisons confondues)
+function cbGoalsAtClub(p, club) {
+  var total = 0;
+  var career  = p.career  || {};
+  var seasons = p.seasons || {};
+  Object.keys(career).forEach(function(sn) {
+    if (career[sn] === club && seasons[sn]) total += seasons[sn];
+  });
+  // Ajouter les buts saisis en direct (S8 en cours) via matchDetails
+  // (rebuildPlayerGoalsFromDetails met déjà à jour p.seasons['S8'])
+  // → déjà inclus via seasons ci-dessus, pas de doublon
+  return total;
+}
+
+// Nombre de saisons passées dans un club
+function cbSeasonsAtClub(p, club) {
+  var career = p.career || {};
+  return Object.values(career).filter(function(c){ return c === club; }).length;
+}
+
+// Construire la liste complète des clubs distincts
+function cbBuildClubList() {
+  var clubSet = {};
+  ALL.forEach(function(p) {
+    var club = p.currentClub;
+    if (!club) return;
+    if (!clubSet[club]) clubSet[club] = {name: club, current: 0, scorers: 0};
+    clubSet[club].current++;
+  });
+  // Aussi les clubs historiques (career) même si plus de joueurs actuels
+  ALL.forEach(function(p) {
+    Object.values(p.career || {}).forEach(function(club) {
+      if (club && !clubSet[club]) clubSet[club] = {name: club, current: 0, scorers: 0};
+    });
+  });
+  _cbAllClubs = Object.values(clubSet).sort(function(a,b) {
+    return a.name.localeCompare(b.name, 'fr');
+  });
+}
+
+function cbInit() {
+  cbBuildClubList();
+  cbRenderNavList(_cbAllClubs);
+  // Sélectionner le 1er club par défaut
+  if (_cbAllClubs.length) cbSelectClub(_cbAllClubs[0].name);
+}
+
+function cbFilterClubs(q) {
+  var ql = (q || '').toLowerCase();
+  var filtered = ql ? _cbAllClubs.filter(function(c) {
+    return c.name.toLowerCase().indexOf(ql) >= 0;
+  }) : _cbAllClubs;
+  cbRenderNavList(filtered);
+}
+
+function cbRenderNavList(clubs) {
+  var list = document.getElementById('cb-club-list');
+  if (!list) return;
+  list.innerHTML = clubs.map(function(c) {
+    var on = c.name === _cbCurrentClub ? ' on' : '';
+    return '<div class="cb-club-btn' + on + '" onclick="cbSelectClub(\'' + c.name.replace(/'/g, "\\'") + '\')">'
+      + '<span style="flex:1">' + c.name + '</span>'
+      + '<span class="cb-club-badge">' + c.current + '</span>'
+      + '</div>';
+  }).join('');
+}
+
+function cbSelectClub(clubName) {
+  _cbCurrentClub = clubName;
+  // Mettre à jour la nav
+  document.querySelectorAll('.cb-club-btn').forEach(function(b) {
+    b.classList.toggle('on', b.textContent.trim().startsWith(clubName.substring(0, 8)));
+  });
+  // Reconstruire la liste proprement (évite les faux positifs du startsWith)
+  cbFilterClubs(document.getElementById('cb-search-input').value);
+  cbRenderPanel(clubName);
+}
+
+function cbRenderPanel(clubName) {
+  var panel = document.getElementById('cb-panel');
+  if (!panel) return;
+
+  // Calculer les buts de chaque joueur dans ce club
+  var scorers = [];
+  ALL.forEach(function(p, pi) {
+    var g = cbGoalsAtClub(p, clubName);
+    var sns = cbSeasonsAtClub(p, clubName);
+    var isCurrent = p.currentClub === clubName;
+    if (g > 0 || isCurrent) {
+      scorers.push({
+        idx:       pi,
+        name:      p.name,
+        post:      p.post || '',
+        goals:     g,
+        seasons:   sns,
+        isCurrent: isCurrent,
+        ligue:     p.ligue || ''
+      });
+    }
+  });
+  scorers.sort(function(a,b) { return b.goals - a.goals || b.seasons - a.seasons; });
+
+  // Joueurs actuels vs anciens
+  var currentPlayers = scorers.filter(function(s){ return s.isCurrent; });
+  var formerPlayers  = scorers.filter(function(s){ return !s.isCurrent && s.goals > 0; });
+
+  // Stats du club
+  var totalGoals   = scorers.reduce(function(acc,s){ return acc + s.goals; }, 0);
+  var totalPlayers = currentPlayers.length;
+  var topScorer    = scorers.length ? scorers[0] : null;
+
+  // Championnat du club (ligue des joueurs actuels)
+  var ligueCode = '';
+  if (currentPlayers.length) ligueCode = currentPlayers[0].ligue || '';
+  var ligueName = {PL:'Premier League',SA:'Serie A',LA:'Liga',L1:'Ligue 1',BU:'Bundesliga'}[ligueCode] || '';
+
+  function renderRows(list, showPost) {
+    return list.map(function(s, i) {
+      var c = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
+      return '<div class="cb-scorer-row" onclick="sel(' + s.idx + ');switchTab(\'profiles\')">'
+        + '<div class="cb-scorer-rank" style="color:' + c + '">' + (i+1) + '</div>'
+        + '<div class="cb-scorer-name">' + s.name + '</div>'
+        + (showPost && s.post ? '<div class="cb-scorer-post">' + s.post + '</div>' : '')
+        + '<div class="cb-scorer-seasons">' + s.seasons + ' saison' + (s.seasons>1?'s':'') + '</div>'
+        + '<div class="cb-scorer-goals">' + s.goals + ' ⚽</div>'
+        + '</div>';
+    }).join('');
+  }
+
+  var html = '<div class="cb-hdr">'
+    + '<div style="font-size:1.4rem">🏟️</div>'
+    + '<div>'
+    + '<div class="cb-hdr-title">' + clubName + '</div>'
+    + '<div class="cb-hdr-sub">' + (ligueName || 'Club') + ' · ' + totalPlayers + ' joueur' + (totalPlayers>1?'s':'') + ' actuels</div>'
+    + '</div></div>'
+    // Stats
+    + '<div class="cb-stats-row">'
+    + '<div class="cb-stat-box"><div class="cb-stat-val">' + totalGoals + '</div><div class="cb-stat-lbl">Buts au club</div></div>'
+    + '<div class="cb-stat-box"><div class="cb-stat-val">' + totalPlayers + '</div><div class="cb-stat-lbl">Joueurs</div></div>'
+    + (topScorer ? '<div class="cb-stat-box" style="cursor:pointer" onclick="sel(' + topScorer.idx + ');switchTab(\'profiles\')">'
+      + '<div class="cb-stat-val" style="font-size:1rem">' + topScorer.name + '</div>'
+      + '<div class="cb-stat-lbl">Meilleur buteur (' + topScorer.goals + ')</div></div>' : '')
+    + '</div>'
+    // Joueurs actuels
+    + (currentPlayers.length
+      ? '<div class="cb-section-lbl">Effectif actuel</div>' + renderRows(currentPlayers, true)
+      : '')
+    // Anciens joueurs avec buts
+    + (formerPlayers.length
+      ? '<div class="cb-section-lbl" style="margin-top:.5rem">Anciens joueurs</div>' + renderRows(formerPlayers, false)
+      : '');
+
+  panel.innerHTML = html;
 }
 
 </script>
