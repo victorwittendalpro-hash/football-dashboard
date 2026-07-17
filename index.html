@@ -7482,17 +7482,56 @@ function awSaveAward() {
 var _cbCurrentClub = null;
 var _cbAllClubs    = [];  // liste triée de tous les clubs
 
-// Calcule les buts d'un joueur dans un club donné (toutes saisons confondues)
-function cbGoalsAtClub(p, club) {
+// ── Buts CL historiques par joueur (S1-S8, source: Feuille 15 Excel) ─────────
+var CL_GOALS_BY_PLAYER = {"A. Grey":{"S3":1,"S4":1},"Aaronson":{"S2":7,"S3":2,"S5":2,"S6":4,"S8":2},"Adingra":{"S4":3,"S7":1,"S8":2},"Akhliouche":{"S5":3},"B. Barcola":{"S4":1,"S5":2,"S6":7,"S7":5,"S8":1},"B. Diaz":{"S6":1,"S7":2},"B. Johnson":{"S2":5,"S3":1},"T. Baldanzi":{"S6":2,"S8":1},"Ben Seghir":{"S5":9,"S6":5,"S7":4,"S8":2},"Bozdogan":{"S4":2,"S5":1},"Brobbey":{"S2":13,"S3":5,"S4":10,"S5":5,"S6":14,"S7":9,"S8":4},"Buenanotte":{"S3":1},"Chukwueze":{"S3":3,"S5":3},"Darami":{"S5":2},"De La Cruz":{"S2":5},"Di Marco":{"S2":2,"S3":5,"S5":3,"S8":1},"Dilrosun":{"S1":3,"S2":8,"S3":6,"S4":4,"S5":3,"S6":2,"S7":1,"S8":1},"Désiré Doué":{"S5":1,"S6":4,"S7":10,"S8":2},"E. Haaland":{"S1":8,"S2":11,"S3":13,"S4":9,"S5":12,"S6":5,"S7":3,"S8":3},"Endrick":{"S5":8,"S6":2,"S8":1},"Estêvão":{"S5":1,"S6":9,"S7":6,"S8":1},"Eze":{"S2":5,"S3":6,"S4":2,"S5":1},"F. Farrias":{"S5":2,"S7":8,"S8":2},"Fabio Silva":{"S6":10,"S7":3},"Fekir":{"S2":2,"S4":1},"Gakpo":{"S2":3,"S3":1},"Garnacho":{"S2":1,"S3":2,"S4":1},"Gedson":{"S1":4,"S2":4,"S4":2,"S5":3,"S7":2,"S8":3},"Gibbs-White":{"S2":3,"S3":1,"S5":4,"S7":4},"Gnonto":{"S4":2,"S6":4,"S7":7,"S8":1},"Gonçalo Ramos":{"S2":3,"S3":4,"S4":4,"S5":6,"S6":1,"S7":1,"S8":3},"Helinho":{"S3":1},"Isaac":{"S1":3,"S2":6,"S3":2,"S6":6,"S7":3,"S8":1},"J. Bakayoko":{"S6":4},"João Pedro":{"S6":3,"S7":5,"S8":3},"K. Schade":{"S6":2,"S7":3,"S8":3},"K.Yıldız":{"S5":7,"S6":3,"S7":1,"S8":1},"Kerkez":{"S2":2},"Konoplya":{"S4":2},"Kvaratskhelia":{"S1":3,"S3":1,"S5":2,"S6":1},"L. Rodriguez":{"S2":3,"S3":4,"S4":1,"S5":1},"Hugo Larsson":{"S6":2},"Laurienté":{"S3":1},"Lovro Majer":{"S3":3},"M. Tel":{"S5":6,"S6":7,"S7":3,"S8":4},"Madueke":{"S1":7,"S4":1,"S6":1,"S8":3},"Markovic":{"S4":1},"Mbappe":{"S1":11,"S2":9,"S3":19,"S4":7,"S5":18,"S6":5,"S7":12,"S8":4},"Mejbri":{"S4":1,"S7":2,"S8":1},"Moukoko":{"S5":1},"Mudrik":{"S2":3,"S3":4,"S4":2,"S5":3,"S6":1,"S7":2,"S8":1},"Ndiaye":{"S3":1,"S4":1,"S5":1},"Nusa":{"S4":2,"S6":7,"S7":1,"S8":5},"Olise":{"S2":1,"S3":1,"S6":1,"S7":1,"S8":4},"Osimhen":{"S1":7,"S2":4,"S3":6},"Ounahi":{"S2":2,"S3":2,"S4":3,"S8":3},"Paulinho":{"S1":10,"S2":4,"S3":1,"S4":5,"S5":4,"S6":6,"S8":3},"Pellistri":{"S4":6,"S5":4,"S6":3,"S7":4,"S8":1},"Poulsen":{"S1":3,"S2":8,"S3":7,"S4":13,"S5":7,"S6":8,"S7":7,"S8":1},"Retegui":{"S3":4,"S4":5,"S7":3},"Richarlison":{"S2":1,"S4":1},"Savinho":{"S5":1,"S6":4,"S8":1},"Sudakov":{"S3":1},"Summerville":{"S2":2,"S5":2},"T. Cantwell":{"S6":5,"S7":2,"S8":1},"T. Chong":{"S5":7,"S6":9,"S7":2},"Traorè":{"S4":3,"S5":5,"S7":1},"A. Ueda":{"S5":1},"Vitor Roque":{"S3":3,"S4":7,"S5":2,"S6":3,"S7":8,"S8":2},"Wahi":{"S4":1,"S6":1},"Williams Jr.":{"S2":2,"S3":2,"S4":3,"S5":5,"S6":2,"S7":2,"S8":1},"J. Windass":{"S6":2,"S7":1,"S8":2},"Xavi Simons":{"S2":3},"Yamal":{"S4":1,"S5":11,"S6":7,"S7":12,"S8":7},"Zubimendi":{"S5":2,"S6":1},"Mbaye":{"S7":1,"S8":1},"Julien Duranville":{"S7":2,"S8":1},"Rio Ngumoha":{"S7":1},"R. Bardghji":{"S7":1,"S8":1},"Igor Jesus":{"S8":2}};
+
+// Calcule les buts saisis en direct dans clKoDetails/elKoDetails pour un joueur
+function cbLiveEuroGoals(pidx, details) {
+  var total = 0;
+  Object.values(details || {}).forEach(function(m) {
+    var sc = (m && m.scorers) || {};
+    if (sc[String(pidx)]) total += sc[String(pidx)];
+  });
+  return total;
+}
+
+// Calcule TOUS les buts d'un joueur dans un club donné :
+// championnat (seasons) + CL historique (CL_GOALS_BY_PLAYER) + CL/EL en direct
+function cbGoalsAtClub(p, club, pidx) {
   var total = 0;
   var career  = p.career  || {};
   var seasons = p.seasons || {};
+  var sn8     = 'S' + (currentSeasonNum || 8);
+
+  // 1. Buts en championnat (toutes saisons où le joueur était dans ce club)
   Object.keys(career).forEach(function(sn) {
     if (career[sn] === club && seasons[sn]) total += seasons[sn];
   });
-  // Ajouter les buts saisis en direct (S8 en cours) via matchDetails
-  // (rebuildPlayerGoalsFromDetails met déjà à jour p.seasons['S8'])
-  // → déjà inclus via seasons ci-dessus, pas de doublon
+
+  // 2. Buts CL historiques (S1-S8, du fichier Excel)
+  var clGoals = CL_GOALS_BY_PLAYER[p.name] || {};
+  Object.keys(clGoals).forEach(function(sn) {
+    var club_sn = career[sn] || p.currentClub;
+    if (club_sn === club) total += clGoals[sn];
+  });
+
+  // 3. Buts CL en direct (S8 en cours, via clKoDetails + clMatchDetails)
+  // Uniquement si le joueur est actuellement dans ce club
+  if (p.currentClub === club && typeof pidx !== 'undefined') {
+    total += cbLiveEuroGoals(pidx, typeof clKoDetails !== 'undefined' ? clKoDetails : {});
+    // Phase de ligue CL
+    if (typeof clMatchDetails !== 'undefined') {
+      Object.values(clMatchDetails).forEach(function(teamMatches) {
+        Object.values(teamMatches).forEach(function(m) {
+          var sc = (m && m.scorers) || {};
+          if (sc[String(pidx)]) total += sc[String(pidx)];
+        });
+      });
+    }
+    // 4. Buts EL en direct (phase finale)
+    total += cbLiveEuroGoals(pidx, typeof elKoDetails !== 'undefined' ? elKoDetails : {});
+  }
+
   return total;
 }
 
@@ -7567,7 +7606,7 @@ function cbRenderPanel(clubName) {
   // Calculer les buts de chaque joueur dans ce club
   var scorers = [];
   ALL.forEach(function(p, pi) {
-    var g = cbGoalsAtClub(p, clubName);
+    var g = cbGoalsAtClub(p, clubName, pi);
     var sns = cbSeasonsAtClub(p, clubName);
     var isCurrent = p.currentClub === clubName;
     if (g > 0 || isCurrent) {
