@@ -3647,11 +3647,12 @@
         "away_score": 0
       },
       "leg2": {
-        "home_score": 0,
-        "away_score": 0
+        "home_score": 1,
+        "away_score": 2
       },
       "scorers": {
-        "138": 2
+        "47": 1,
+        "138": 3
       }
     }
   },
