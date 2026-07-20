@@ -3635,7 +3635,23 @@
         "home_score": 0,
         "away_score": 0
       },
-      "scorers": {}
+      "scorers": {
+        "128": 1,
+        "203": 1
+      }
+    },
+    "qf_1": {
+      "leg1": {
+        "home_score": 2,
+        "away_score": 0
+      },
+      "leg2": {
+        "home_score": 0,
+        "away_score": 0
+      },
+      "scorers": {
+        "138": 2
+      }
     }
   },
   "cupData": {
