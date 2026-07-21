@@ -3292,6 +3292,22 @@
       "scorers": {
         "121": 1
       }
+    },
+    "qf_0": {
+      "leg1": {
+        "home_score": 2,
+        "away_score": 3
+      },
+      "leg2": {
+        "home_score": 0,
+        "away_score": 0
+      },
+      "scorers": {
+        "15": 1,
+        "23": 1,
+        "98": 1,
+        "99": 1
+      }
     }
   },
   "clKoBracket": {
@@ -3397,8 +3413,14 @@
       {
         "home": "FC Barcelone",
         "away": "Liverpool",
-        "leg1": null,
-        "leg2": null
+        "leg1": {
+          "home_score": 2,
+          "away_score": 3
+        },
+        "leg2": {
+          "home_score": 0,
+          "away_score": 0
+        }
       },
       {
         "home": "Inter Milan",
@@ -3439,7 +3461,7 @@
     ],
     "sf": [
       {
-        "home": null,
+        "home": "Liverpool",
         "away": null,
         "leg1": null,
         "leg2": null
