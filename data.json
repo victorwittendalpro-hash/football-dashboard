@@ -3279,6 +3279,19 @@
         "5": 2,
         "12": 2
       }
+    },
+    "qf_3": {
+      "leg1": {
+        "home_score": 1,
+        "away_score": 0
+      },
+      "leg2": {
+        "home_score": 0,
+        "away_score": 0
+      },
+      "scorers": {
+        "121": 1
+      }
     }
   },
   "clKoBracket": {
@@ -3414,8 +3427,14 @@
       {
         "home": "Real Madrid",
         "away": "Dortmund",
-        "leg1": null,
-        "leg2": null
+        "leg1": {
+          "home_score": 1,
+          "away_score": 0
+        },
+        "leg2": {
+          "home_score": 0,
+          "away_score": 0
+        }
       }
     ],
     "sf": [
@@ -3427,7 +3446,7 @@
       },
       {
         "home": "PSG",
-        "away": null,
+        "away": "Real Madrid",
         "leg1": null,
         "leg2": null
       }
