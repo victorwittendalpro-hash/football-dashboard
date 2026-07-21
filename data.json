@@ -3261,10 +3261,13 @@
         "away_score": 0
       },
       "leg2": {
-        "home_score": 0,
-        "away_score": 0
+        "home_score": 2,
+        "away_score": 1
       },
-      "scorers": {}
+      "scorers": {
+        "26": 1,
+        "177": 2
+      }
     },
     "qf_2": {
       "leg1": {
@@ -3430,8 +3433,8 @@
           "away_score": 0
         },
         "leg2": {
-          "home_score": 0,
-          "away_score": 0
+          "home_score": 2,
+          "away_score": 1
         }
       },
       {
@@ -3462,7 +3465,7 @@
     "sf": [
       {
         "home": "Liverpool",
-        "away": null,
+        "away": "Manchester City",
         "leg1": null,
         "leg2": null
       },
