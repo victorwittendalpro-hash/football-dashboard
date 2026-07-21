@@ -3654,6 +3654,17 @@
         "47": 1,
         "138": 3
       }
+    },
+    "sf_0": {
+      "leg1": {
+        "home_score": 0,
+        "away_score": 0
+      },
+      "leg2": {
+        "home_score": 0,
+        "away_score": 0
+      },
+      "scorers": {}
     }
   },
   "cupData": {
