@@ -3291,9 +3291,10 @@
       },
       "leg2": {
         "home_score": 0,
-        "away_score": 0
+        "away_score": 3
       },
       "scorers": {
+        "3": 3,
         "121": 1
       }
     },
@@ -3459,7 +3460,7 @@
         },
         "leg2": {
           "home_score": 0,
-          "away_score": 0
+          "away_score": 3
         }
       }
     ],
