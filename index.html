@@ -857,6 +857,138 @@ function sel(i) {
   document.getElementById('main').scrollTop = 0;
 }
 
+
+// ── Courbe de valeur marchande par saison ────────────────────────────────────
+function mcSnToNum(sn) {
+  if (!sn) return 0;
+  var neg = sn.indexOf('-') >= 0;
+  var n = parseInt(sn.replace('S','').replace('-',''));
+  return neg ? -n : n;
+}
+function mcSnLabel(n) {
+  return n < 0 ? 'S-' + Math.abs(n) : 'S' + n;
+}
+function mcValueAt(age, career, season) {
+  var A = Math.max(0.02, (42 - age) / 22);
+  var C = 1 + career / 100;
+  var S = 1 + Math.sqrt(Math.max(0, season) / 8);
+  var v = 43.8 * Math.pow(A, 3.16) * Math.pow(C, 1.9) * S;
+  return Math.min(Math.round(v * 10) / 10, 500);
+}
+
+function mcValueChartHTML(p, pidx) {
+  var sn8 = 'S' + (currentSeasonNum || 8);
+  var ageNow = p.age || 28;
+  var seasons = p.seasons || {};
+  var career = p.career || {};
+  var clGoals = (typeof CL_GOALS_BY_PLAYER !== 'undefined' && CL_GOALS_BY_PLAYER[p.name]) || {};
+
+  // Collecter toutes les saisons avec données
+  var snNums = {};
+  Object.keys(seasons).forEach(function(s) { if (seasons[s]) snNums[mcSnToNum(s)] = true; });
+  Object.keys(clGoals).forEach(function(s) { if (clGoals[s]) snNums[mcSnToNum(s)] = true; });
+  Object.keys(career).forEach(function(s) { snNums[mcSnToNum(s)] = true; });
+
+  var sorted = Object.keys(snNums).map(Number).sort(function(a,b){return a-b;});
+  if (sorted.length < 2) {
+    return '<div style="color:#5a6080;font-size:12px;padding:.5rem 0">Données insuffisantes pour afficher la courbe.</div>';
+  }
+
+  // Calculer les points
+  var points = [];
+  var cumul = 0;
+  sorted.forEach(function(snN) {
+    var sn = mcSnLabel(snN);
+    var ageAt = ageNow - ((currentSeasonNum || 8) - snN);
+    if (ageAt < 14 || ageAt > 45) return;
+    var champ = seasons[sn] || 0;
+    var cl    = clGoals[sn] || 0;
+    cumul += champ + cl;
+    var val = mcValueAt(ageAt, cumul, champ + cl);
+    points.push({sn: sn, snN: snN, age: ageAt, value: val});
+  });
+  if (points.length < 2) return '<div style="color:#5a6080;font-size:12px;padding:.5rem 0">Données insuffisantes.</div>';
+
+  // Dimensions SVG
+  var W = 560; var H = 160;
+  var PAD_L = 48; var PAD_R = 16; var PAD_T = 12; var PAD_B = 32;
+  var cW = W - PAD_L - PAD_R;
+  var cH = H - PAD_T - PAD_B;
+
+  var maxVal = Math.max.apply(null, points.map(function(pt){return pt.value;}));
+  var minVal = Math.min.apply(null, points.map(function(pt){return pt.value;}));
+  // Arrondir à une échelle propre
+  var scaleMax = Math.ceil(maxVal / 50) * 50 || 50;
+  var scaleMin = 0;
+
+  function xPos(i) { return PAD_L + (i / (points.length - 1)) * cW; }
+  function yPos(v) { return PAD_T + cH - ((v - scaleMin) / (scaleMax - scaleMin)) * cH; }
+
+  // Ligne et aire
+  var linePts = points.map(function(pt, i) { return xPos(i) + ',' + yPos(pt.value); }).join(' ');
+  var areaPath = 'M' + xPos(0) + ',' + (PAD_T + cH)
+    + ' L' + points.map(function(pt, i) { return xPos(i) + ',' + yPos(pt.value); }).join(' L')
+    + ' L' + xPos(points.length-1) + ',' + (PAD_T + cH) + ' Z';
+
+  // Grille horizontale (3 lignes)
+  var gridLines = '';
+  [0, 0.5, 1].forEach(function(frac) {
+    var v = scaleMin + frac * (scaleMax - scaleMin);
+    var y = yPos(v);
+    var label = v >= 1000 ? (v/1000).toFixed(1)+'G' : v+'M';
+    gridLines += '<line x1="' + PAD_L + '" y1="' + y + '" x2="' + (W-PAD_R) + '" y2="' + y
+      + '" stroke="#252a38" stroke-width="1" stroke-dasharray="3,3"/>';
+    gridLines += '<text x="' + (PAD_L-6) + '" y="' + (y+4) + '" fill="#5a6080" font-size="9" text-anchor="end">' + label + '</text>';
+  });
+
+  // Points et labels X
+  var dotsAndLabels = points.map(function(pt, i) {
+    var x = xPos(i); var y = yPos(pt.value);
+    var isCurrent = pt.sn === sn8;
+    var dotR = isCurrent ? 5 : 3.5;
+    var dotFill = isCurrent ? '#f5c842' : '#4f8ef7';
+    // Tooltip via title
+    var tipText = pt.sn + ' · ' + pt.value + 'M€ · âge ' + pt.age;
+    // Label X (seulement certaines saisons pour éviter la surcharge)
+    var showLabel = points.length <= 8 || i % Math.ceil(points.length / 6) === 0 || i === points.length - 1;
+    var labelEl = showLabel
+      ? '<text x="' + x + '" y="' + (PAD_T + cH + 18) + '" fill="#5a6080" font-size="9" text-anchor="middle">' + pt.sn + '</text>'
+      : '';
+    return '<g class="mc-chart-dot" style="cursor:pointer">'
+      + '<title>' + tipText + '</title>'
+      + '<circle cx="' + x + '" cy="' + y + '" r="' + dotR + '" fill="' + dotFill + '" stroke="#13161e" stroke-width="1.5"/>'
+      + '</g>' + labelEl;
+  }).join('');
+
+  // Point max annoté
+  var peakIdx = points.reduce(function(best,pt,i){ return pt.value>points[best].value?i:best; }, 0);
+  var peakPt = points[peakIdx];
+  var px = xPos(peakIdx); var py = yPos(peakPt.value);
+  var peakLabel = peakPt.value + 'M€';
+  var peakAnchor = peakIdx > points.length*0.7 ? 'end' : peakIdx < points.length*0.3 ? 'start' : 'middle';
+  var peakAnnot = '<text x="' + px + '" y="' + (py - 8) + '" fill="#f5c842" font-size="10" font-weight="700" text-anchor="' + peakAnchor + '">' + peakLabel + '</text>';
+
+  // Valeur actuelle
+  var lastPt = points[points.length - 1];
+  var currentValLabel = '<text x="' + (W - PAD_R) + '" y="' + (PAD_T - 2) + '" fill="#8b93b0" font-size="9" text-anchor="end">Actuelle: ' + lastPt.value + 'M€</text>';
+
+  var svgId = 'vc-' + (pidx || 0);
+  return '<svg id="' + svgId + '" viewBox="0 0 ' + W + ' ' + H + '" width="100%" style="max-width:560px;display:block;overflow:visible">'
+    + '<defs>'
+    + '<linearGradient id="vcGrad" x1="0" y1="0" x2="0" y2="1">'
+    + '<stop offset="0%" stop-color="#4f8ef7" stop-opacity="0.25"/>'
+    + '<stop offset="100%" stop-color="#4f8ef7" stop-opacity="0.02"/>'
+    + '</linearGradient>'
+    + '</defs>'
+    + gridLines
+    + '<path d="' + areaPath + '" fill="url(#vcGrad)"/>'
+    + '<polyline points="' + linePts + '" fill="none" stroke="#4f8ef7" stroke-width="2" stroke-linejoin="round"/>'
+    + dotsAndLabels
+    + peakAnnot
+    + currentValLabel
+    + '</svg>';
+}
+
 function renderProfile(i) {
   const p = ALL[i];
   const col = lc(p);
@@ -951,6 +1083,13 @@ function renderProfile(i) {
     <div class="section">
       <div class="section-title">📍 Carrière par saison</div>
       <div class="career-scroll">${careerHTML}</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">💰 Valeur marchande</div>
+      <div id="value-chart-wrap" style="padding:.5rem 0">
+        ${mcValueChartHTML(p, i)}
+      </div>
     </div>
 
     ${hasGoals ? `
