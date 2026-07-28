@@ -8452,7 +8452,9 @@ function mcSaveBudget() {
   if (isNaN(val) || val < 0) return;
   mcData.budgets[_mcBudgetClub] = val;
   document.getElementById('mc-budget-modal').classList.remove('open');
-  GH.saveNow();
+  // GH.save() avec debounce 2s plutôt que saveNow() pour éviter les
+  // conflits 409 avec le polling (qui vérifie self.saveTimer avant de démarrer)
+  GH.save();
   mcRenderNavList(document.getElementById('mc-search-input').value);
   if (_mcCurrentClub === _mcBudgetClub) mcRenderClubPanel(_mcCurrentClub);
 }
