@@ -622,7 +622,15 @@ var GH = {
       snMatchData:          (typeof snMatchData !== 'undefined') ? snMatchData : {},
       customPlayers:        window._customPlayers || [],
       awardsData:           (typeof AWARDS_DATA !== 'undefined') ? AWARDS_DATA : {},
-      mcData:               (typeof mcData !== 'undefined') ? mcData : {},
+      mcData: (function() {
+        if (typeof mcData === 'undefined') return {};
+        // Ne sauvegarder que les nouveaux transferts (season !== null) pour alléger data.json
+        return {
+          budgets:   mcData.budgets,
+          contracts: mcData.contracts,
+          transfers: mcData.transfers.filter(function(t){ return t.season !== null; })
+        };
+      })(),
     };
   }
 };
@@ -728,7 +736,11 @@ function ghApplyData(data) {
   if (data.mcData && typeof mcData !== 'undefined') {
     if (data.mcData.budgets)   mcData.budgets   = data.mcData.budgets;
     if (data.mcData.contracts) mcData.contracts = data.mcData.contracts;
-    if (data.mcData.transfers) mcData.transfers = data.mcData.transfers;
+    if (data.mcData.transfers) {
+      // Fusionner : garder l'historique statique + ajouter les nouveaux transferts sauvegardés
+      var savedNew = data.mcData.transfers.filter(function(t){ return t.season !== null; });
+      mcData.transfers = MC_HISTORICAL_TRANSFERS.slice().concat(savedNew);
+    }
   }
   if (data.awardsData && typeof AWARDS_DATA !== 'undefined') {
     Object.keys(data.awardsData).forEach(function(compId) {
@@ -7795,10 +7807,12 @@ function cbRenderPanel(clubName) {
 // ══════════════════════════════════════════════════════════════════
 
 // ── Données persistantes ──────────────────────────────────────────
+var MC_HISTORICAL_TRANSFERS = [{"player":"Gibbs-White","from":"Chelsea","to":"Real Madrid","amount":150,"season":null,"date":"historique"},{"player":"L. Henrique","from":"FC Barcelone","to":"PSG","amount":145,"season":null,"date":"historique"},{"player":"Moukoko","from":"Bayern","to":"Chelsea","amount":135,"season":null,"date":"historique"},{"player":"Williams Jr.","from":"Real Madrid","to":"Manchester City","amount":130,"season":null,"date":"historique"},{"player":"Eze","from":"Benfica","to":"Chelsea","amount":125,"season":null,"date":"historique"},{"player":"M. Tel","from":"Bayern","to":"PSG","amount":120,"season":null,"date":"historique"},{"player":"Adingra","from":"AC Milan","to":"PSG","amount":120,"season":null,"date":"historique"},{"player":"Williams Jr.","from":"Chelsea","to":"Real Madrid","amount":110,"season":null,"date":"historique"},{"player":"Joaõ Pedro","from":"Bayer Leverkusen","to":"Liverpool","amount":105,"season":null,"date":"historique"},{"player":"F. Farrias","from":"Bayer Leverkusen","to":"Liverpool","amount":105,"season":null,"date":"historique"},{"player":"E. Haaland","from":"AS Roma","to":"Chelsea","amount":100,"season":null,"date":"historique"},{"player":"Endrick","from":"Real Madrid","to":"Chelsea","amount":100,"season":null,"date":"historique"},{"player":"Garnacho","from":"Manchester United","to":"Inter Milan","amount":98,"season":null,"date":"historique"},{"player":"Isaac","from":"Arsenal","to":"FC Barcelone","amount":95,"season":null,"date":"historique"},{"player":"I. Bennacer","from":"AC Milan","to":"Al Nasser","amount":95,"season":null,"date":"historique"},{"player":"Fekir","from":"Inter Milan","to":"Al Nasser","amount":90,"season":null,"date":"historique"},{"player":"Williams Jr.","from":"Atletic Bilbao","to":"Chelsea","amount":90,"season":null,"date":"historique"},{"player":"Mudrik","from":"Arsenal","to":"FC Barcelone","amount":90,"season":null,"date":"historique"},{"player":"Retegui","from":"Liverpool","to":"AC Milan","amount":87,"season":null,"date":"historique"},{"player":"Gakpo","from":"Inter Milan","to":"Manchester United","amount":87,"season":null,"date":"historique"},{"player":"Paulinho","from":"AC Milan","to":"FC Barcelone","amount":85,"season":null,"date":"historique"},{"player":"T. Chong","from":"Liverpool","to":"Inter Milan","amount":85,"season":null,"date":"historique"},{"player":"Kendry Paez","from":"OM","to":"Inter Milan","amount":85,"season":null,"date":"historique"},{"player":"Vitor Roque","from":"Arsenal","to":"Real Madrid","amount":85,"season":null,"date":"historique"},{"player":"Fofana","from":"AC Milan","to":"FC Barcelone","amount":80,"season":null,"date":"historique"},{"player":"A. Güler","from":"AS Roma","to":"Manchester United","amount":80,"season":null,"date":"historique"},{"player":"G. Mamardashvili","from":"Séville","to":"PSG","amount":80,"season":null,"date":"historique"},{"player":"G. Quenda","from":"Sporting Lisbonne","to":"Manchester City","amount":78,"season":null,"date":"historique"},{"player":"Milinkovic-Savic","from":"Real Madrid","to":"Manchester United","amount":77,"season":null,"date":"historique"},{"player":"K. Nakamura","from":"Reims","to":"Manchester City","amount":76,"season":null,"date":"historique"},{"player":"Wahi","from":"OGC Nice","to":"Real Madrid","amount":75,"season":null,"date":"historique"},{"player":"E. Elmas","from":"Manchester City","to":"Al Hilal","amount":75,"season":null,"date":"historique"},{"player":"Paulinho","from":"AC Milan","to":"Chelsea","amount":70,"season":null,"date":"historique"},{"player":"K.Yıldız","from":"Besiktas","to":"Bayern","amount":70,"season":null,"date":"historique"},{"player":"L. Badé","from":"Real Sociedad","to":"Manchester United","amount":70,"season":null,"date":"historique"},{"player":"Summerville","from":"FC Barcelone","to":"AC Milan","amount":70,"season":null,"date":"historique"},{"player":"B. Yıldırım","from":"Real Sociedad","to":"Real Madrid","amount":70,"season":null,"date":"historique"},{"player":"Nusa","from":"Bodo Glimt","to":"Liverpool","amount":67,"season":null,"date":"historique"},{"player":"Estêvão","from":"Santos FC","to":"Arsenal","amount":66,"season":null,"date":"historique"},{"player":"Kvaratskhelia","from":"Arsenal","to":"AC Milan","amount":65,"season":null,"date":"historique"},{"player":"Endrick","from":"Flamengo","to":"Real Madrid","amount":60,"season":null,"date":"historique"},{"player":"L. Henrique","from":"PSG","to":"Al Hilal","amount":60,"season":null,"date":"historique"},{"player":"Assane Diao","from":"Fiorentina","to":"OM","amount":60,"season":null,"date":"historique"},{"player":"Julien Duranville","from":"Standard Liège","to":"FC Barcelone","amount":60,"season":null,"date":"historique"},{"player":"Zubimendi","from":"Manchester City","to":"Real Madrid","amount":60,"season":null,"date":"historique"},{"player":"Hojlund","from":"Inter Milan","to":"PSG","amount":55,"season":null,"date":"historique"},{"player":"L. Yoro","from":"LOSC","to":"Manchester United","amount":55,"season":null,"date":"historique"},{"player":"Isaac","from":"FC Barcelone","to":"Inter Milan","amount":50,"season":null,"date":"historique"},{"player":"Garnacho","from":"AS Roma","to":"Manchester United","amount":50,"season":null,"date":"historique"},{"player":"J. Bakayoko","from":"OM","to":"Dortmund","amount":45,"season":null,"date":"historique"},{"player":"H. Wilson","from":"Manchester City","to":"Galatasarai","amount":20,"season":null,"date":"historique"}];
+
 var mcData = {
-  budgets:   {},   // {clubName: montantEnMillions}
-  contracts: {},   // {pidx: {end: saison_num, duration: 2|4}}
-  transfers: [],   // [{season, from, to, player, amount, date}]
+  budgets:   {},
+  contracts: {},
+  transfers: MC_HISTORICAL_TRANSFERS.slice(), // pré-rempli avec l'historique
 };
 
 // ── Formule de valorisation ───────────────────────────────────────
@@ -8020,6 +8034,8 @@ function mcShowFree() {
 }
 
 // ── Historique des transferts ─────────────────────────────────────
+var _mcLogView = 'ranking'; // 'ranking' | 'chrono'
+
 function mcShowLog() {
   _mcCurrentView = 'log';
   document.getElementById('mc-tab-clubs').classList.remove('on');
@@ -8027,23 +8043,100 @@ function mcShowLog() {
   document.getElementById('mc-tab-log').classList.add('on');
   document.getElementById('mc-search-wrap').style.display = 'none';
   document.getElementById('mc-club-list').innerHTML = '';
+  mcRenderLog();
+}
 
+function mcRenderLog() {
   var panel = document.getElementById('mc-panel');
-  var log = (mcData.transfers || []).slice().reverse();
-  var rows = log.map(function(t) {
-    var freeTag = t.amount === 0 ? '<span style="color:#3ecf8e;font-size:11px">Libre</span>' : '<span style="color:#f5c842;font-size:13px;font-weight:700">' + t.amount.toFixed(1) + 'M€</span>';
-    return '<div style="display:flex;align-items:center;gap:.75rem;padding:.6rem .875rem;background:#13161e;border:1px solid #252a38;border-radius:9px;margin-bottom:.4rem">'
-      + '<div style="color:#5a6080;font-size:11px;min-width:32px">S' + t.season + '</div>'
-      + '<div style="flex:1;font-size:13px;font-weight:600;color:#e8eaf0">' + t.player + '</div>'
-      + '<div style="font-size:12px;color:#5a6080">' + t.from + '</div>'
-      + '<div style="font-size:12px;color:#5a6080">→</div>'
-      + '<div style="font-size:12px;color:#e8eaf0;font-weight:600">' + t.to + '</div>'
-      + freeTag
-      + '</div>';
-  }).join('');
+  var all = mcData.transfers || [];
 
-  panel.innerHTML = '<div style="font-family:Syne,sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:1rem">📋 Historique des transferts</div>'
-    + (rows || '<div style="padding:2rem;text-align:center;color:#5a6080">Aucun transfert enregistré</div>');
+  // Sous-onglets
+  var tabBar = '<div style="display:flex;gap:.5rem;margin-bottom:1rem">'
+    + '<div onclick="mcSetLogView('ranking')" style="padding:.35rem .875rem;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;'
+    + (_mcLogView==='ranking' ? 'background:#f5c842;color:#0d0f14' : 'background:#1a1e28;color:#8b93b0')
+    + '">🏆 Top transferts</div>'
+    + '<div onclick="mcSetLogView('chrono')" style="padding:.35rem .875rem;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;'
+    + (_mcLogView==='chrono' ? 'background:#f5c842;color:#0d0f14' : 'background:#1a1e28;color:#8b93b0')
+    + '">📋 Chronologique</div>'
+    + '</div>';
+
+  var rows = '';
+
+  if (_mcLogView === 'ranking') {
+    // Trier par montant décroissant
+    var sorted = all.filter(function(t){ return t.amount > 0; })
+      .slice().sort(function(a,b){ return b.amount - a.amount; });
+
+    rows = sorted.map(function(t, i) {
+      var c = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
+      var medal = i < 3 ? ['🥇','🥈','🥉'][i] + ' ' : '';
+      return '<div style="display:flex;align-items:center;gap:.75rem;padding:.6rem .875rem;background:#13161e;border:1px solid #252a38;border-radius:9px;margin-bottom:.4rem">'
+        + '<div style="width:28px;text-align:center;font-size:13px;font-weight:800;color:' + c + '">' + (i+1) + '</div>'
+        + '<div style="flex:1;font-size:13px;font-weight:600;color:#e8eaf0">' + medal + t.player + '</div>'
+        + '<div style="font-size:11px;color:#5a6080;max-width:110px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + t.from + '</div>'
+        + '<div style="font-size:11px;color:#5a6080;padding:0 2px">→</div>'
+        + '<div style="font-size:11px;color:#e8eaf0;max-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + t.to + '</div>'
+        + '<div style="font-size:14px;font-weight:800;color:#f5c842;min-width:52px;text-align:right">' + t.amount + 'M</div>'
+        + '</div>';
+    }).join('');
+
+    // Résumé
+    var total = sorted.reduce(function(a,t){return a+t.amount;},0);
+    var summary = '<div style="display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap">'
+      + '<div style="background:#13161e;border:1px solid #252a38;border-radius:10px;padding:.6rem 1rem;flex:1;min-width:120px;text-align:center">'
+      + '<div style="font-family:Syne,sans-serif;font-size:1.3rem;font-weight:800;color:#f5c842">' + sorted.length + '</div>'
+      + '<div style="font-size:11px;color:#5a6080">Transferts</div></div>'
+      + '<div style="background:#13161e;border:1px solid #252a38;border-radius:10px;padding:.6rem 1rem;flex:1;min-width:120px;text-align:center">'
+      + '<div style="font-family:Syne,sans-serif;font-size:1.3rem;font-weight:800;color:#f5c842">' + total + 'M€</div>'
+      + '<div style="font-size:11px;color:#5a6080">Volume total</div></div>'
+      + '<div style="background:#13161e;border:1px solid #252a38;border-radius:10px;padding:.6rem 1rem;flex:1;min-width:120px;text-align:center">'
+      + '<div style="font-family:Syne,sans-serif;font-size:1.3rem;font-weight:800;color:#f5c842">' + (sorted.length ? sorted[0].amount : 0) + 'M€</div>'
+      + '<div style="font-size:11px;color:#5a6080">Record</div></div>'
+      + '</div>';
+
+    panel.innerHTML = '<div style="font-family:Syne,sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:1rem">💸 Transferts</div>'
+      + tabBar + summary + (rows || '<div style="padding:2rem;text-align:center;color:#5a6080">Aucun transfert</div>');
+
+  } else {
+    // Chronologique : nouveaux d'abord (season !== null), puis historiques
+    var newT = all.filter(function(t){ return t.season !== null; }).slice().reverse();
+    var oldT = all.filter(function(t){ return t.season === null; });
+
+    function renderChronoRows(list) {
+      return list.map(function(t) {
+        var amtTag = t.amount === 0
+          ? '<span style="color:#3ecf8e;font-size:11px;font-weight:700">Libre</span>'
+          : '<span style="font-size:13px;font-weight:800;color:#f5c842">' + t.amount + 'M€</span>';
+        var label = t.season !== null ? 'S' + t.season : '—';
+        return '<div style="display:flex;align-items:center;gap:.75rem;padding:.6rem .875rem;background:#13161e;border:1px solid #252a38;border-radius:9px;margin-bottom:.4rem">'
+          + '<div style="color:#5a6080;font-size:11px;min-width:28px;text-align:center">' + label + '</div>'
+          + '<div style="flex:1;font-size:13px;font-weight:600;color:#e8eaf0">' + t.player + '</div>'
+          + '<div style="font-size:11px;color:#5a6080">' + t.from + '</div>'
+          + '<div style="font-size:11px;color:#5a6080;padding:0 2px">→</div>'
+          + '<div style="font-size:11px;color:#e8eaf0;font-weight:600">' + t.to + '</div>'
+          + amtTag
+          + '</div>';
+      }).join('');
+    }
+
+    var content = '';
+    if (newT.length) {
+      content += '<div style="font-size:11px;font-weight:700;color:#5a6080;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Saison en cours</div>';
+      content += renderChronoRows(newT);
+    }
+    if (oldT.length) {
+      content += '<div style="font-size:11px;font-weight:700;color:#5a6080;text-transform:uppercase;letter-spacing:.06em;margin:' + (newT.length?'.875rem':'0') + ' 0 .5rem">Historique</div>';
+      content += renderChronoRows(oldT);
+    }
+
+    panel.innerHTML = '<div style="font-family:Syne,sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:1rem">💸 Transferts</div>'
+      + tabBar + (content || '<div style="padding:2rem;text-align:center;color:#5a6080">Aucun transfert</div>');
+  }
+}
+
+function mcSetLogView(view) {
+  _mcLogView = view;
+  mcRenderLog();
 }
 
 // ── Modal transfert ───────────────────────────────────────────────
