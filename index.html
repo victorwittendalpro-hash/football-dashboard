@@ -859,13 +859,13 @@ function sel(i) {
 
 
 // ── Courbe de valeur marchande par saison ────────────────────────────────────
-function mcSnToNum(sn) {
+function vcSnToNum(sn) {
   if (!sn) return 0;
   var neg = sn.indexOf('-') >= 0;
   var n = parseInt(sn.replace('S','').replace('-',''));
   return neg ? -n : n;
 }
-function mcSnLabel(n) {
+function vcSnLabel(n) {
   return n < 0 ? 'S-' + Math.abs(n) : 'S' + n;
 }
 function mcValueAt(age, career, season) {
@@ -885,9 +885,9 @@ function mcValueChartHTML(p, pidx) {
 
   // Collecter toutes les saisons avec données
   var snNums = {};
-  Object.keys(seasons).forEach(function(s) { if (seasons[s]) snNums[mcSnToNum(s)] = true; });
-  Object.keys(clGoals).forEach(function(s) { if (clGoals[s]) snNums[mcSnToNum(s)] = true; });
-  Object.keys(career).forEach(function(s) { snNums[mcSnToNum(s)] = true; });
+  Object.keys(seasons).forEach(function(s) { if (seasons[s]) snNums[vcSnToNum(s)] = true; });
+  Object.keys(clGoals).forEach(function(s) { if (clGoals[s]) snNums[vcSnToNum(s)] = true; });
+  Object.keys(career).forEach(function(s) { snNums[vcSnToNum(s)] = true; });
 
   var sorted = Object.keys(snNums).map(Number).sort(function(a,b){return a-b;});
   if (sorted.length < 2) {
@@ -898,7 +898,7 @@ function mcValueChartHTML(p, pidx) {
   var points = [];
   var cumul = 0;
   sorted.forEach(function(snN) {
-    var sn = mcSnLabel(snN);
+    var sn = vcSnLabel(snN);
     var ageAt = ageNow - ((currentSeasonNum || 8) - snN);
     if (ageAt < 14 || ageAt > 45) return;
     var champ = seasons[sn] || 0;
