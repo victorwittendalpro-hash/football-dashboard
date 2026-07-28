@@ -2629,7 +2629,67 @@ function executeCloseSeason() {
     cupsCfg.forEach(function(cfg) { if (cupWinners[cfg.id]) winnersLog[cfg.name] = cupWinners[cfg.id]; });
   }
 
-  // ── Mettre à jour les trophées sur les fiches joueurs ───────────────────
+  // ── Distribution des prix aux clubs (prize money) ─────────────────────────
+  if (typeof mcData !== 'undefined') {
+    function addBudget(club, amount) {
+      if (!club || !amount) return;
+      mcData.budgets[club] = (mcData.budgets[club] !== undefined ? mcData.budgets[club] : 20) + amount;
+    }
+
+    // Champions League
+    var clFinalMatch = CL_KO_DATA.bracket.final;
+    var clLoser = null;
+    if (clWinner && clFinalMatch.home && clFinalMatch.away) {
+      clLoser = clWinner === clFinalMatch.home ? clFinalMatch.away : clFinalMatch.home;
+    }
+    addBudget(clWinner, 150);
+    addBudget(clLoser,   100);
+    // Demi-finalistes CL (perdants des demi-finales = 3e/4e place)
+    var clSF = CL_KO_DATA.bracket.sf || [];
+    clSF.forEach(function(sf) {
+      var sfWinner = clKoWinner(sf);
+      if (sfWinner && sf.home && sf.away) {
+        var sfLoser = sfWinner === sf.home ? sf.away : sf.home;
+        addBudget(sfLoser, 80);
+      }
+    });
+
+    // Europa League
+    var elFinalMatch = EL_KO_DATA.bracket.final;
+    var elLoser = null;
+    if (elWinner && elFinalMatch.home && elFinalMatch.away) {
+      elLoser = elWinner === elFinalMatch.home ? elFinalMatch.away : elFinalMatch.home;
+    }
+    addBudget(elWinner, 60);
+    addBudget(elLoser,  40);
+
+    // Championnats
+    var LG_PRIZES = {
+      'Premier League': 200,
+      'Serie A':        100,
+      'Liga':           120,
+      'Ligue 1':         60,
+      'Bundesliga':      80
+    };
+    LG_ORDER.forEach(function(lg) {
+      addBudget(lgWinners[lg], LG_PRIZES[lg] || 0);
+    });
+
+    // Coupes nationales et Supercoupe
+    var CUP_PRIZES = {
+      'eng': 10,  // Coupe d'Angleterre
+      'esp': 10,  // Coupe d'Espagne
+      'fra': 10,  // Coupe de France
+      'ita': 10,  // Coupe d'Italie
+      'ger': 10,  // Coupe d'Allemagne
+      'sec': 20   // Supercoupe d'Europe
+    };
+    Object.keys(cupWinners).forEach(function(cupId) {
+      addBudget(cupWinners[cupId], CUP_PRIZES[cupId] || 0);
+    });
+  }
+
+  // ── Mettre à jour les trophées sur les fiches joueurs ───────────────────────
   ALL.forEach(function(p) {
     var club = p.currentClub;
     if (!club) return;
