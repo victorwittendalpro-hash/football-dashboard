@@ -5619,5 +5619,12 @@
         "club": "Inter Milan"
       }
     ]
+  },
+  "mcData": {
+    "budgets": {
+      "FC Barcelone": 320
+    },
+    "contracts": {},
+    "transfers": []
   }
 }
