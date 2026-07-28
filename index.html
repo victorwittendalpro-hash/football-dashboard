@@ -7805,35 +7805,37 @@ var mcData = {
 function mcPlayerValue(p) {
   var sn = 'S' + (currentSeasonNum || 8);
 
-  // Buts carrière = championnat + CL historique (S1-S7)
+  // Buts carrière = championnat + CL historique (saisons passées)
   var careerGoals = p.total || 0;
   if (typeof CL_GOALS_BY_PLAYER !== 'undefined' && CL_GOALS_BY_PLAYER[p.name]) {
     var clG = CL_GOALS_BY_PLAYER[p.name];
     Object.keys(clG).forEach(function(s) {
-      if (s !== sn) careerGoals += clG[s]; // S8 déjà dans p.total via rebuild
+      if (s !== sn) careerGoals += clG[s];
     });
   }
 
-  // Buts cette saison = saison en cours (champ + CL/EL via rebuild)
+  // Buts cette saison (championnat + CL/EL via rebuild)
   var seasonGoals = (p.seasons && p.seasons[sn]) || 0;
 
   var age = p.age || 28;
 
-  // Formule calibrée sur 3 cibles réelles :
-  // Yamal  (20a, ~157b carrière, 6/S8)  → 483M
-  // Mbappe (30a, ~315b carrière, 14/S8) → 240M
-  // Leao   (32a, ~121b carrière, 7/S8)  → 30M
+  // Formule calibrée sur 3 cibles (±20%) :
+  // Yamal  20a ~157b  6/S8 → ~483M
+  // Mbappe 30a ~315b 14/S8 → ~240M
+  // Leao   32a ~121b  7/S8 → ~30M
   //
-  // value = B × A(age)^α × C(career)^β × S(season)^γ
-  // A(age)   = max(0.02, (42-age)/22)  → 1.0 à 20 ans, 0.45 à 32 ans
-  // C(career) = 1 + career/100
-  // S(season) = max(1, 1 + season/30)
+  // value = B × A(age)^α × C(career)^β × S(season)
+  // A = max(0.02, (42-age)/22)       — décroissance linéaire, pic à 20 ans
+  // C = 1 + career/100               — buts carrière
+  // S = 1 + sqrt(season/8)           — buts saison (racine pour limiter l'impact)
+  // Plafond : 500M€
 
   var A = Math.max(0.02, (42 - age) / 22);
   var C = 1 + careerGoals / 100;
-  var S = Math.max(1.0, 1 + seasonGoals / 30);
+  var S = 1 + Math.sqrt(seasonGoals / 8);
 
-  var value = 89800000 * Math.pow(A, 3.6) * Math.pow(C, 0.66) * Math.pow(S, 5.81);
+  var value = 43800000 * Math.pow(A, 3.16) * Math.pow(C, 1.9) * S;
+  value = Math.min(value, 500000000); // plafond 500M€
   return Math.round(value / 100000) * 100000; // arrondi à 100k€
 }
 
