@@ -1088,7 +1088,7 @@ function renderProfile(i) {
     <div class="section">
       <div class="section-title">💰 Valeur marchande</div>
       <div id="value-chart-wrap" style="padding:.5rem 0">
-        ${mcValueChartHTML(p, i)}
+        ${(function(){ try { return mcValueChartHTML(p, i); } catch(e) { return ''; } })()}
       </div>
     </div>
 
@@ -1223,7 +1223,7 @@ document.getElementById('fpos').addEventListener('change', flt);
 Chart.defaults.color = '#5a6080';
 initHeader();
 flt();
-sel(0);
+try { sel(0); } catch(e) { console.warn('sel(0):', e); }
 // Charger données GitHub
 GH.load(function(err, data) {
   if (err) { console.warn('GH load:', err); return; }
