@@ -234,6 +234,7 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
   <button class="tab-btn" onclick="switchTab('history')">📚 Historique</button>
   <button class="tab-btn" onclick="switchTab('awards')">🏅 Récompenses</button>
   <button class="tab-btn" onclick="switchTab('club')">🏟️ Clubs</button>
+  <button class="tab-btn" onclick="switchTab('mercato')">💰 Mercato</button>
 </div>
 <div id="tab-profiles" class="tab-pane active">
 <div class="layout">
@@ -621,6 +622,7 @@ var GH = {
       snMatchData:          (typeof snMatchData !== 'undefined') ? snMatchData : {},
       customPlayers:        window._customPlayers || [],
       awardsData:           (typeof AWARDS_DATA !== 'undefined') ? AWARDS_DATA : {},
+      mcData:               (typeof mcData !== 'undefined') ? mcData : {},
     };
   }
 };
@@ -723,6 +725,11 @@ function ghApplyData(data) {
   try { rebuildPlayerGoalsFromDetails(); } catch(e) {}
   // Recalculer les buts en sélection depuis snMatchData restauré
   try { rebuildSnGoalsFromMatches(); } catch(e) {}
+  if (data.mcData && typeof mcData !== 'undefined') {
+    if (data.mcData.budgets)   mcData.budgets   = data.mcData.budgets;
+    if (data.mcData.contracts) mcData.contracts = data.mcData.contracts;
+    if (data.mcData.transfers) mcData.transfers = data.mcData.transfers;
+  }
   if (data.awardsData && typeof AWARDS_DATA !== 'undefined') {
     Object.keys(data.awardsData).forEach(function(compId) {
       if (AWARDS_DATA[compId]) AWARDS_DATA[compId] = data.awardsData[compId];
@@ -1097,6 +1104,7 @@ function switchTab(tab) {
   if (tab === 'sn')    { try { snInit(); }             catch(e) {} }
   if (tab === 'awards'){ try { awardsInit(); }         catch(e) {} }
   if (tab === 'club')  { try { cbInit(); }            catch(e) {} }
+  if (tab === 'mercato'){ try { mcInit(); }           catch(e) {} }
 }
 
 // ===== TABLE =====
@@ -7656,6 +7664,487 @@ function cbRenderPanel(clubName) {
     + (rows || '<div style="padding:1.5rem;text-align:center;color:#5a6080">Aucun buteur enregistré</div>');
 
   panel.innerHTML = html;
+}
+
+</script>
+
+<div id="xpane-mercato" class="extra-pane" style="display:none">
+<style>
+#xpane-mercato{display:none}
+.mc-wrap{display:grid;grid-template-columns:240px 1fr;height:calc(100vh - 98px);overflow:hidden}
+@media(max-width:700px){.mc-wrap{grid-template-columns:1fr}}
+.mc-nav{background:#13161e;border-right:1px solid #252a38;display:flex;flex-direction:column;overflow:hidden}
+.mc-nav-title{padding:.75rem 1rem;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#5a6080;border-bottom:1px solid #252a38}
+.mc-nav-tabs{display:flex;border-bottom:1px solid #252a38}
+.mc-nav-tab{flex:1;padding:.5rem;font-size:11px;font-weight:600;text-align:center;cursor:pointer;color:#5a6080;transition:all .15s}
+.mc-nav-tab.on{color:#f5c842;border-bottom:2px solid #f5c842}
+.mc-search{padding:.5rem .75rem;border-bottom:1px solid #252a38}
+.mc-search input{width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.4rem .65rem;color:#e8eaf0;font-size:12px;outline:none}
+.mc-list{flex:1;overflow-y:auto}
+.mc-list::-webkit-scrollbar{width:3px}
+.mc-list::-webkit-scrollbar-thumb{background:#252a38}
+.mc-club-btn{display:flex;align-items:center;gap:.5rem;padding:.45rem .75rem;cursor:pointer;font-size:12px;font-weight:500;color:#8b93b0;border-left:3px solid transparent;transition:all .1s}
+.mc-club-btn:hover{background:#1a1e28;color:#e8eaf0}
+.mc-club-btn.on{border-left-color:#f5c842;color:#e8eaf0;background:#1a1e2855}
+.mc-budget-badge{font-size:10px;border-radius:4px;padding:1px 6px;margin-left:auto;font-weight:700}
+.mc-panel{flex:1;overflow-y:auto;padding:1.25rem}
+.mc-panel::-webkit-scrollbar{width:4px}
+.mc-panel::-webkit-scrollbar-thumb{background:#252a38}
+.mc-player-row{display:flex;align-items:center;gap:.75rem;padding:.55rem .875rem;background:#13161e;border:1px solid #252a38;border-radius:9px;margin-bottom:.4rem;transition:border-color .15s}
+.mc-player-row:hover{border-color:#3a4460}
+.mc-player-rank{width:20px;text-align:center;font-size:12px;color:#5a6080}
+.mc-player-name{flex:1;font-size:13px;font-weight:600;color:#e8eaf0;cursor:pointer}
+.mc-player-name:hover{color:#4f8ef7}
+.mc-player-post{font-size:10px;color:#5a6080;background:#1a1e28;border-radius:4px;padding:1px 6px}
+.mc-player-contract{font-size:11px;color:#5a6080;min-width:90px;text-align:center}
+.mc-player-value{font-size:13px;font-weight:800;color:#f5c842;min-width:72px;text-align:right}
+.mc-player-free{color:#3ecf8e}
+.mc-btn-transfer{background:#4f8ef7;border:none;border-radius:6px;padding:.3rem .75rem;font-size:11px;font-weight:700;color:#fff;cursor:pointer;white-space:nowrap}
+.mc-btn-transfer:hover{background:#3a7ee6}
+.mc-stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.75rem;margin-bottom:1.25rem}
+.mc-stat-card{background:#13161e;border:1px solid #252a38;border-radius:10px;padding:.875rem;text-align:center}
+.mc-stat-val{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#f5c842}
+.mc-stat-lbl{font-size:11px;color:#5a6080;margin-top:.2rem}
+.mc-section-lbl{font-size:11px;font-weight:700;color:#5a6080;text-transform:uppercase;letter-spacing:.06em;margin:.75rem 0 .4rem}
+.mc-modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10020;align-items:center;justify-content:center}
+.mc-modal-bg.open{display:flex}
+.mc-modal{background:#13161e;border:1px solid #252a38;border-radius:14px;padding:1.5rem;width:440px;max-width:95vw}
+.mc-modal-title{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:1rem}
+.mc-field{margin-bottom:.75rem}
+.mc-field label{font-size:11px;color:#5a6080;display:block;margin-bottom:3px}
+.mc-field input,
+.mc-field select{width:100%;box-sizing:border-box;background:#0d0f14;border:1px solid #3a4460;border-radius:6px;padding:.5rem .65rem;color:#e8eaf0;font-size:13px;outline:none}
+.mc-modal-actions{display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem}
+.mc-btn-cancel{background:#252a38;border:none;border-radius:7px;padding:.5rem 1.1rem;color:#8b93b0;cursor:pointer;font-size:12px}
+.mc-btn-ok{background:#4f8ef7;border:none;border-radius:7px;padding:.5rem 1.1rem;color:#fff;cursor:pointer;font-size:12px;font-weight:700}
+</style>
+<div class="mc-wrap">
+  <!-- Nav gauche -->
+  <div class="mc-nav">
+    <div class="mc-nav-title">💰 Mercato</div>
+    <div class="mc-nav-tabs">
+      <div class="mc-nav-tab on" id="mc-tab-clubs" onclick="mcShowClubs()">Clubs</div>
+      <div class="mc-nav-tab" id="mc-tab-free" onclick="mcShowFree()">Libres</div>
+      <div class="mc-nav-tab" id="mc-tab-log" onclick="mcShowLog()">Historique</div>
+    </div>
+    <div class="mc-search" id="mc-search-wrap">
+      <input type="text" id="mc-search-input" placeholder="Rechercher un club…" oninput="mcFilterClubs(this.value)">
+    </div>
+    <div class="mc-list" id="mc-club-list"></div>
+  </div>
+  <!-- Panneau principal -->
+  <div class="mc-panel" id="mc-panel">
+    <div style="display:flex;align-items:center;justify-content:center;height:200px;color:#5a6080">
+      Sélectionnez un club
+    </div>
+  </div>
+</div>
+
+<!-- Modal transfert -->
+<div class="mc-modal-bg" id="mc-transfer-modal">
+  <div class="mc-modal">
+    <div class="mc-modal-title">🔄 Transférer un joueur</div>
+    <div id="mc-transfer-player-info" style="background:#0d0f14;border-radius:8px;padding:.75rem;margin-bottom:.875rem;font-size:13px;color:#e8eaf0"></div>
+    <div class="mc-field">
+      <label>Club acheteur</label>
+      <select id="mc-transfer-buyer"></select>
+    </div>
+    <div class="mc-field">
+      <label>Montant du transfert (M€)</label>
+      <input type="number" id="mc-transfer-amount" min="0" step="0.5" placeholder="0 = libre">
+    </div>
+    <div class="mc-field">
+      <label>Durée du contrat (saisons)</label>
+      <select id="mc-transfer-contract">
+        <option value="2">2 saisons</option>
+        <option value="4" selected>4 saisons</option>
+      </select>
+    </div>
+    <div id="mc-transfer-error" style="display:none;color:#f76f6f;font-size:12px;margin-top:.5rem"></div>
+    <div class="mc-modal-actions">
+      <button class="mc-btn-cancel" onclick="mcCloseTransferModal()">Annuler</button>
+      <button class="mc-btn-ok" onclick="mcConfirmTransfer()">✓ Confirmer le transfert</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal budget -->
+<div class="mc-modal-bg" id="mc-budget-modal">
+  <div class="mc-modal" style="width:320px">
+    <div class="mc-modal-title">✏️ Modifier le budget</div>
+    <div class="mc-field">
+      <label>Club</label>
+      <input type="text" id="mc-budget-club-name" disabled>
+    </div>
+    <div class="mc-field">
+      <label>Nouveau budget (M€)</label>
+      <input type="number" id="mc-budget-value" min="0" step="1">
+    </div>
+    <div class="mc-modal-actions">
+      <button class="mc-btn-cancel" onclick="document.getElementById('mc-budget-modal').classList.remove('open')">Annuler</button>
+      <button class="mc-btn-ok" onclick="mcSaveBudget()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+
+// ══════════════════════════════════════════════════════════════════
+// ONGLET MERCATO
+// ══════════════════════════════════════════════════════════════════
+
+// ── Données persistantes ──────────────────────────────────────────
+var mcData = {
+  budgets:   {},   // {clubName: montantEnMillions}
+  contracts: {},   // {pidx: {end: saison_num, duration: 2|4}}
+  transfers: [],   // [{season, from, to, player, amount, date}]
+};
+
+// ── Formule de valorisation ───────────────────────────────────────
+function mcPlayerValue(p) {
+  var age          = p.age || 28;
+  var careerGoals  = p.total || 0;
+  var sn           = 'S' + (currentSeasonNum || 8);
+  var seasonGoals  = (p.seasons && p.seasons[sn]) || 0;
+
+  // Coefficient d'âge : pic à 26.5 ans, gaussienne σ=8
+  var ageCoeff = Math.exp(-Math.pow((age - 26.5) / 8.0, 2));
+
+  // Buts carrière (racine carrée pour limiter l'effet des superstars)
+  var careerCoeff = 1 + Math.sqrt(careerGoals / 100) * 0.6;
+
+  // Buts cette saison (bonus de forme)
+  var seasonCoeff = 1 + (seasonGoals / 25) * 0.3;
+
+  var value = 22200000 * ageCoeff * careerCoeff * seasonCoeff;
+  return Math.round(value / 100000) * 100000; // arrondi à 100k€
+}
+
+function mcFormatValue(v) {
+  if (v >= 1e6) return (v / 1e6).toFixed(1) + 'M€';
+  return (v / 1e3).toFixed(0) + 'k€';
+}
+function mcFormatBudget(m) {
+  return m.toFixed(1) + 'M€';
+}
+
+// ── Contrats ──────────────────────────────────────────────────────
+function mcSnToNum(sn) {
+  if (!sn) return 0;
+  var neg = sn.indexOf('-') >= 0;
+  var n   = parseInt(sn.replace('S', '').replace('-', ''));
+  return neg ? -n : n;
+}
+function mcContractEnd(pidx) {
+  if (mcData.contracts[pidx]) return mcData.contracts[pidx].end;
+  // Calculer depuis career : arrivée au club actuel + 4 ans par défaut
+  var p = ALL[pidx];
+  if (!p) return currentSeasonNum + 4;
+  var club = p.currentClub;
+  var career = p.career || {};
+  var seasons = Object.keys(career).filter(function(sn) { return career[sn] === club; });
+  if (!seasons.length) return currentSeasonNum + 4;
+  var firstSn = seasons.reduce(function(a, b) {
+    return mcSnToNum(a) < mcSnToNum(b) ? a : b;
+  });
+  return mcSnToNum(firstSn) + 4;
+}
+function mcIsContractFree(pidx) {
+  return mcContractEnd(pidx) <= currentSeasonNum;
+}
+function mcContractLabel(pidx) {
+  var end = mcContractEnd(pidx);
+  var cur = currentSeasonNum || 8;
+  if (end <= cur) return 'Libre';
+  var remaining = end - cur;
+  return 'S' + (end > 0 ? end : '') + ' (' + remaining + ' an' + (remaining > 1 ? 's' : '') + ')';
+}
+
+// ── Initialisation ────────────────────────────────────────────────
+function mcInit() {
+  mcRenderNavList();
+  if (_mcCurrentView === 'free')   mcShowFree();
+  else if (_mcCurrentView === 'log') mcShowLog();
+  else { mcShowClubs(); if (_mcCurrentClub) mcRenderClubPanel(_mcCurrentClub); }
+}
+
+var _mcCurrentClub = null;
+var _mcCurrentView = 'clubs';
+
+function mcFilterClubs(q) {
+  mcRenderNavList(q);
+}
+
+function mcRenderNavList(q) {
+  var list = document.getElementById('mc-club-list');
+  if (!list) return;
+  var ql = (q || '').toLowerCase();
+  var clubSet = {};
+  ALL.forEach(function(p) {
+    if (p.currentClub) clubSet[p.currentClub] = true;
+  });
+  var clubs = Object.keys(clubSet).sort(function(a, b) { return a.localeCompare(b, 'fr'); });
+  if (ql) clubs = clubs.filter(function(c) { return c.toLowerCase().indexOf(ql) >= 0; });
+
+  list.innerHTML = clubs.map(function(club) {
+    var budget = mcData.budgets[club] !== undefined ? mcData.budgets[club] : 20;
+    var on = club === _mcCurrentClub ? ' on' : '';
+    var color = budget > 50 ? '#3ecf8e' : budget > 10 ? '#f5c842' : '#f76f6f';
+    return '<div class="mc-club-btn' + on + '" onclick="mcSelectClub(\'' + club.replace(/'/g, "\\'") + '\')">'
+      + '<span style="flex:1">' + club + '</span>'
+      + '<span class="mc-budget-badge" style="background:#1a1e28;color:' + color + '">' + budget.toFixed(0) + 'M</span>'
+      + '</div>';
+  }).join('');
+}
+
+function mcShowClubs() {
+  _mcCurrentView = 'clubs';
+  document.getElementById('mc-tab-clubs').classList.add('on');
+  document.getElementById('mc-tab-free').classList.remove('on');
+  document.getElementById('mc-tab-log').classList.remove('on');
+  document.getElementById('mc-search-wrap').style.display = '';
+  mcRenderNavList();
+  if (_mcCurrentClub) mcRenderClubPanel(_mcCurrentClub);
+  else document.getElementById('mc-panel').innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:200px;color:#5a6080">Sélectionnez un club</div>';
+}
+
+function mcSelectClub(clubName) {
+  _mcCurrentClub = clubName;
+  mcRenderNavList(document.getElementById('mc-search-input').value);
+  mcRenderClubPanel(clubName);
+}
+
+function mcRenderClubPanel(clubName) {
+  var panel = document.getElementById('mc-panel');
+  if (!panel) return;
+  var budget = mcData.budgets[clubName] !== undefined ? mcData.budgets[clubName] : 20;
+
+  // Joueurs dans ce club
+  var players = [];
+  ALL.forEach(function(p, pi) {
+    if (p.currentClub === clubName) {
+      players.push({
+        idx:      pi,
+        name:     p.name,
+        post:     p.post || '',
+        age:      p.age  || 0,
+        value:    mcPlayerValue(p),
+        free:     mcIsContractFree(pi),
+        contract: mcContractLabel(pi)
+      });
+    }
+  });
+  players.sort(function(a, b) { return b.value - a.value; });
+
+  var totalValue = players.reduce(function(acc, p) { return acc + p.value; }, 0);
+
+  var rows = players.map(function(p, i) {
+    var c = i === 0 ? '#f5c842' : i === 1 ? '#c0c0c0' : i === 2 ? '#cd7f32' : '#8b93b0';
+    return '<div class="mc-player-row">'
+      + '<div class="mc-player-rank" style="color:' + c + '">' + (i+1) + '</div>'
+      + '<div class="mc-player-name" onclick="sel(' + p.idx + ');switchTab(\'profiles\')">' + p.name + '</div>'
+      + (p.post ? '<div class="mc-player-post">' + p.post + '</div>' : '')
+      + '<div class="mc-player-contract' + (p.free ? ' mc-player-free' : '') + '">' + p.contract + '</div>'
+      + '<div class="mc-player-value">' + mcFormatValue(p.value) + '</div>'
+      + '<button class="mc-btn-transfer" onclick="mcOpenTransfer(' + p.idx + ')">→ Transférer</button>'
+      + '</div>';
+  }).join('');
+
+  panel.innerHTML =
+    '<div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1rem">'
+    + '<div style="font-family:Syne,sans-serif;font-size:1.3rem;font-weight:800;color:#fff;flex:1">' + clubName + '</div>'
+    + '<button onclick="mcOpenBudget(\'' + clubName.replace(/'/g, "\\'") + '\')" style="background:#1a1e28;border:1px solid #252a38;border-radius:7px;padding:.4rem .875rem;color:#f5c842;cursor:pointer;font-size:12px;font-weight:600">✏️ Budget</button>'
+    + '</div>'
+    + '<div class="mc-stat-grid">'
+    + '<div class="mc-stat-card"><div class="mc-stat-val" style="color:' + (budget > 10 ? '#3ecf8e' : '#f76f6f') + '">' + mcFormatBudget(budget) + '</div><div class="mc-stat-lbl">Budget disponible</div></div>'
+    + '<div class="mc-stat-card"><div class="mc-stat-val">' + players.length + '</div><div class="mc-stat-lbl">Joueurs</div></div>'
+    + '<div class="mc-stat-card"><div class="mc-stat-val">' + mcFormatValue(totalValue) + '</div><div class="mc-stat-lbl">Valeur totale effectif</div></div>'
+    + '</div>'
+    + '<div class="mc-section-lbl">Effectif — classement par valeur</div>'
+    + (rows || '<div style="padding:1rem;color:#5a6080;font-size:13px">Aucun joueur</div>');
+}
+
+// ── Joueurs libres ────────────────────────────────────────────────
+function mcShowFree() {
+  _mcCurrentView = 'free';
+  document.getElementById('mc-tab-clubs').classList.remove('on');
+  document.getElementById('mc-tab-free').classList.add('on');
+  document.getElementById('mc-tab-log').classList.remove('on');
+  document.getElementById('mc-search-wrap').style.display = 'none';
+  document.getElementById('mc-club-list').innerHTML = '';
+
+  var panel = document.getElementById('mc-panel');
+  var freePlayers = [];
+  ALL.forEach(function(p, pi) {
+    if (mcIsContractFree(pi)) {
+      freePlayers.push({idx: pi, name: p.name, post: p.post || '', age: p.age || 0,
+        club: p.currentClub || '—', value: mcPlayerValue(p)});
+    }
+  });
+  freePlayers.sort(function(a, b) { return b.value - a.value; });
+
+  var rows = freePlayers.map(function(p, i) {
+    var c = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
+    return '<div class="mc-player-row">'
+      + '<div class="mc-player-rank" style="color:' + c + '">' + (i+1) + '</div>'
+      + '<div class="mc-player-name" onclick="sel(' + p.idx + ');switchTab(\'profiles\')">' + p.name + '</div>'
+      + (p.post ? '<div class="mc-player-post">' + p.post + '</div>' : '')
+      + '<div class="mc-player-contract mc-player-free">Libre (contrat expiré)</div>'
+      + '<div style="font-size:11px;color:#5a6080;min-width:90px;text-align:center">' + p.club + '</div>'
+      + '<div class="mc-player-value">' + mcFormatValue(p.value) + '</div>'
+      + '<button class="mc-btn-transfer" onclick="mcOpenTransfer(' + p.idx + ')">→ Recruter</button>'
+      + '</div>';
+  }).join('');
+
+  panel.innerHTML = '<div style="font-family:Syne,sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:1rem">🆓 Joueurs libres (' + freePlayers.length + ')</div>'
+    + (rows || '<div style="padding:2rem;text-align:center;color:#5a6080">Aucun joueur libre actuellement</div>');
+}
+
+// ── Historique des transferts ─────────────────────────────────────
+function mcShowLog() {
+  _mcCurrentView = 'log';
+  document.getElementById('mc-tab-clubs').classList.remove('on');
+  document.getElementById('mc-tab-free').classList.remove('on');
+  document.getElementById('mc-tab-log').classList.add('on');
+  document.getElementById('mc-search-wrap').style.display = 'none';
+  document.getElementById('mc-club-list').innerHTML = '';
+
+  var panel = document.getElementById('mc-panel');
+  var log = (mcData.transfers || []).slice().reverse();
+  var rows = log.map(function(t) {
+    var freeTag = t.amount === 0 ? '<span style="color:#3ecf8e;font-size:11px">Libre</span>' : '<span style="color:#f5c842;font-size:13px;font-weight:700">' + t.amount.toFixed(1) + 'M€</span>';
+    return '<div style="display:flex;align-items:center;gap:.75rem;padding:.6rem .875rem;background:#13161e;border:1px solid #252a38;border-radius:9px;margin-bottom:.4rem">'
+      + '<div style="color:#5a6080;font-size:11px;min-width:32px">S' + t.season + '</div>'
+      + '<div style="flex:1;font-size:13px;font-weight:600;color:#e8eaf0">' + t.player + '</div>'
+      + '<div style="font-size:12px;color:#5a6080">' + t.from + '</div>'
+      + '<div style="font-size:12px;color:#5a6080">→</div>'
+      + '<div style="font-size:12px;color:#e8eaf0;font-weight:600">' + t.to + '</div>'
+      + freeTag
+      + '</div>';
+  }).join('');
+
+  panel.innerHTML = '<div style="font-family:Syne,sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:1rem">📋 Historique des transferts</div>'
+    + (rows || '<div style="padding:2rem;text-align:center;color:#5a6080">Aucun transfert enregistré</div>');
+}
+
+// ── Modal transfert ───────────────────────────────────────────────
+var _mcTransferPidx = null;
+
+function mcOpenTransfer(pidx) {
+  var p = ALL[pidx];
+  if (!p) return;
+  _mcTransferPidx = pidx;
+  var val = mcPlayerValue(p);
+  var isFree = mcIsContractFree(pidx);
+
+  document.getElementById('mc-transfer-player-info').innerHTML =
+    '<strong>' + p.name + '</strong> · ' + (p.post || '') + ' · ' + (p.age || '?') + ' ans<br>'
+    + '<span style="color:#f5c842">' + mcFormatValue(val) + '</span> valeur marchande'
+    + (isFree ? ' · <span style="color:#3ecf8e">Contrat expiré — recrutement gratuit</span>' : '');
+
+  // Peupler les clubs acheteurs (tous sauf club actuel)
+  var clubSet = {};
+  ALL.forEach(function(pl) { if (pl.currentClub && pl.currentClub !== p.currentClub) clubSet[pl.currentClub] = true; });
+  var clubs = Object.keys(clubSet).sort(function(a,b){ return a.localeCompare(b,'fr'); });
+  document.getElementById('mc-transfer-buyer').innerHTML = clubs.map(function(c) {
+    return '<option value="' + c + '">' + c + '</option>';
+  }).join('');
+
+  document.getElementById('mc-transfer-amount').value = isFree ? '0' : (val / 1e6).toFixed(1);
+  document.getElementById('mc-transfer-error').style.display = 'none';
+  document.getElementById('mc-transfer-modal').classList.add('open');
+}
+
+function mcCloseTransferModal() {
+  document.getElementById('mc-transfer-modal').classList.remove('open');
+  _mcTransferPidx = null;
+}
+
+function mcConfirmTransfer() {
+  var pidx   = _mcTransferPidx;
+  var p      = ALL[pidx];
+  if (!p) return;
+  var buyer  = document.getElementById('mc-transfer-buyer').value;
+  var amount = parseFloat(document.getElementById('mc-transfer-amount').value) || 0;
+  var dur    = parseInt(document.getElementById('mc-transfer-contract').value) || 4;
+  var errEl  = document.getElementById('mc-transfer-error');
+
+  // Vérifier budget acheteur
+  var buyerBudget = mcData.budgets[buyer] !== undefined ? mcData.budgets[buyer] : 20;
+  var isFree      = mcIsContractFree(pidx);
+  if (!isFree && amount > buyerBudget) {
+    errEl.textContent = buyer + ' n\'a que ' + buyerBudget.toFixed(1) + 'M€ disponibles.';
+    errEl.style.display = 'block';
+    return;
+  }
+  errEl.style.display = 'none';
+
+  var seller = p.currentClub;
+
+  // Mettre à jour les budgets
+  if (!isFree && amount > 0) {
+    mcData.budgets[buyer]  = (mcData.budgets[buyer]  !== undefined ? mcData.budgets[buyer]  : 20) - amount;
+    mcData.budgets[seller] = (mcData.budgets[seller] !== undefined ? mcData.budgets[seller] : 20) + amount;
+  } else if (isFree) {
+    // Pas de frais de transfert mais on initialise le budget vendeur si besoin
+    if (mcData.budgets[seller] === undefined) mcData.budgets[seller] = 20;
+  }
+
+  // Mettre à jour le club actuel du joueur
+  var sn = 'S' + (currentSeasonNum || 8);
+  p.currentClub   = buyer;
+  p.ligue         = (function() {
+    // Essayer de déterminer la ligue du nouveau club
+    var lgMap = {'Premier League':'PL','Serie A':'SA','Liga':'LA','Ligue 1':'L1','Bundesliga':'BU'};
+    // Chercher un autre joueur du même club pour déduire la ligue
+    var sample = ALL.find(function(pl) { return pl.currentClub === buyer && pl.ligue; });
+    return sample ? sample.ligue : p.ligue;
+  })();
+  if (!p.career) p.career = {};
+  p.career[sn]    = buyer;
+
+  // Contrat
+  mcData.contracts[pidx] = {end: (currentSeasonNum || 8) + dur, duration: dur};
+
+  // Journaliser le transfert
+  mcData.transfers.push({
+    season: currentSeasonNum || 8,
+    player: p.name,
+    from:   seller,
+    to:     buyer,
+    amount: amount,
+    date:   new Date().toISOString().slice(0, 10)
+  });
+
+  GH.saveNow();
+  mcCloseTransferModal();
+
+  // Rafraîchir
+  mcRenderNavList(document.getElementById('mc-search-input').value);
+  if (_mcCurrentView === 'clubs') mcRenderClubPanel(_mcCurrentClub || seller);
+  else if (_mcCurrentView === 'free') mcShowFree();
+  try { if (typeof tblFilter === 'function') tblFilter(); } catch(e) {}
+}
+
+// ── Modal budget ──────────────────────────────────────────────────
+var _mcBudgetClub = null;
+function mcOpenBudget(clubName) {
+  _mcBudgetClub = clubName;
+  var budget = mcData.budgets[clubName] !== undefined ? mcData.budgets[clubName] : 20;
+  document.getElementById('mc-budget-club-name').value = clubName;
+  document.getElementById('mc-budget-value').value = budget.toFixed(1);
+  document.getElementById('mc-budget-modal').classList.add('open');
+}
+function mcSaveBudget() {
+  if (!_mcBudgetClub) return;
+  var val = parseFloat(document.getElementById('mc-budget-value').value);
+  if (isNaN(val) || val < 0) return;
+  mcData.budgets[_mcBudgetClub] = val;
+  document.getElementById('mc-budget-modal').classList.remove('open');
+  GH.saveNow();
+  mcRenderNavList(document.getElementById('mc-search-input').value);
+  if (_mcCurrentClub === _mcBudgetClub) mcRenderClubPanel(_mcCurrentClub);
 }
 
 </script>
