@@ -5763,6 +5763,36 @@
       "t_total": 0,
       "_custom": true,
       "_origS8": 5
+    },
+    {
+      "rank": 212,
+      "name": "Yan Diomande",
+      "nameRaw": "Yan Diomande",
+      "age": 18,
+      "post": "AiG",
+      "ligue": "BU",
+      "currentClub": "Dortmund",
+      "career": {
+        "S8": "Dortmund"
+      },
+      "total": 0,
+      "CL": 0,
+      "SN": 0,
+      "CH": 0,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S8": 0
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true
     }
   ],
   "awardsData": {
