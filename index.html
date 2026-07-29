@@ -337,6 +337,7 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
           <th onclick="tSort('t_bu')" title="Bundesliga gagnées">🇩🇪 Bund.</th>
           <th onclick="tSort('t_el')" title="Europa League gagnées">🏺 EL</th>
           <th onclick="tSort('t_total')">🏆 Total</th>
+          <th onclick="tSort('_value')" title="Valeur marchande estimée">💰 Valeur</th>
         </tr>
       </thead>
       <tbody id="dtbody"></tbody>
@@ -1414,6 +1415,7 @@ function renderTable() {
       <td class="cell-num" style="color:${p.total>100?'var(--accent)':p.total>0?'#e8eaf0':'var(--txt3)'}">${p.total||'—'}</td>
       ${num(p.t_cl)}${num(p.t_pl)}${num(p.t_lg)}${num(p.t_l1)}${num(p.t_sa)}${num(p.t_bu)}${num(p.t_el)}
       <td class="cell-num" style="color:${p.t_total>=5?'#f5c842':p.t_total>=3?'#f7944f':p.t_total>0?'#e8eaf0':'var(--txt3)'}">${p.t_total||'—'}</td>
+      <td class="cell-num" style="color:#f5c842;font-size:11px;white-space:nowrap">${(function(){ try { var v=mcPlayerValue(p); p._value=v; return v>=100?(v/1000*10|0)/10+'G€':v+'M€'; } catch(e){ return '—'; } })()}</td>
     </tr>`;
   }).join('');
 
