@@ -4373,6 +4373,10 @@
     "196": "SA"
   },
   "playerClubOverrides": {
+    "22": {
+      "club": "Manchester United",
+      "season": "S8"
+    },
     "48": {
       "club": "Totenham",
       "season": "S8"
