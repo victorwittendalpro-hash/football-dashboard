@@ -5955,7 +5955,12 @@
       "Manchester City": 0,
       "PSG": 0
     },
-    "contracts": {},
+    "contracts": {
+      "15": {
+        "end": 12,
+        "duration": 4
+      }
+    },
     "transfers": []
   }
 }
