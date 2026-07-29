@@ -5956,6 +5956,10 @@
       "PSG": 0
     },
     "contracts": {
+      "3": {
+        "end": 10,
+        "duration": 2
+      },
       "15": {
         "end": 12,
         "duration": 4
