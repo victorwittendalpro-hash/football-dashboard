@@ -4497,7 +4497,8 @@
       "leg2": {
         "home_score": 1,
         "away_score": 0
-      }
+      },
+      "scorers": {}
     },
     "r16_6": {
       "leg1": {
