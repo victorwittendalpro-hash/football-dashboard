@@ -4763,6 +4763,20 @@
         "164": 1,
         "187": 1
       }
+    },
+    "sf_1": {
+      "leg1": {
+        "home_score": 2,
+        "away_score": 3
+      },
+      "leg2": {
+        "home_score": 0,
+        "away_score": 0
+      },
+      "scorers": {
+        "74": 1,
+        "202": 1
+      }
     }
   },
   "cupData": {
