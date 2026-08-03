@@ -208,6 +208,16 @@
             "157": 1,
             "178": 1
           }
+        },
+        "14": {
+          "bm": 5,
+          "be": 0,
+          "pts": 3,
+          "scorers": {
+            "96": 1,
+            "144": 1,
+            "208": 1
+          }
         }
       },
       "3": {
@@ -5649,7 +5659,8 @@
       "t_total": 0,
       "_custom": true,
       "_origSN": 0,
-      "_origS8": 8
+      "_origS8": 8,
+      "_value": 118800000
     },
     {
       "rank": 202,
@@ -5835,7 +5846,8 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true,
-      "_origS8": 6
+      "_origS8": 6,
+      "_value": 83200000
     },
     {
       "rank": 208,
@@ -5880,14 +5892,14 @@
       "career": {
         "S8": "Manchester City"
       },
-      "total": 7,
+      "total": 8,
       "CL": 0,
       "SN": 0,
       "CH": 6,
       "EU": 0,
       "CP": 0,
       "seasons": {
-        "S8": 7
+        "S8": 8
       },
       "t_sa": 0,
       "t_l1": 0,
@@ -5989,7 +6001,8 @@
       "t_cl": 0,
       "t_el": 0,
       "t_total": 0,
-      "_custom": true
+      "_custom": true,
+      "_value": 57700000
     }
   ],
   "awardsData": {
