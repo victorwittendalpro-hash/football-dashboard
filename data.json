@@ -4318,6 +4318,21 @@
         "98": 1,
         "99": 1
       }
+    },
+    "sf_0": {
+      "leg1": {
+        "home_score": 0,
+        "away_score": 3
+      },
+      "leg2": {
+        "home_score": 0,
+        "away_score": 0
+      },
+      "scorers": {
+        "150": 1,
+        "157": 1,
+        "177": 1
+      }
     }
   },
   "clKoBracket": {
@@ -4473,8 +4488,14 @@
       {
         "home": "Liverpool",
         "away": "Manchester City",
-        "leg1": null,
-        "leg2": null
+        "leg1": {
+          "home_score": 0,
+          "away_score": 3
+        },
+        "leg2": {
+          "home_score": 0,
+          "away_score": 0
+        }
       },
       {
         "home": "PSG",
@@ -4484,7 +4505,7 @@
       }
     ],
     "final": {
-      "home": null,
+      "home": "Manchester City",
       "away": null,
       "leg1": null,
       "leg2": null
