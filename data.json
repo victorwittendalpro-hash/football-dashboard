@@ -4752,13 +4752,17 @@
     "sf_0": {
       "leg1": {
         "home_score": 0,
-        "away_score": 0
+        "away_score": 3
       },
       "leg2": {
         "home_score": 0,
         "away_score": 0
       },
-      "scorers": {}
+      "scorers": {
+        "138": 1,
+        "164": 1,
+        "187": 1
+      }
     }
   },
   "cupData": {
