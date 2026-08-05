@@ -6189,6 +6189,36 @@
       "t_total": 0,
       "_custom": true,
       "_value": 57700000
+    },
+    {
+      "rank": 213,
+      "name": "Marc Guiu",
+      "nameRaw": "Marc Guiu",
+      "age": 19,
+      "post": "AC",
+      "ligue": "LA",
+      "currentClub": "FC Barcelone",
+      "career": {
+        "S8": "FC Barcelone"
+      },
+      "total": 4,
+      "CL": 0,
+      "SN": 0,
+      "CH": 4,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S8": 4
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true
     }
   ],
   "awardsData": {
