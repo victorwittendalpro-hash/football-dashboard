@@ -5909,7 +5909,8 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true,
-      "_origS8": 6
+      "_origS8": 6,
+      "_value": 120900000
     },
     {
       "rank": 204,
@@ -6220,6 +6221,37 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true
+    },
+    {
+      "rank": 214,
+      "name": "Toni Fernandez",
+      "nameRaw": "Toni Fernandez",
+      "age": 17,
+      "post": "AiD",
+      "ligue": "LA",
+      "currentClub": "FC Barcelone",
+      "career": {
+        "S8": "FC Barcelone"
+      },
+      "total": 0,
+      "CL": 0,
+      "SN": 0,
+      "CH": 0,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S8": 0
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true,
+      "_value": 65600000
     }
   ],
   "awardsData": {
@@ -6361,45 +6393,8 @@
     ]
   },
   "mcData": {
-    "budgets": {
-      "Real Madrid": 0,
-      "AC Milan": 0,
-      "Bayern": 0,
-      "FC Barcelone": 320,
-      "Arsenal": 270,
-      "Liverpool": 32,
-      "Dortmund": 165,
-      "Inter Milan": 0,
-      "Manchester City": 0,
-      "PSG": 0,
-      "Chelsea": 90
-    },
-    "contracts": {
-      "3": {
-        "end": 10,
-        "duration": 2
-      },
-      "4": {
-        "end": 12,
-        "duration": 4
-      },
-      "15": {
-        "end": 12,
-        "duration": 4
-      },
-      "20": {
-        "end": 10,
-        "duration": 2
-      },
-      "99": {
-        "end": 12,
-        "duration": 4
-      },
-      "141": {
-        "end": 12,
-        "duration": 2
-      }
-    },
+    "budgets": {},
+    "contracts": {},
     "transfers": []
   }
 }
