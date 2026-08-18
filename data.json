@@ -6468,7 +6468,8 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true,
-      "_origS8": 5
+      "_origS8": 5,
+      "_value": 78700000
     },
     {
       "rank": 203,
@@ -6689,7 +6690,8 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true,
-      "_origS8": 6
+      "_origS8": 6,
+      "_value": 133500000
     },
     {
       "rank": 210,
@@ -6815,7 +6817,8 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true,
-      "_origS8": 4
+      "_origS8": 4,
+      "_value": 122300000
     },
     {
       "rank": 214,
@@ -6988,7 +6991,9 @@
     ]
   },
   "mcData": {
-    "budgets": {},
+    "budgets": {
+      "FC Barcelone": 270
+    },
     "contracts": {},
     "transfers": []
   }
