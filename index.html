@@ -394,7 +394,7 @@ var GH = {
   save: function() {
     var self = this;
     if (self.saveTimer) clearTimeout(self.saveTimer);
-    self.saveTimer = setTimeout(function() { self._doSave(); }, 2000);
+    self.saveTimer = setTimeout(function() { self._doSave(); }, 600);
   },
   saveNow: function() {
     var self = this;
@@ -8414,14 +8414,7 @@ function mcConfirmTransfer() {
   var dur    = parseInt(document.getElementById('mc-transfer-contract').value) || 4;
   var errEl  = document.getElementById('mc-transfer-error');
 
-  // Vérifier budget acheteur
-  var buyerBudget = mcData.budgets[buyer] !== undefined ? mcData.budgets[buyer] : 20;
-  var isFree      = mcIsContractFree(pidx);
-  if (!isFree && amount > buyerBudget) {
-    errEl.textContent = buyer + ' n\'a que ' + buyerBudget.toFixed(1) + 'M€ disponibles.';
-    errEl.style.display = 'block';
-    return;
-  }
+  var isFree = mcIsContractFree(pidx);
   errEl.style.display = 'none';
 
   var seller = p.currentClub;
@@ -8461,7 +8454,7 @@ function mcConfirmTransfer() {
     date:   new Date().toISOString().slice(0, 10)
   });
 
-  GH.saveNow();
+  GH.save();
   mcCloseTransferModal();
 
   // Rafraîchir
