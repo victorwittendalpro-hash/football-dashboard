@@ -2844,13 +2844,17 @@ function executeCloseSeason() {
 
   // ── Construire l'archive ─────────────────────────────────────────────────
   var archive = {
-    season:      sn,
-    seasonNum:   currentSeasonNum,
-    closedAt:    new Date().toISOString().slice(0,10),
-    leagues:     {},
-    scorers:     {},
+    season:       sn,
+    seasonNum:    currentSeasonNum,
+    closedAt:     new Date().toISOString().slice(0,10),
+    leagues:      {},
+    scorers:      {},
     matchDetails: JSON.parse(JSON.stringify(matchDetails)),
-    winners:     winnersLog
+    winners:      winnersLog,
+    clKoDetails:  (typeof clKoDetails !== 'undefined') ? JSON.parse(JSON.stringify(clKoDetails)) : {},
+    clKoBracket:  (typeof CL_KO_DATA  !== 'undefined') ? JSON.parse(JSON.stringify(CL_KO_DATA.bracket)) : {},
+    elKoDetails:  (typeof elKoDetails !== 'undefined') ? JSON.parse(JSON.stringify(elKoDetails)) : {},
+    elKoBracket:  (typeof EL_KO_DATA  !== 'undefined') ? JSON.parse(JSON.stringify(EL_KO_DATA.bracket)) : {}
   };
 
   LG_ORDER.forEach(function(lg) {
@@ -2908,6 +2912,13 @@ function executeCloseSeason() {
     });
   }
 
+  // ── Capturer les relégués depuis le classement FINAL (avant réinitialisation) ─
+  var relegatedByLg = {};
+  LG_ORDER.forEach(function(lg) {
+    var teams = getTeamData(lg);
+    relegatedByLg[lg] = teams.slice(teams.length - 3).map(function(t) { return t.name; });
+  });
+
   // ── Réinitialiser la saison ──────────────────────────────────────────────
   currentSeasonNum++;
   matchDetails = {};
@@ -2915,9 +2926,7 @@ function executeCloseSeason() {
   // Appliquer les relégations et promotions
   var promotions = window._relgPromotions || {};
   LG_ORDER.forEach(function(lg) {
-    var teams = getTeamData(lg);  // triées par classement
-    var n = teams.length;
-    var relegated = teams.slice(n - 3).map(function(t) { return t.name; });
+    var relegated = relegatedByLg[lg] || [];
     var promos = promotions[lg] || [];
 
     // Supprimer les 3 dernières équipes de S8_DATA.leagues[lg]
