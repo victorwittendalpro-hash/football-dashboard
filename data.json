@@ -6996,7 +6996,9 @@
       "Arsenal": 270,
       "Liverpool": 32,
       "Chelsea": 90,
-      "Dortmund": 165
+      "Dortmund": 165,
+      "Napoli": 0,
+      "Bayern": 40
     },
     "contracts": {
       "3": {
@@ -7030,8 +7032,21 @@
       "157": {
         "end": 12,
         "duration": 4
+      },
+      "166": {
+        "end": 12,
+        "duration": 4
       }
     },
-    "transfers": []
+    "transfers": [
+      {
+        "season": 8,
+        "player": "Y. Musah",
+        "from": "Bayern",
+        "to": "Napoli",
+        "amount": 20,
+        "date": "2026-08-18"
+      }
+    ]
   }
 }
