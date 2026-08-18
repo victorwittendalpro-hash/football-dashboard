@@ -6998,7 +6998,12 @@
       "Chelsea": 90,
       "Dortmund": 165
     },
-    "contracts": {},
+    "contracts": {
+      "15": {
+        "end": 12,
+        "duration": 4
+      }
+    },
     "transfers": []
   }
 }
