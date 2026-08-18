@@ -6995,10 +6995,10 @@
       "FC Barcelone": 320,
       "Arsenal": 270,
       "Liverpool": 32,
-      "Chelsea": 90,
+      "Chelsea": 129,
       "Dortmund": 165,
       "Napoli": 0,
-      "Bayern": 40
+      "Bayern": 1
     },
     "contracts": {
       "3": {
@@ -7029,6 +7029,10 @@
         "end": 10,
         "duration": 2
       },
+      "85": {
+        "end": 12,
+        "duration": 4
+      },
       "157": {
         "end": 12,
         "duration": 4
@@ -7045,6 +7049,14 @@
         "from": "Bayern",
         "to": "Napoli",
         "amount": 20,
+        "date": "2026-08-18"
+      },
+      {
+        "season": 8,
+        "player": "Xavi Simons",
+        "from": "Chelsea",
+        "to": "Bayern",
+        "amount": 39,
         "date": "2026-08-18"
       }
     ]
