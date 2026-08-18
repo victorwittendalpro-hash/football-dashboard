@@ -6995,10 +6995,11 @@
       "FC Barcelone": 320,
       "Arsenal": 270,
       "Liverpool": 32,
-      "Chelsea": 189,
+      "Chelsea": 219,
       "Dortmund": 165,
       "Napoli": 0,
-      "Bayern": -59
+      "Bayern": -59,
+      "Al Ahli": -10
     },
     "contracts": {
       "3": {
@@ -7073,6 +7074,10 @@
         "end": 10,
         "duration": 2
       },
+      "124": {
+        "end": 12,
+        "duration": 4
+      },
       "157": {
         "end": 12,
         "duration": 4
@@ -7109,6 +7114,14 @@
         "from": "Chelsea",
         "to": "Bayern",
         "amount": 60,
+        "date": "2026-08-18"
+      },
+      {
+        "season": 8,
+        "player": "A. Diallo",
+        "from": "Chelsea",
+        "to": "Al Ahli",
+        "amount": 30,
         "date": "2026-08-18"
       }
     ]
