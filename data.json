@@ -6981,6 +6981,36 @@
       "t_total": 0,
       "_custom": true,
       "_value": 71300000
+    },
+    {
+      "rank": 216,
+      "name": "Geny Catamo",
+      "nameRaw": "Geny Catamo",
+      "age": 24,
+      "post": "AiD",
+      "ligue": "BU",
+      "currentClub": "Frankfort",
+      "career": {
+        "S8": "Frankfort"
+      },
+      "total": 4,
+      "CL": 0,
+      "SN": 0,
+      "CH": 4,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S8": 4
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true
     }
   ],
   "awardsData": {
