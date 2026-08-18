@@ -6999,7 +6999,19 @@
       "Dortmund": 165
     },
     "contracts": {
+      "4": {
+        "end": 12,
+        "duration": 4
+      },
+      "8": {
+        "end": 12,
+        "duration": 4
+      },
       "15": {
+        "end": 12,
+        "duration": 4
+      },
+      "20": {
         "end": 12,
         "duration": 4
       }
