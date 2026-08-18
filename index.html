@@ -478,113 +478,113 @@ var GH = {
   _doSave: function() {
     var self = this;
     if (self.saving) {
-      self._pendingSave = true; // mémoriser qu'une sauvegarde est en attente
+      self._pendingSave = true;
       return;
     }
     self._pendingSave = false;
     self.saving = true;
     self._showStatus('saving');
-    var shaXhr = new XMLHttpRequest();
-    shaXhr.open('GET', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file + '?ref=' + decodeURIComponent(self.branch), true);
-    shaXhr.setRequestHeader('Authorization', 'token ' + self.token);
-    shaXhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
-    shaXhr.onload = function() {
-      var remoteData = null;
-      if (shaXhr.status === 200) {
-        try {
-          var resp = JSON.parse(shaXhr.responseText);
-          self.sha = resp.sha;
-          remoteData = JSON.parse(decodeURIComponent(escape(atob(resp.content.replace(/\n/g, '')))));
-        } catch(e) {}
-      }
-      self._doWrite(remoteData);
-    };
-    shaXhr.onerror = function() { self._doWrite(null); };
-    shaXhr.send();
+    // Si on a déjà le SHA (post-chargement initial), on PUT directement sans GET préalable.
+    // Le GET n'est nécessaire qu'au tout premier chargement (sha === null).
+    if (self.sha) {
+      self._doWrite(null);
+    } else {
+      var shaXhr = new XMLHttpRequest();
+      shaXhr.open('GET', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file + '?ref=' + decodeURIComponent(self.branch), true);
+      shaXhr.setRequestHeader('Authorization', 'token ' + self.token);
+      shaXhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+      shaXhr.onload = function() {
+        if (shaXhr.status === 200) {
+          try {
+            var resp = JSON.parse(shaXhr.responseText);
+            self.sha = resp.sha;
+          } catch(e) {}
+        }
+        self._doWrite(null);
+      };
+      shaXhr.onerror = function() { self._doWrite(null); };
+      shaXhr.send();
+    }
   },
   _doWrite: function(remoteData) {
     var self = this;
     var data = self.collectData();
-    if (remoteData) {
-      data = self._mergeRemote(data, remoteData);
-    }
-    // Sauvegarder localement avant le PUT (filet de sécurité)
+    if (remoteData) data = self._mergeRemote(data, remoteData);
     self._saveLocal(data);
     var content;
     try {
       content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    } catch(encErr) {
-      self.saving = false;
-      self._showStatus('error');
-      console.error('GH encode error:', encErr);
-      return;
+    } catch(e) {
+      self.saving = false; self._showStatus('error'); return;
     }
-    var body = {message:'Update data', content:content};
-    if (self.sha) body.sha = self.sha;
-    body.branch = decodeURIComponent(self.branch);
-    var xhr = new XMLHttpRequest();
-    xhr.open('PUT', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file, true);
-    xhr.setRequestHeader('Authorization', 'token ' + self.token);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
-    xhr.onload = function() {
-      if (xhr.status === 200 || xhr.status === 201) {
-        self.saving = false;
-        var resp = JSON.parse(xhr.responseText);
-        self.sha = resp.content.sha;
+
+    function finish(ok, newSha) {
+      self.saving = false;
+      if (ok) {
+        if (newSha) self.sha = newSha;
         self._showStatus('saved');
-        if (self._pendingSave) { self._pendingSave = false; setTimeout(function(){self._doSave();}, 100); }
-      } else if (xhr.status === 409 || xhr.status === 422) {
-        // SHA conflit ou manquant — refetch le SHA et retenter une fois
-        console.warn('GH SHA conflict (' + xhr.status + '), retrying...');
-        var retryXhr = new XMLHttpRequest();
-        retryXhr.open('GET', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file + '?ref=' + decodeURIComponent(self.branch), true);
-        retryXhr.setRequestHeader('Authorization', 'token ' + self.token);
-        retryXhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
-        retryXhr.onload = function() {
-          if (retryXhr.status === 200) {
-            try { self.sha = JSON.parse(retryXhr.responseText).sha; } catch(e) {}
-          }
-          // Retenter le PUT avec le nouveau SHA
-          var body2 = {message:'Update data', content:content};
-          if (self.sha) body2.sha = self.sha;
-          body2.branch = decodeURIComponent(self.branch);
-          var xhr2 = new XMLHttpRequest();
-          xhr2.open('PUT', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file, true);
-          xhr2.setRequestHeader('Authorization', 'token ' + self.token);
-          xhr2.setRequestHeader('Content-Type', 'application/json');
-          xhr2.setRequestHeader('Accept', 'application/vnd.github.v3+json');
-          xhr2.onload = function() {
-            self.saving = false;
-            if (xhr2.status === 200 || xhr2.status === 201) {
-              var resp2 = JSON.parse(xhr2.responseText);
-              self.sha = resp2.content.sha;
-              self._showStatus('saved');
-            } else {
-              self._showStatus('error');
-              console.error('GH retry error:', xhr2.status, xhr2.responseText.slice(0,200));
-            }
-            if (self._pendingSave) { self._pendingSave = false; setTimeout(function(){self._doSave();}, 100); }
-          };
-          xhr2.onerror = function() {
-            self.saving = false; self._showStatus('error');
-            if (self._pendingSave) { self._pendingSave = false; setTimeout(function(){self._doSave();}, 100); }
-          };
-          xhr2.send(JSON.stringify(body2));
-        };
-        retryXhr.onerror = function() { self.saving = false; self._showStatus('error'); };
-        retryXhr.send();
       } else {
-        self.saving = false;
         self._showStatus('error');
-        console.error('GH save error:', xhr.status, xhr.responseText.slice(0,200));
       }
-    };
-    xhr.onerror = function() {
-      self.saving = false; self._showStatus('error');
-      if (self._pendingSave) { self._pendingSave = false; setTimeout(function(){self._doSave();}, 100); }
-    };
-    xhr.send(JSON.stringify(body));
+      // Déclencher la sauvegarde en attente si besoin
+      if (self._pendingSave) {
+        self._pendingSave = false;
+        setTimeout(function(){ self._doSave(); }, 50);
+      }
+    }
+
+    function doPut(sha) {
+      var body = { message:'Update data', content:content, branch:decodeURIComponent(self.branch) };
+      if (sha) body.sha = sha;
+      var xhr = new XMLHttpRequest();
+      xhr.open('PUT', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file, true);
+      xhr.setRequestHeader('Authorization', 'token ' + self.token);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+      xhr.onload = function() {
+        if (xhr.status === 200 || xhr.status === 201) {
+          try { finish(true, JSON.parse(xhr.responseText).content.sha); } catch(e) { finish(true, null); }
+        } else if (xhr.status === 409 || xhr.status === 422) {
+          // SHA périmé : refetch puis retente une seule fois
+          var g = new XMLHttpRequest();
+          g.open('GET', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file + '?ref=' + decodeURIComponent(self.branch), true);
+          g.setRequestHeader('Authorization', 'token ' + self.token);
+          g.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+          g.onload = function() {
+            var freshSha = null;
+            if (g.status === 200) { try { freshSha = JSON.parse(g.responseText).sha; } catch(e) {} }
+            if (freshSha) { self.sha = freshSha; doPutFinal(freshSha); }
+            else { finish(false, null); }
+          };
+          g.onerror = function() { finish(false, null); };
+          g.send();
+        } else {
+          finish(false, null);
+          console.error('GH save error:', xhr.status, xhr.responseText.slice(0,200));
+        }
+      };
+      xhr.onerror = function() { finish(false, null); };
+      xhr.send(JSON.stringify(body));
+    }
+
+    function doPutFinal(sha) {
+      var body = { message:'Update data', content:content, branch:decodeURIComponent(self.branch) };
+      if (sha) body.sha = sha;
+      var xhr = new XMLHttpRequest();
+      xhr.open('PUT', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file, true);
+      xhr.setRequestHeader('Authorization', 'token ' + self.token);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+      xhr.onload = function() {
+        if (xhr.status === 200 || xhr.status === 201) {
+          try { finish(true, JSON.parse(xhr.responseText).content.sha); } catch(e) { finish(true, null); }
+        } else { finish(false, null); }
+      };
+      xhr.onerror = function() { finish(false, null); };
+      xhr.send(JSON.stringify(body));
+    }
+
+    doPut(self.sha);
   },
 
   _showStatus: function(state) {
