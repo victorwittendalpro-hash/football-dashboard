@@ -6995,11 +6995,12 @@
       "FC Barcelone": 320,
       "Arsenal": 270,
       "Liverpool": 32,
-      "Chelsea": 219,
+      "Chelsea": 239,
       "Dortmund": 165,
       "Napoli": 0,
       "Bayern": -59,
-      "Al Ahli": -10
+      "Al Ahli": -10,
+      "Everton": 0
     },
     "contracts": {
       "3": {
@@ -7086,6 +7087,10 @@
         "end": 12,
         "duration": 4
       },
+      "165": {
+        "end": 10,
+        "duration": 2
+      },
       "166": {
         "end": 12,
         "duration": 4
@@ -7122,6 +7127,14 @@
         "from": "Chelsea",
         "to": "Al Ahli",
         "amount": 30,
+        "date": "2026-08-18"
+      },
+      {
+        "season": 8,
+        "player": "O. Marmoush",
+        "from": "Chelsea",
+        "to": "Everton",
+        "amount": 20,
         "date": "2026-08-18"
       }
     ]
