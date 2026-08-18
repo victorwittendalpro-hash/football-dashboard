@@ -5266,6 +5266,7 @@
     "80": "PL",
     "82": "",
     "83": "",
+    "85": "LA",
     "86": "",
     "88": "L1",
     "89": "L1",
@@ -5330,6 +5331,10 @@
     },
     "79": {
       "club": "Bayer Leverkusen",
+      "season": "S8"
+    },
+    "85": {
+      "club": "Bayern",
       "season": "S8"
     },
     "199": {
@@ -6995,10 +7000,10 @@
       "FC Barcelone": 320,
       "Arsenal": 270,
       "Liverpool": 32,
-      "Chelsea": 239,
+      "Chelsea": 299,
       "Dortmund": 165,
       "Napoli": 0,
-      "Bayern": -59,
+      "Bayern": -119,
       "Al Ahli": -10,
       "Everton": 0
     },
@@ -7135,6 +7140,14 @@
         "from": "Chelsea",
         "to": "Everton",
         "amount": 20,
+        "date": "2026-08-18"
+      },
+      {
+        "season": 8,
+        "player": "Xavi Simons",
+        "from": "Chelsea",
+        "to": "Bayern",
+        "amount": 60,
         "date": "2026-08-18"
       }
     ]
