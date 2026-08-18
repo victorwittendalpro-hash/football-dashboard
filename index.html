@@ -8545,16 +8545,23 @@ function mcConfirmTransfer() {
 
   // Mettre à jour le club actuel du joueur
   var sn = 'S' + (currentSeasonNum || 8);
-  p.currentClub   = buyer;
-  p.ligue         = (function() {
-    // Essayer de déterminer la ligue du nouveau club
-    var lgMap = {'Premier League':'PL','Serie A':'SA','Liga':'LA','Ligue 1':'L1','Bundesliga':'BU'};
-    // Chercher un autre joueur du même club pour déduire la ligue
+  p.currentClub = buyer;
+  p.ligue = (function() {
     var sample = ALL.find(function(pl) { return pl.currentClub === buyer && pl.ligue; });
     return sample ? sample.ligue : p.ligue;
   })();
   if (!p.career) p.career = {};
-  p.career[sn]    = buyer;
+  p.career[sn] = buyer;
+
+  // Persister le changement de club dans _playerClubOverrides
+  // (même mécanisme que openClubEditor) pour qu'il survive au rechargement
+  if (!window._playerClubOverrides) window._playerClubOverrides = {};
+  window._playerClubOverrides[pidx] = {club: buyer, season: sn};
+  // Mettre aussi à jour la ligue si on la connaît
+  if (p.ligue) {
+    if (!window._playerLigueOverrides) window._playerLigueOverrides = {};
+    window._playerLigueOverrides[pidx] = p.ligue;
+  }
 
   // Contrat
   mcData.contracts[pidx] = {end: (currentSeasonNum || 8) + dur, duration: dur};
