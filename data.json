@@ -2162,6 +2162,12 @@
             "209": 1,
             "211": 1
           }
+        },
+        "16": {
+          "bm": 0,
+          "be": 1,
+          "pts": 0,
+          "scorers": {}
         }
       },
       "2": {
@@ -6885,7 +6891,7 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true,
-      "_value": 57700000,
+      "_value": 79500000,
       "_origS8": 0
     },
     {
@@ -7010,7 +7016,8 @@
       "t_cl": 0,
       "t_el": 0,
       "t_total": 0,
-      "_custom": true
+      "_custom": true,
+      "_value": 42700000
     }
   ],
   "awardsData": {
