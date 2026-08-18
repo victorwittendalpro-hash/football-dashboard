@@ -2573,10 +2573,90 @@ function updateSeasonLabels() {
 }
 
 // Ouvrir le modal de confirmation de clôture
-function confirmCloseSeason() {
+
+// ── Relégation / Promotion ────────────────────────────────────────────────────
+window._relgPromotions = {}; // {lg: ['Equipe1','Equipe2','Equipe3']}
+
+function relgConfirm() {
+  // Lire les équipes promues saisies
+  var valid = true;
+  var promotions = {};
+
+  LG_ORDER.forEach(function(lg) {
+    var inputs = document.querySelectorAll('#relg-leagues-wrap input[data-lg="' + lg + '"]');
+    var names = [];
+    inputs.forEach(function(inp) {
+      var v = inp.value.trim();
+      names.push(v);
+      if (!v) valid = false;
+    });
+    promotions[lg] = names;
+  });
+
+  if (!valid) {
+    alert('Veuillez renseigner les 3 équipes promues pour chaque championnat.');
+    return;
+  }
+
+  // Stocker pour executeCloseSeason
+  window._relgPromotions = promotions;
+
+  // Fermer le modal relégation et ouvrir le modal de confirmation final
+  document.getElementById('relegation-modal').style.display = 'none';
   var el = document.getElementById('close-season-name');
   if (el) el.textContent = 'la Saison ' + currentSeasonNum;
   document.getElementById('close-season-modal').style.display = 'flex';
+}
+
+function confirmCloseSeason() {
+  // Afficher d'abord le modal de relégation/promotion
+  document.getElementById('relg-season-label').textContent = currentSeasonNum;
+
+  var wrap = document.getElementById('relg-leagues-wrap');
+  wrap.innerHTML = '';
+
+  LG_ORDER.forEach(function(lg) {
+    var teams = getTeamData(lg);
+    var n = teams.length;
+    var relegated = teams.slice(n - 3).map(function(t) { return t.name; });
+
+    var lgColor = {'Premier League':'#4f8ef7','Serie A':'#3ecf8e','Liga':'#a37af7',
+                   'Ligue 1':'#f7944f','Bundesliga':'#f76f6f'}[lg] || '#8b93b0';
+    var lgFlag  = {'Premier League':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','Serie A':'🇮🇹','Liga':'🇪🇸',
+                   'Ligue 1':'🇫🇷','Bundesliga':'🇩🇪'}[lg] || '🏆';
+
+    var block = document.createElement('div');
+    block.style.cssText = 'margin-bottom:1.25rem;background:#0d0f14;border-radius:10px;padding:.875rem';
+    block.innerHTML =
+      '<div style="font-size:12px;font-weight:700;color:' + lgColor + ';margin-bottom:.75rem">' +
+        lgFlag + ' ' + lg +
+      '</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">' +
+        '<div>' +
+          '<div style="font-size:10px;font-weight:700;color:#f76f6f;text-transform:uppercase;' +
+            'letter-spacing:.06em;margin-bottom:.4rem">▼ Relégués</div>' +
+          relegated.map(function(name) {
+            return '<div style="padding:.3rem .5rem;background:#1a0f0f;border-radius:5px;' +
+              'font-size:12px;color:#f76f6f;margin-bottom:3px">' + name + '</div>';
+          }).join('') +
+        '</div>' +
+        '<div>' +
+          '<div style="font-size:10px;font-weight:700;color:#3ecf8e;text-transform:uppercase;' +
+            'letter-spacing:.06em;margin-bottom:.4rem">▲ Promus</div>' +
+          [0,1,2].map(function(k) {
+            return '<input type="text" data-lg="' + lg + '" data-k="' + k + '"' +
+              ' placeholder="Équipe promue ' + (k+1) + '"' +
+              ' style="width:100%;box-sizing:border-box;background:#13161e;border:1px solid #3a4460;' +
+              'border-radius:5px;padding:.3rem .5rem;color:#3ecf8e;font-size:12px;outline:none;' +
+              'margin-bottom:3px">';
+          }).join('') +
+        '</div>' +
+      '</div>';
+
+    wrap.appendChild(block);
+  });
+
+  document.getElementById('relegation-modal').style.display = 'flex';
 }
 
 // Exécuter la clôture de saison
@@ -2832,14 +2912,40 @@ function executeCloseSeason() {
   currentSeasonNum++;
   matchDetails = {};
 
+  // Appliquer les relégations et promotions
+  var promotions = window._relgPromotions || {};
   LG_ORDER.forEach(function(lg) {
-    var teams = S8_DATA.leagues[lg] || [];
-    teams.forEach(function(t) {
+    var teams = getTeamData(lg);  // triées par classement
+    var n = teams.length;
+    var relegated = teams.slice(n - 3).map(function(t) { return t.name; });
+    var promos = promotions[lg] || [];
+
+    // Supprimer les 3 dernières équipes de S8_DATA.leagues[lg]
+    var rawTeams = S8_DATA.leagues[lg] || [];
+    relegated.forEach(function(rname) {
+      var idx = rawTeams.findIndex(function(t) { return t.name === rname; });
+      if (idx >= 0) rawTeams.splice(idx, 1);
+    });
+
+    // Ajouter les 3 équipes promues (avec matches vides)
+    var matchCount = rawTeams.length > 0 ? rawTeams[0].matches.length : 17;
+    promos.forEach(function(pname) {
+      if (pname) rawTeams.push({
+        name:    pname,
+        matches: new Array(matchCount).fill(null),
+        bm:      0,
+        be:      0
+      });
+    });
+
+    // Réinitialiser les matchs de toutes les équipes
+    rawTeams.forEach(function(t) {
       t.matches = t.matches.map(function() { return null; });
       t.bm = 0; t.be = 0;
     });
     (S8_DATA.players[lg] || []).forEach(function(p) { p.goals = 0; });
   });
+  window._relgPromotions = {};
 
   // Mettre à jour le career (club de la nouvelle saison = club actuel)
   var newSn = 'S' + currentSeasonNum;
@@ -8540,5 +8646,29 @@ function mcSaveBudget() {
 }
 
 </script>
+
+<!-- Modal relégation / promotion -->
+<div id="relegation-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);
+  z-index:10050;align-items:center;justify-content:center;overflow-y:auto">
+  <div style="background:#13161e;border:1px solid #252a38;border-radius:14px;padding:1.5rem;
+    width:580px;max-width:96vw;margin:1rem auto">
+    <div style="font-family:Syne,sans-serif;font-size:1.1rem;font-weight:800;color:#fff;margin-bottom:1rem">
+      🔄 Relégations &amp; Promotions — Saison <span id="relg-season-label"></span>
+    </div>
+    <div style="font-size:12px;color:#5a6080;margin-bottom:1.25rem">
+      Les 3 dernières équipes de chaque championnat sont reléguées. Indiquez les 3 équipes promues pour les remplacer.
+    </div>
+    <div id="relg-leagues-wrap"></div>
+    <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:1.25rem">
+      <button onclick="document.getElementById('relegation-modal').style.display='none'"
+        style="background:#252a38;border:none;border-radius:7px;padding:.5rem 1.1rem;
+        color:#8b93b0;cursor:pointer;font-size:12px">Annuler</button>
+      <button onclick="relgConfirm()"
+        style="background:#f5c842;border:none;border-radius:7px;padding:.5rem 1.25rem;
+        color:#0d0f14;cursor:pointer;font-size:12px;font-weight:700">✓ Confirmer et clôturer</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
