@@ -5347,6 +5347,7 @@
     "56": "PL",
     "58": "",
     "66": "BU",
+    "67": "L1",
     "68": "",
     "69": "SA",
     "72": "",
@@ -5420,6 +5421,10 @@
     },
     "48": {
       "club": "Totenham",
+      "season": "S8"
+    },
+    "67": {
+      "club": "River Plate",
       "season": "S8"
     },
     "79": {
@@ -7168,7 +7173,8 @@
       "Napoli": 0,
       "Bayern": -119,
       "Al Ahli": -40,
-      "Everton": -22
+      "Everton": -22,
+      "Benfica": 20
     },
     "contracts": {
       "3": {
@@ -7220,6 +7226,10 @@
         "duration": 4
       },
       "65": {
+        "end": 12,
+        "duration": 4
+      },
+      "67": {
         "end": 12,
         "duration": 4
       },
@@ -7336,6 +7346,14 @@
         "to": "Everton",
         "amount": 22,
         "date": "2026-08-18"
+      },
+      {
+        "season": 8,
+        "player": "Ochoa",
+        "from": "Benfica",
+        "to": "River Plate",
+        "amount": 0,
+        "date": "2026-08-19"
       }
     ]
   }
