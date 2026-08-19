@@ -5378,6 +5378,7 @@
     "121": "LA",
     "123": "SA",
     "124": "PL",
+    "125": "PL",
     "126": "PL",
     "129": "",
     "130": "",
@@ -5437,6 +5438,10 @@
     },
     "124": {
       "club": "Al Ahli",
+      "season": "S8"
+    },
+    "125": {
+      "club": "Aston Villa",
       "season": "S8"
     },
     "165": {
@@ -7167,14 +7172,15 @@
     "budgets": {
       "FC Barcelone": 320,
       "Arsenal": 270,
-      "Liverpool": 32,
+      "Liverpool": 55.2,
       "Chelsea": 261,
       "Dortmund": 165,
       "Napoli": 0,
       "Bayern": -119,
       "Al Ahli": -40,
       "Everton": -22,
-      "Benfica": 20
+      "Benfica": 20,
+      "Aston Villa": -3.1999999999999993
     },
     "contracts": {
       "3": {
@@ -7262,6 +7268,10 @@
         "duration": 2
       },
       "124": {
+        "end": 10,
+        "duration": 2
+      },
+      "125": {
         "end": 10,
         "duration": 2
       },
@@ -7353,6 +7363,14 @@
         "from": "Benfica",
         "to": "River Plate",
         "amount": 0,
+        "date": "2026-08-19"
+      },
+      {
+        "season": 8,
+        "player": "E. Nuamah",
+        "from": "Liverpool",
+        "to": "Aston Villa",
+        "amount": 23.2,
         "date": "2026-08-19"
       }
     ]
