@@ -5404,7 +5404,7 @@
     "172": "BU",
     "174": "LA",
     "179": "LA",
-    "180": "PL",
+    "180": "SA",
     "181": "LA",
     "182": "BU",
     "183": "BU",
@@ -5446,6 +5446,10 @@
     },
     "165": {
       "club": "Everton",
+      "season": "S8"
+    },
+    "180": {
+      "club": "Atalanta",
       "season": "S8"
     },
     "199": {
@@ -7172,7 +7176,7 @@
     "budgets": {
       "FC Barcelone": 320,
       "Arsenal": 270,
-      "Liverpool": 55.2,
+      "Liverpool": 105.6,
       "Chelsea": 261,
       "Dortmund": 165,
       "Napoli": 0,
@@ -7180,7 +7184,8 @@
       "Al Ahli": -40,
       "Everton": -22,
       "Benfica": 20,
-      "Aston Villa": -3.1999999999999993
+      "Aston Villa": -3.1999999999999993,
+      "Atalanta": -30.4
     },
     "contracts": {
       "3": {
@@ -7290,6 +7295,10 @@
       "166": {
         "end": 12,
         "duration": 4
+      },
+      "180": {
+        "end": 10,
+        "duration": 2
       }
     },
     "transfers": [
@@ -7371,6 +7380,14 @@
         "from": "Liverpool",
         "to": "Aston Villa",
         "amount": 23.2,
+        "date": "2026-08-19"
+      },
+      {
+        "season": 8,
+        "player": "Rodrigo Mora",
+        "from": "Liverpool",
+        "to": "Atalanta",
+        "amount": 50.4,
         "date": "2026-08-19"
       }
     ]
