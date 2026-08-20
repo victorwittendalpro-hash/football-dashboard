@@ -5126,429 +5126,106 @@
     }
   },
   "clMatchDetails": {},
-  "clKoDetails": {
-    "r16_0": {
-      "leg1": {
-        "home_score": 2,
-        "away_score": 1
-      },
-      "leg2": {
-        "home_score": 0,
-        "away_score": 4
-      },
-      "scorers": {
-        "14": 3,
-        "15": 2,
-        "17": 1
-      }
-    },
-    "r16_7": {
-      "leg1": {
-        "home_score": 2,
-        "away_score": 3
-      },
-      "leg2": {
-        "home_score": 2,
-        "away_score": 2
-      },
-      "scorers": {
-        "146": 1
-      }
-    },
-    "r16_6": {
-      "leg1": {
-        "home_score": 2,
-        "away_score": 1
-      },
-      "leg2": {
-        "home_score": 4,
-        "away_score": 0
-      },
-      "scorers": {
-        "3": 3,
-        "121": 2,
-        "142": 2
-      }
-    },
-    "r16_4": {
-      "leg1": {
-        "home_score": 5,
-        "away_score": 1
-      },
-      "leg2": {
-        "home_score": 3,
-        "away_score": 4
-      },
-      "scorers": {
-        "5": 2,
-        "12": 1,
-        "25": 1,
-        "62": 1,
-        "63": 2,
-        "64": 1,
-        "197": 1
-      }
-    },
-    "r16_5": {
-      "leg1": {
-        "home_score": 0,
-        "away_score": 3
-      },
-      "leg2": {
-        "home_score": 4,
-        "away_score": 0
-      },
-      "scorers": {
-        "22": 1,
-        "56": 4,
-        "136": 1,
-        "192": 1
-      }
-    },
-    "r16_3": {
-      "leg1": {
-        "home_score": 3,
-        "away_score": 2
-      },
-      "leg2": {
-        "home_score": 2,
-        "away_score": 2
-      },
-      "scorers": {
-        "70": 1,
-        "177": 1
-      }
-    },
-    "r16_1": {
-      "leg1": {
-        "home_score": 2,
-        "away_score": 0
-      },
-      "leg2": {
-        "home_score": 2,
-        "away_score": 6
-      },
-      "scorers": {
-        "1": 2,
-        "23": 2,
-        "98": 4
-      }
-    },
-    "r16_2": {
-      "leg1": {
-        "home_score": 5,
-        "away_score": 1
-      },
-      "leg2": {
-        "home_score": 3,
-        "away_score": 2
-      },
-      "scorers": {
-        "26": 5,
-        "65": 2
-      }
-    },
-    "qf_1": {
-      "leg1": {
-        "home_score": 0,
-        "away_score": 0
-      },
-      "leg2": {
-        "home_score": 2,
-        "away_score": 1
-      },
-      "scorers": {
-        "26": 1,
-        "177": 2
-      }
-    },
-    "qf_2": {
-      "leg1": {
-        "home_score": 4,
-        "away_score": 1
-      },
-      "leg2": {
-        "home_score": 1,
-        "away_score": 2
-      },
-      "scorers": {
-        "5": 3,
-        "12": 2,
-        "192": 1
-      }
-    },
-    "qf_3": {
-      "leg1": {
-        "home_score": 1,
-        "away_score": 0
-      },
-      "leg2": {
-        "home_score": 0,
-        "away_score": 3
-      },
-      "scorers": {
-        "3": 3,
-        "121": 1
-      }
-    },
-    "qf_0": {
-      "leg1": {
-        "home_score": 2,
-        "away_score": 3
-      },
-      "leg2": {
-        "home_score": 0,
-        "away_score": 0
-      },
-      "scorers": {
-        "15": 1,
-        "23": 1,
-        "98": 1,
-        "99": 1
-      }
-    },
-    "sf_0": {
-      "leg1": {
-        "home_score": 0,
-        "away_score": 3
-      },
-      "leg2": {
-        "home_score": 4,
-        "away_score": 3
-      },
-      "scorers": {
-        "23": 1,
-        "98": 1,
-        "99": 1,
-        "150": 1,
-        "157": 4,
-        "177": 1
-      }
-    },
-    "sf_1": {
-      "leg1": {
-        "home_score": 4,
-        "away_score": 1
-      },
-      "leg2": {
-        "home_score": 1,
-        "away_score": 1
-      },
-      "scorers": {
-        "3": 2,
-        "4": 1,
-        "5": 2,
-        "12": 1,
-        "63": 1
-      }
-    },
-    "final": {
-      "leg1": {
-        "home_score": 0,
-        "away_score": 0
-      },
-      "leg2": {
-        "home_score": 3,
-        "away_score": 4
-      },
-      "scorers": {
-        "5": 1,
-        "12": 1,
-        "25": 1,
-        "177": 3,
-        "207": 1
-      }
-    }
-  },
+  "clKoDetails": {},
   "clKoBracket": {
     "r16": [
       {
-        "home": "FC Barcelone",
-        "away": "Feyenoord",
-        "leg1": {
-          "home_score": 2,
-          "away_score": 1
-        },
-        "leg2": {
-          "home_score": 0,
-          "away_score": 4
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       },
       {
-        "home": "Liverpool",
-        "away": "Majorque",
-        "leg1": {
-          "home_score": 2,
-          "away_score": 0
-        },
-        "leg2": {
-          "home_score": 2,
-          "away_score": 6
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       },
       {
-        "home": "Inter Milan",
-        "away": "PSV Heindoven",
-        "leg1": {
-          "home_score": 5,
-          "away_score": 1
-        },
-        "leg2": {
-          "home_score": 3,
-          "away_score": 2
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       },
       {
-        "home": "Manchester City",
-        "away": "OGC Nice",
-        "leg1": {
-          "home_score": 3,
-          "away_score": 2
-        },
-        "leg2": {
-          "home_score": 2,
-          "away_score": 2
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       },
       {
-        "home": "PSG",
-        "away": "AS Roma",
-        "leg1": {
-          "home_score": 5,
-          "away_score": 1
-        },
-        "leg2": {
-          "home_score": 3,
-          "away_score": 4
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       },
       {
-        "home": "Sporting Lisbonne",
-        "away": "Manchester United",
-        "leg1": {
-          "home_score": 0,
-          "away_score": 3
-        },
-        "leg2": {
-          "home_score": 4,
-          "away_score": 0
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       },
       {
-        "home": "Arsenal",
-        "away": "Real Madrid",
-        "leg1": {
-          "home_score": 2,
-          "away_score": 1
-        },
-        "leg2": {
-          "home_score": 4,
-          "away_score": 0
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       },
       {
-        "home": "Benfica",
-        "away": "Dortmund",
-        "leg1": {
-          "home_score": 2,
-          "away_score": 3
-        },
-        "leg2": {
-          "home_score": 2,
-          "away_score": 2
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       }
     ],
     "qf": [
       {
-        "home": "FC Barcelone",
-        "away": "Liverpool",
-        "leg1": {
-          "home_score": 2,
-          "away_score": 3
-        },
-        "leg2": {
-          "home_score": 0,
-          "away_score": 0
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       },
       {
-        "home": "Inter Milan",
-        "away": "Manchester City",
-        "leg1": {
-          "home_score": 0,
-          "away_score": 0
-        },
-        "leg2": {
-          "home_score": 2,
-          "away_score": 1
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       },
       {
-        "home": "PSG",
-        "away": "Manchester United",
-        "leg1": {
-          "home_score": 4,
-          "away_score": 1
-        },
-        "leg2": {
-          "home_score": 1,
-          "away_score": 2
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       },
       {
-        "home": "Real Madrid",
-        "away": "Dortmund",
-        "leg1": {
-          "home_score": 1,
-          "away_score": 0
-        },
-        "leg2": {
-          "home_score": 0,
-          "away_score": 3
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       }
     ],
     "sf": [
       {
-        "home": "Liverpool",
-        "away": "Manchester City",
-        "leg1": {
-          "home_score": 0,
-          "away_score": 3
-        },
-        "leg2": {
-          "home_score": 4,
-          "away_score": 3
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       },
       {
-        "home": "PSG",
-        "away": "Real Madrid",
-        "leg1": {
-          "home_score": 4,
-          "away_score": 1
-        },
-        "leg2": {
-          "home_score": 1,
-          "away_score": 1
-        }
+        "home": null,
+        "away": null,
+        "leg1": null,
+        "leg2": null
       }
     ],
     "final": {
-      "home": "Manchester City",
-      "away": "PSG",
-      "leg1": {
-        "home_score": 0,
-        "away_score": 0
-      },
-      "leg2": {
-        "home_score": 3,
-        "away_score": 4
-      }
+      "home": null,
+      "away": null,
+      "leg1": null,
+      "leg2": null
     }
   },
-  "currentSeasonNum": 8,
+  "currentSeasonNum": 9,
   "archives": [],
   "playerLigueOverrides": {
     "0": "LA",
@@ -5686,200 +5363,7 @@
       "season": "S8"
     }
   },
-  "elKoDetails": {
-    "r16_0": {
-      "leg1": {
-        "home_score": 6,
-        "away_score": 4
-      },
-      "leg2": {
-        "home_score": 1,
-        "away_score": 3
-      },
-      "scorers": {}
-    },
-    "r16_1": {
-      "leg1": {
-        "home_score": 2,
-        "away_score": 4
-      },
-      "leg2": {
-        "home_score": 0,
-        "away_score": 3
-      },
-      "scorers": {}
-    },
-    "r16_3": {
-      "leg1": {
-        "home_score": 2,
-        "away_score": 2
-      },
-      "leg2": {
-        "home_score": 1,
-        "away_score": 0
-      },
-      "scorers": {}
-    },
-    "r16_6": {
-      "leg1": {
-        "home_score": 1,
-        "away_score": 0
-      },
-      "leg2": {
-        "home_score": 5,
-        "away_score": 1
-      }
-    },
-    "r16_7": {
-      "leg1": {
-        "home_score": 4,
-        "away_score": 3
-      },
-      "leg2": {
-        "home_score": 2,
-        "away_score": 4
-      },
-      "scorers": {}
-    },
-    "r16_4": {
-      "leg1": {
-        "home_score": 2,
-        "away_score": 1
-      },
-      "leg2": {
-        "home_score": 0,
-        "away_score": 2
-      },
-      "scorers": {
-        "77": 2,
-        "104": 1,
-        "128": 2
-      }
-    },
-    "r16_2": {
-      "leg1": {
-        "home_score": 1,
-        "away_score": 2
-      },
-      "leg2": {
-        "home_score": 0,
-        "away_score": 5
-      },
-      "scorers": {
-        "138": 4,
-        "164": 2
-      }
-    },
-    "r16_5": {
-      "leg1": {
-        "home_score": 6,
-        "away_score": 1
-      },
-      "leg2": {
-        "home_score": 2,
-        "away_score": 0
-      },
-      "scorers": {
-        "74": 1,
-        "202": 3
-      }
-    },
-    "qf_3": {
-      "leg1": {
-        "home_score": 2,
-        "away_score": 4
-      },
-      "leg2": {
-        "home_score": 0,
-        "away_score": 3
-      },
-      "scorers": {}
-    },
-    "qf_0": {
-      "leg1": {
-        "home_score": 0,
-        "away_score": 2
-      },
-      "leg2": {
-        "home_score": 3,
-        "away_score": 0
-      },
-      "scorers": {}
-    },
-    "qf_2": {
-      "leg1": {
-        "home_score": 1,
-        "away_score": 2
-      },
-      "leg2": {
-        "home_score": 1,
-        "away_score": 1
-      },
-      "scorers": {
-        "104": 1,
-        "128": 1,
-        "203": 1
-      }
-    },
-    "qf_1": {
-      "leg1": {
-        "home_score": 2,
-        "away_score": 0
-      },
-      "leg2": {
-        "home_score": 1,
-        "away_score": 2
-      },
-      "scorers": {
-        "47": 1,
-        "138": 3
-      }
-    },
-    "sf_0": {
-      "leg1": {
-        "home_score": 0,
-        "away_score": 3
-      },
-      "leg2": {
-        "home_score": 1,
-        "away_score": 1
-      },
-      "scorers": {
-        "21": 1,
-        "138": 1,
-        "164": 1,
-        "187": 1
-      }
-    },
-    "sf_1": {
-      "leg1": {
-        "home_score": 2,
-        "away_score": 3
-      },
-      "leg2": {
-        "home_score": 5,
-        "away_score": 1
-      },
-      "scorers": {
-        "74": 1,
-        "201": 1,
-        "202": 1
-      }
-    },
-    "final": {
-      "leg1": {
-        "home_score": 2,
-        "away_score": 4
-      },
-      "leg2": {
-        "home_score": 0,
-        "away_score": 0
-      },
-      "scorers": {
-        "164": 2
-      }
-    }
-  },
+  "elKoDetails": {},
   "cupData": {
     "eng": {
       "name": "Coupe d'Angleterre",
