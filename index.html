@@ -2864,21 +2864,13 @@ function executeCloseSeason() {
     });
   });
 
-  var scorerTotals = {};
-  LG_ORDER.forEach(function(lg) {
-    var lgD = matchDetails[lg] || {};
-    Object.keys(lgD).forEach(function(tIdx) {
-      Object.keys(lgD[tIdx]).forEach(function(mIdx) {
-        var sc = (lgD[tIdx][mIdx].scorers) || {};
-        Object.keys(sc).forEach(function(pidx) {
-          scorerTotals[pidx] = (scorerTotals[pidx] || 0) + sc[pidx];
-        });
-      });
-    });
-  });
-  Object.keys(scorerTotals).forEach(function(pidx) {
-    var p = ALL[parseInt(pidx)];
-    if (p) archive.scorers[pidx] = {name:p.name, goals:scorerTotals[pidx], ligue:p.ligue};
+  // Buteurs S8 : utiliser seasons['S8'] après rebuild (inclut _origS8 + matchDetails)
+  // plutôt que matchDetails seul qui exclut les buts Excel d'origine
+  ALL.forEach(function(p, pidx) {
+    var s8goals = (p.seasons && p.seasons[sn]) || 0;
+    if (s8goals > 0) {
+      archive.scorers[String(pidx)] = {name: p.name, goals: s8goals, ligue: p.ligue};
+    }
   });
 
   // Ajouter l'archive à histArchives
