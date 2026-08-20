@@ -5842,6 +5842,19 @@
         "201": 1,
         "202": 1
       }
+    },
+    "final": {
+      "leg1": {
+        "home_score": 2,
+        "away_score": 4
+      },
+      "leg2": {
+        "home_score": 0,
+        "away_score": 0
+      },
+      "scorers": {
+        "164": 2
+      }
     }
   },
   "cupData": {
