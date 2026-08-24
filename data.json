@@ -11093,6 +11093,19 @@
               "50": 3
             }
           }
+        },
+        "E": {
+          "E_1": {
+            "home": "Portugal",
+            "away": "Belgique",
+            "score_h": 2,
+            "score_a": 1,
+            "scorers": {
+              "1": 1,
+              "108": 1,
+              "136": 1
+            }
+          }
         }
       },
       "koMatches": {}
