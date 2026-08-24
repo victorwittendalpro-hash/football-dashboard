@@ -617,6 +617,7 @@ var GH = {
   collectData: function() {
     return {
       version: 1,
+      leagueData:        (typeof S8_DATA !== 'undefined') ? S8_DATA.leagues : {},
       matchDetails:      (typeof matchDetails      !== 'undefined') ? matchDetails      : {},
       clMatchDetails:    (typeof clMatchDetails    !== 'undefined') ? clMatchDetails    : {},
       clKoDetails:       (typeof clKoDetails       !== 'undefined') ? clKoDetails       : {},
@@ -736,6 +737,15 @@ function ghApplyData(data) {
         p.career[ov.season] = ov.club;
       }
     });
+  }
+  // Restaurer les équipes des championnats (relégation/promotion persistée)
+  if (data.leagueData && typeof S8_DATA !== 'undefined') {
+    Object.keys(data.leagueData).forEach(function(lg) {
+      if (S8_DATA.leagues[lg] && data.leagueData[lg] && data.leagueData[lg].length > 0) {
+        S8_DATA.leagues[lg] = data.leagueData[lg];
+      }
+    });
+    try { renderSaisonEnCours(); } catch(e) {}
   }
   // Recalculer les buts S8 de tous les joueurs depuis matchDetails restauré
   try { rebuildPlayerGoalsFromDetails(); } catch(e) {}
