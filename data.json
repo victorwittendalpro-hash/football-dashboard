@@ -11056,6 +11056,18 @@
               "169": 1
             }
           }
+        },
+        "C": {
+          "C_1": {
+            "home": "Espagne",
+            "away": "Argentine",
+            "score_h": 3,
+            "score_a": 1,
+            "scorers": {
+              "15": 1,
+              "70": 1
+            }
+          }
         }
       },
       "koMatches": {}
