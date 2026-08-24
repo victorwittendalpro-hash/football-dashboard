@@ -7796,7 +7796,8 @@
         "Liga": "Real Madrid",
         "Ligue 1": "PSG",
         "Bundesliga": "Frankfort",
-        "Champions League": "PSG"
+        "Champions League": "PSG",
+        "Europa League": "Fiorentina"
       },
       "clKoDetails": {
         "r16_0": {
@@ -8294,7 +8295,12 @@
           }
         }
       },
-      "elKoBracket": {}
+      "elKoBracket": {
+        "final": {
+          "home": "Fiorentina",
+          "away": "AC Milan"
+        }
+      }
     }
   ],
   "playerLigueOverrides": {
