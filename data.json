@@ -11099,6 +11099,16 @@
               "17": 1,
               "50": 3
             }
+          },
+          "B_5": {
+            "home": "Bolivie",
+            "away": "Angleterre",
+            "score_h": 2,
+            "score_a": 2,
+            "scorers": {
+              "135": 1,
+              "157": 1
+            }
           }
         },
         "E": {
@@ -11777,9 +11787,9 @@
       },
       {
         "season": "S7",
-        "name": "Yamal",
-        "nat": "Espagne",
-        "club": "FC Barcelone"
+        "name": null,
+        "nat": null,
+        "club": null
       }
     ],
     "golden_boy": [
@@ -11833,7 +11843,7 @@
       },
       {
         "season": "S5",
-        "name": "Yamal",
+        "name": "L. Yamal",
         "nat": "Espagne",
         "club": "FC Barcelone"
       },
@@ -11845,234 +11855,15 @@
       },
       {
         "season": "S7",
-        "name": "Kendry Paez",
-        "nat": "Equateur",
-        "club": "Inter Milan"
+        "name": null,
+        "nat": null,
+        "club": null
       }
     ]
   },
   "mcData": {
-    "budgets": {
-      "FC Barcelone": 320,
-      "Arsenal": 270,
-      "Liverpool": 305.6,
-      "Chelsea": 261,
-      "Dortmund": 165,
-      "Napoli": 0,
-      "Bayern": -119,
-      "Al Ahli": -40,
-      "Everton": -22,
-      "Benfica": 20,
-      "Aston Villa": -3.1999999999999993,
-      "Atalanta": -30.4,
-      "AC Milan": 120,
-      "Real Madrid": 140,
-      "PSG": 80,
-      "Frankfort": 100
-    },
-    "contracts": {
-      "3": {
-        "end": 10,
-        "duration": 2
-      },
-      "4": {
-        "end": 12,
-        "duration": 4
-      },
-      "8": {
-        "end": 12,
-        "duration": 4
-      },
-      "12": {
-        "end": 12,
-        "duration": 4
-      },
-      "14": {
-        "end": 12,
-        "duration": 4
-      },
-      "15": {
-        "end": 12,
-        "duration": 4
-      },
-      "16": {
-        "end": 12,
-        "duration": 4
-      },
-      "20": {
-        "end": 12,
-        "duration": 4
-      },
-      "32": {
-        "end": 10,
-        "duration": 2
-      },
-      "45": {
-        "end": 10,
-        "duration": 2
-      },
-      "54": {
-        "end": 10,
-        "duration": 2
-      },
-      "55": {
-        "end": 12,
-        "duration": 4
-      },
-      "65": {
-        "end": 12,
-        "duration": 4
-      },
-      "67": {
-        "end": 12,
-        "duration": 4
-      },
-      "78": {
-        "end": 10,
-        "duration": 2
-      },
-      "80": {
-        "end": 10,
-        "duration": 2
-      },
-      "85": {
-        "end": 12,
-        "duration": 4
-      },
-      "91": {
-        "end": 10,
-        "duration": 2
-      },
-      "98": {
-        "end": 12,
-        "duration": 4
-      },
-      "99": {
-        "end": 12,
-        "duration": 4
-      },
-      "102": {
-        "end": 10,
-        "duration": 2
-      },
-      "124": {
-        "end": 10,
-        "duration": 2
-      },
-      "125": {
-        "end": 10,
-        "duration": 2
-      },
-      "157": {
-        "end": 12,
-        "duration": 4
-      },
-      "163": {
-        "end": 12,
-        "duration": 4
-      },
-      "165": {
-        "end": 10,
-        "duration": 2
-      },
-      "166": {
-        "end": 12,
-        "duration": 4
-      },
-      "180": {
-        "end": 10,
-        "duration": 2
-      }
-    },
-    "transfers": [
-      {
-        "season": 8,
-        "player": "Y. Musah",
-        "from": "Bayern",
-        "to": "Napoli",
-        "amount": 20,
-        "date": "2026-08-18"
-      },
-      {
-        "season": 8,
-        "player": "Xavi Simons",
-        "from": "Chelsea",
-        "to": "Bayern",
-        "amount": 39,
-        "date": "2026-08-18"
-      },
-      {
-        "season": 8,
-        "player": "Xavi Simons",
-        "from": "Chelsea",
-        "to": "Bayern",
-        "amount": 60,
-        "date": "2026-08-18"
-      },
-      {
-        "season": 8,
-        "player": "A. Diallo",
-        "from": "Chelsea",
-        "to": "Al Ahli",
-        "amount": 30,
-        "date": "2026-08-18"
-      },
-      {
-        "season": 8,
-        "player": "O. Marmoush",
-        "from": "Chelsea",
-        "to": "Everton",
-        "amount": 20,
-        "date": "2026-08-18"
-      },
-      {
-        "season": 8,
-        "player": "Xavi Simons",
-        "from": "Chelsea",
-        "to": "Bayern",
-        "amount": 60,
-        "date": "2026-08-18"
-      },
-      {
-        "season": 8,
-        "player": "A. Diallo",
-        "from": "Chelsea",
-        "to": "Al Ahli",
-        "amount": 30,
-        "date": "2026-08-18"
-      },
-      {
-        "season": 8,
-        "player": "O. Marmoush",
-        "from": "Chelsea",
-        "to": "Everton",
-        "amount": 22,
-        "date": "2026-08-18"
-      },
-      {
-        "season": 8,
-        "player": "Ochoa",
-        "from": "Benfica",
-        "to": "River Plate",
-        "amount": 0,
-        "date": "2026-08-19"
-      },
-      {
-        "season": 8,
-        "player": "E. Nuamah",
-        "from": "Liverpool",
-        "to": "Aston Villa",
-        "amount": 23.2,
-        "date": "2026-08-19"
-      },
-      {
-        "season": 8,
-        "player": "Rodrigo Mora",
-        "from": "Liverpool",
-        "to": "Atalanta",
-        "amount": 50.4,
-        "date": "2026-08-19"
-      }
-    ]
+    "budgets": {},
+    "contracts": {},
+    "transfers": []
   }
 }
