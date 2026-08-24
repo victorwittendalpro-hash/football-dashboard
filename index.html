@@ -421,24 +421,31 @@ var GH = {
             ghApplyData(content);
             self._showStatus('synced');
             try {
+              // Rafraîchir l'onglet actif
               var activeTab = document.querySelector('.extra-pane[style*="block"]');
               if (activeTab) {
                 var tabId = activeTab.id.replace('xpane-', '');
-                if (tabId === 's8'   && typeof renderSaisonEnCours === 'function') renderSaisonEnCours();
-                else if (tabId === 'cl'   && typeof clRender === 'function') clRender();
-                else if (tabId === 'el'   && typeof elRender === 'function') elRender();
-                else if (tabId === 'cups' && typeof cupsRender === 'function') cupsRender();
-                else if (tabId === 'sn'   && typeof snRender === 'function') snRender();
+                if      (tabId === 's8'      && typeof renderSaisonEnCours === 'function') renderSaisonEnCours();
+                else if (tabId === 'season'  && typeof renderSaisonEnCours === 'function') renderSaisonEnCours();
+                else if (tabId === 'cl'      && typeof clRender === 'function') clRender();
+                else if (tabId === 'el'      && typeof elRender === 'function') elRender();
+                else if (tabId === 'cups'    && typeof cupsRender === 'function') cupsRender();
+                else if (tabId === 'sn'      && typeof snRender === 'function') snRender();
+                else if (tabId === 'history' && typeof initHistory === 'function') initHistory(typeof histArchives !== 'undefined' ? histArchives : []);
+                else if (tabId === 'awards'  && typeof awardsInit === 'function') awardsInit();
+                else if (tabId === 'club'    && typeof cbInit === 'function') cbInit();
+                else if (tabId === 'mercato' && typeof mcInit === 'function') mcInit();
               }
+              // Toujours rafraîchir le tableau et la fiche
               if (typeof tblFilter === 'function') tblFilter();
               if (typeof ai !== 'undefined' && ai >= 0 && typeof renderProfile === 'function') renderProfile(ai);
-            } catch(e) {}
+            } catch(e) { console.warn('Poll refresh error:', e); }
           }
         } catch(e) { console.warn('Poll parse error:', e); }
       };
       xhr.onerror = function() {};
       xhr.send();
-    }, 15000);
+    }, 8000);
   },
 
   _deepCount: function(obj) {
@@ -455,20 +462,26 @@ var GH = {
   _mergeRemote: function(local, remote) {
     if (!remote) return local;
     var merged = {};
-    // Clés pour lesquelles on garde TOUJOURS la version locale
-    // (modifiées fréquemment en session, le local est plus récent que le remote)
-    var alwaysLocal = {mcData: true};
     var allKeys = Object.keys(Object.assign({}, local, remote));
     allKeys.forEach(function(key) {
-      if (alwaysLocal[key]) {
-        merged[key] = local[key];
-        return;
-      }
+      // mcData : toujours local (modifié fréquemment, le local est plus récent)
+      if (key === 'mcData') { merged[key] = local[key]; return; }
+      // currentSeasonNum : toujours le plus grand
       if (key === 'currentSeasonNum') {
-        merged[key] = Math.max(local[key] || 0, remote[key] || 0);
-        return;
+        merged[key] = Math.max(local[key] || 0, remote[key] || 0); return;
       }
       if (key === 'version') { merged[key] = local[key] || remote[key] || 1; return; }
+      // archives : prendre la plus longue, ne jamais écraser par vide
+      if (key === 'archives') {
+        var la = local[key] || []; var ra = remote[key] || [];
+        merged[key] = ra.length >= la.length ? ra : la; return;
+      }
+      // playerClubOverrides / playerLigueOverrides / customPlayers :
+      // fusionner les deux (remote comme base, local écrase clé par clé)
+      if (key === 'playerClubOverrides' || key === 'playerLigueOverrides') {
+        merged[key] = Object.assign({}, remote[key] || {}, local[key] || {}); return;
+      }
+      // Pour tout le reste : prendre la version avec le plus de données
       var localCount  = GH._deepCount(local[key]);
       var remoteCount = GH._deepCount(remote[key]);
       merged[key] = (remoteCount > localCount) ? remote[key] : local[key];
