@@ -1,866 +1,2003 @@
 {
   "version": 1,
-  "currentSeasonNum": 9,
+  "leagueData": {
+    "Serie A": [
+      {
+        "name": "AC Milan",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Inter Milan",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Côme",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Fiorentina",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Atalanta",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Lazio",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Bologne",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Udinese",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Torino",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Juventus",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "AS Roma",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Helas Verone",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Napoli",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Venise",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Lecce",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      }
+    ],
+    "Premier League": [
+      {
+        "name": "Liverpool",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Arsenal",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Manchester City",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Manchester United",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Newcastle",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Tottenham",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Nothimgham Forrest",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Everton",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Leicester",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Aston Villa",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Bournemouth",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Crystal Palace",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Westham",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Fulham",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Wolves",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      }
+    ],
+    "Liga": [
+      {
+        "name": "FC Barcelone",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Real Madrid",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Las Palmas",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Valence",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Villareal",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Real Betis",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "FC Seville",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Osasuna",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Español Barcelone",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Majorque",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "La Corone",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Atletic Bilbao",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Rayo Valleccano",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Real Sociedad",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Valladollid",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      }
+    ],
+    "Ligue 1": [
+      {
+        "name": "PSG",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "AS Monaco",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "OGC Nice",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "RC Lens",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "OM",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Strasbourg",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Toulouse",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "OL",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "LOSC",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Reims",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Rennes",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "AS Saint-Etienne",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "FC Nantes",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Paris FC",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "HAC",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      }
+    ],
+    "Bundesliga": [
+      {
+        "name": "Frankfort",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Dortmund",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Bayern Munich",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Fribourg",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Stuttgart",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Werder Breme",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Bayer Leverkusen",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "FC Cologne",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Leipzig",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Schalke",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Union Berlin",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Wolfsburg",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "St Pauli",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Borussia Mönchengladbach",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      },
+      {
+        "name": "Mayence",
+        "matches": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 0,
+        "be": 0
+      }
+    ]
+  },
   "matchDetails": {},
   "clMatchDetails": {},
   "clKoDetails": {},
-  "clKoBracket": {},
-  "elKoDetails": {},
-  "cupData": {
-    "eng": {
-      "name": "Coupe d'Angleterre",
-      "emoji": "🏴‍",
-      "color": "#4f8ef7",
-      "league": "Premier League",
-      "matches": {},
-      "history": [
-        {
-          "season": "S5",
-          "winner": "Manchester United",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S6",
-          "winner": "Liverpool",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S7",
-          "winner": "Manchester United",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S8",
-          "winner": "Manchester City",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        }
-      ]
-    },
-    "fra": {
-      "name": "Coupe de France",
-      "emoji": "🇫🇷",
-      "color": "#f7944f",
-      "league": "Ligue 1",
-      "matches": {},
-      "history": [
-        {
-          "season": "S5",
-          "winner": "OL",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S6",
-          "winner": "OM",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S7",
-          "winner": "PSG",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S8",
-          "winner": "PSG",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        }
-      ]
-    },
-    "ita": {
-      "name": "Coupe d'Italie",
-      "emoji": "🇮🇹",
-      "color": "#3ecf8e",
-      "league": "Serie A",
-      "matches": {},
-      "history": [
-        {
-          "season": "S5",
-          "winner": "AC Milan",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S6",
-          "winner": "Inter Milan",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S7",
-          "winner": "Inter Milan",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S8",
-          "winner": "Inter Milan",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        }
-      ]
-    },
-    "esp": {
-      "name": "Coupe d'Espagne",
-      "emoji": "🇪🇸",
-      "color": "#a37af7",
-      "league": "Liga",
-      "matches": {},
-      "history": [
-        {
-          "season": "S5",
-          "winner": "Real Madrid",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S6",
-          "winner": "FC Barcelone",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S7",
-          "winner": "FC Barcelone",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S8",
-          "winner": "FC Barcelone",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        }
-      ]
-    },
-    "ger": {
-      "name": "Coupe d'Allemagne",
-      "emoji": "🇩🇪",
-      "color": "#f76f6f",
-      "league": "Bundesliga",
-      "matches": {},
-      "history": [
-        {
-          "season": "S5",
-          "winner": "Bayern Munich",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S6",
-          "winner": "Bayern Munich",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S7",
-          "winner": "Bayer Leverkusen",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S8",
-          "winner": "Bayern Munich",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        }
-      ]
-    },
-    "sec": {
-      "name": "Supercoupe d'Europe",
-      "emoji": "🌟",
-      "color": "#f5c842",
-      "league": "Europe",
-      "matches": {},
-      "history": [
-        {
-          "season": "S5",
-          "winner": "Manchester United",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S6",
-          "winner": "FC Barcelone",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S7",
-          "winner": "PSG",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        },
-        {
-          "season": "S8",
-          "winner": "FC Barcelone",
-          "runner_up": "?",
-          "score_home": null,
-          "score_away": null
-        }
-      ]
-    }
-  },
-  "snMatchData": {
-    "cdm": {
-      "qualifMatches": {
-        "0_0": {
-          "home": "Algérie",
-          "away": "Inde",
-          "score_h": 6,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "1_0": {
-          "home": "Colombie",
-          "away": "Pérou",
-          "score_h": 4,
-          "score_a": 1,
-          "scorers": {
-            "199": 3
-          }
-        },
-        "3_0": {
-          "home": "Sénégal",
-          "away": "Nigeria",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "4_0": {
-          "home": "Australie",
-          "away": "Zimbabwe",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "2_0": {
-          "home": "Turquie",
-          "away": "Ghana",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "5_0": {
-          "home": "Grèce",
-          "away": "Egypte",
-          "score_h": 3,
-          "score_a": 2,
-          "scorers": {}
-        },
-        "6_0": {
-          "home": "Angleterre",
-          "away": "Japon",
-          "score_h": 1,
-          "score_a": 2,
-          "scorers": {}
-        },
-        "8_0": {
-          "home": "Pologne",
-          "away": "Botswana",
-          "score_h": 5,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "30_0": {
-          "home": "Mexique",
-          "away": "Georgie",
-          "score_h": 1,
-          "score_a": 3,
-          "scorers": {}
-        },
-        "28_0": {
-          "home": "Bolivie",
-          "away": "Canada",
-          "score_h": 5,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "26_0": {
-          "home": "Macédoine",
-          "away": "Suisse",
-          "score_h": 6,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "22_0": {
-          "home": "Belgique",
-          "away": "Chili",
-          "score_h": 5,
-          "score_a": 1,
-          "scorers": {
-            "108": 2,
-            "188": 2,
-            "200": 1
-          }
-        },
-        "32_0": {
-          "home": "Brésil",
-          "away": "Equateur",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {
-            "126": 1
-          }
-        },
-        "14_0": {
-          "home": "France",
-          "away": "Pays de Galles",
-          "score_h": 6,
-          "score_a": 0,
-          "scorers": {
-            "3": 2,
-            "5": 1,
-            "14": 2,
-            "56": 1
-          }
-        },
-        "17_0": {
-          "home": "Espagne",
-          "away": "Danemark",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {
-            "81": 1
-          }
-        },
-        "10_0": {
-          "home": "Allemagne",
-          "away": "Irlande",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {
-            "164": 1
-          }
-        },
-        "34_0": {
-          "home": "Côte d'Ivoire",
-          "away": "Etats-unis",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "27_0": {
-          "home": "Argentine",
-          "away": "Suède",
-          "score_h": 0,
-          "score_a": 2,
-          "scorers": {}
-        },
-        "23_0": {
-          "home": "Italie",
-          "away": "Serbie",
-          "score_h": 2,
-          "score_a": 2,
-          "scorers": {
-            "121": 2
-          }
-        },
-        "33_0": {
-          "home": "Maroc",
-          "away": "Cap Vert",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {
-            "34": 1
-          }
-        },
-        "29_0": {
-          "home": "Uruguay",
-          "away": "Corée du Sud",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "11_0": {
-          "home": "Pays-Bas",
-          "away": "Tunisie",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {
-            "142": 1
-          }
-        },
-        "16_0": {
-          "home": "Ukraine",
-          "away": "Albanie",
-          "score_h": 0,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "20_0": {
-          "home": "Portugal",
-          "away": "Cuba",
-          "score_h": 6,
-          "score_a": 2,
-          "scorers": {
-            "1": 1,
-            "48": 1,
-            "136": 2
-          }
-        },
-        "25_0": {
-          "home": "Norvège",
-          "away": "Croatie",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {
-            "128": 1
-          }
-        },
-        "20_1": {
-          "home": "Portugal",
-          "away": "Botswana",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {
-            "136": 1
-          }
-        },
-        "4_1": {
-          "home": "Australie",
-          "away": "Etats-unis",
-          "score_h": 1,
-          "score_a": 4,
-          "scorers": {}
-        },
-        "11_1": {
-          "home": "Pays-Bas",
-          "away": "Espagne",
-          "score_h": 1,
-          "score_a": 2,
-          "scorers": {
-            "15": 2,
-            "142": 1
-          }
-        },
-        "32_1": {
-          "home": "Brésil",
-          "away": "Irlande",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {
-            "144": 1,
-            "145": 1
-          }
-        },
-        "9_0": {
-          "home": "Albanie",
-          "away": "Ghana",
-          "score_h": 1,
-          "score_a": 2,
-          "scorers": {}
-        },
-        "45_0": {
-          "home": "Nigeria",
-          "away": "Canada",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "15_0": {
-          "home": "Serbie",
-          "away": "Tunisie",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "49_0": {
-          "home": "Inde",
-          "away": "Chili",
-          "score_h": 2,
-          "score_a": 3,
-          "scorers": {}
-        },
-        "26_1": {
-          "home": "Macédoine",
-          "away": "Pays de Galles",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "13_0": {
-          "home": "Croatie",
-          "away": "Suisse",
-          "score_h": 0,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "47_0": {
-          "home": "Zimbabwe",
-          "away": "Pologne",
-          "score_h": 6,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "5_1": {
-          "home": "Grèce",
-          "away": "Georgie",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "2_1": {
-          "home": "Turquie",
-          "away": "Mexique",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {
-            "97": 1,
-            "104": 1
-          }
-        },
-        "27_1": {
-          "home": "Argentine",
-          "away": "Côte d'Ivoire",
-          "score_h": 4,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "6_1": {
-          "home": "Angleterre",
-          "away": "Equateur",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {
-            "92": 1,
-            "157": 1
-          }
-        },
-        "7_0": {
-          "home": "Danemark",
-          "away": "Sénégal",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {
-            "23": 1
-          }
-        },
-        "16_1": {
-          "home": "Ukraine",
-          "away": "Cap Vert",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "1_1": {
-          "home": "Colombie",
-          "away": "Egypte",
-          "score_h": 4,
-          "score_a": 1,
-          "scorers": {
-            "199": 2
-          }
-        },
-        "14_1": {
-          "home": "France",
-          "away": "Belgique",
-          "score_h": 3,
-          "score_a": 0,
-          "scorers": {
-            "47": 1,
-            "56": 2
-          }
-        },
-        "0_1": {
-          "home": "Algérie",
-          "away": "Allemagne",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "29_1": {
-          "home": "Uruguay",
-          "away": "Bolivie",
-          "score_h": 0,
-          "score_a": 4,
-          "scorers": {}
-        },
-        "36_0": {
-          "home": "Japon",
-          "away": "Corée du Sud",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "23_1": {
-          "home": "Italie",
-          "away": "Cuba",
-          "score_h": 3,
-          "score_a": 0,
-          "scorers": {
-            "121": 1,
-            "138": 1,
-            "187": 1
-          }
-        },
-        "48_0": {
-          "home": "Pérou",
-          "away": "Norvège",
-          "score_h": 4,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "33_1": {
-          "home": "Maroc",
-          "away": "Suède",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "9_1": {
-          "home": "Albanie",
-          "away": "Egypte",
-          "score_h": 0,
-          "score_a": 4,
-          "scorers": {}
-        },
-        "45_1": {
-          "home": "Nigeria",
-          "away": "Mexique",
-          "score_h": 0,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "49_1": {
-          "home": "Inde",
-          "away": "Corée du Sud",
-          "score_h": 0,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "4_2": {
-          "home": "Australie",
-          "away": "Equateur",
-          "score_h": 2,
-          "score_a": 3,
-          "scorers": {}
-        },
-        "43_0": {
-          "home": "Cap Vert",
-          "away": "Chili",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "48_1": {
-          "home": "Pérou",
-          "away": "Maroc",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "34_1": {
-          "home": "Côte d'Ivoire",
-          "away": "Ghana",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "12_0": {
-          "home": "Irlande",
-          "away": "Grèce",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "26_2": {
-          "home": "Macédoine",
-          "away": "Serbie",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "13_1": {
-          "home": "Croatie",
-          "away": "Bolivie",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "18_0": {
-          "home": "Suède",
-          "away": "Pologne",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "36_1": {
-          "home": "Japon",
-          "away": "Ukraine",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "6_2": {
-          "home": "Angleterre",
-          "away": "Georgie",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {
-            "192": 1
-          }
-        },
-        "11_2": {
-          "home": "Pays-Bas",
-          "away": "Botswana",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {
-            "58": 1,
-            "142": 2
-          }
-        },
-        "27_2": {
-          "home": "Argentine",
-          "away": "Brésil",
-          "score_h": 3,
-          "score_a": 2,
-          "scorers": {
-            "95": 1
-          }
-        },
-        "7_1": {
-          "home": "Danemark",
-          "away": "Allemagne",
-          "score_h": 1,
-          "score_a": 2,
-          "scorers": {
-            "23": 1,
-            "98": 2
-          }
-        },
-        "23_2": {
-          "home": "Italie",
-          "away": "Suisse",
-          "score_h": 0,
-          "score_a": 2,
-          "scorers": {}
-        },
-        "1_2": {
-          "home": "Colombie",
-          "away": "Pays de Galles",
-          "score_h": 2,
-          "score_a": 2,
-          "scorers": {
-            "199": 2
-          }
-        },
-        "25_1": {
-          "home": "Norvège",
-          "away": "Canada",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {
-            "128": 1
-          }
-        },
-        "29_2": {
-          "home": "Uruguay",
-          "away": "Cuba",
-          "score_h": 6,
-          "score_a": 2,
-          "scorers": {
-            "78": 3
-          }
-        },
-        "0_2": {
-          "home": "Algérie",
-          "away": "Turquie",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {
-            "97": 1
-          }
-        },
-        "17_1": {
-          "home": "Espagne",
-          "away": "Portugal",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {
-            "1": 1,
-            "15": 2,
-            "16": 1
-          }
-        },
-        "47_1": {
-          "home": "Zimbabwe",
-          "away": "Etats-unis",
-          "score_h": 2,
-          "score_a": 2,
-          "scorers": {
-            "24": 1,
-            "198": 2
-          }
-        },
-        "22_1": {
-          "home": "Belgique",
-          "away": "Tunisie",
-          "score_h": 2,
-          "score_a": 2,
-          "scorers": {
-            "188": 1
-          }
-        },
-        "14_2": {
-          "home": "France",
-          "away": "Sénégal",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {
-            "3": 1
-          }
+  "clKoBracket": {
+    "r16": [
+      {
+        "home": "FC Barcelone",
+        "away": "Feyenoord",
+        "leg1": {
+          "home_score": 2,
+          "away_score": 1
+        },
+        "leg2": {
+          "home_score": 0,
+          "away_score": 4
         }
       },
-      "groupMatches": {},
-      "koMatches": {}
-    },
-    "euro": {
-      "qualifMatches": {},
-      "groupMatches": {},
-      "koMatches": {}
-    },
-    "copa": {
-      "qualifMatches": {},
-      "groupMatches": {},
-      "koMatches": {}
-    },
-    "can": {
-      "qualifMatches": {},
-      "groupMatches": {},
-      "koMatches": {}
+      {
+        "home": "Liverpool",
+        "away": "Majorque",
+        "leg1": {
+          "home_score": 2,
+          "away_score": 0
+        },
+        "leg2": {
+          "home_score": 2,
+          "away_score": 6
+        }
+      },
+      {
+        "home": "Inter Milan",
+        "away": "PSV Heindoven",
+        "leg1": {
+          "home_score": 5,
+          "away_score": 1
+        },
+        "leg2": {
+          "home_score": 3,
+          "away_score": 2
+        }
+      },
+      {
+        "home": "Manchester City",
+        "away": "OGC Nice",
+        "leg1": {
+          "home_score": 3,
+          "away_score": 2
+        },
+        "leg2": {
+          "home_score": 2,
+          "away_score": 2
+        }
+      },
+      {
+        "home": "PSG",
+        "away": "AS Roma",
+        "leg1": {
+          "home_score": 5,
+          "away_score": 1
+        },
+        "leg2": {
+          "home_score": 3,
+          "away_score": 4
+        }
+      },
+      {
+        "home": "Sporting Lisbonne",
+        "away": "Manchester United",
+        "leg1": {
+          "home_score": 0,
+          "away_score": 3
+        },
+        "leg2": {
+          "home_score": 4,
+          "away_score": 0
+        }
+      },
+      {
+        "home": "Arsenal",
+        "away": "Real Madrid",
+        "leg1": {
+          "home_score": 2,
+          "away_score": 1
+        },
+        "leg2": {
+          "home_score": 4,
+          "away_score": 0
+        }
+      },
+      {
+        "home": "Benfica",
+        "away": "Dortmund",
+        "leg1": {
+          "home_score": 2,
+          "away_score": 3
+        },
+        "leg2": {
+          "home_score": 2,
+          "away_score": 2
+        }
+      }
+    ],
+    "qf": [
+      {
+        "home": null,
+        "away": null,
+        "leg1": {
+          "home_score": 2,
+          "away_score": 3
+        },
+        "leg2": {
+          "home_score": 0,
+          "away_score": 0
+        }
+      },
+      {
+        "home": null,
+        "away": null,
+        "leg1": {
+          "home_score": 0,
+          "away_score": 0
+        },
+        "leg2": {
+          "home_score": 2,
+          "away_score": 1
+        }
+      },
+      {
+        "home": null,
+        "away": null,
+        "leg1": {
+          "home_score": 4,
+          "away_score": 1
+        },
+        "leg2": {
+          "home_score": 1,
+          "away_score": 2
+        }
+      },
+      {
+        "home": null,
+        "away": null,
+        "leg1": {
+          "home_score": 1,
+          "away_score": 0
+        },
+        "leg2": {
+          "home_score": 0,
+          "away_score": 3
+        }
+      }
+    ],
+    "sf": [
+      {
+        "home": null,
+        "away": null,
+        "leg1": {
+          "home_score": 0,
+          "away_score": 3
+        },
+        "leg2": {
+          "home_score": 4,
+          "away_score": 3
+        }
+      },
+      {
+        "home": null,
+        "away": null,
+        "leg1": {
+          "home_score": 4,
+          "away_score": 1
+        },
+        "leg2": {
+          "home_score": 1,
+          "away_score": 1
+        }
+      }
+    ],
+    "final": {
+      "home": null,
+      "away": null,
+      "leg1": null,
+      "leg2": null
     }
   },
+  "currentSeasonNum": 9,
   "archives": [
     {
       "season": "S8",
@@ -9067,6 +10204,876 @@
     "199": {
       "club": "Benfica",
       "season": "S8"
+    }
+  },
+  "elKoDetails": {},
+  "cupData": {
+    "eng": {
+      "name": "Coupe d'Angleterre",
+      "emoji": "🏴‍",
+      "color": "#4f8ef7",
+      "league": "Premier League",
+      "matches": {},
+      "history": [
+        {
+          "season": "S5",
+          "winner": "Manchester United",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S6",
+          "winner": "Liverpool",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S7",
+          "winner": "Manchester United",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S8",
+          "winner": "Manchester City",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        }
+      ]
+    },
+    "fra": {
+      "name": "Coupe de France",
+      "emoji": "🇫🇷",
+      "color": "#f7944f",
+      "league": "Ligue 1",
+      "matches": {},
+      "history": [
+        {
+          "season": "S5",
+          "winner": "OL",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S6",
+          "winner": "OM",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S7",
+          "winner": "PSG",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S8",
+          "winner": "PSG",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        }
+      ]
+    },
+    "ita": {
+      "name": "Coupe d'Italie",
+      "emoji": "🇮🇹",
+      "color": "#3ecf8e",
+      "league": "Serie A",
+      "matches": {},
+      "history": [
+        {
+          "season": "S5",
+          "winner": "AC Milan",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S6",
+          "winner": "Inter Milan",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S7",
+          "winner": "Inter Milan",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S8",
+          "winner": "Inter Milan",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        }
+      ]
+    },
+    "esp": {
+      "name": "Coupe d'Espagne",
+      "emoji": "🇪🇸",
+      "color": "#a37af7",
+      "league": "Liga",
+      "matches": {},
+      "history": [
+        {
+          "season": "S5",
+          "winner": "Real Madrid",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S6",
+          "winner": "FC Barcelone",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S7",
+          "winner": "FC Barcelone",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S8",
+          "winner": "FC Barcelone",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        }
+      ]
+    },
+    "ger": {
+      "name": "Coupe d'Allemagne",
+      "emoji": "🇩🇪",
+      "color": "#f76f6f",
+      "league": "Bundesliga",
+      "matches": {},
+      "history": [
+        {
+          "season": "S5",
+          "winner": "Bayern Munich",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S6",
+          "winner": "Bayern Munich",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S7",
+          "winner": "Bayer Leverkusen",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S8",
+          "winner": "Bayern Munich",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        }
+      ]
+    },
+    "sec": {
+      "name": "Supercoupe d'Europe",
+      "emoji": "🌟",
+      "color": "#f5c842",
+      "league": "Europe",
+      "matches": {},
+      "history": [
+        {
+          "season": "S5",
+          "winner": "Manchester United",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S6",
+          "winner": "FC Barcelone",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S7",
+          "winner": "PSG",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        },
+        {
+          "season": "S8",
+          "winner": "FC Barcelone",
+          "runner_up": "?",
+          "score_home": null,
+          "score_away": null
+        }
+      ]
+    }
+  },
+  "snMatchData": {
+    "cdm": {
+      "qualifMatches": {
+        "0_0": {
+          "home": "Algérie",
+          "away": "Inde",
+          "score_h": 6,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "1_0": {
+          "home": "Colombie",
+          "away": "Pérou",
+          "score_h": 4,
+          "score_a": 1,
+          "scorers": {
+            "199": 3
+          }
+        },
+        "3_0": {
+          "home": "Sénégal",
+          "away": "Nigeria",
+          "score_h": 3,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "4_0": {
+          "home": "Australie",
+          "away": "Zimbabwe",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "2_0": {
+          "home": "Turquie",
+          "away": "Ghana",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "5_0": {
+          "home": "Grèce",
+          "away": "Egypte",
+          "score_h": 3,
+          "score_a": 2,
+          "scorers": {}
+        },
+        "6_0": {
+          "home": "Angleterre",
+          "away": "Japon",
+          "score_h": 1,
+          "score_a": 2,
+          "scorers": {}
+        },
+        "8_0": {
+          "home": "Pologne",
+          "away": "Botswana",
+          "score_h": 5,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "30_0": {
+          "home": "Mexique",
+          "away": "Georgie",
+          "score_h": 1,
+          "score_a": 3,
+          "scorers": {}
+        },
+        "28_0": {
+          "home": "Bolivie",
+          "away": "Canada",
+          "score_h": 5,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "26_0": {
+          "home": "Macédoine",
+          "away": "Suisse",
+          "score_h": 6,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "22_0": {
+          "home": "Belgique",
+          "away": "Chili",
+          "score_h": 5,
+          "score_a": 1,
+          "scorers": {
+            "108": 2,
+            "188": 2,
+            "200": 1
+          }
+        },
+        "32_0": {
+          "home": "Brésil",
+          "away": "Equateur",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {
+            "126": 1
+          }
+        },
+        "14_0": {
+          "home": "France",
+          "away": "Pays de Galles",
+          "score_h": 6,
+          "score_a": 0,
+          "scorers": {
+            "3": 2,
+            "5": 1,
+            "14": 2,
+            "56": 1
+          }
+        },
+        "17_0": {
+          "home": "Espagne",
+          "away": "Danemark",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {
+            "81": 1
+          }
+        },
+        "10_0": {
+          "home": "Allemagne",
+          "away": "Irlande",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {
+            "164": 1
+          }
+        },
+        "34_0": {
+          "home": "Côte d'Ivoire",
+          "away": "Etats-unis",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "27_0": {
+          "home": "Argentine",
+          "away": "Suède",
+          "score_h": 0,
+          "score_a": 2,
+          "scorers": {}
+        },
+        "23_0": {
+          "home": "Italie",
+          "away": "Serbie",
+          "score_h": 2,
+          "score_a": 2,
+          "scorers": {
+            "121": 2
+          }
+        },
+        "33_0": {
+          "home": "Maroc",
+          "away": "Cap Vert",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {
+            "34": 1
+          }
+        },
+        "29_0": {
+          "home": "Uruguay",
+          "away": "Corée du Sud",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "11_0": {
+          "home": "Pays-Bas",
+          "away": "Tunisie",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {
+            "142": 1
+          }
+        },
+        "16_0": {
+          "home": "Ukraine",
+          "away": "Albanie",
+          "score_h": 0,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "20_0": {
+          "home": "Portugal",
+          "away": "Cuba",
+          "score_h": 6,
+          "score_a": 2,
+          "scorers": {
+            "1": 1,
+            "48": 1,
+            "136": 2
+          }
+        },
+        "25_0": {
+          "home": "Norvège",
+          "away": "Croatie",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {
+            "128": 1
+          }
+        },
+        "20_1": {
+          "home": "Portugal",
+          "away": "Botswana",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {
+            "136": 1
+          }
+        },
+        "4_1": {
+          "home": "Australie",
+          "away": "Etats-unis",
+          "score_h": 1,
+          "score_a": 4,
+          "scorers": {}
+        },
+        "11_1": {
+          "home": "Pays-Bas",
+          "away": "Espagne",
+          "score_h": 1,
+          "score_a": 2,
+          "scorers": {
+            "15": 2,
+            "142": 1
+          }
+        },
+        "32_1": {
+          "home": "Brésil",
+          "away": "Irlande",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {
+            "144": 1,
+            "145": 1
+          }
+        },
+        "9_0": {
+          "home": "Albanie",
+          "away": "Ghana",
+          "score_h": 1,
+          "score_a": 2,
+          "scorers": {}
+        },
+        "45_0": {
+          "home": "Nigeria",
+          "away": "Canada",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "15_0": {
+          "home": "Serbie",
+          "away": "Tunisie",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "49_0": {
+          "home": "Inde",
+          "away": "Chili",
+          "score_h": 2,
+          "score_a": 3,
+          "scorers": {}
+        },
+        "26_1": {
+          "home": "Macédoine",
+          "away": "Pays de Galles",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "13_0": {
+          "home": "Croatie",
+          "away": "Suisse",
+          "score_h": 0,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "47_0": {
+          "home": "Zimbabwe",
+          "away": "Pologne",
+          "score_h": 6,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "5_1": {
+          "home": "Grèce",
+          "away": "Georgie",
+          "score_h": 3,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "2_1": {
+          "home": "Turquie",
+          "away": "Mexique",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {
+            "97": 1,
+            "104": 1
+          }
+        },
+        "27_1": {
+          "home": "Argentine",
+          "away": "Côte d'Ivoire",
+          "score_h": 4,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "6_1": {
+          "home": "Angleterre",
+          "away": "Equateur",
+          "score_h": 3,
+          "score_a": 1,
+          "scorers": {
+            "92": 1,
+            "157": 1
+          }
+        },
+        "7_0": {
+          "home": "Danemark",
+          "away": "Sénégal",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {
+            "23": 1
+          }
+        },
+        "16_1": {
+          "home": "Ukraine",
+          "away": "Cap Vert",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "1_1": {
+          "home": "Colombie",
+          "away": "Egypte",
+          "score_h": 4,
+          "score_a": 1,
+          "scorers": {
+            "199": 2
+          }
+        },
+        "14_1": {
+          "home": "France",
+          "away": "Belgique",
+          "score_h": 3,
+          "score_a": 0,
+          "scorers": {
+            "47": 1,
+            "56": 2
+          }
+        },
+        "0_1": {
+          "home": "Algérie",
+          "away": "Allemagne",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "29_1": {
+          "home": "Uruguay",
+          "away": "Bolivie",
+          "score_h": 0,
+          "score_a": 4,
+          "scorers": {}
+        },
+        "36_0": {
+          "home": "Japon",
+          "away": "Corée du Sud",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "23_1": {
+          "home": "Italie",
+          "away": "Cuba",
+          "score_h": 3,
+          "score_a": 0,
+          "scorers": {
+            "121": 1,
+            "138": 1,
+            "187": 1
+          }
+        },
+        "48_0": {
+          "home": "Pérou",
+          "away": "Norvège",
+          "score_h": 4,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "33_1": {
+          "home": "Maroc",
+          "away": "Suède",
+          "score_h": 2,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "9_1": {
+          "home": "Albanie",
+          "away": "Egypte",
+          "score_h": 0,
+          "score_a": 4,
+          "scorers": {}
+        },
+        "45_1": {
+          "home": "Nigeria",
+          "away": "Mexique",
+          "score_h": 0,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "49_1": {
+          "home": "Inde",
+          "away": "Corée du Sud",
+          "score_h": 0,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "4_2": {
+          "home": "Australie",
+          "away": "Equateur",
+          "score_h": 2,
+          "score_a": 3,
+          "scorers": {}
+        },
+        "43_0": {
+          "home": "Cap Vert",
+          "away": "Chili",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "48_1": {
+          "home": "Pérou",
+          "away": "Maroc",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "34_1": {
+          "home": "Côte d'Ivoire",
+          "away": "Ghana",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "12_0": {
+          "home": "Irlande",
+          "away": "Grèce",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {}
+        },
+        "26_2": {
+          "home": "Macédoine",
+          "away": "Serbie",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "13_1": {
+          "home": "Croatie",
+          "away": "Bolivie",
+          "score_h": 3,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "18_0": {
+          "home": "Suède",
+          "away": "Pologne",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "36_1": {
+          "home": "Japon",
+          "away": "Ukraine",
+          "score_h": 3,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "6_2": {
+          "home": "Angleterre",
+          "away": "Georgie",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {
+            "192": 1
+          }
+        },
+        "11_2": {
+          "home": "Pays-Bas",
+          "away": "Botswana",
+          "score_h": 3,
+          "score_a": 1,
+          "scorers": {
+            "58": 1,
+            "142": 2
+          }
+        },
+        "27_2": {
+          "home": "Argentine",
+          "away": "Brésil",
+          "score_h": 3,
+          "score_a": 2,
+          "scorers": {
+            "95": 1
+          }
+        },
+        "7_1": {
+          "home": "Danemark",
+          "away": "Allemagne",
+          "score_h": 1,
+          "score_a": 2,
+          "scorers": {
+            "23": 1,
+            "98": 2
+          }
+        },
+        "23_2": {
+          "home": "Italie",
+          "away": "Suisse",
+          "score_h": 0,
+          "score_a": 2,
+          "scorers": {}
+        },
+        "1_2": {
+          "home": "Colombie",
+          "away": "Pays de Galles",
+          "score_h": 2,
+          "score_a": 2,
+          "scorers": {
+            "199": 2
+          }
+        },
+        "25_1": {
+          "home": "Norvège",
+          "away": "Canada",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {
+            "128": 1
+          }
+        },
+        "29_2": {
+          "home": "Uruguay",
+          "away": "Cuba",
+          "score_h": 6,
+          "score_a": 2,
+          "scorers": {
+            "78": 3
+          }
+        },
+        "0_2": {
+          "home": "Algérie",
+          "away": "Turquie",
+          "score_h": 1,
+          "score_a": 1,
+          "scorers": {
+            "97": 1
+          }
+        },
+        "17_1": {
+          "home": "Espagne",
+          "away": "Portugal",
+          "score_h": 3,
+          "score_a": 1,
+          "scorers": {
+            "1": 1,
+            "15": 2,
+            "16": 1
+          }
+        },
+        "47_1": {
+          "home": "Zimbabwe",
+          "away": "Etats-unis",
+          "score_h": 2,
+          "score_a": 2,
+          "scorers": {
+            "24": 1,
+            "198": 2
+          }
+        },
+        "22_1": {
+          "home": "Belgique",
+          "away": "Tunisie",
+          "score_h": 2,
+          "score_a": 2,
+          "scorers": {
+            "188": 1
+          }
+        },
+        "14_2": {
+          "home": "France",
+          "away": "Sénégal",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {
+            "3": 1
+          }
+        }
+      },
+      "groupMatches": {
+        "A": {
+          "A_0": {
+            "home": "France",
+            "away": "Japon",
+            "score_h": 3,
+            "score_a": 2,
+            "scorers": {
+              "3": 2,
+              "56": 1,
+              "169": 1
+            }
+          }
+        }
+      },
+      "koMatches": {}
+    },
+    "euro": {
+      "qualifMatches": {},
+      "groupMatches": {},
+      "koMatches": {}
+    },
+    "copa": {
+      "qualifMatches": {},
+      "groupMatches": {},
+      "koMatches": {}
+    },
+    "can": {
+      "qualifMatches": {},
+      "groupMatches": {},
+      "koMatches": {}
     }
   },
   "customPlayers": [
