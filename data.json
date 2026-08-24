@@ -2145,14 +2145,199 @@
         ]
       },
       "scorers": {
+        "0": {
+          "name": "Fofana",
+          "goals": 1,
+          "ligue": "SA"
+        },
         "1": {
           "name": "Gedson",
           "goals": 9,
           "ligue": "LA"
         },
+        "2": {
+          "name": "Mudrik",
+          "goals": 3,
+          "ligue": "LA"
+        },
+        "3": {
+          "name": "Mbappe",
+          "goals": 37,
+          "ligue": "LA"
+        },
+        "4": {
+          "name": "Aït-Nouri",
+          "goals": 5,
+          "ligue": "L1"
+        },
+        "5": {
+          "name": "M. Tel",
+          "goals": 19,
+          "ligue": "L1"
+        },
+        "7": {
+          "name": "Paulinho",
+          "goals": 7,
+          "ligue": "SA"
+        },
+        "12": {
+          "name": "B. Barcola",
+          "goals": 13,
+          "ligue": "L1"
+        },
+        "14": {
+          "name": "Désiré Doué",
+          "goals": 4,
+          "ligue": "LA"
+        },
+        "15": {
+          "name": "Yamal",
+          "goals": 13,
+          "ligue": "LA"
+        },
+        "16": {
+          "name": "A. Baena",
+          "goals": 3,
+          "ligue": "LA"
+        },
+        "17": {
+          "name": "Ben Seghir",
+          "goals": 7,
+          "ligue": "LA"
+        },
+        "21": {
+          "name": "Traorè",
+          "goals": 7,
+          "ligue": "SA"
+        },
+        "22": {
+          "name": "T. Malacia",
+          "goals": 1,
+          "ligue": "PL"
+        },
         "23": {
           "name": "Poulsen",
           "goals": 26,
+          "ligue": "PL"
+        },
+        "25": {
+          "name": "Adingra",
+          "goals": 8,
+          "ligue": "SA"
+        },
+        "26": {
+          "name": "Isaac",
+          "goals": 16,
+          "ligue": "SA"
+        },
+        "28": {
+          "name": "De La Cruz",
+          "goals": 5,
+          "ligue": "LA"
+        },
+        "34": {
+          "name": "B. Diaz",
+          "goals": 6,
+          "ligue": "BU"
+        },
+        "35": {
+          "name": "Mayulu",
+          "goals": 3,
+          "ligue": "L1"
+        },
+        "39": {
+          "name": "Konoplya",
+          "goals": 1,
+          "ligue": "BU"
+        },
+        "47": {
+          "name": "Akhliouche",
+          "goals": 8,
+          "ligue": "LA"
+        },
+        "48": {
+          "name": "Rafael Leao",
+          "goals": 7,
+          "ligue": "PL"
+        },
+        "53": {
+          "name": "Kvaratskhelia",
+          "goals": 5,
+          "ligue": "PL"
+        },
+        "54": {
+          "name": "Dilrosun",
+          "goals": 9,
+          "ligue": "PL"
+        },
+        "56": {
+          "name": "Olise",
+          "goals": 5,
+          "ligue": "BU"
+        },
+        "63": {
+          "name": "Nico Paz",
+          "goals": 5,
+          "ligue": "L1"
+        },
+        "65": {
+          "name": "T. Baldanzi",
+          "goals": 9,
+          "ligue": "SA"
+        },
+        "66": {
+          "name": "Mukiele",
+          "goals": 3,
+          "ligue": "SA"
+        },
+        "70": {
+          "name": "Williams Jr.",
+          "goals": 5,
+          "ligue": "PL"
+        },
+        "74": {
+          "name": "Sudakov",
+          "goals": 1,
+          "ligue": "PL"
+        },
+        "77": {
+          "name": "Harisson",
+          "goals": 12,
+          "ligue": "PL"
+        },
+        "78": {
+          "name": "Pellistri",
+          "goals": 4,
+          "ligue": "PL"
+        },
+        "90": {
+          "name": "Summerville",
+          "goals": 13,
+          "ligue": "SA"
+        },
+        "91": {
+          "name": "Aaronson",
+          "goals": 4,
+          "ligue": "PL"
+        },
+        "92": {
+          "name": "Madueke",
+          "goals": 36,
+          "ligue": "BU"
+        },
+        "95": {
+          "name": "Vitor Roque",
+          "goals": 3,
+          "ligue": "PL"
+        },
+        "96": {
+          "name": "Hojlund",
+          "goals": 7,
+          "ligue": "L1"
+        },
+        "97": {
+          "name": "Arda Güler",
+          "goals": 2,
           "ligue": "PL"
         },
         "98": {
@@ -2165,203 +2350,13 @@
           "goals": 18,
           "ligue": "PL"
         },
-        "126": {
-          "name": "João Pedro",
-          "goals": 9,
-          "ligue": "BU"
-        },
-        "102": {
-          "name": "Van de Ven",
-          "goals": 1,
-          "ligue": "PL"
-        },
-        "54": {
-          "name": "Dilrosun",
-          "goals": 9,
-          "ligue": "PL"
-        },
-        "91": {
-          "name": "Aaronson",
-          "goals": 4,
-          "ligue": "PL"
-        },
-        "142": {
-          "name": "Brobbey",
-          "goals": 25,
-          "ligue": "PL"
-        },
-        "145": {
-          "name": "Estêvão",
-          "goals": 6,
-          "ligue": "BU"
-        },
-        "144": {
-          "name": "Savinho",
-          "goals": 10,
-          "ligue": "PL"
-        },
-        "156": {
-          "name": "Endrick",
-          "goals": 9,
-          "ligue": "LA"
-        },
-        "150": {
-          "name": "Di Marco",
-          "goals": 4,
-          "ligue": "PL"
-        },
-        "157": {
-          "name": "T. Cantwell",
-          "goals": 7,
-          "ligue": "PL"
-        },
-        "177": {
-          "name": "Fabio Silva",
-          "goals": 5,
-          "ligue": "PL"
-        },
-        "96": {
-          "name": "Hojlund",
-          "goals": 7,
-          "ligue": "L1"
-        },
-        "70": {
-          "name": "Williams Jr.",
-          "goals": 5,
-          "ligue": "PL"
-        },
-        "178": {
-          "name": "K. Nakamura",
-          "goals": 2,
-          "ligue": "PL"
-        },
-        "136": {
-          "name": "Gonçalo Ramos",
-          "goals": 14,
-          "ligue": "SA"
-        },
-        "192": {
-          "name": "Rio Ngumoha",
-          "goals": 10,
-          "ligue": "PL"
-        },
-        "22": {
-          "name": "T. Malacia",
-          "goals": 1,
-          "ligue": "PL"
-        },
-        "78": {
-          "name": "Pellistri",
-          "goals": 4,
-          "ligue": "PL"
-        },
-        "97": {
-          "name": "Arda Güler",
-          "goals": 2,
-          "ligue": "PL"
-        },
-        "56": {
-          "name": "Olise",
-          "goals": 5,
-          "ligue": "BU"
-        },
-        "34": {
-          "name": "B. Diaz",
-          "goals": 6,
-          "ligue": "BU"
-        },
-        "15": {
-          "name": "Yamal",
-          "goals": 13,
-          "ligue": "LA"
-        },
-        "108": {
-          "name": "Julien Duranville",
-          "goals": 9,
-          "ligue": "LA"
-        },
-        "16": {
-          "name": "A. Baena",
-          "goals": 3,
-          "ligue": "LA"
-        },
-        "14": {
-          "name": "Désiré Doué",
-          "goals": 4,
-          "ligue": "LA"
-        },
-        "17": {
-          "name": "Ben Seghir",
-          "goals": 7,
-          "ligue": "LA"
-        },
-        "0": {
-          "name": "Fofana",
-          "goals": 1,
-          "ligue": "SA"
-        },
-        "3": {
-          "name": "Mbappe",
-          "goals": 37,
-          "ligue": "LA"
-        },
-        "121": {
-          "name": "Gnonto",
-          "goals": 8,
-          "ligue": "SA"
-        },
-        "141": {
-          "name": "Kudus",
-          "goals": 5,
-          "ligue": "LA"
-        },
-        "135": {
-          "name": "Gibbs-White",
-          "goals": 2,
-          "ligue": "LA"
-        },
-        "179": {
-          "name": "K. Mainoo",
-          "goals": 1,
-          "ligue": ""
-        },
         "100": {
           "name": "Bozdogan",
           "goals": 2,
           "ligue": "PL"
         },
-        "195": {
-          "name": "Moïse Sahi",
-          "goals": 32,
-          "ligue": "PL"
-        },
-        "193": {
-          "name": "E. Mbappe",
-          "goals": 7,
-          "ligue": "BU"
-        },
-        "35": {
-          "name": "Mayulu",
-          "goals": 3,
-          "ligue": "L1"
-        },
-        "90": {
-          "name": "Summerville",
-          "goals": 13,
-          "ligue": "SA"
-        },
-        "92": {
-          "name": "Madueke",
-          "goals": 36,
-          "ligue": "BU"
-        },
-        "66": {
-          "name": "Mukiele",
-          "goals": 3,
-          "ligue": "SA"
-        },
-        "146": {
-          "name": "J. Frimpong",
+        "102": {
+          "name": "Van de Ven",
           "goals": 1,
           "ligue": "PL"
         },
@@ -2370,104 +2365,104 @@
           "goals": 7,
           "ligue": "BU"
         },
-        "128": {
-          "name": "E. Haaland",
-          "goals": 19,
-          "ligue": "BU"
-        },
-        "12": {
-          "name": "B. Barcola",
-          "goals": 13,
-          "ligue": "L1"
-        },
-        "25": {
-          "name": "Adingra",
-          "goals": 8,
-          "ligue": "SA"
-        },
-        "63": {
-          "name": "Nico Paz",
-          "goals": 5,
-          "ligue": "L1"
-        },
-        "167": {
-          "name": "Lazar Samardžić",
-          "goals": 5,
-          "ligue": "SA"
-        },
-        "4": {
-          "name": "Aït-Nouri",
-          "goals": 5,
-          "ligue": "L1"
-        },
-        "5": {
-          "name": "M. Tel",
-          "goals": 19,
-          "ligue": "L1"
-        },
         "107": {
           "name": "Igor Jesus",
           "goals": 5,
           "ligue": "L1"
         },
-        "197": {
-          "name": "R. Bardghji",
-          "goals": 6,
-          "ligue": "L1"
-        },
-        "28": {
-          "name": "De La Cruz",
-          "goals": 5,
+        "108": {
+          "name": "Julien Duranville",
+          "goals": 9,
           "ligue": "LA"
         },
-        "77": {
-          "name": "Harisson",
-          "goals": 12,
-          "ligue": "PL"
-        },
-        "198": {
-          "name": "Tawanda Chirewa",
-          "goals": 14,
+        "119": {
+          "name": "L. Rodriguez",
+          "goals": 10,
           "ligue": "L1"
+        },
+        "121": {
+          "name": "Gnonto",
+          "goals": 8,
+          "ligue": "SA"
+        },
+        "126": {
+          "name": "João Pedro",
+          "goals": 9,
+          "ligue": "BU"
+        },
+        "128": {
+          "name": "E. Haaland",
+          "goals": 19,
+          "ligue": "BU"
+        },
+        "135": {
+          "name": "Gibbs-White",
+          "goals": 2,
+          "ligue": "LA"
+        },
+        "136": {
+          "name": "Gonçalo Ramos",
+          "goals": 14,
+          "ligue": "SA"
         },
         "138": {
           "name": "Retegui",
           "goals": 26,
           "ligue": "SA"
         },
-        "187": {
-          "name": "S. Ricci",
+        "141": {
+          "name": "Kudus",
+          "goals": 5,
+          "ligue": "LA"
+        },
+        "142": {
+          "name": "Brobbey",
+          "goals": 25,
+          "ligue": "PL"
+        },
+        "144": {
+          "name": "Savinho",
+          "goals": 10,
+          "ligue": "PL"
+        },
+        "145": {
+          "name": "Estêvão",
+          "goals": 6,
+          "ligue": "BU"
+        },
+        "146": {
+          "name": "J. Frimpong",
+          "goals": 1,
+          "ligue": "PL"
+        },
+        "147": {
+          "name": "J. Windass",
+          "goals": 13,
+          "ligue": "PL"
+        },
+        "150": {
+          "name": "Di Marco",
           "goals": 4,
-          "ligue": ""
+          "ligue": "PL"
+        },
+        "156": {
+          "name": "Endrick",
+          "goals": 9,
+          "ligue": "LA"
+        },
+        "157": {
+          "name": "T. Cantwell",
+          "goals": 7,
+          "ligue": "PL"
         },
         "164": {
           "name": "Moukoko",
           "goals": 18,
           "ligue": "PL"
         },
-        "47": {
-          "name": "Akhliouche",
-          "goals": 8,
-          "ligue": "LA"
-        },
-        "21": {
-          "name": "Traorè",
-          "goals": 7,
-          "ligue": "SA"
-        },
-        "7": {
-          "name": "Paulinho",
-          "goals": 7,
-          "ligue": "SA"
-        },
-        "26": {
-          "name": "Isaac",
-          "goals": 16,
-          "ligue": "SA"
-        },
-        "65": {
-          "name": "T. Baldanzi",
-          "goals": 9,
+        "167": {
+          "name": "Lazar Samardžić",
+          "goals": 5,
           "ligue": "SA"
         },
         "168": {
@@ -2480,59 +2475,64 @@
           "goals": 3,
           "ligue": ""
         },
-        "74": {
-          "name": "Sudakov",
-          "goals": 1,
+        "177": {
+          "name": "Fabio Silva",
+          "goals": 5,
           "ligue": "PL"
+        },
+        "178": {
+          "name": "K. Nakamura",
+          "goals": 2,
+          "ligue": "PL"
+        },
+        "179": {
+          "name": "K. Mainoo",
+          "goals": 1,
+          "ligue": ""
+        },
+        "187": {
+          "name": "S. Ricci",
+          "goals": 4,
+          "ligue": ""
         },
         "188": {
           "name": "Malick Fofana",
           "goals": 8,
           "ligue": ""
         },
-        "196": {
-          "name": "Mbaye",
-          "goals": 17,
-          "ligue": "L1"
-        },
-        "147": {
-          "name": "J. Windass",
-          "goals": 13,
-          "ligue": "PL"
-        },
         "190": {
           "name": "Edoardo Bove",
           "goals": 2,
           "ligue": "SA"
         },
-        "2": {
-          "name": "Mudrik",
-          "goals": 3,
-          "ligue": "LA"
+        "192": {
+          "name": "Rio Ngumoha",
+          "goals": 10,
+          "ligue": "PL"
         },
-        "39": {
-          "name": "Konoplya",
-          "goals": 1,
+        "193": {
+          "name": "E. Mbappe",
+          "goals": 7,
           "ligue": "BU"
         },
-        "48": {
-          "name": "Rafael Leao",
-          "goals": 7,
+        "195": {
+          "name": "Moïse Sahi",
+          "goals": 32,
           "ligue": "PL"
         },
-        "53": {
-          "name": "Kvaratskhelia",
-          "goals": 5,
-          "ligue": "PL"
+        "196": {
+          "name": "Mbaye",
+          "goals": 17,
+          "ligue": "L1"
         },
-        "95": {
-          "name": "Vitor Roque",
-          "goals": 3,
-          "ligue": "PL"
+        "197": {
+          "name": "R. Bardghji",
+          "goals": 6,
+          "ligue": "L1"
         },
-        "119": {
-          "name": "L. Rodriguez",
-          "goals": 10,
+        "198": {
+          "name": "Tawanda Chirewa",
+          "goals": 14,
           "ligue": "L1"
         }
       },
@@ -8004,7 +8004,19 @@
       "season": "S8"
     }
   },
-  "elKoDetails": {},
+  "elKoDetails": {
+    "r16_0": {
+      "leg1": {
+        "home_score": 0,
+        "away_score": 0
+      },
+      "leg2": {
+        "home_score": 0,
+        "away_score": 0
+      },
+      "scorers": {}
+    }
+  },
   "cupData": {
     "eng": {
       "name": "Coupe d'Angleterre",
