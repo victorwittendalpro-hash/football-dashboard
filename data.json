@@ -11130,6 +11130,17 @@
               "136": 1
             }
           }
+        },
+        "F": {
+          "F_0": {
+            "home": "Grèce",
+            "away": "Etats-unis",
+            "score_h": 1,
+            "score_a": 3,
+            "scorers": {
+              "91": 2
+            }
+          }
         }
       },
       "koMatches": {}
