@@ -374,7 +374,7 @@
           null,
           null,
           null,
-          null,
+          1,
           null,
           null,
           null,
@@ -470,7 +470,7 @@
           null,
           null,
           null,
-          null,
+          0,
           null,
           null,
           null,
@@ -481,8 +481,8 @@
           null,
           null
         ],
-        "bm": 0,
-        "be": 0
+        "bm": 2,
+        "be": 4
       },
       {
         "name": "Tottenham",
@@ -494,7 +494,7 @@
           null,
           null,
           null,
-          null,
+          0,
           null,
           null,
           null,
@@ -506,7 +506,7 @@
           null
         ],
         "bm": 0,
-        "be": 0
+        "be": 2
       },
       {
         "name": "Nothimgham Forrest",
@@ -518,7 +518,7 @@
           null,
           null,
           null,
-          null,
+          1,
           null,
           null,
           null,
@@ -529,8 +529,8 @@
           null,
           null
         ],
-        "bm": 0,
-        "be": 0
+        "bm": 5,
+        "be": 5
       },
       {
         "name": "Everton",
@@ -542,7 +542,7 @@
           null,
           null,
           null,
-          null,
+          3,
           null,
           null,
           null,
@@ -553,7 +553,7 @@
           null,
           null
         ],
-        "bm": 0,
+        "bm": 3,
         "be": 0
       },
       {
@@ -566,7 +566,7 @@
           null,
           null,
           null,
-          null,
+          3,
           null,
           null,
           null,
@@ -577,7 +577,7 @@
           null,
           null
         ],
-        "bm": 0,
+        "bm": 3,
         "be": 0
       },
       {
@@ -590,7 +590,7 @@
           null,
           null,
           null,
-          null,
+          3,
           null,
           null,
           null,
@@ -601,8 +601,8 @@
           null,
           null
         ],
-        "bm": 0,
-        "be": 0
+        "bm": 5,
+        "be": 1
       },
       {
         "name": "Bournemouth",
@@ -614,7 +614,7 @@
           null,
           null,
           null,
-          null,
+          0,
           null,
           null,
           null,
@@ -625,8 +625,8 @@
           null,
           null
         ],
-        "bm": 0,
-        "be": 0
+        "bm": 1,
+        "be": 3
       },
       {
         "name": "Crystal Palace",
@@ -638,7 +638,7 @@
           null,
           null,
           null,
-          null,
+          1,
           null,
           null,
           null,
@@ -662,7 +662,7 @@
           null,
           null,
           null,
-          null,
+          3,
           null,
           null,
           null,
@@ -673,8 +673,8 @@
           null,
           null
         ],
-        "bm": 0,
-        "be": 0
+        "bm": 4,
+        "be": 3
       },
       {
         "name": "Fulham",
@@ -686,7 +686,7 @@
           null,
           null,
           null,
-          null,
+          1,
           null,
           null,
           null,
@@ -710,7 +710,7 @@
           null,
           null,
           null,
-          null,
+          3,
           null,
           null,
           null,
@@ -721,8 +721,8 @@
           null,
           null
         ],
-        "bm": 0,
-        "be": 0
+        "bm": 6,
+        "be": 4
       }
     ],
     "Liga": [
@@ -1812,7 +1812,106 @@
       }
     ]
   },
-  "matchDetails": {},
+  "matchDetails": {
+    "Premier League": {
+      "0": {
+        "7": {
+          "bm": 0,
+          "be": 0,
+          "pts": 1,
+          "scorers": {}
+        }
+      },
+      "4": {
+        "7": {
+          "bm": 2,
+          "be": 4,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "5": {
+        "7": {
+          "bm": 0,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "6": {
+        "7": {
+          "bm": 5,
+          "be": 5,
+          "pts": 1,
+          "scorers": {}
+        }
+      },
+      "7": {
+        "7": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "8": {
+        "7": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "9": {
+        "7": {
+          "bm": 5,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "10": {
+        "7": {
+          "bm": 1,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
+        }
+      },
+      "11": {
+        "7": {
+          "bm": 0,
+          "be": 0,
+          "pts": 1,
+          "scorers": {}
+        }
+      },
+      "12": {
+        "7": {
+          "bm": 4,
+          "be": 3,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "13": {
+        "7": {
+          "bm": 0,
+          "be": 0,
+          "pts": 1,
+          "scorers": {}
+        }
+      },
+      "14": {
+        "7": {
+          "bm": 6,
+          "be": 4,
+          "pts": 3,
+          "scorers": {}
+        }
+      }
+    }
+  },
   "clMatchDetails": {},
   "clKoDetails": {
     "r16_0": {
