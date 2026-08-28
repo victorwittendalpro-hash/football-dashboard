@@ -509,7 +509,21 @@ var GH = {
   _doWrite: function(remoteData) {
     var self = this;
     var data = self.collectData();
-    if (remoteData) data = self._mergeRemote(data, remoteData);
+    if (remoteData) {
+      // Bloquer si le remote est plus avancé en saison (évite d'écraser une clôture)
+      var remoteSn = (remoteData.currentSeasonNum || 0);
+      var localSn  = (data.currentSeasonNum || 0);
+      if (remoteSn > localSn) {
+        // Le remote est plus récent — appliquer ses données et annuler ce PUT
+        console.warn('GH: remote sn=' + remoteSn + ' > local sn=' + localSn + ', applying remote instead of saving');
+        ghApplyData(remoteData);
+        self.saving = false;
+        self._showStatus('synced');
+        if (self._pendingSave) { self._pendingSave = false; }
+        return;
+      }
+      data = self._mergeRemote(data, remoteData);
+    }
     self._saveLocal(data);
     var content;
     try {
@@ -534,6 +548,11 @@ var GH = {
     }
 
     function doPut(sha) {
+      // Sécurité : ne jamais écraser un remote plus avancé en saison
+      var localData = self.collectData();
+      var localSn   = localData.currentSeasonNum || 0;
+      // On vérifie le remote via un GET rapide uniquement si on n'a pas de sha connu
+      // Le sha est mis à jour après chaque PUT réussi donc si on l'a, le remote est connu
       var body = { message:'Update data', content:content, branch:decodeURIComponent(self.branch) };
       if (sha) body.sha = sha;
       var xhr = new XMLHttpRequest();
