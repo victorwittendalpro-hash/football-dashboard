@@ -11183,6 +11183,15 @@
             "scorers": {
               "142": 1
             }
+          },
+          "E_2": {
+            "home": "Portugal",
+            "away": "Pays-Bas",
+            "score_h": 0,
+            "score_a": 2,
+            "scorers": {
+              "142": 1
+            }
           }
         },
         "F": {
@@ -11718,7 +11727,7 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true,
-      "_value": 79500000,
+      "_value": 51400000,
       "_origS8": 0
     },
     {
