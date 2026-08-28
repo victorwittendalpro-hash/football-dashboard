@@ -455,20 +455,40 @@ var GH = {
   _mergeRemote: function(local, remote) {
     if (!remote) return local;
     var merged = {};
-    // Clés pour lesquelles on garde TOUJOURS la version locale
-    // (modifiées fréquemment en session, le local est plus récent que le remote)
-    var alwaysLocal = {mcData: true};
     var allKeys = Object.keys(Object.assign({}, local, remote));
     allKeys.forEach(function(key) {
-      if (alwaysLocal[key]) {
-        merged[key] = local[key];
-        return;
-      }
+      // mcData : toujours local
+      if (key === 'mcData') { merged[key] = local[key]; return; }
+      // currentSeasonNum : toujours le plus grand
       if (key === 'currentSeasonNum') {
-        merged[key] = Math.max(local[key] || 0, remote[key] || 0);
-        return;
+        merged[key] = Math.max(local[key] || 0, remote[key] || 0); return;
       }
       if (key === 'version') { merged[key] = local[key] || remote[key] || 1; return; }
+      // archives : toujours la plus longue
+      if (key === 'archives') {
+        var la = local[key] || [], ra = remote[key] || [];
+        merged[key] = ra.length >= la.length ? ra : la; return;
+      }
+      // overrides : fusionner (remote base + local par-dessus)
+      if (key === 'playerClubOverrides' || key === 'playerLigueOverrides') {
+        merged[key] = Object.assign({}, remote[key] || {}, local[key] || {}); return;
+      }
+      // snMatchData : fusionner comp par comp, jamais écraser par vide
+      if (key === 'snMatchData') {
+        var lsn = local[key] || {}, rsn = remote[key] || {}, msn = {};
+        Object.keys(Object.assign({}, lsn, rsn)).forEach(function(comp) {
+          var lc = lsn[comp] || {}, rc = rsn[comp] || {};
+          msn[comp] = {};
+          ['qualifMatches','groupMatches','koMatches'].forEach(function(sub) {
+            var lv = lc[sub] || {}, rv = rc[sub] || {};
+            msn[comp][sub] = Object.keys(rv).length >= Object.keys(lv).length ? rv : lv;
+          });
+          var lp = lc.poules || {}, rp = rc.poules || {};
+          msn[comp].poules = Object.keys(rp).length >= Object.keys(lp).length ? rp : lp;
+        });
+        merged[key] = msn; return;
+      }
+      // Par défaut : prendre la version avec le plus de données
       var localCount  = GH._deepCount(local[key]);
       var remoteCount = GH._deepCount(remote[key]);
       merged[key] = (remoteCount > localCount) ? remote[key] : local[key];
