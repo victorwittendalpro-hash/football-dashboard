@@ -11214,6 +11214,13 @@
               "190": 1,
               "202": 1
             }
+          },
+          "F_2": {
+            "home": "Grèce",
+            "away": "Croatie",
+            "score_h": 1,
+            "score_a": 1,
+            "scorers": {}
           }
         }
       },
