@@ -11182,7 +11182,57 @@
           }
         }
       },
-      "koMatches": {}
+      "koMatches": {},
+      "poules": {
+        "A": {
+          "teams": [
+            "France",
+            "Japon",
+            "Algérie",
+            "Colombie"
+          ]
+        },
+        "B": {
+          "teams": [
+            "Macédoine",
+            "Maroc",
+            "Bolivie",
+            "Angleterre"
+          ]
+        },
+        "C": {
+          "teams": [
+            "Espagne",
+            "Côte d'Ivoire",
+            "Argentine",
+            "Suède"
+          ]
+        },
+        "D": {
+          "teams": [
+            "Turquie",
+            "Zimbabwe",
+            "Brésil",
+            "Suisse"
+          ]
+        },
+        "E": {
+          "teams": [
+            "Portugal",
+            "Uruguay",
+            "Belgique",
+            "Pays-Bas"
+          ]
+        },
+        "F": {
+          "teams": [
+            "Grèce",
+            "Etats-unis",
+            "Italie",
+            "Croatie"
+          ]
+        }
+      }
     },
     "euro": {
       "qualifMatches": {},
