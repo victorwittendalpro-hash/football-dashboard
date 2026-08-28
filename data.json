@@ -710,7 +710,7 @@
           null,
           null,
           null,
-          3,
+          null,
           null,
           null,
           null,
@@ -1881,14 +1881,7 @@
           "scorers": {}
         }
       },
-      "14": {
-        "7": {
-          "bm": 6,
-          "be": 4,
-          "pts": 3,
-          "scorers": {}
-        }
-      }
+      "14": {}
     }
   },
   "clMatchDetails": {},
