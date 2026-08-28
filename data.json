@@ -470,7 +470,7 @@
           null,
           null,
           null,
-          0,
+          null,
           null,
           null,
           null,
@@ -1815,14 +1815,7 @@
   "matchDetails": {
     "Premier League": {
       "0": {},
-      "4": {
-        "7": {
-          "bm": 2,
-          "be": 4,
-          "pts": 0,
-          "scorers": {}
-        }
-      },
+      "4": {},
       "5": {
         "7": {
           "bm": 0,
