@@ -6408,6 +6408,17 @@ function snAttachSubnav() {
 // ── Poules ───────────────────────────────────────────────────────
 
 // ── Calculer les 24 équipes qualifiées depuis les qualifications ────────────
+
+function snResetPoules(compId) {
+  if (!confirm('Regénérer les poules ? Les matchs de groupes déjà saisis seront perdus.')) return;
+  if (snMatchData[compId]) {
+    delete snMatchData[compId].poules;
+    snMatchData[compId].groupMatches = {};
+  }
+  GH.save();
+  snRender();
+}
+
 function snGetQualifiedTeams(compId) {
   var q  = SN_DATA.qualifs_cdm;
   var qm = (snMatchData[compId] && snMatchData[compId].qualifMatches) || {};
@@ -6499,9 +6510,23 @@ function snRenderGroupes(cfg) {
   var sn    = currentSeasonNum || 8;
   var gm    = (snMatchData[cfg.id] && snMatchData[cfg.id].groupMatches) || {};
   // Poules construites dynamiquement depuis les 24 qualifiés (CDM uniquement)
-  var poules = cfg.id === 'cdm'
-    ? snBuildGroups(snGetQualifiedTeams(cfg.id))
-    : SN_DATA.poules_cdm;
+  // Pour CDM : figer les poules dès la première génération
+  var poules;
+  if (cfg.id === 'cdm') {
+    var savedPoules = snMatchData[cfg.id] && snMatchData[cfg.id].poules;
+    if (savedPoules && Object.keys(savedPoules).length === 6) {
+      // Poules déjà figées — les utiliser
+      poules = savedPoules;
+    } else {
+      // Première génération — construire et sauvegarder
+      poules = snBuildGroups(snGetQualifiedTeams(cfg.id));
+      if (!snMatchData[cfg.id]) snMatchData[cfg.id] = {};
+      snMatchData[cfg.id].poules = poules;
+      GH.save();
+    }
+  } else {
+    poules = SN_DATA.poules_cdm;
+  }
   var groups = Object.keys(poules);
 
   // Calculer stats de tous les pays dans toutes les poules
@@ -6536,7 +6561,9 @@ function snRenderGroupes(cfg) {
   var h = snSubnavHTML(cfg, 'groupes')
     + '<div class="sn-sec-hdr"><span style="font-size:1.4rem">' + cfg.icon + '</span>'
     + '<div><div class="sn-sec-title">' + cfg.label + ' S' + sn + ' — Phase de poules</div>'
-    + '<div class="sn-sec-sub">Poules générées depuis les 24 qualifiés · Règle : pas 2 pays du même continent (si possible) · Les 16 premiers au classement général se qualifient</div></div></div>'
+    + '<div class="sn-sec-sub">Poules figées depuis les 24 qualifiés · Les 16 premiers au classement général se qualifient · '
+    + '<span onclick="snResetPoules(\''+cfg.id+'\')" style="color:#f5c842;cursor:pointer;text-decoration:underline">↺ Regénérer les poules</span>'
+    + '</div></div></div>'
     + '<div class="sn-content">';
 
   // ── Classement général ──────────────────────────────────────────────────────
