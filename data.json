@@ -11093,6 +11093,18 @@
               "26": 3,
               "63": 1
             }
+          },
+          "C_2": {
+            "home": "Espagne",
+            "away": "Suède",
+            "score_h": 2,
+            "score_a": 2,
+            "scorers": {
+              "26": 1,
+              "70": 1,
+              "207": 1,
+              "212": 1
+            }
           }
         },
         "D": {
@@ -11544,9 +11556,9 @@
         "S8": "Manchester City",
         "S10": "Manchester City"
       },
-      "total": 1,
+      "total": 2,
       "CL": 0,
-      "SN": 0,
+      "SN": 1,
       "CH": 0,
       "EU": 0,
       "CP": 0,
@@ -11564,7 +11576,8 @@
       "t_total": 0,
       "_custom": true,
       "_origS8": 0,
-      "_value": 52200000
+      "_value": 52200000,
+      "_origSN": 0
     },
     {
       "rank": 209,
@@ -11713,9 +11726,9 @@
         "S8": "FC Barcelone",
         "S10": "FC Barcelone"
       },
-      "total": 9,
+      "total": 10,
       "CL": 0,
-      "SN": 0,
+      "SN": 1,
       "CH": 4,
       "EU": 0,
       "CP": 0,
@@ -11733,7 +11746,8 @@
       "t_total": 0,
       "_custom": true,
       "_origS8": 0,
-      "_value": 51600000
+      "_value": 51600000,
+      "_origSN": 0
     },
     {
       "rank": 214,
