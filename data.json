@@ -10674,56 +10674,7 @@
       "groupMatches": {}
     },
     "cdm": {
-      "poules": {
-        "A": {
-          "teams": [
-            "Algérie",
-            "Colombie",
-            "Turquie",
-            "Australie"
-          ]
-        },
-        "B": {
-          "teams": [
-            "Sénégal",
-            "Grèce",
-            "Allemagne",
-            "Pays-Bas"
-          ]
-        },
-        "C": {
-          "teams": [
-            "Angleterre",
-            "Irlande",
-            "Croatie",
-            "France"
-          ]
-        },
-        "D": {
-          "teams": [
-            "Danemark",
-            "Serbie",
-            "Ukraine",
-            "Espagne"
-          ]
-        },
-        "E": {
-          "teams": [
-            "Pologne",
-            "Suède",
-            "Georgie",
-            "Portugal"
-          ]
-        },
-        "F": {
-          "teams": [
-            "Albanie",
-            "Pays de Galles",
-            "Belgique",
-            "Italie"
-          ]
-        }
-      },
+      "poules": {},
       "koMatches": {},
       "qualifMatches": {
         "0_0": {
