@@ -3215,6 +3215,18 @@
             "score_h": 0,
             "score_a": 1,
             "scorers": {}
+          },
+          "C_0": {
+            "home": "Espagne",
+            "away": "Côte d'Ivoire",
+            "score_h": 2,
+            "score_a": 4,
+            "scorers": {
+              "15": 1,
+              "25": 1,
+              "70": 1,
+              "195": 2
+            }
           }
         },
         "D": {
