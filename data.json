@@ -3313,6 +3313,16 @@
             "scorers": {
               "142": 1
             }
+          },
+          "E_0": {
+            "home": "Portugal",
+            "away": "Uruguay",
+            "score_h": 3,
+            "score_a": 0,
+            "scorers": {
+              "48": 1,
+              "136": 2
+            }
           }
         },
         "F": {
@@ -11629,7 +11639,7 @@
       "_custom": true,
       "_origSN": 0,
       "_origS8": 0,
-      "_value": 127300000
+      "_value": 44400000
     },
     {
       "rank": 202,
@@ -12139,7 +12149,7 @@
       "t_el": 0,
       "t_total": 1,
       "_custom": true,
-      "_value": 42700000,
+      "_value": 20900000,
       "_origS8": 0
     }
   ],
