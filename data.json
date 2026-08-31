@@ -3232,6 +3232,17 @@
             "score_h": 1,
             "score_a": 0,
             "scorers": {}
+          },
+          "D_5": {
+            "home": "Brésil",
+            "away": "Suisse",
+            "score_h": 3,
+            "score_a": 2,
+            "scorers": {
+              "126": 1,
+              "144": 1,
+              "145": 1
+            }
           }
         },
         "B": {
