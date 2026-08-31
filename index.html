@@ -6367,7 +6367,7 @@ function snResetPoules(compId) {
     snMatchData[compId].groupMatches = {};
   }
   GH.save();
-  snRender();
+  if (snSubView === 'scorers') { var cfg = snCfgById(snView); if (cfg) snRenderScorers(cfg); } else { snRender(); }
 }
 
 function snGetQualifiedTeams(compId) {
@@ -6933,10 +6933,13 @@ function snComputeScorers(compId) {
       });
     }
   });
+  // Résoudre les noms : ALL d'abord, puis customPlayers pour les idx > ALL.length
+  var allPlayers = ALL.concat(window._customPlayers || []);
   return Object.keys(goalsByPlayer).map(function(pidx) {
-    var p = ALL[parseInt(pidx)];
-    return {idx: parseInt(pidx), name: p ? p.name : 'Joueur ' + pidx, goals: goalsByPlayer[pidx]};
-  }).sort(function(a, b) { return b.goals - a.goals; });
+    var p = allPlayers[parseInt(pidx)];
+    return {idx: parseInt(pidx), name: p ? p.name : ('Joueur ' + pidx), goals: goalsByPlayer[pidx]};
+  }).filter(function(s) { return s.goals > 0; })
+    .sort(function(a, b) { return b.goals - a.goals; });
 }
 
 function snOpenMatch(compId, group, matchKey, home, away) {
