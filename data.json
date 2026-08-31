@@ -3155,6 +3155,15 @@
             "scorers": {
               "3": 1
             }
+          },
+          "A_4": {
+            "home": "Japon",
+            "away": "Colombie",
+            "score_h": 0,
+            "score_a": 2,
+            "scorers": {
+              "199": 1
+            }
           }
         },
         "C": {
@@ -11536,9 +11545,9 @@
         "S8": "Benfica",
         "S10": "Benfica"
       },
-      "total": 17,
+      "total": 18,
       "CL": 0,
-      "SN": 7,
+      "SN": 8,
       "CH": 10,
       "EU": 0,
       "CP": 0,
