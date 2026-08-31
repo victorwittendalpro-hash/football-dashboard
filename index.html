@@ -6514,6 +6514,7 @@ function snRenderGroupes(cfg) {
     + '<div><div class="sn-sec-title">' + cfg.label + ' S' + sn + ' — Phase de poules</div>'
     + '<div class="sn-sec-sub">Poules figées depuis les 24 qualifiés · Les 16 premiers au classement général se qualifient · '
     + '<span onclick="snResetPoules(\''+cfg.id+'\')" style="color:#f5c842;cursor:pointer;text-decoration:underline">↺ Regénérer les poules</span>'
+    + (cfg.id === 'cdm' ? ' · <span onclick="snDrawR16(\''+cfg.id+'\')" style="color:#3ecf8e;cursor:pointer;text-decoration:underline">🎲 Tirage Phase Finale</span>' : '')
     + '</div></div></div>'
     + '<div class="sn-content">';
 
