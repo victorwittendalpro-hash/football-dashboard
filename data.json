@@ -3265,6 +3265,15 @@
               "144": 1,
               "145": 1
             }
+          },
+          "D_3": {
+            "home": "Zimbabwe",
+            "away": "Brésil",
+            "score_h": 2,
+            "score_a": 0,
+            "scorers": {
+              "198": 2
+            }
           }
         },
         "B": {
