@@ -353,20 +353,21 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
 var GH = {
   _tk: 'TUJadWVOHURTaUVuE2JJbUlGT2NgQG5eXGMfWE9DQnx8eRkaTGJ+XA==',
   token: (function(){var k=42,e='TUJadWVOHURTaUVuE2JJbUlGT2NgQG5eXGMfWE9DQnx8eRkaTGJ+XA==',d=atob(e),r='';for(var i=0;i<d.length;i++)r+=String.fromCharCode(d.charCodeAt(i)^k);return r;})(),
-  user:  'victorwittendalpro-hash',
-  repo:  'football-dashboard',
-  branch:'%28root%29',
-  file:  'data.json',
-  sha:   null,
+  user:   'victorwittendalpro-hash',
+  repo:   'football-dashboard',
+  branch: '%28root%29',
+  file:   'data.json',
+  sha:    null,
   saving: false,
   saveTimer: null,
-  _pendingSave: false,   // une sauvegarde est en attente pendant qu'une autre tourne
+  _pendingSave: false,
 
   url: function() {
     return 'https://api.github.com/repos/' + this.user + '/' + this.repo
          + '/contents/' + this.file + '?ref=' + this.branch;
   },
 
+  // Chargement initial
   load: function(callback) {
     var self = this;
     var xhr = new XMLHttpRequest();
@@ -381,26 +382,26 @@ var GH = {
           var content = JSON.parse(decodeURIComponent(escape(atob(resp.content.replace(/\n/g, '')))));
           callback(null, content);
         } catch(e) { callback('Parse error'); }
-      } else if (xhr.status === 404) {
-        callback(null, {version:1,matchDetails:{},clMatchDetails:{},clKoDetails:{},clKoBracket:{}});
-      } else {
-        callback('HTTP ' + xhr.status);
-      }
+      } else { callback('HTTP ' + xhr.status); }
     };
     xhr.onerror = function() { callback('Network error'); };
     xhr.send();
   },
 
+  // Sauvegarde avec debounce 600ms
   save: function() {
     var self = this;
     if (self.saveTimer) clearTimeout(self.saveTimer);
-    self.saveTimer = setTimeout(function() { self._doSave(); }, 600);
+    self.saveTimer = setTimeout(function() { self.saveTimer = null; self._doSave(); }, 600);
   },
+
   saveNow: function() {
     var self = this;
-    if (self.saveTimer) clearTimeout(self.saveTimer);
+    if (self.saveTimer) { clearTimeout(self.saveTimer); self.saveTimer = null; }
     self._doSave();
   },
+
+  // Polling toutes les 8s — applique le remote sans merge si SHA différent
   startPolling: function() {
     var self = this;
     if (self._pollTimer) return;
@@ -412,185 +413,83 @@ var GH = {
       xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
       xhr.onload = function() {
         if (xhr.status !== 200) return;
+        var resp = JSON.parse(xhr.responseText);
+        if (resp.sha === self.sha) return; // rien de nouveau
+        self.sha = resp.sha;
         try {
-          var resp = JSON.parse(xhr.responseText);
-          if (resp.sha === self.sha) return;
           var content = JSON.parse(decodeURIComponent(escape(atob(resp.content.replace(/\n/g, '')))));
-          self.sha = resp.sha;
+          // Le remote fait autorité — on l'applique directement, sans merge
           if (typeof ghApplyData === 'function') {
-            // Mémoriser le snMatchData remote pour le protéger lors du prochain save
-            if (content && content.snMatchData) GH._lastRemoteSnMatchData = content.snMatchData;
             ghApplyData(content);
             self._showStatus('synced');
             try {
               var activeTab = document.querySelector('.extra-pane[style*="block"]');
               if (activeTab) {
                 var tabId = activeTab.id.replace('xpane-', '');
-                if (tabId === 's8'   && typeof renderSaisonEnCours === 'function') renderSaisonEnCours();
-                else if (tabId === 'cl'   && typeof clRender === 'function') clRender();
-                else if (tabId === 'el'   && typeof elRender === 'function') elRender();
-                else if (tabId === 'cups' && typeof cupsRender === 'function') cupsRender();
-                else if (tabId === 'sn'   && typeof snRender === 'function') snRender();
+                if      (tabId === 's8'      && typeof renderSaisonEnCours === 'function') renderSaisonEnCours();
+                else if (tabId === 'cl'      && typeof clRender === 'function') clRender();
+                else if (tabId === 'el'      && typeof elRender === 'function') elRender();
+                else if (tabId === 'cups'    && typeof cupsRender === 'function') cupsRender();
+                else if (tabId === 'sn'      && typeof snRender === 'function') snRender();
+                else if (tabId === 'history' && typeof initHistory === 'function') initHistory(typeof histArchives !== 'undefined' ? histArchives : []);
+                else if (tabId === 'awards'  && typeof awardsInit === 'function') awardsInit();
+                else if (tabId === 'club'    && typeof cbInit === 'function') cbInit();
+                else if (tabId === 'mercato' && typeof mcInit === 'function') mcInit();
               }
               if (typeof tblFilter === 'function') tblFilter();
               if (typeof ai !== 'undefined' && ai >= 0 && typeof renderProfile === 'function') renderProfile(ai);
             } catch(e) {}
           }
-        } catch(e) { console.warn('Poll parse error:', e); }
+        } catch(e) {}
       };
-      xhr.onerror = function() {};
       xhr.send();
-    }, 15000);
+    }, 8000);
   },
 
-  _deepCount: function(obj) {
-    if (obj === null || obj === undefined) return 0;
-    if (typeof obj !== 'object') return 1;
-    var n = 0;
-    if (Array.isArray(obj)) {
-      obj.forEach(function(v) { n += GH._deepCount(v); });
-    } else {
-      Object.keys(obj).forEach(function(k) { n += GH._deepCount(obj[k]); });
-    }
-    return n;
-  },
-  _mergeRemote: function(local, remote) {
-    if (!remote) return local;
-    var merged = {};
-    var allKeys = Object.keys(Object.assign({}, local, remote));
-    allKeys.forEach(function(key) {
-      // mcData : toujours local
-      if (key === 'mcData') { merged[key] = local[key]; return; }
-      // currentSeasonNum : toujours le plus grand
-      if (key === 'currentSeasonNum') {
-        merged[key] = Math.max(local[key] || 0, remote[key] || 0); return;
-      }
-      if (key === 'version') { merged[key] = local[key] || remote[key] || 1; return; }
-      // archives : toujours la plus longue
-      if (key === 'archives') {
-        var la = local[key] || [], ra = remote[key] || [];
-        merged[key] = ra.length >= la.length ? ra : la; return;
-      }
-      // overrides : fusionner (remote base + local par-dessus)
-      if (key === 'playerClubOverrides' || key === 'playerLigueOverrides') {
-        merged[key] = Object.assign({}, remote[key] || {}, local[key] || {}); return;
-      }
-      // snMatchData : fusionner comp par comp, jamais écraser par vide
-      if (key === 'snMatchData') {
-        var lsn = local[key] || {}, rsn = remote[key] || {}, msn = {};
-        Object.keys(Object.assign({}, lsn, rsn)).forEach(function(comp) {
-          var lc = lsn[comp] || {}, rc = rsn[comp] || {};
-          msn[comp] = {};
-          ['qualifMatches','groupMatches','koMatches'].forEach(function(sub) {
-            var lv = lc[sub] || {}, rv = rc[sub] || {};
-            msn[comp][sub] = Object.keys(rv).length >= Object.keys(lv).length ? rv : lv;
-          });
-          var lp = lc.poules || {}, rp = rc.poules || {};
-          msn[comp].poules = Object.keys(rp).length >= Object.keys(lp).length ? rp : lp;
-        });
-        merged[key] = msn; return;
-      }
-      // Par défaut : prendre la version avec le plus de données
-      var localCount  = GH._deepCount(local[key]);
-      var remoteCount = GH._deepCount(remote[key]);
-      merged[key] = (remoteCount > localCount) ? remote[key] : local[key];
-    });
-    return merged;
-  },
+  // Sauvegarde : PUT direct avec SHA connu, GET seulement si SHA manquant ou 409
   _doSave: function() {
     var self = this;
-    if (self.saving) {
-      self._pendingSave = true;
-      return;
-    }
+    if (self.saving) { self._pendingSave = true; return; }
     self._pendingSave = false;
     self.saving = true;
     self._showStatus('saving');
-    // Si on a déjà le SHA (post-chargement initial), on PUT directement sans GET préalable.
-    // Le GET n'est nécessaire qu'au tout premier chargement (sha === null).
     if (self.sha) {
-      self._doWrite(null);
+      self._doPut(self.sha);
     } else {
-      var shaXhr = new XMLHttpRequest();
-      shaXhr.open('GET', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file + '?ref=' + decodeURIComponent(self.branch), true);
-      shaXhr.setRequestHeader('Authorization', 'token ' + self.token);
-      shaXhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
-      shaXhr.onload = function() {
-        if (shaXhr.status === 200) {
-          try {
-            var resp = JSON.parse(shaXhr.responseText);
-            self.sha = resp.sha;
-          } catch(e) {}
+      // Pas de SHA connu — faire un GET d'abord
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', self.url(), true);
+      xhr.setRequestHeader('Authorization', 'token ' + self.token);
+      xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          try { self.sha = JSON.parse(xhr.responseText).sha; } catch(e) {}
         }
-        self._doWrite(null);
+        self._doPut(self.sha);
       };
-      shaXhr.onerror = function() { self._doWrite(null); };
-      shaXhr.send();
+      xhr.onerror = function() { self._doPut(null); };
+      xhr.send();
     }
   },
-  _doWrite: function(remoteData) {
+
+  _doPut: function(sha) {
     var self = this;
     var data = self.collectData();
-    if (remoteData) {
-      // Bloquer si le remote est plus avancé en saison
-      var remoteSn = (remoteData.currentSeasonNum || 0);
-      var localSn  = (data.currentSeasonNum || 0);
-      if (remoteSn > localSn) {
-        console.warn('GH: remote sn=' + remoteSn + ' > local sn=' + localSn + ', applying remote');
-        ghApplyData(remoteData);
-        self.saving = false; self._showStatus('synced');
-        if (self._pendingSave) self._pendingSave = false;
-        return;
-      }
-      // Bloquer si le local a MOINS de matchs SN que le remote (évite d'écraser des qualifs)
-      var countSnMatches = function(snData) {
-        var n = 0;
-        Object.values(snData || {}).forEach(function(c) {
-          n += Object.keys(c.qualifMatches || {}).length;
-          n += Object.keys(c.groupMatches  || {}).length;
-          n += Object.keys(c.koMatches     || {}).length;
-        });
-        return n;
-      };
-      var localSnCount  = countSnMatches(data.snMatchData);
-      var remoteSnCount = countSnMatches(remoteData.snMatchData);
-      if (remoteSnCount > localSnCount) {
-        // Prendre le snMatchData remote avant de merger
-        data.snMatchData = remoteData.snMatchData;
-      }
-      data = self._mergeRemote(data, remoteData);
-    }
     self._saveLocal(data);
     var content;
-    try {
-      content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
-    } catch(e) {
-      self.saving = false; self._showStatus('error'); return;
-    }
+    try { content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2)))); }
+    catch(e) { self.saving = false; self._showStatus('error'); return; }
 
     function finish(ok, newSha) {
       self.saving = false;
-      if (ok) {
-        if (newSha) self.sha = newSha;
-        self._showStatus('saved');
-      } else {
-        self._showStatus('error');
-      }
-      // Déclencher la sauvegarde en attente si besoin
-      if (self._pendingSave) {
-        self._pendingSave = false;
-        setTimeout(function(){ self._doSave(); }, 50);
-      }
+      if (ok && newSha) self.sha = newSha;
+      self._showStatus(ok ? 'saved' : 'error');
+      if (self._pendingSave) { self._pendingSave = false; setTimeout(function(){ self._doSave(); }, 50); }
     }
 
-    function doPut(sha) {
-      // Sécurité : ne jamais écraser un remote plus avancé en saison
-      var localData = self.collectData();
-      var localSn   = localData.currentSeasonNum || 0;
-      // On vérifie le remote via un GET rapide uniquement si on n'a pas de sha connu
-      // Le sha est mis à jour après chaque PUT réussi donc si on l'a, le remote est connu
-      var body = { message:'Update data', content:content, branch:decodeURIComponent(self.branch) };
-      if (sha) body.sha = sha;
+    function doPut(useSha) {
+      var body = { message: 'Update data', content: content, branch: decodeURIComponent(self.branch) };
+      if (useSha) body.sha = useSha;
       var xhr = new XMLHttpRequest();
       xhr.open('PUT', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file, true);
       xhr.setRequestHeader('Authorization', 'token ' + self.token);
@@ -598,63 +497,71 @@ var GH = {
       xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
       xhr.onload = function() {
         if (xhr.status === 200 || xhr.status === 201) {
-          try { finish(true, JSON.parse(xhr.responseText).content.sha); } catch(e) { finish(true, null); }
+          try { finish(true, JSON.parse(xhr.responseText).content.sha); }
+          catch(e) { finish(true, null); }
         } else if (xhr.status === 409 || xhr.status === 422) {
-          // SHA périmé : refetch puis retente une seule fois
+          // SHA périmé — refetch et retry une fois
           var g = new XMLHttpRequest();
-          g.open('GET', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file + '?ref=' + decodeURIComponent(self.branch), true);
+          g.open('GET', self.url(), true);
           g.setRequestHeader('Authorization', 'token ' + self.token);
           g.setRequestHeader('Accept', 'application/vnd.github.v3+json');
           g.onload = function() {
-            var freshSha = null;
-            if (g.status === 200) { try { freshSha = JSON.parse(g.responseText).sha; } catch(e) {} }
-            if (freshSha) { self.sha = freshSha; doPutFinal(freshSha); }
-            else { finish(false, null); }
+            if (g.status === 200) {
+              try {
+                var resp = JSON.parse(g.responseText);
+                self.sha = resp.sha;
+                // Vérifier que le remote n'est pas plus avancé en saison
+                var remoteData = JSON.parse(decodeURIComponent(escape(atob(resp.content.replace(/\n/g,'')))));
+                if ((remoteData.currentSeasonNum||0) > (data.currentSeasonNum||0)) {
+                  // Remote plus avancé — abandonner ce PUT et appliquer le remote
+                  if (typeof ghApplyData === 'function') ghApplyData(remoteData);
+                  finish(true, self.sha);
+                  return;
+                }
+                doPut(self.sha);
+              } catch(e) { finish(false, null); }
+            } else { finish(false, null); }
           };
           g.onerror = function() { finish(false, null); };
           g.send();
         } else {
           finish(false, null);
-          console.error('GH save error:', xhr.status, xhr.responseText.slice(0,200));
+          console.error('GH save error:', xhr.status);
         }
       };
       xhr.onerror = function() { finish(false, null); };
       xhr.send(JSON.stringify(body));
     }
 
-    function doPutFinal(sha) {
-      var body = { message:'Update data', content:content, branch:decodeURIComponent(self.branch) };
-      if (sha) body.sha = sha;
-      var xhr = new XMLHttpRequest();
-      xhr.open('PUT', 'https://api.github.com/repos/' + self.user + '/' + self.repo + '/contents/' + self.file, true);
-      xhr.setRequestHeader('Authorization', 'token ' + self.token);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
-      xhr.onload = function() {
-        if (xhr.status === 200 || xhr.status === 201) {
-          try { finish(true, JSON.parse(xhr.responseText).content.sha); } catch(e) { finish(true, null); }
-        } else { finish(false, null); }
-      };
-      xhr.onerror = function() { finish(false, null); };
-      xhr.send(JSON.stringify(body));
-    }
-
-    doPut(self.sha);
+    doPut(sha);
   },
 
-  _showStatus: function(state) {
-    var el = document.getElementById('gh-status');
-    if (!el) return;
-    var icons = {saving:'⏳ Sauvegarde...', saved:'✓ Sauvegardé', error:'✗ Erreur sync', loaded:'✓ Connecté', synced:'🔄 Mis à jour'};
-    var colors = {saving:'#f7944f', saved:'#3ecf8e', error:'#f76f6f', loaded:'#3ecf8e', synced:'#4f8ef7'};
-    el.textContent = icons[state] || '✓ Sync';
-    el.style.color = colors[state] || '#3ecf8e';
-    if (state === 'saved' || state === 'loaded') {
-      setTimeout(function() {
-        var el2 = document.getElementById('gh-status');
-        if (el2) { el2.textContent = '☁ GitHub Sync'; el2.style.color='#5a6080'; }
-      }, 4000);
-    }
+  collectData: function() {
+    return {
+      version:              1,
+      currentSeasonNum:     (typeof currentSeasonNum !== 'undefined') ? currentSeasonNum : 8,
+      leagueData:           (typeof S8_DATA !== 'undefined') ? S8_DATA.leagues : {},
+      matchDetails:         (typeof matchDetails      !== 'undefined') ? matchDetails      : {},
+      clMatchDetails:       (typeof clMatchDetails    !== 'undefined') ? clMatchDetails    : {},
+      clKoDetails:          (typeof clKoDetails       !== 'undefined') ? clKoDetails       : {},
+      clKoBracket:          (typeof CL_KO_DATA        !== 'undefined') ? CL_KO_DATA.bracket : {},
+      elKoDetails:          (typeof elKoDetails       !== 'undefined') ? elKoDetails       : {},
+      cupData:              (typeof CUP_DATA           !== 'undefined') ? CUP_DATA          : {},
+      snMatchData:          (typeof snMatchData        !== 'undefined') ? snMatchData        : {},
+      archives:             (typeof histArchives       !== 'undefined') ? histArchives       : [],
+      playerLigueOverrides: window._playerLigueOverrides || {},
+      playerClubOverrides:  window._playerClubOverrides  || {},
+      customPlayers:        window._customPlayers        || [],
+      awardsData:           (typeof awardsData          !== 'undefined') ? awardsData         : {},
+      mcData: (function() {
+        if (typeof mcData === 'undefined') return {};
+        return {
+          budgets:   mcData.budgets,
+          contracts: mcData.contracts,
+          transfers: mcData.transfers.filter(function(t){ return t.season !== null; })
+        };
+      })()
+    };
   },
 
   _saveLocal: function(data) {
@@ -663,58 +570,29 @@ var GH = {
       localStorage.setItem('fb_dashboard_backup_ts', Date.now().toString());
     } catch(e) {}
   },
-  _loadLocal: function() {
-    try {
-      var s = localStorage.getItem('fb_dashboard_backup');
-      return s ? JSON.parse(s) : null;
-    } catch(e) { return null; }
-  },
-  collectData: function() {
-    return {
-      version: 1,
-      leagueData:        (typeof S8_DATA !== 'undefined') ? S8_DATA.leagues : {},
-      matchDetails:      (typeof matchDetails      !== 'undefined') ? matchDetails      : {},
-      clMatchDetails:    (typeof clMatchDetails    !== 'undefined') ? clMatchDetails    : {},
-      clKoDetails:       (typeof clKoDetails       !== 'undefined') ? clKoDetails       : {},
-      clKoBracket:       (typeof CL_KO_DATA        !== 'undefined') ? CL_KO_DATA.bracket : {},
-      currentSeasonNum:       (typeof currentSeasonNum       !== 'undefined') ? currentSeasonNum       : 8,
-      archives:               (typeof histArchives            !== 'undefined') ? histArchives            : [],
-      playerLigueOverrides:   window._playerLigueOverrides || {},
-      playerClubOverrides:    window._playerClubOverrides  || {},
-      elKoDetails:            (typeof elKoDetails !== 'undefined') ? elKoDetails : {},
-      cupData:              (typeof CUP_DATA !== 'undefined') ? CUP_DATA : {},
-      snMatchData: (function() {
-        var local = (typeof snMatchData !== 'undefined') ? snMatchData : {};
-        var remote = GH._lastRemoteSnMatchData || {};
-        // Toujours exporter la version avec le plus de matchs par compétition
-        var merged = {};
-        Object.keys(Object.assign({}, local, remote)).forEach(function(comp) {
-          var lc = local[comp] || {}, rc = remote[comp] || {};
-          merged[comp] = {};
-          ['qualifMatches','groupMatches','koMatches'].forEach(function(sub) {
-            var lv = lc[sub] || {}, rv = rc[sub] || {};
-            merged[comp][sub] = Object.keys(rv).length > Object.keys(lv).length ? rv : lv;
-          });
-          var lp = lc.poules || {}, rp = rc.poules || {};
-          merged[comp].poules = Object.keys(rp).length > Object.keys(lp).length ? rp : lp;
-        });
-        return merged;
-      })(),
-      customPlayers:        window._customPlayers || [],
-      awardsData:           (typeof AWARDS_DATA !== 'undefined') ? AWARDS_DATA : {},
-      mcData: (function() {
-        if (typeof mcData === 'undefined') return {};
-        // Ne sauvegarder que les nouveaux transferts (season !== null) pour alléger data.json
-        return {
-          budgets:   mcData.budgets,
-          contracts: mcData.contracts,
-          transfers: mcData.transfers.filter(function(t){ return t.season !== null; })
-        };
-      })(),
-    };
-  }
-};
 
+  _loadLocal: function() {
+    try { return JSON.parse(localStorage.getItem('fb_dashboard_backup')); } catch(e) { return null; }
+  },
+
+  _showStatus: function(state) {
+    var el = document.getElementById('gh-status');
+    if (!el) return;
+    var map = { saving:'⏳ Sync…', saved:'✓ Sauvegardé', synced:'↓ Mis à jour', error:'⚠ Erreur sync' };
+    el.textContent = map[state] || '';
+    el.style.color = state === 'error' ? '#f76f6f' : state === 'synced' ? '#4f8ef7' : state === 'saved' ? '#3ecf8e' : '#f5c842';
+    if (state === 'saved' || state === 'synced') setTimeout(function(){ if(el) el.textContent=''; }, 3000);
+  },
+
+  _deepCount: function(obj) {
+    if (obj === null || obj === undefined) return 0;
+    if (typeof obj !== 'object') return 1;
+    var n = 0;
+    Object.values(obj).forEach(function(v){ n += 1 + GH._deepCount(v); });
+    return n;
+  }
+
+};
 function ghApplyData(data) {
   if (!data) return;
   if (data.matchDetails)   matchDetails   = data.matchDetails;
