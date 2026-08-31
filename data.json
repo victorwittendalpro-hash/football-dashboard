@@ -3198,6 +3198,13 @@
               "207": 1,
               "212": 1
             }
+          },
+          "C_3": {
+            "home": "Côte d'Ivoire",
+            "away": "Argentine",
+            "score_h": 0,
+            "score_a": 1,
+            "scorers": {}
           }
         },
         "D": {
