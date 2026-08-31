@@ -3292,6 +3292,15 @@
               "34": 1,
               "77": 2
             }
+          },
+          "B_2": {
+            "home": "Macédoine",
+            "away": "Angleterre",
+            "score_h": 0,
+            "score_a": 1,
+            "scorers": {
+              "192": 1
+            }
           }
         },
         "E": {
