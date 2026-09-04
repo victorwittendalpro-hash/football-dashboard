@@ -3363,16 +3363,6 @@
               "48": 1,
               "136": 2
             }
-          },
-          "E_3": {
-            "home": "Uruguay",
-            "away": "Belgique",
-            "score_h": 1,
-            "score_a": 2,
-            "scorers": {
-              "188": 2,
-              "205": 1
-            }
           }
         },
         "F": {
@@ -3410,16 +3400,6 @@
             "score_a": 1,
             "scorers": {
               "91": 1,
-              "138": 1
-            }
-          },
-          "F_1": {
-            "home": "Grèce",
-            "away": "Italie",
-            "score_h": 1,
-            "score_a": 2,
-            "scorers": {
-              "65": 1,
               "138": 1
             }
           }
