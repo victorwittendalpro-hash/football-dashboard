@@ -583,7 +583,7 @@ var GH = {
   collectData: function() {
     return {
       version:              1,
-      currentSeasonNum:     (typeof currentSeasonNum !== 'undefined') ? currentSeasonNum : 8,
+      currentSeasonNum:     Math.max((typeof currentSeasonNum !== 'undefined') ? currentSeasonNum : 8, GH._minSeasonNum || 8),
       leagueData:           (typeof S8_DATA !== 'undefined') ? S8_DATA.leagues : {},
       matchDetails:         (typeof matchDetails      !== 'undefined') ? matchDetails      : {},
       clMatchDetails:       (typeof clMatchDetails    !== 'undefined') ? clMatchDetails    : {},
@@ -591,7 +591,25 @@ var GH = {
       clKoBracket:          (typeof CL_KO_DATA        !== 'undefined') ? CL_KO_DATA.bracket : {},
       elKoDetails:          (typeof elKoDetails       !== 'undefined') ? elKoDetails       : {},
       cupData:              (typeof CUP_DATA           !== 'undefined') ? CUP_DATA          : {},
-      snMatchData:          (typeof snMatchData        !== 'undefined') ? snMatchData        : {},
+      snMatchData: (function() {
+        var local = (typeof snMatchData !== 'undefined') ? snMatchData : {};
+        var guard = (typeof GH !== 'undefined' && GH._guardedSnMatchData) ? GH._guardedSnMatchData : {};
+        // Pour chaque comp, prendre la version avec le plus de matchs
+        var merged = JSON.parse(JSON.stringify(guard));
+        Object.keys(local).forEach(function(comp) {
+          if (!merged[comp]) merged[comp] = {};
+          ['qualifMatches','groupMatches','koMatches'].forEach(function(sub) {
+            var lv = (local[comp]||{})[sub] || {};
+            var rv = (merged[comp]||{})[sub] || {};
+            if (Object.keys(lv).length > Object.keys(rv).length) merged[comp][sub] = lv;
+          });
+          // Poules : garder les bonnes si définies dans guard
+          if (!merged[comp].poules || !Object.keys(merged[comp].poules).length) {
+            merged[comp].poules = (local[comp]||{}).poules || {};
+          }
+        });
+        return merged;
+      })(),
       archives:             (typeof histArchives       !== 'undefined') ? histArchives       : [],
       playerLigueOverrides: window._playerLigueOverrides || {},
       playerClubOverrides:  window._playerClubOverrides  || {},
@@ -639,6 +657,10 @@ var GH = {
 };
 function ghApplyData(data) {
   if (!data) return;
+  // Mémoriser le sn remote comme plancher — jamais sauvegarder en dessous
+  if (data.currentSeasonNum && typeof GH !== 'undefined') {
+    GH._minSeasonNum = Math.max(GH._minSeasonNum || 0, data.currentSeasonNum);
+  }
   if (data.matchDetails)   matchDetails   = data.matchDetails;
   if (data.clMatchDetails) clMatchDetails = data.clMatchDetails;
   if (data.clKoDetails)    clKoDetails    = data.clKoDetails;
@@ -682,8 +704,23 @@ function ghApplyData(data) {
     });
   }
   if (data.snMatchData && typeof snMatchData !== 'undefined') {
-    // Mémoriser la version remote pour protéger lors des saves
-    if (typeof GH !== 'undefined') GH._lastRemoteSnMatchData = data.snMatchData;
+    // Garder en mémoire la meilleure version vue du remote
+    if (typeof GH !== 'undefined') {
+      if (!GH._guardedSnMatchData) GH._guardedSnMatchData = {};
+      var incoming = data.snMatchData;
+      Object.keys(incoming).forEach(function(comp) {
+        if (!GH._guardedSnMatchData[comp]) GH._guardedSnMatchData[comp] = {};
+        ['qualifMatches','groupMatches','koMatches'].forEach(function(sub) {
+          var iv = (incoming[comp]||{})[sub] || {};
+          var gv = GH._guardedSnMatchData[comp][sub] || {};
+          if (Object.keys(iv).length > Object.keys(gv).length) GH._guardedSnMatchData[comp][sub] = iv;
+        });
+        var ip = (incoming[comp]||{}).poules || {};
+        var gp = GH._guardedSnMatchData[comp].poules || {};
+        if (Object.keys(ip).length > Object.keys(gp).length) GH._guardedSnMatchData[comp].poules = ip;
+      });
+      GH._lastRemoteSnMatchData = data.snMatchData;
+    }
     // Fusionner avec localStorage si plus récent
     var localData = GH._loadLocal ? GH._loadLocal() : null;
     var localTs   = parseInt(localStorage.getItem('fb_dashboard_backup_ts') || '0');
