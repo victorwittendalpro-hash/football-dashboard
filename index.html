@@ -475,6 +475,10 @@ var GH = {
   _doPut: function(sha) {
     var self = this;
     var data = self.collectData();
+    // Protection : ne jamais sauvegarder sn < 9 (vieil appareil ou cache périmé)
+    if ((data.currentSeasonNum || 0) < 9) {
+      self.saving = false; self._showStatus('synced'); return;
+    }
     self._saveLocal(data);
     var content;
     try { content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2)))); }
