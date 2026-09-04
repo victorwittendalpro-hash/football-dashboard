@@ -476,6 +476,50 @@ var GH = {
     var self = this;
     var data = self.collectData();
     self._saveLocal(data);
+
+    // Vérification critique : ne jamais écraser un remote plus avancé en saison
+    // On vérifie via un GET rapide avant chaque PUT
+    var self2 = self, data2 = data;
+    var checkUrl = 'https://api.github.com/repos/' + self.user + '/' + self.repo
+                 + '/contents/' + self.file + '?ref=' + self.branch;
+    var chk = new XMLHttpRequest();
+    chk.open('GET', checkUrl, true);
+    chk.setRequestHeader('Authorization', 'token ' + self.token);
+    chk.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+    chk.onload = function() {
+      if (chk.status === 200) {
+        try {
+          var resp = JSON.parse(chk.responseText);
+          var remoteSn = JSON.parse(
+            decodeURIComponent(escape(atob(resp.content.replace(/
+/g,''))))
+          ).currentSeasonNum || 0;
+          var localSn = data2.currentSeasonNum || 0;
+          if (remoteSn > localSn) {
+            // Remote plus avancé — appliquer et annuler le PUT
+            console.warn('GH: remote sn=' + remoteSn + ' > local sn=' + localSn + ', aborting PUT');
+            self2.sha = resp.sha;
+            try {
+              var remoteData = JSON.parse(decodeURIComponent(escape(atob(resp.content.replace(/
+/g,'')))));
+              if (typeof ghApplyData === 'function') ghApplyData(remoteData);
+            } catch(e) {}
+            self2.saving = false;
+            self2._showStatus('synced');
+            if (self2._pendingSave) { self2._pendingSave = false; }
+            return;
+          }
+          self2.sha = resp.sha; // mettre à jour le SHA
+        } catch(e) {}
+      }
+      self2._doPutNow(self2.sha, data2);
+    };
+    chk.onerror = function() { self2._doPutNow(sha, data2); };
+    chk.send();
+  },
+
+  _doPutNow: function(sha, data) {
+    var self = this;
     var content;
     try { content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2)))); }
     catch(e) { self.saving = false; self._showStatus('error'); return; }
@@ -487,7 +531,7 @@ var GH = {
       if (self._pendingSave) { self._pendingSave = false; setTimeout(function(){ self._doSave(); }, 50); }
     }
 
-    function doPut(useSha) {
+    function doPut(useSha) {  // inner doPut for retry
       var body = { message: 'Update data', content: content, branch: decodeURIComponent(self.branch) };
       if (useSha) body.sha = useSha;
       var xhr = new XMLHttpRequest();
