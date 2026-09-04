@@ -3174,6 +3174,16 @@
               "5": 1,
               "56": 2
             }
+          },
+          "A_3": {
+            "home": "Japon",
+            "away": "Algérie",
+            "score_h": 2,
+            "score_a": 4,
+            "scorers": {
+              "4": 1,
+              "194": 1
+            }
           }
         },
         "C": {
@@ -3363,6 +3373,16 @@
               "48": 1,
               "136": 2
             }
+          },
+          "E_3": {
+            "home": "Uruguay",
+            "away": "Belgique",
+            "score_h": 1,
+            "score_a": 2,
+            "scorers": {
+              "188": 2,
+              "205": 1
+            }
           }
         },
         "F": {
@@ -3400,6 +3420,16 @@
             "score_a": 1,
             "scorers": {
               "91": 1,
+              "138": 1
+            }
+          },
+          "F_1": {
+            "home": "Grèce",
+            "away": "Italie",
+            "score_h": 1,
+            "score_a": 2,
+            "scorers": {
+              "65": 1,
               "138": 1
             }
           }
@@ -11839,9 +11869,9 @@
         "S8": "Côme",
         "S10": "Côme"
       },
-      "total": 21,
+      "total": 22,
       "CL": 0,
-      "SN": 0,
+      "SN": 1,
       "CH": 10,
       "EU": 0,
       "CP": 0,
@@ -11859,7 +11889,8 @@
       "t_total": 0,
       "_custom": true,
       "_origS8": 0,
-      "_value": 46200000
+      "_value": 46200000,
+      "_origSN": 0
     },
     {
       "rank": 207,
