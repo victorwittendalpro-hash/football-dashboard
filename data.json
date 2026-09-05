@@ -2540,14 +2540,6 @@
         "r16_5": {
           "home": "Etats-unis",
           "away": "Suède"
-        },
-        "r16_6": {
-          "home": "?",
-          "away": "?"
-        },
-        "r16_7": {
-          "home": "?",
-          "away": "?"
         }
       },
       "qualifMatches": {
@@ -3537,14 +3529,6 @@
         {
           "home": "Etats-unis",
           "away": "Suède"
-        },
-        {
-          "home": "?",
-          "away": "?"
-        },
-        {
-          "home": "?",
-          "away": "?"
         }
       ]
     },
