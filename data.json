@@ -2518,36 +2518,36 @@
       },
       "koMatches": {
         "r16_0": {
-          "home": "Côte d'Ivoire",
-          "away": "Suède"
-        },
-        "r16_1": {
-          "home": "Italie",
+          "home": "Algérie",
           "away": "Macédoine"
         },
-        "r16_2": {
-          "home": "Pays-Bas",
-          "away": "Espagne"
-        },
-        "r16_3": {
-          "home": "Algérie",
-          "away": "Portugal"
-        },
-        "r16_4": {
-          "home": "Angleterre",
+        "r16_1": {
+          "home": "Espagne",
           "away": "Bolivie"
         },
-        "r16_5": {
-          "home": "France",
+        "r16_2": {
+          "home": "Suède",
           "away": "Colombie"
         },
-        "r16_6": {
-          "home": "Brésil",
+        "r16_3": {
+          "home": "Italie",
+          "away": "Côte d'Ivoire"
+        },
+        "r16_4": {
+          "home": "Etats-unis",
           "away": "Turquie"
         },
-        "r16_7": {
+        "r16_5": {
           "home": "Zimbabwe",
-          "away": "Etats-unis"
+          "away": "Angleterre"
+        },
+        "r16_6": {
+          "home": "France",
+          "away": "Pays-Bas"
+        },
+        "r16_7": {
+          "home": "Brésil",
+          "away": "Portugal"
         }
       },
       "qualifMatches": {
@@ -3515,36 +3515,36 @@
       },
       "r16Draw": [
         {
-          "home": "Côte d'Ivoire",
-          "away": "Suède"
-        },
-        {
-          "home": "Italie",
+          "home": "Algérie",
           "away": "Macédoine"
         },
         {
-          "home": "Pays-Bas",
-          "away": "Espagne"
-        },
-        {
-          "home": "Algérie",
-          "away": "Portugal"
-        },
-        {
-          "home": "Angleterre",
+          "home": "Espagne",
           "away": "Bolivie"
         },
         {
-          "home": "France",
+          "home": "Suède",
           "away": "Colombie"
         },
         {
-          "home": "Brésil",
+          "home": "Italie",
+          "away": "Côte d'Ivoire"
+        },
+        {
+          "home": "Etats-unis",
           "away": "Turquie"
         },
         {
           "home": "Zimbabwe",
-          "away": "Etats-unis"
+          "away": "Angleterre"
+        },
+        {
+          "home": "France",
+          "away": "Pays-Bas"
+        },
+        {
+          "home": "Brésil",
+          "away": "Portugal"
         }
       ]
     },
