@@ -7244,9 +7244,69 @@ function snSaveMatch() {
   GH.save();
   snCloseModal();
   snRender();
-  // Re-render la fiche joueur si ouverte + le tableau comparatif
   try { if (typeof ai !== 'undefined' && ai >= 0 && typeof renderProfile === 'function') renderProfile(ai); } catch(e) {}
   try { if (typeof tblFilter === 'function') tblFilter(); } catch(e) {}
+
+  // Ouvrir automatiquement le prochain match non joue
+  setTimeout(function() { snOpenNextMatch(ctx); }, 120);
+}
+
+function snOpenNextMatch(ctx) {
+  if (!ctx) return;
+  var compId = ctx.compId;
+  var sn = snMatchData[compId] || {};
+
+  if (ctx.type === 'group') {
+    // Chercher le prochain match non joue dans la meme poule, puis les autres poules
+    var poules = (sn.poules) || {};
+    var gm     = sn.groupMatches || {};
+    var pouleIds = Object.keys(poules).sort();
+    // Commencer par la poule courante, puis les suivantes
+    var curIdx = pouleIds.indexOf(ctx.group);
+    var order  = pouleIds.slice(curIdx).concat(pouleIds.slice(0, curIdx));
+
+    for (var pi = 0; pi < order.length; pi++) {
+      var g = order[pi];
+      var teams = (poules[g] && poules[g].teams) || [];
+      var matchups = [];
+      for (var i=0;i<teams.length;i++) for(var j=i+1;j<teams.length;j++) matchups.push([teams[i],teams[j]]);
+
+      // Dans la meme poule, partir du match suivant
+      var startMi = 0;
+      if (g === ctx.group) {
+        var curKey = ctx.matchKey; // ex: "A_2"
+        var curMi  = parseInt(curKey.split('_')[1]) + 1;
+        startMi = curMi;
+      }
+      for (var mi = startMi; mi < matchups.length; mi++) {
+        var key  = g + '_' + mi;
+        var pair = matchups[mi];
+        var played = gm[g] && gm[g][key] && gm[g][key].score_h != null;
+        if (!played) {
+          // Ouvrir ce match
+          var h = pair[0].replace(/'/g, "\'");
+          var a = pair[1].replace(/'/g, "\'");
+          snOpenMatch(compId, g, key, pair[0], pair[1]);
+          return;
+        }
+      }
+    }
+
+  } else if (ctx.type === 'ko') {
+    // Chercher le prochain match KO non joue
+    var koM = sn.koMatches || {};
+    var r16 = (sn.r16Draw || []);
+    var keys = r16.map(function(_,i){ return 'r16_'+i; });
+    var curIdx = keys.indexOf(ctx.key);
+    for (var i = curIdx+1; i < keys.length; i++) {
+      var k = keys[i];
+      var m = koM[k];
+      if (m && m.home && m.away && (m.score_h == null)) {
+        snOpenKoMatch(compId, k, m.home, m.away);
+        return;
+      }
+    }
+  }
 }
 
 // ── GH integration ───────────────────────────────────────────────
