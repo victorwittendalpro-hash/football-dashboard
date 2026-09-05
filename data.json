@@ -2518,28 +2518,36 @@
       },
       "koMatches": {
         "r16_0": {
-          "home": "France",
-          "away": "Portugal"
+          "home": "Côte d'Ivoire",
+          "away": "Suède"
         },
         "r16_1": {
-          "home": "Angleterre",
-          "away": "Brésil"
-        },
-        "r16_2": {
-          "home": "Côte d'Ivoire",
-          "away": "Italie"
-        },
-        "r16_3": {
-          "home": "Turquie",
+          "home": "Italie",
           "away": "Macédoine"
         },
-        "r16_4": {
+        "r16_2": {
           "home": "Pays-Bas",
-          "away": "Colombie"
+          "away": "Espagne"
+        },
+        "r16_3": {
+          "home": "Algérie",
+          "away": "Portugal"
+        },
+        "r16_4": {
+          "home": "Angleterre",
+          "away": "Bolivie"
         },
         "r16_5": {
-          "home": "Etats-unis",
-          "away": "Suède"
+          "home": "France",
+          "away": "Colombie"
+        },
+        "r16_6": {
+          "home": "Brésil",
+          "away": "Turquie"
+        },
+        "r16_7": {
+          "home": "Zimbabwe",
+          "away": "Etats-unis"
         }
       },
       "qualifMatches": {
@@ -3507,28 +3515,36 @@
       },
       "r16Draw": [
         {
-          "home": "France",
-          "away": "Portugal"
-        },
-        {
-          "home": "Angleterre",
-          "away": "Brésil"
-        },
-        {
           "home": "Côte d'Ivoire",
-          "away": "Italie"
+          "away": "Suède"
         },
         {
-          "home": "Turquie",
+          "home": "Italie",
           "away": "Macédoine"
         },
         {
           "home": "Pays-Bas",
+          "away": "Espagne"
+        },
+        {
+          "home": "Algérie",
+          "away": "Portugal"
+        },
+        {
+          "home": "Angleterre",
+          "away": "Bolivie"
+        },
+        {
+          "home": "France",
           "away": "Colombie"
         },
         {
-          "home": "Etats-unis",
-          "away": "Suède"
+          "home": "Brésil",
+          "away": "Turquie"
+        },
+        {
+          "home": "Zimbabwe",
+          "away": "Etats-unis"
         }
       ]
     },
