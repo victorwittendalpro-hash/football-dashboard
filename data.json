@@ -2519,23 +2519,23 @@
       "koMatches": {
         "r16_0": {
           "home": "France",
-          "away": "Italie"
+          "away": "Portugal"
         },
         "r16_1": {
           "home": "Angleterre",
-          "away": "Portugal"
+          "away": "Brésil"
         },
         "r16_2": {
           "home": "Côte d'Ivoire",
-          "away": "Brésil"
+          "away": "Italie"
         },
         "r16_3": {
           "home": "Turquie",
-          "away": "Colombie"
+          "away": "Macédoine"
         },
         "r16_4": {
           "home": "Pays-Bas",
-          "away": "Macédoine"
+          "away": "Colombie"
         },
         "r16_5": {
           "home": "Etats-unis",
@@ -3516,23 +3516,23 @@
       "r16Draw": [
         {
           "home": "France",
-          "away": "Italie"
-        },
-        {
-          "home": "Angleterre",
           "away": "Portugal"
         },
         {
-          "home": "Côte d'Ivoire",
+          "home": "Angleterre",
           "away": "Brésil"
         },
         {
+          "home": "Côte d'Ivoire",
+          "away": "Italie"
+        },
+        {
           "home": "Turquie",
-          "away": "Colombie"
+          "away": "Macédoine"
         },
         {
           "home": "Pays-Bas",
-          "away": "Macédoine"
+          "away": "Colombie"
         },
         {
           "home": "Etats-unis",
