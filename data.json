@@ -2516,7 +2516,40 @@
           ]
         }
       },
-      "koMatches": {},
+      "koMatches": {
+        "r16_0": {
+          "home": "France",
+          "away": "Italie"
+        },
+        "r16_1": {
+          "home": "Angleterre",
+          "away": "Portugal"
+        },
+        "r16_2": {
+          "home": "Côte d'Ivoire",
+          "away": "Brésil"
+        },
+        "r16_3": {
+          "home": "Turquie",
+          "away": "Colombie"
+        },
+        "r16_4": {
+          "home": "Pays-Bas",
+          "away": "Macédoine"
+        },
+        "r16_5": {
+          "home": "Etats-unis",
+          "away": "Suède"
+        },
+        "r16_6": {
+          "home": "?",
+          "away": "?"
+        },
+        "r16_7": {
+          "home": "?",
+          "away": "?"
+        }
+      },
       "qualifMatches": {
         "0_0": {
           "home": "Algérie",
@@ -3479,7 +3512,41 @@
             }
           }
         }
-      }
+      },
+      "r16Draw": [
+        {
+          "home": "France",
+          "away": "Italie"
+        },
+        {
+          "home": "Angleterre",
+          "away": "Portugal"
+        },
+        {
+          "home": "Côte d'Ivoire",
+          "away": "Brésil"
+        },
+        {
+          "home": "Turquie",
+          "away": "Colombie"
+        },
+        {
+          "home": "Pays-Bas",
+          "away": "Macédoine"
+        },
+        {
+          "home": "Etats-unis",
+          "away": "Suède"
+        },
+        {
+          "home": "?",
+          "away": "?"
+        },
+        {
+          "home": "?",
+          "away": "?"
+        }
+      ]
     },
     "can": {
       "koMatches": {},
