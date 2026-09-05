@@ -3455,6 +3455,15 @@
               "65": 1,
               "138": 1
             }
+          },
+          "F_4": {
+            "home": "Etats-unis",
+            "away": "Croatie",
+            "score_h": 2,
+            "score_a": 0,
+            "scorers": {
+              "91": 2
+            }
           }
         }
       }
