@@ -2526,7 +2526,10 @@
         },
         "r16_1": {
           "home": "Espagne",
-          "away": "Bolivie"
+          "away": "Bolivie",
+          "score_h": 1,
+          "score_a": 0,
+          "scorers": {}
         },
         "r16_2": {
           "home": "Suède",
