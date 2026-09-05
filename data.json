@@ -3291,6 +3291,15 @@
             "scorers": {
               "198": 2
             }
+          },
+          "D_2": {
+            "home": "Turquie",
+            "away": "Suisse",
+            "score_h": 3,
+            "score_a": 2,
+            "scorers": {
+              "104": 2
+            }
           }
         },
         "B": {
