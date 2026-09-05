@@ -3339,6 +3339,13 @@
             "scorers": {
               "192": 1
             }
+          },
+          "B_3": {
+            "home": "Maroc",
+            "away": "Bolivie",
+            "score_h": 0,
+            "score_a": 2,
+            "scorers": {}
           }
         },
         "E": {
@@ -11965,7 +11972,7 @@
       "t_total": 0,
       "_custom": true,
       "_origS8": 0,
-      "_value": 52200000,
+      "_value": 33700000,
       "_origSN": 0
     },
     {
