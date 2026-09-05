@@ -6787,29 +6787,51 @@ function snDrawR16(compId) {
   if (snMatchData[compId] && snMatchData[compId].r16Draw) {
     if (!confirm('Un tirage existe deja. Le remplacer ?')) return;
   }
-  var premiers = [], seconds = [];
+  // Classement general toutes poules confondues
+  var allTeams = [];
   pouleIds.forEach(function(g) {
     var ranked = snGetPouleStandings(compId, g);
-    premiers.push({team: ranked[0]||'?', poule: g});
-    seconds.push({team: ranked[1]||'?', poule: g});
+    var teams  = (poules[g] && poules[g].teams) || [];
+    var gStats = {};
+    teams.forEach(function(t){ gStats[t]={pts:0,bm:0,be:0}; });
+    Object.values(gm[g]||{}).forEach(function(m) {
+      if (!m||m.score_h==null) return;
+      var sh=m.score_h,sa=m.score_a,h=m.home,a=m.away;
+      if(gStats[h]){gStats[h].bm+=sh;gStats[h].be+=sa;if(sh>sa)gStats[h].pts+=3;else if(sh===sa)gStats[h].pts+=1;}
+      if(gStats[a]){gStats[a].bm+=sa;gStats[a].be+=sh;if(sa>sh)gStats[a].pts+=3;else if(sh===sa)gStats[a].pts+=1;}
+    });
+    teams.forEach(function(t){ allTeams.push({team:t, poule:g, pts:gStats[t].pts, bm:gStats[t].bm, be:gStats[t].be}); });
   });
+  allTeams.sort(function(a,b){
+    return b.pts-a.pts || (b.bm-b.be)-(a.bm-a.be) || b.bm-a.bm || a.team.localeCompare(b.team);
+  });
+  var qualified = allTeams.slice(0, 16);
+
+  // Tirage : 8 matchs, pas deux equipes de la meme poule si possible
   function shuffle(arr) {
-    for (var i=arr.length-1;i>0;i--) { var j=Math.floor(Math.random()*(i+1)); var t=arr[i];arr[i]=arr[j];arr[j]=t; }
+    for (var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t;}
     return arr;
   }
-  var hA1=premiers.slice(0,3), hA2=seconds.slice(3,6);
-  var hB1=premiers.slice(3,6), hB2=seconds.slice(0,3);
-  shuffle(hA2); shuffle(hB2);
-  var draw = [];
-  for (var i=0;i<3;i++) {
-    if (hA1[i].poule===hA2[i].poule) { var s=hA2[(i+1)%3];hA2[(i+1)%3]=hA2[i];hA2[i]=s; }
-    draw.push({home:hA1[i].team, away:hA2[i].team});
+  var draw = null;
+  for (var attempt=0; attempt<500; attempt++) {
+    var pool = shuffle(qualified.slice());
+    var used = {}, tryDraw = [];
+    for (var i=0; i<pool.length; i++) {
+      if (used[pool[i].team]) continue;
+      for (var j=i+1; j<pool.length; j++) {
+        if (!used[pool[j].team] && pool[j].poule !== pool[i].poule) {
+          tryDraw.push({home:pool[i].team, away:pool[j].team});
+          used[pool[i].team]=true; used[pool[j].team]=true; break;
+        }
+      }
+    }
+    if (tryDraw.length === 8) { draw = tryDraw; break; }
   }
-  for (var i=0;i<3;i++) {
-    if (hB1[i].poule===hB2[i].poule) { var s=hB2[(i+1)%3];hB2[(i+1)%3]=hB2[i];hB2[i]=s; }
-    draw.push({home:hB1[i].team, away:hB2[i].team});
+  if (!draw) {
+    var pool = shuffle(qualified.slice());
+    draw = [];
+    for (var i=0;i<8;i++) draw.push({home:pool[i*2].team, away:pool[i*2+1].team});
   }
-  while (draw.length < 8) draw.push({home:'?', away:'?'});
   if (!snMatchData[compId]) snMatchData[compId] = {};
   snMatchData[compId].r16Draw = draw;
   if (!snMatchData[compId].koMatches) snMatchData[compId].koMatches = {};
