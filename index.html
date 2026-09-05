@@ -6518,6 +6518,7 @@ function snRenderGroupes(cfg) {
     + '<div><div class="sn-sec-title">' + cfg.label + ' S' + sn + ' — Phase de poules</div>'
     + '<div class="sn-sec-sub">Poules figées depuis les 24 qualifiés · Les 16 premiers au classement général se qualifient · '
     + '<span onclick="snResetPoules(\''+cfg.id+'\')" style="color:#f5c842;cursor:pointer;text-decoration:underline">↺ Regénérer les poules</span>'
+    + (cfg.id === 'cdm' ? ' · <span onclick="snDrawR16(\''+cfg.id+'\')" style="color:#3ecf8e;cursor:pointer;text-decoration:underline">🎲 Tirage Phase Finale</span>' : '')
     + '</div></div></div>'
     + '<div class="sn-content">';
 
@@ -6748,19 +6749,102 @@ function snRenderKO(cfg) {
   snAttachSubnav();
 }
 
-function snGetR16Team(i, side) {
-  // Les 16 équipes qualifiées des poules — 2 premières de chaque poule
-  var groups = Object.keys(SN_DATA.poules_cdm);
-  var q16 = [];
-  groups.forEach(function(g) {
-    var t = SN_DATA.poules_cdm[g].teams || [];
-    if (t[0]) q16.push(t[0]);
-    if (t[1]) q16.push(t[1]);
+// Classement d'une poule depuis les résultats saisis
+function snGetPouleStandings(compId, poule) {
+  var poules = (snMatchData[compId] && snMatchData[compId].poules) || {};
+  var gm     = (snMatchData[compId] && snMatchData[compId].groupMatches) || {};
+  var teams  = (poules[poule] && poules[poule].teams) || [];
+  var stats  = {};
+  teams.forEach(function(t) { stats[t] = {pts:0,bm:0,be:0}; });
+  var matches = gm[poule] || {};
+  Object.values(matches).forEach(function(m) {
+    if (!m || m.score_h == null) return;
+    var sh = m.score_h, sa = m.score_a, h = m.home, a = m.away;
+    if (stats[h]) { stats[h].bm+=sh; stats[h].be+=sa; if(sh>sa)stats[h].pts+=3; else if(sh===sa)stats[h].pts+=1; }
+    if (stats[a]) { stats[a].bm+=sa; stats[a].be+=sh; if(sa>sh)stats[a].pts+=3; else if(sh===sa)stats[a].pts+=1; }
   });
-  // Appariement classique: 1A vs 2B, 1B vs 2A, etc.
+  return teams.slice().sort(function(a,b) {
+    var sa=stats[a]||{pts:0,bm:0,be:0}, sb=stats[b]||{pts:0,bm:0,be:0};
+    return sb.pts-sa.pts || (sb.bm-sb.be)-(sa.bm-sa.be) || sb.bm-sa.bm || a.localeCompare(b);
+  });
+}
+
+// Tirage des 8es de finale
+function snDrawR16(compId) {
+  var poules = (snMatchData[compId] && snMatchData[compId].poules) || {};
+  var pouleIds = Object.keys(poules).sort();
+  if (pouleIds.length < 6) { alert('Les poules doivent être définies avant le tirage.'); return; }
+
+  var gm = (snMatchData[compId] && snMatchData[compId].groupMatches) || {};
+  var totalM = 0, playedM = 0;
+  pouleIds.forEach(function(g) {
+    var n = (poules[g].teams||[]).length;
+    totalM += n*(n-1)/2;
+    playedM += Object.keys(gm[g]||{}).filter(function(k){ return gm[g][k]&&gm[g][k].score_h!=null; }).length;
+  });
+  if (playedM < totalM) {
+    if (!confirm('Matchs incomplets ('+playedM+'/'+totalM+'). Tirer au sort quand même ?')) return;
+  }
+  if (snMatchData[compId] && snMatchData[compId].r16Draw) {
+    if (!confirm('Un tirage existe déjà. Le remplacer ?')) return;
+  }
+
+  var premiers = [], seconds = [];
+  pouleIds.forEach(function(g) {
+    var ranked = snGetPouleStandings(compId, g);
+    premiers.push({team: ranked[0]||'?', poule: g});
+    seconds.push({team:  ranked[1]||'?', poule: g});
+  });
+
+  function shuffle(arr) {
+    for (var i=arr.length-1;i>0;i--) { var j=Math.floor(Math.random()*(i+1)); var t=arr[i];arr[i]=arr[j];arr[j]=t; }
+    return arr;
+  }
+
+  var hA1=premiers.slice(0,3), hA2=seconds.slice(3,6);
+  var hB1=premiers.slice(3,6), hB2=seconds.slice(0,3);
+  shuffle(hA2); shuffle(hB2);
+
+  var draw = [];
+  for (var i=0;i<3;i++) {
+    if (hA1[i].poule===hA2[i].poule) { var s=hA2[(i+1)%3];hA2[(i+1)%3]=hA2[i];hA2[i]=s; }
+    draw.push({home:hA1[i].team, away:hA2[i].team});
+  }
+  for (var i=0;i<3;i++) {
+    if (hB1[i].poule===hB2[i].poule) { var s=hB2[(i+1)%3];hB2[(i+1)%3]=hB2[i];hB2[i]=s; }
+    draw.push({home:hB1[i].team, away:hB2[i].team});
+  }
+  while (draw.length < 8) draw.push({home:'?', away:'?'});
+
+  if (!snMatchData[compId]) snMatchData[compId] = {};
+  snMatchData[compId].r16Draw = draw;
+  if (!snMatchData[compId].koMatches) snMatchData[compId].koMatches = {};
+  for (var i=0;i<8;i++) snMatchData[compId].koMatches['r16_'+i] = {home:draw[i].home, away:draw[i].away};
+
+  GH.save();
+  snRender();
+  var msg = '🎲 Tirage des 8es de finale :
+
+';
+  draw.forEach(function(m,i){ msg += 'Match '+(i+1)+' : '+m.home+' vs '+m.away+'
+'; });
+  alert(msg);
+}
+
+function snGetR16Team(i, side) {
+  var draw = snMatchData['cdm'] && snMatchData['cdm'].r16Draw;
+  if (draw && draw[i]) return side === 'home' ? (draw[i].home||'?') : (draw[i].away||'?');
+  // Fallback : 2 premiers de chaque poule
+  var poules = (snMatchData['cdm'] && snMatchData['cdm'].poules) || {};
+  var q16 = [];
+  Object.keys(poules).sort().forEach(function(g) {
+    var ranked = snGetPouleStandings('cdm', g);
+    if (ranked[0]) q16.push(ranked[0]);
+    if (ranked[1]) q16.push(ranked[1]);
+  });
   var matchups = [[0,3],[1,2],[4,7],[5,6],[8,11],[9,10],[12,15],[13,14]];
   var pair = matchups[i] || [2*i, 2*i+1];
-  return side === 'home' ? (q16[pair[0]] || '?') : (q16[pair[1]] || '?');
+  return side === 'home' ? (q16[pair[0]]||'?') : (q16[pair[1]]||'?');
 }
 
 // ── Buteurs ──────────────────────────────────────────────────────
