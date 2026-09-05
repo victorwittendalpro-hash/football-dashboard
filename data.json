@@ -2519,7 +2519,10 @@
       "koMatches": {
         "r16_0": {
           "home": "Algérie",
-          "away": "Macédoine"
+          "away": "Macédoine",
+          "score_h": 0,
+          "score_a": 2,
+          "scorers": {}
         },
         "r16_1": {
           "home": "Espagne",
