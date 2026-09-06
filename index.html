@@ -6709,6 +6709,61 @@ function snRenderQualifs(cfg) {
   panel.innerHTML = h;
   snAttachSubnav();
 }
+
+// Propage les vainqueurs dans le tableau KO apres chaque resultat
+function snPropagateKO(compId) {
+  if (!snMatchData[compId]) return;
+  var ko = snMatchData[compId].koMatches;
+  if (!ko) return;
+
+  // Arbre KO : [tour_src, idx_src1, idx_src2] -> [tour_dst, idx_dst]
+  // r16_0 + r16_1 -> qf_0 | r16_2 + r16_3 -> qf_1 | etc.
+  var brackets;
+  if (compId === 'cdm') {
+    brackets = [
+      // r16 -> qf
+      {from: ['r16_0','r16_1'], to: 'qf_0'},
+      {from: ['r16_2','r16_3'], to: 'qf_1'},
+      {from: ['r16_4','r16_5'], to: 'qf_2'},
+      {from: ['r16_6','r16_7'], to: 'qf_3'},
+      // qf -> sf
+      {from: ['qf_0','qf_1'],   to: 'sf_0'},
+      {from: ['qf_2','qf_3'],   to: 'sf_1'},
+      // sf -> final
+      {from: ['sf_0','sf_1'],   to: 'final_0'},
+    ];
+  } else {
+    brackets = [
+      {from: ['qf_0','qf_1'],   to: 'sf_0'},
+      {from: ['qf_2','qf_3'],   to: 'sf_1'},
+      {from: ['sf_0','sf_1'],   to: 'final_0'},
+    ];
+  }
+
+  function getWinner(key) {
+    var m = ko[key];
+    if (!m || m.score_h == null || m.score_a == null) return null;
+    return m.score_h >= m.score_a ? m.home : m.away;
+  }
+
+  brackets.forEach(function(b) {
+    var w0 = getWinner(b.from[0]);
+    var w1 = getWinner(b.from[1]);
+    if (!w0 && !w1) return; // rien a propager
+    var dst = ko[b.to] || {};
+    var changed = false;
+    if (w0 && dst.home !== w0) { dst.home = w0; changed = true; }
+    if (w1 && dst.away !== w1) { dst.away = w1; changed = true; }
+    if (changed) {
+      // Reinitialiser le score si les equipes ont change
+      if (changed && (dst.score_h != null)) {
+        dst.score_h = null; dst.score_a = null; dst.scorers = {};
+      }
+      ko[b.to] = dst;
+    }
+  });
+}
+
 function snRenderKO(cfg) {
   var sn = currentSeasonNum || 8;
   var panel = document.getElementById('sn-panel');
@@ -6717,6 +6772,7 @@ function snRenderKO(cfg) {
     ? [{k:'r16',l:'1/8 de Finale',n:8},{k:'qf',l:'Quarts',n:4},{k:'sf',l:'Demis',n:2},{k:'final',l:'Finale',n:1}]
     : [{k:'qf',l:'Quarts',n:4},{k:'sf',l:'Demis',n:2},{k:'final',l:'Finale',n:1}];
 
+  snPropagateKO(cfg.id);
   var h = snSubnavHTML(cfg, 'ko')
     + '<div class="sn-sec-hdr"><span style="font-size:1.4rem">' + cfg.icon + '</span>'
     + '<div><div class="sn-sec-title">' + cfg.label + ' S' + sn + ' — Phase Finale</div>'
@@ -7236,6 +7292,8 @@ function snSaveMatch() {
     if(!snMatchData[ctx.compId]) snMatchData[ctx.compId]={groupMatches:{},koMatches:{}};
     if(!snMatchData[ctx.compId].koMatches) snMatchData[ctx.compId].koMatches={};
     snMatchData[ctx.compId].koMatches[ctx.key]=entry;
+    // Propager le vainqueur dans le tour suivant
+    snPropagateKO(ctx.compId);
   }
 
   // Recalculer les buts en sélection de tous les joueurs concernés
@@ -7293,17 +7351,26 @@ function snOpenNextMatch(ctx) {
     }
 
   } else if (ctx.type === 'ko') {
-    // Chercher le prochain match KO non joue
+    // Propager d'abord, puis chercher le prochain match du meme tour ou tour suivant
+    snPropagateKO(compId);
     var koM = sn.koMatches || {};
-    var r16 = (sn.r16Draw || []);
-    var keys = r16.map(function(_,i){ return 'r16_'+i; });
-    var curIdx = keys.indexOf(ctx.key);
-    for (var i = curIdx+1; i < keys.length; i++) {
-      var k = keys[i];
-      var m = koM[k];
-      if (m && m.home && m.away && (m.score_h == null)) {
-        snOpenKoMatch(compId, k, m.home, m.away);
-        return;
+    var allRounds = compId === 'cdm'
+      ? ['r16','qf','sf','final']
+      : ['qf','sf','final'];
+    var curRound = ctx.round;
+    var curRoundIdx = allRounds.indexOf(curRound);
+    // Chercher d'abord dans le meme tour, puis les tours suivants
+    for (var ri = curRoundIdx; ri < allRounds.length; ri++) {
+      var rnd = allRounds[ri];
+      var cnt = rnd==='r16'?8:rnd==='qf'?4:rnd==='sf'?2:1;
+      var startI = (ri === curRoundIdx) ? ctx.idx + 1 : 0;
+      for (var i = startI; i < cnt; i++) {
+        var k = rnd + '_' + i;
+        var m = koM[k];
+        if (m && m.home && m.home !== '?' && m.away && m.away !== '?' && m.score_h == null) {
+          snOpenKO(compId, rnd, i);
+          return;
+        }
       }
     }
   }
