@@ -2545,7 +2545,12 @@
         },
         "r16_3": {
           "home": "Italie",
-          "away": "Côte d'Ivoire"
+          "away": "Côte d'Ivoire",
+          "score_h": 0,
+          "score_a": 1,
+          "scorers": {
+            "195": 1
+          }
         },
         "r16_4": {
           "home": "Etats-unis",
@@ -2562,6 +2567,14 @@
         "r16_7": {
           "home": "Brésil",
           "away": "Portugal"
+        },
+        "qf_0": {
+          "home": "Macédoine",
+          "away": "Espagne"
+        },
+        "qf_1": {
+          "home": "Suède",
+          "away": "Côte d'Ivoire"
         }
       },
       "qualifMatches": {
