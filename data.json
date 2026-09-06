@@ -2554,7 +2554,10 @@
         },
         "r16_4": {
           "home": "Etats-unis",
-          "away": "Turquie"
+          "away": "Turquie",
+          "score_h": 0,
+          "score_a": 0,
+          "scorers": {}
         },
         "r16_5": {
           "home": "Zimbabwe",
@@ -2575,6 +2578,9 @@
         "qf_1": {
           "home": "Suède",
           "away": "Côte d'Ivoire"
+        },
+        "qf_2": {
+          "home": "Etats-unis"
         }
       },
       "qualifMatches": {
