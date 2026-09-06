@@ -2536,7 +2536,12 @@
         },
         "r16_2": {
           "home": "Suède",
-          "away": "Colombie"
+          "away": "Colombie",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {
+            "26": 1
+          }
         },
         "r16_3": {
           "home": "Italie",
