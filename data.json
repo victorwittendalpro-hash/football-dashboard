@@ -2587,7 +2587,14 @@
         },
         "r16_7": {
           "home": "Brésil",
-          "away": "Portugal"
+          "away": "Portugal",
+          "score_h": 3,
+          "score_a": 2,
+          "scorers": {
+            "7": 2,
+            "95": 1,
+            "136": 1
+          }
         },
         "qf_0": {
           "home": "Macédoine",
@@ -2602,7 +2609,8 @@
           "away": "Zimbabwe"
         },
         "qf_3": {
-          "home": "France"
+          "home": "France",
+          "away": "Brésil"
         }
       },
       "qualifMatches": {
