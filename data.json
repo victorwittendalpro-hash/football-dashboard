@@ -2565,7 +2565,12 @@
         },
         "r16_5": {
           "home": "Zimbabwe",
-          "away": "Angleterre"
+          "away": "Angleterre",
+          "score_h": 3,
+          "score_a": 0,
+          "scorers": {
+            "198": 2
+          }
         },
         "r16_6": {
           "home": "France",
@@ -2584,7 +2589,8 @@
           "away": "Côte d'Ivoire"
         },
         "qf_2": {
-          "home": "Etats-unis"
+          "home": "Etats-unis",
+          "away": "Zimbabwe"
         }
       },
       "qualifMatches": {
