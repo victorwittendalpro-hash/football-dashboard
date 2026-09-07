@@ -2574,7 +2574,16 @@
         },
         "r16_6": {
           "home": "France",
-          "away": "Pays-Bas"
+          "away": "Pays-Bas",
+          "score_h": 3,
+          "score_a": 2,
+          "scorers": {
+            "3": 1,
+            "5": 1,
+            "54": 1,
+            "56": 1,
+            "142": 1
+          }
         },
         "r16_7": {
           "home": "Brésil",
@@ -2591,6 +2600,9 @@
         "qf_2": {
           "home": "Etats-unis",
           "away": "Zimbabwe"
+        },
+        "qf_3": {
+          "home": "France"
         }
       },
       "qualifMatches": {
