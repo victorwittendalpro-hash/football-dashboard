@@ -2619,7 +2619,10 @@
         },
         "qf_2": {
           "home": "Etats-unis",
-          "away": "Zimbabwe"
+          "away": "Zimbabwe",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {}
         },
         "qf_3": {
           "home": "France",
@@ -2628,6 +2631,9 @@
         "sf_0": {
           "home": "Espagne",
           "away": "Côte d'Ivoire"
+        },
+        "sf_1": {
+          "home": "Etats-unis"
         }
       },
       "qualifMatches": {
