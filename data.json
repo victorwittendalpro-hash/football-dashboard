@@ -2598,7 +2598,13 @@
         },
         "qf_0": {
           "home": "Macédoine",
-          "away": "Espagne"
+          "away": "Espagne",
+          "score_h": 0,
+          "score_a": 3,
+          "scorers": {
+            "15": 1,
+            "16": 1
+          }
         },
         "qf_1": {
           "home": "Suède",
@@ -2611,6 +2617,9 @@
         "qf_3": {
           "home": "France",
           "away": "Brésil"
+        },
+        "sf_0": {
+          "home": "Espagne"
         }
       },
       "qualifMatches": {
