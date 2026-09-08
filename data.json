@@ -2608,7 +2608,14 @@
         },
         "qf_1": {
           "home": "Suède",
-          "away": "Côte d'Ivoire"
+          "away": "Côte d'Ivoire",
+          "score_h": 1,
+          "score_a": 2,
+          "scorers": {
+            "21": 1,
+            "26": 1,
+            "195": 1
+          }
         },
         "qf_2": {
           "home": "Etats-unis",
@@ -2619,7 +2626,8 @@
           "away": "Brésil"
         },
         "sf_0": {
-          "home": "Espagne"
+          "home": "Espagne",
+          "away": "Côte d'Ivoire"
         }
       },
       "qualifMatches": {
