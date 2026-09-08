@@ -2626,14 +2626,22 @@
         },
         "qf_3": {
           "home": "France",
-          "away": "Brésil"
+          "away": "Brésil",
+          "score_h": 4,
+          "score_a": 0,
+          "scorers": {
+            "3": 1,
+            "12": 1,
+            "56": 2
+          }
         },
         "sf_0": {
           "home": "Espagne",
           "away": "Côte d'Ivoire"
         },
         "sf_1": {
-          "home": "Etats-unis"
+          "home": "Etats-unis",
+          "away": "France"
         }
       },
       "qualifMatches": {
