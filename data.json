@@ -11734,6 +11734,7 @@
     "25": "L1",
     "27": "LA",
     "28": "L1",
+    "29": "LA",
     "30": "",
     "31": "BU",
     "33": "PL",
@@ -11836,6 +11837,10 @@
     },
     "28": {
       "club": "As Monaco",
+      "season": "S9"
+    },
+    "29": {
+      "club": "OM",
       "season": "S9"
     },
     "46": {
@@ -12502,7 +12507,8 @@
       "RB Leipzig": 20,
       "River Plate": 20,
       "Besiktas": 0,
-      "Brighton": 40
+      "Brighton": 40,
+      "OM": 20
     },
     "contracts": {
       "0": {
@@ -12552,6 +12558,10 @@
       "26": {
         "end": 11,
         "duration": 2
+      },
+      "29": {
+        "end": 13,
+        "duration": 4
       },
       "30": {
         "end": 13,
@@ -12633,6 +12643,14 @@
         "end": 13,
         "duration": 4
       },
+      "113": {
+        "end": 11,
+        "duration": 2
+      },
+      "114": {
+        "end": 11,
+        "duration": 2
+      },
       "123": {
         "end": 11,
         "duration": 2
@@ -12681,6 +12699,10 @@
         "end": 11,
         "duration": 2
       },
+      "175": {
+        "end": 11,
+        "duration": 2
+      },
       "183": {
         "end": 11,
         "duration": 2
@@ -12724,6 +12746,14 @@
         "player": "N. Dominguez",
         "from": "Real Madrid",
         "to": "River Plate",
+        "amount": 0,
+        "date": "2026-09-09"
+      },
+      {
+        "season": 9,
+        "player": "B. Samba",
+        "from": "Manchester United",
+        "to": "OM",
         "amount": 0,
         "date": "2026-09-09"
       }
