@@ -11787,7 +11787,6 @@
     "129": "",
     "130": "",
     "131": "",
-    "134": "PL",
     "136": "PL",
     "137": "LA",
     "139": "L1",
@@ -11861,10 +11860,6 @@
     "125": {
       "club": "Aston Villa",
       "season": "S8"
-    },
-    "134": {
-      "club": "Galatasarai",
-      "season": "S9"
     },
     "161": {
       "club": "Bayer Leverkusen",
@@ -12559,6 +12554,10 @@
         "end": 11,
         "duration": 2
       },
+      "80": {
+        "end": 13,
+        "duration": 4
+      },
       "90": {
         "end": 11,
         "duration": 2
@@ -12584,10 +12583,6 @@
         "duration": 2
       },
       "105": {
-        "end": 13,
-        "duration": 4
-      },
-      "134": {
         "end": 13,
         "duration": 4
       },
@@ -12643,14 +12638,6 @@
         "from": "Inter Milan",
         "to": "Al Hilal",
         "amount": 30,
-        "date": "2026-09-09"
-      },
-      {
-        "season": 9,
-        "player": "Ndiaye",
-        "from": "Totenham",
-        "to": "Galatasarai",
-        "amount": 20,
         "date": "2026-09-09"
       }
     ]
