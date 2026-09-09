@@ -1017,7 +1017,7 @@ function renderProfile(i) {
                 ${logo?`<img src="${logo}" class="club-logo" alt="${st.club}" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`:''}
                 <div class="club-fallback" style="${logo?'display:none':'display:flex'}">${ini(st.club)}</div>
                 <div class="club-name" title="${st.club}">${st.club}</div>
-                <span onclick="openCareerEditor(${i}, ${JSON.stringify(st.seasons)})" style="cursor:pointer;font-size:10px;color:#5a6080;margin-left:4px;opacity:.7" title="Modifier">✏️</span>
+                <span onclick="openCareerEditor(${i})" style="cursor:pointer;font-size:10px;color:#5a6080;margin-left:4px;opacity:.7" title="Modifier carrière">✏️</span>
               </div>
               <div class="career-season">${lbl}</div>
             </div>`;
@@ -1539,43 +1539,43 @@ function openClubEditor(playerIdx, cellEl) {
 var _cePlayerIdx = null;
 var _ceSeasons   = [];
 
-function openCareerEditor(playerIdx, seasons) {
+function openCareerEditor(playerIdx) {
   var p = ALL[playerIdx];
   if (!p) return;
   _cePlayerIdx = playerIdx;
-  _ceSeasons   = seasons;
 
   document.getElementById('ce-player-name').textContent = p.name;
 
-  // Construire les lignes de saisie (une par saison)
   var career = p.career || {};
-  var rows = '';
-  // Afficher toutes les saisons connues du joueur, pas juste celles du step
   var SS_ALL = ['S-4','S-3','S-2','S-1','S1','S2','S3','S4','S5','S6','S7','S8','S9'];
-  SS_ALL.forEach(function(sn) {
-    var club = career[sn] || '';
-    var isCurrent = seasons.indexOf(sn) >= 0;
-    var highlight = isCurrent ? 'border-color:#4f8ef7' : '';
-    rows += '<div style="display:flex;align-items:center;gap:.5rem">'
-      + '<div style="font-size:11px;color:#5a6080;min-width:32px">' + sn + '</div>'
-      + '<input data-sn="' + sn + '" value="' + club.replace(/"/g,'&quot;') + '" list="ce-clubs-list"'
-      + ' placeholder="Club…"'
-      + ' style="flex:1;background:#0d0f14;border:1px solid #' + (isCurrent?'4f8ef7':'3a4460')
-      + ';border-radius:6px;padding:.35rem .6rem;color:#e8eaf0;font-size:12px;outline:none">'
-      + '</div>';
-  });
 
-  // Datalist des clubs connus
+  // Datalist clubs connus
   var allClubs = new Set();
   ALL.forEach(function(pl) {
     if (pl.currentClub) allClubs.add(pl.currentClub);
     Object.values(pl.career || {}).forEach(function(c){ if(c) allClubs.add(c); });
   });
-  var datalist = '<datalist id="ce-clubs-list">'
+
+  var rows = '<datalist id="ce-clubs-list">'
     + Array.from(allClubs).sort().map(function(c){ return '<option value="'+c.replace(/"/g,'&quot;')+'">'; }).join('')
     + '</datalist>';
 
-  document.getElementById('ce-rows').innerHTML = rows + datalist;
+  SS_ALL.forEach(function(sn) {
+    var club = career[sn] || '';
+    var hasClub = club.length > 0;
+    rows += '<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:3px">'
+      + '<div style="font-size:11px;color:' + (hasClub?'#8b93b0':'#3a4460') + ';min-width:32px;font-weight:'+(hasClub?'600':'400')+'">' + sn + '</div>'
+      + '<input data-sn="' + sn + '" value="' + club.replace(/"/g,'&quot;') + '" list="ce-clubs-list"'
+      + ' placeholder="— non renseigné —"'
+      + ' style="flex:1;background:#0d0f14;border:1px solid '
+      + (hasClub ? '#3a4460' : '#1e2230')
+      + ';border-radius:6px;padding:.35rem .6rem;color:'
+      + (hasClub ? '#e8eaf0' : '#3a4460')
+      + ';font-size:12px;outline:none">'
+      + '</div>';
+  });
+
+  document.getElementById('ce-rows').innerHTML = rows;
   document.getElementById('career-editor-modal').style.display = 'flex';
 }
 
