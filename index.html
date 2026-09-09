@@ -363,16 +363,20 @@ var GH = {
   saveTimer: null,
   _pendingSave: false,
 
-  url: function() {
-    return 'https://api.github.com/repos/' + this.user + '/' + this.repo
-         + '/contents/' + this.file + '?ref=' + this.branch;
+  url: function(bustCache) {
+    var u = 'https://api.github.com/repos/' + this.user + '/' + this.repo
+          + '/contents/' + this.file + '?ref=' + this.branch;
+    // Cache-buster : force un vrai GET à chaque appel (évite le cache navigateur et GitHub)
+    if (bustCache !== false) u += '&_=' + Date.now();
+    return u;
   },
 
   // Chargement initial
   load: function(callback) {
     var self = this;
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', self.url(), true);
+    xhr.open('GET', self.url(true), true);
+    xhr.setRequestHeader('Cache-Control', 'no-cache');
     xhr.setRequestHeader('Authorization', 'token ' + self.token);
     xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
     xhr.onload = function() {
@@ -411,9 +415,10 @@ var GH = {
     self._pollTimer = setInterval(function() {
       if (self.saving || self.saveTimer) return;
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', self.url(), true);
+      xhr.open('GET', self.url(true), true);
       xhr.setRequestHeader('Authorization', 'token ' + self.token);
       xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
+      xhr.setRequestHeader('Cache-Control', 'no-cache');
       xhr.onload = function() {
         if (xhr.status !== 200) return;
         var resp = JSON.parse(xhr.responseText);
