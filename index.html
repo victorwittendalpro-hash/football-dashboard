@@ -551,7 +551,26 @@ var GH = {
       clKoBracket:          (typeof CL_KO_DATA        !== 'undefined') ? CL_KO_DATA.bracket : {},
       elKoDetails:          (typeof elKoDetails       !== 'undefined') ? elKoDetails       : {},
       cupData:              (typeof CUP_DATA           !== 'undefined') ? CUP_DATA          : {},
-      snMatchData:          (typeof snMatchData        !== 'undefined') ? snMatchData        : {},
+      snMatchData: (function() {
+        var local  = (typeof snMatchData !== 'undefined') ? snMatchData : {};
+        var guard  = (typeof GH !== 'undefined' && GH._snGuard) ? GH._snGuard : {};
+        var merged = {};
+        var comps  = Object.keys(Object.assign({}, local, guard));
+        comps.forEach(function(comp) {
+          var lc = local[comp] || {}, gc = guard[comp] || {};
+          merged[comp] = {};
+          ['qualifMatches','groupMatches','koMatches'].forEach(function(sub) {
+            var lv = lc[sub] || {}, gv = gc[sub] || {};
+            merged[comp][sub] = Object.keys(gv).length >= Object.keys(lv).length ? gv : lv;
+          });
+          var lp = lc.poules || {}, gp = gc.poules || {};
+          merged[comp].poules = Object.keys(gp).length >= Object.keys(lp).length ? gp : lp;
+          if (lc.r16Draw || gc.r16Draw) {
+            merged[comp].r16Draw = lc.r16Draw || gc.r16Draw;
+          }
+        });
+        return merged;
+      })(),
       archives:             (typeof histArchives       !== 'undefined') ? histArchives       : [],
       playerLigueOverrides: window._playerLigueOverrides || {},
       playerClubOverrides:  window._playerClubOverrides  || {},
@@ -643,8 +662,23 @@ function ghApplyData(data) {
     });
   }
   if (data.snMatchData && typeof snMatchData !== 'undefined') {
-    // Mémoriser la version remote pour protéger lors des saves
-    if (typeof GH !== 'undefined') GH._lastRemoteSnMatchData = data.snMatchData;
+    // Mettre à jour GH._snGuard avec le max de chaque compétition
+    if (typeof GH !== 'undefined') {
+      if (!GH._snGuard) GH._snGuard = {};
+      var inc = data.snMatchData;
+      Object.keys(inc).forEach(function(comp) {
+        if (!GH._snGuard[comp]) GH._snGuard[comp] = {};
+        var ic = inc[comp] || {}, gc = GH._snGuard[comp];
+        ['qualifMatches','groupMatches','koMatches'].forEach(function(sub) {
+          var iv = ic[sub] || {}, gv = gc[sub] || {};
+          if (Object.keys(iv).length > Object.keys(gv).length) gc[sub] = iv;
+        });
+        var ip = ic.poules || {}, gp = gc.poules || {};
+        if (Object.keys(ip).length > Object.keys(gp).length) gc.poules = ip;
+        if (ic.r16Draw) gc.r16Draw = ic.r16Draw;
+      });
+      GH._lastRemoteSnMatchData = data.snMatchData;
+    }
     // Fusionner avec localStorage si plus récent
     var localData = GH._loadLocal ? GH._loadLocal() : null;
     var localTs   = parseInt(localStorage.getItem('fb_dashboard_backup_ts') || '0');
