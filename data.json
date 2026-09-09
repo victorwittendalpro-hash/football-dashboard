@@ -11819,6 +11819,10 @@
       "club": "Manchester United",
       "season": "S8"
     },
+    "28": {
+      "club": "As Monaco",
+      "season": "S9"
+    },
     "48": {
       "club": "Totenham",
       "season": "S8"
@@ -11854,10 +11858,13 @@
     "199": {
       "club": "Benfica",
       "season": "S8"
-    },
-    "28": {
-      "club": "As Monaco",
-      "season": "S9"
+    }
+  },
+  "playerCareerOverrides": {
+    "108": {
+      "S7": "FC Barcelone",
+      "S8": "FC Barcelone",
+      "S6": "Brugges"
     }
   },
   "customPlayers": [
@@ -12447,16 +12454,10 @@
   "awardsData": {},
   "mcData": {
     "budgets": {
-      "AC Milan": 0
+      "AC Milan": 0,
+      "Bayer Leverkusen": 349
     },
     "contracts": {},
     "transfers": []
-  },
-  "playerCareerOverrides": {
-    "108": {
-      "S7": "FC Barcelone",
-      "S8": "FC Barcelone",
-      "S6": "Brugges"
-    }
   }
 }
