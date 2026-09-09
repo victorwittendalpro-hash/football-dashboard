@@ -382,9 +382,9 @@ var GH = {
           var content = JSON.parse(decodeURIComponent(escape(atob(resp.content.replace(/\n/g, '')))));
           callback(null, content);
         } catch(e) { callback('Parse error'); }
-      } else { callback('HTTP ' + xhr.status); }
+      } else { self._loaded = true; callback('HTTP ' + xhr.status); }
     };
-    xhr.onerror = function() { callback('Network error'); };
+    xhr.onerror = function() { self._loaded = true; callback('Network error'); };
     xhr.send();
   },
 
@@ -449,6 +449,8 @@ var GH = {
   // Sauvegarde : PUT direct avec SHA connu, GET seulement si SHA manquant ou 409
   _doSave: function() {
     var self = this;
+    // Bloquer toute sauvegarde avant que le chargement initial soit terminé
+    if (!self._loaded) { self._pendingSave = true; return; }
     if (self.saving) { self._pendingSave = true; return; }
     self._pendingSave = false;
     self.saving = true;
