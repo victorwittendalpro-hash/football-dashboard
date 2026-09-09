@@ -12476,13 +12476,33 @@
       "Manchester United": 0
     },
     "contracts": {
+      "3": {
+        "end": 11,
+        "duration": 2
+      },
       "11": {
         "end": 13,
         "duration": 4
       },
+      "12": {
+        "end": 11,
+        "duration": 2
+      },
       "15": {
         "end": 13,
         "duration": 4
+      },
+      "17": {
+        "end": 11,
+        "duration": 2
+      },
+      "78": {
+        "end": 11,
+        "duration": 2
+      },
+      "104": {
+        "end": 11,
+        "duration": 2
       },
       "142": {
         "end": 11,
