@@ -11281,7 +11281,9 @@
   ],
   "awardsData": {},
   "mcData": {
-    "budgets": {},
+    "budgets": {
+      "AC Milan": 0
+    },
     "contracts": {},
     "transfers": []
   }
