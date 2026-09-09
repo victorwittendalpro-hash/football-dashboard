@@ -716,10 +716,13 @@ function ghApplyData(data) {
   // Recalculer les buts en sélection depuis snMatchData restauré
   try { rebuildSnGoalsFromMatches(); } catch(e) {}
   if (data.mcData && typeof mcData !== 'undefined') {
-    if (data.mcData.budgets)   mcData.budgets   = data.mcData.budgets;
+    if (data.mcData.budgets) {
+      // Fusionner : remote est la source de vérité, mais garder les clés locales
+      // non présentes dans le remote (modifications locales non encore propagées)
+      mcData.budgets = Object.assign({}, mcData.budgets, data.mcData.budgets);
+    }
     if (data.mcData.contracts) mcData.contracts = data.mcData.contracts;
     if (data.mcData.transfers) {
-      // Fusionner : garder l'historique statique + ajouter les nouveaux transferts sauvegardés
       var savedNew = data.mcData.transfers.filter(function(t){ return t.season !== null; });
       mcData.transfers = MC_HISTORICAL_TRANSFERS.slice().concat(savedNew);
     }
