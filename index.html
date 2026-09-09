@@ -645,14 +645,11 @@ var GH = {
   },
 
   _saveLocal: function(data) {
-    try {
-      localStorage.setItem('fb_dashboard_backup', JSON.stringify(data));
-      localStorage.setItem('fb_dashboard_backup_ts', Date.now().toString());
-    } catch(e) {}
+    // localStorage désactivé — GitHub est la seule source de vérité
   },
 
   _loadLocal: function() {
-    try { return JSON.parse(localStorage.getItem('fb_dashboard_backup')); } catch(e) { return null; }
+    return null; // localStorage désactivé
   },
 
   _showStatus: function(state) {
@@ -1292,6 +1289,13 @@ initHeader();
 flt();
 try { sel(0); } catch(e) { console.warn('sel(0):', e); }
 // Charger données GitHub
+// Vider le localStorage au démarrage pour éviter toute interférence
+// avec les données GitHub (le localStorage peut contenir des données périmées)
+try {
+  localStorage.removeItem('fb_dashboard_backup');
+  localStorage.removeItem('fb_dashboard_backup_ts');
+} catch(e) {}
+
 // Timeout sécurité : masquer l'overlay après 8s max
 setTimeout(function() {
   var ov = document.getElementById('gh-loading-overlay');
