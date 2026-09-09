@@ -11787,6 +11787,7 @@
     "129": "",
     "130": "",
     "131": "",
+    "134": "PL",
     "136": "PL",
     "137": "LA",
     "139": "L1",
@@ -11860,6 +11861,10 @@
     "125": {
       "club": "Aston Villa",
       "season": "S8"
+    },
+    "134": {
+      "club": "Galatasarai",
+      "season": "S9"
     },
     "161": {
       "club": "Bayer Leverkusen",
@@ -12485,7 +12490,9 @@
       "PSG": 4.9,
       "Manchester United": 0,
       "Feyenord": 20,
-      "Al Hilal": -10
+      "Al Hilal": -10,
+      "Galatasarai": 0,
+      "Totenham": 40
     },
     "contracts": {
       "3": {
@@ -12580,6 +12587,10 @@
         "end": 13,
         "duration": 4
       },
+      "134": {
+        "end": 13,
+        "duration": 4
+      },
       "142": {
         "end": 11,
         "duration": 2
@@ -12632,6 +12643,14 @@
         "from": "Inter Milan",
         "to": "Al Hilal",
         "amount": 30,
+        "date": "2026-09-09"
+      },
+      {
+        "season": 9,
+        "player": "Ndiaye",
+        "from": "Totenham",
+        "to": "Galatasarai",
+        "amount": 20,
         "date": "2026-09-09"
       }
     ]
