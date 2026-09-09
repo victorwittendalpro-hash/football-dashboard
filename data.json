@@ -11733,6 +11733,7 @@
     "25": "L1",
     "27": "LA",
     "28": "L1",
+    "29": "LA",
     "30": "",
     "31": "BU",
     "33": "PL",
@@ -11833,6 +11834,10 @@
     },
     "28": {
       "club": "As Monaco",
+      "season": "S9"
+    },
+    "29": {
+      "club": "OM",
       "season": "S9"
     },
     "37": {
@@ -12560,6 +12565,10 @@
         "end": 11,
         "duration": 2
       },
+      "29": {
+        "end": 13,
+        "duration": 4
+      },
       "30": {
         "end": 13,
         "duration": 4
@@ -12783,6 +12792,14 @@
         "player": "Fekir",
         "from": "Al Nasser",
         "to": "Fluminense",
+        "amount": 0,
+        "date": "2026-09-09"
+      },
+      {
+        "season": 9,
+        "player": "B. Samba",
+        "from": "Manchester United",
+        "to": "OM",
         "amount": 0,
         "date": "2026-09-09"
       }
