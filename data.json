@@ -11726,6 +11726,7 @@
   "playerLigueOverrides": {
     "0": "LA",
     "1": "PL",
+    "8": "LA",
     "9": "",
     "11": "L1",
     "13": "",
@@ -11821,6 +11822,10 @@
     "196": "SA"
   },
   "playerClubOverrides": {
+    "8": {
+      "club": "River Plate",
+      "season": "S9"
+    },
     "11": {
       "club": "AS Rome",
       "season": "S9"
@@ -12494,7 +12499,8 @@
       "Totenham": 40,
       "Botafogo": 20,
       "Al Nasser": 20,
-      "RB Leipzig": 20
+      "RB Leipzig": 20,
+      "River Plate": 20
     },
     "contracts": {
       "0": {
@@ -12506,6 +12512,10 @@
         "duration": 2
       },
       "4": {
+        "end": 13,
+        "duration": 4
+      },
+      "8": {
         "end": 13,
         "duration": 4
       },
@@ -12540,6 +12550,18 @@
       "26": {
         "end": 11,
         "duration": 2
+      },
+      "32": {
+        "end": 11,
+        "duration": 2
+      },
+      "40": {
+        "end": 11,
+        "duration": 2
+      },
+      "44": {
+        "end": 13,
+        "duration": 4
       },
       "45": {
         "end": 11,
@@ -12604,6 +12626,10 @@
       "105": {
         "end": 13,
         "duration": 4
+      },
+      "123": {
+        "end": 11,
+        "duration": 2
       },
       "131": {
         "end": 13,
@@ -12684,6 +12710,14 @@
         "player": "Helinho",
         "from": "Al Nasser",
         "to": "Botafogo",
+        "amount": 0,
+        "date": "2026-09-09"
+      },
+      {
+        "season": 9,
+        "player": "N. Dominguez",
+        "from": "Real Madrid",
+        "to": "River Plate",
         "amount": 0,
         "date": "2026-09-09"
       }
