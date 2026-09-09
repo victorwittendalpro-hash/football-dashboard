@@ -475,9 +475,46 @@ var GH = {
   _doPut: function(sha) {
     var self = this;
     var data = self.collectData();
-    // Protection : ne jamais sauvegarder sn < 9 (vieil appareil ou cache périmé)
+    // Protection 1 : ne jamais sauvegarder sn < 9
     if ((data.currentSeasonNum || 0) < 9) {
       self.saving = false; self._showStatus('synced'); return;
+    }
+    // Protection 2 : ne jamais sauvegarder moins de matchs SN que _snGuard
+    function snCount(snData) {
+      var n = 0;
+      Object.values(snData || {}).forEach(function(c) {
+        n += Object.keys(c.qualifMatches || {}).length;
+        n += Object.keys(c.groupMatches  || {}).length;
+        n += Object.keys(c.koMatches     || {}).length;
+      });
+      return n;
+    }
+    var localSnCount = snCount(data.snMatchData);
+    var guardSnCount = snCount(self._snGuard);
+    if (guardSnCount > localSnCount) {
+      // Injecter les données protégées avant de sauvegarder
+      if (!data.snMatchData) data.snMatchData = {};
+      Object.keys(self._snGuard).forEach(function(comp) {
+        if (!data.snMatchData[comp]) data.snMatchData[comp] = {};
+        var gc = self._snGuard[comp], lc = data.snMatchData[comp];
+        ['qualifMatches','groupMatches','koMatches'].forEach(function(sub) {
+          var gv = gc[sub] || {}, lv = lc[sub] || {};
+          if (Object.keys(gv).length > Object.keys(lv).length) lc[sub] = gv;
+        });
+        var gp = gc.poules || {}, lp = lc.poules || {};
+        if (Object.keys(gp).length > Object.keys(lp).length) lc.poules = gp;
+        if (gc.r16Draw && !lc.r16Draw) lc.r16Draw = gc.r16Draw;
+      });
+    }
+    // Protection 3 : ne jamais sauvegarder moins de budgets/transferts que _mcGuard
+    if (self._mcGuard) {
+      if (!data.mcData) data.mcData = {};
+      if (self._mcGuard.budgets && Object.keys(self._mcGuard.budgets).length > Object.keys(data.mcData.budgets||{}).length) {
+        data.mcData.budgets = Object.assign({}, self._mcGuard.budgets, data.mcData.budgets||{});
+      }
+      if (self._mcGuard.transfers && (self._mcGuard.transfers.length > (data.mcData.transfers||[]).filter(function(t){return t.season;}).length)) {
+        data.mcData.transfers = self._mcGuard.transfers;
+      }
     }
     self._saveLocal(data);
     var content;
@@ -750,6 +787,16 @@ function ghApplyData(data) {
   // Recalculer les buts en sélection depuis snMatchData restauré
   try { rebuildSnGoalsFromMatches(); } catch(e) {}
   if (data.mcData && typeof mcData !== 'undefined') {
+    // Mémoriser le meilleur état mcData vu
+    if (typeof GH !== 'undefined') {
+      if (!GH._mcGuard) GH._mcGuard = {};
+      if (data.mcData.budgets && Object.keys(data.mcData.budgets).length > Object.keys(GH._mcGuard.budgets||{}).length) {
+        GH._mcGuard.budgets = data.mcData.budgets;
+      }
+      var newTr = (data.mcData.transfers||[]).filter(function(t){return t.season;});
+      var curTr = (GH._mcGuard.transfers||[]);
+      if (newTr.length > curTr.length) GH._mcGuard.transfers = newTr;
+    }
     if (data.mcData.budgets) {
       // Fusionner : remote est la source de vérité, mais garder les clés locales
       // non présentes dans le remote (modifications locales non encore propagées)
