@@ -617,14 +617,14 @@ var GH = {
 };
 function ghApplyData(data) {
   if (!data) return;
-  if (data.matchDetails) {
-    Object.keys(matchDetails).forEach(function(k){ delete matchDetails[k]; });
-    Object.assign(matchDetails, data.matchDetails);
+  // Appliquer via window.X pour traverser les scopes de scripts
+  function applyObj(target, source) {
+    if (!target || !source) return;
+    Object.keys(target).forEach(function(k){ delete target[k]; });
+    Object.keys(source).forEach(function(k){ target[k] = source[k]; });
   }
-  if (data.clMatchDetails) {
-    Object.keys(clMatchDetails).forEach(function(k){ delete clMatchDetails[k]; });
-    Object.assign(clMatchDetails, data.clMatchDetails);
-  }
+  if (data.matchDetails) { applyObj(window.matchDetails, data.matchDetails); }
+  if (data.clMatchDetails) { applyObj(window.clMatchDetails, data.clMatchDetails); }
   if (data.clKoDetails)    clKoDetails    = data.clKoDetails;
   if (data.clKoBracket && typeof CL_KO_DATA !== 'undefined') {
     if (data.clKoBracket.r16)   CL_KO_DATA.bracket.r16   = data.clKoBracket.r16;
@@ -634,12 +634,12 @@ function ghApplyData(data) {
   }
   // Numéro de saison courant
   if (data.currentSeasonNum) {
-    currentSeasonNum = data.currentSeasonNum;
+    window.currentSeasonNum = data.currentSeasonNum;
     updateSeasonLabels();
   }
   // Archives
   if (data.archives) {
-    histArchives = data.archives;
+    window.histArchives = data.archives;
     initHistory(data.archives);
   }
   // Restaurer les overrides de ligue des joueurs
@@ -683,13 +683,7 @@ function ghApplyData(data) {
       });
       GH._lastRemoteSnMatchData = data.snMatchData;
     }
-    // Mettre à jour window.snMatchData (partagé entre tous les scripts)
-    if (window.snMatchData) {
-      Object.keys(window.snMatchData).forEach(function(k){ delete window.snMatchData[k]; });
-      Object.keys(data.snMatchData).forEach(function(k){
-        window.snMatchData[k] = data.snMatchData[k];
-      });
-    }
+    applyObj(window.snMatchData, data.snMatchData);
   }
   // Restaurer les données des Coupes
   if (data.cupData && typeof CUP_DATA !== 'undefined') {
@@ -701,9 +695,7 @@ function ghApplyData(data) {
     });
   }
   // Restaurer les résultats EL KO
-  if (data.elKoDetails && typeof elKoDetails !== 'undefined') {
-    elKoDetails = data.elKoDetails;
-  }
+  if (data.elKoDetails)    { applyObj(window.elKoDetails, data.elKoDetails); }
   // Restaurer les overrides de club
   if (data.playerCareerOverrides) {
     window._playerCareerOverrides = data.playerCareerOverrides;
@@ -750,11 +742,8 @@ function ghApplyData(data) {
       var curTr = (GH._mcGuard.transfers||[]);
       if (newTr.length > curTr.length) GH._mcGuard.transfers = newTr;
     }
-    if (data.mcData.budgets) {
-      // Le serveur fait toujours autorité
-      mcData.budgets = data.mcData.budgets;
-    }
-    if (data.mcData.contracts) mcData.contracts = data.mcData.contracts;
+    if (data.mcData.budgets)   { applyObj(window.mcData.budgets, data.mcData.budgets); }
+    if (data.mcData.contracts) { applyObj(window.mcData.contracts, data.mcData.contracts); }
     if (data.mcData.transfers) {
       var savedNew = data.mcData.transfers.filter(function(t){ return t.season !== null; });
       mcData.transfers = MC_HISTORICAL_TRANSFERS.slice().concat(savedNew);
@@ -2155,6 +2144,7 @@ const TOTAL_MATCHES = 17;
 
 // Per-match goals: {lg: {teamIdx: {matchIdx: {bm, be, scorers:{playerIdx: goals}}}}}
 var matchDetails = {};
+window.matchDetails = matchDetails;
 // Load from localStorage if available
 (function(){
   try {
@@ -2687,6 +2677,7 @@ function scorerSelect(playerIdx, playerName) {
 
 // Numéro de saison courant (lu depuis data.json)
 var currentSeasonNum = 8;  // défaut S8, sera mis à jour par ghApplyData
+window.currentSeasonNum = currentSeasonNum;
 
 // Mettre à jour les labels de saison dans l'UI
 function updateSeasonLabels() {
@@ -3115,6 +3106,7 @@ function showSeasonClosedNotif(seasonName) {
 // ══════════════════════════════════════════════════════════════════
 
 var histArchives = [];   // tableau des saisons archivées
+window.histArchives = histArchives;
 
 // ══════════════════════════════════════════════════════════════════
 // HISTORIQUE — TITRES DE CHAMPION PAR CHAMPIONNAT
@@ -8530,6 +8522,7 @@ var mcData = {
   contracts: {},
   transfers: MC_HISTORICAL_TRANSFERS.slice(), // pré-rempli avec l'historique
 };
+window.mcData = mcData;
 
 // ── Formule de valorisation ───────────────────────────────────────
 function mcPlayerValue(p) {
