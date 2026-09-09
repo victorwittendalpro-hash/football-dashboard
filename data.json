@@ -11727,6 +11727,7 @@
     "0": "LA",
     "1": "PL",
     "9": "",
+    "11": "L1",
     "13": "",
     "24": "BU",
     "25": "L1",
@@ -11818,6 +11819,10 @@
     "196": "SA"
   },
   "playerClubOverrides": {
+    "11": {
+      "club": "AS Rome",
+      "season": "S9"
+    },
     "22": {
       "club": "Manchester United",
       "season": "S8"
@@ -12470,7 +12475,21 @@
       "PSG": 0,
       "Manchester United": 0
     },
-    "contracts": {},
-    "transfers": []
+    "contracts": {
+      "11": {
+        "end": 13,
+        "duration": 4
+      }
+    },
+    "transfers": [
+      {
+        "season": 9,
+        "player": "Edgar",
+        "from": "PSG",
+        "to": "AS Rome",
+        "amount": 0,
+        "date": "2026-09-09"
+      }
+    ]
   }
 }
