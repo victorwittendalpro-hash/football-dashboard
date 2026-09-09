@@ -11787,7 +11787,6 @@
     "129": "",
     "130": "",
     "131": "",
-    "134": "PL",
     "136": "PL",
     "137": "LA",
     "139": "L1",
@@ -11861,10 +11860,6 @@
     "125": {
       "club": "Aston Villa",
       "season": "S8"
-    },
-    "134": {
-      "club": "RB Leipzig",
-      "season": "S9"
     },
     "161": {
       "club": "Bayer Leverkusen",
@@ -12538,6 +12533,10 @@
         "end": 11,
         "duration": 2
       },
+      "20": {
+        "end": 11,
+        "duration": 2
+      },
       "26": {
         "end": 11,
         "duration": 2
@@ -12607,10 +12606,6 @@
         "duration": 4
       },
       "131": {
-        "end": 13,
-        "duration": 4
-      },
-      "134": {
         "end": 13,
         "duration": 4
       },
@@ -12689,14 +12684,6 @@
         "player": "Helinho",
         "from": "Al Nasser",
         "to": "Botafogo",
-        "amount": 0,
-        "date": "2026-09-09"
-      },
-      {
-        "season": 9,
-        "player": "Ndiaye",
-        "from": "Totenham",
-        "to": "RB Leipzig",
         "amount": 0,
         "date": "2026-09-09"
       }
