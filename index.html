@@ -475,6 +475,17 @@ var GH = {
   _doPut: function(sha) {
     var self = this;
     var data = self.collectData();
+    // Bloquer si les données sont manifestement vides (vieil appareil)
+    var _q = Object.keys(
+      (data.snMatchData && data.snMatchData.cdm && data.snMatchData.cdm.qualifMatches) || {}
+    ).length;
+    var _bg = Object.keys((data.mcData && data.mcData.budgets) || {}).length;
+    var _sn = data.currentSeasonNum || 0;
+    if (_sn < 9 || (_q === 0 && _bg === 0)) {
+      self.saving = false;
+      if (self._pendingSave) self._pendingSave = false;
+      return; // silencieux - pas d'erreur, juste ignoré
+    }
     self._saveLocal(data);
     var content;
     try { content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2)))); }
