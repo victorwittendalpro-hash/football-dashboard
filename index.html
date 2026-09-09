@@ -380,8 +380,10 @@ var GH = {
         self.sha = resp.sha;
         try {
           var content = JSON.parse(decodeURIComponent(escape(atob(resp.content.replace(/\n/g, '')))));
+          self._loaded = true;
           callback(null, content);
-        } catch(e) { callback('Parse error'); }
+          if (self._pendingSave) { self._pendingSave = false; setTimeout(function(){ self._doSave(); }, 100); }
+        } catch(e) { self._loaded = true; callback('Parse error'); }
       } else { self._loaded = true; callback('HTTP ' + xhr.status); }
     };
     xhr.onerror = function() { self._loaded = true; callback('Network error'); };
