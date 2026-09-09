@@ -15,9 +15,6 @@ ta charset="UTF-8">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <!-- build:20260610_084418 -->
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Football Dashboard — Fiches Joueurs</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -205,12 +202,6 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
 </style>
 </head>
 <body>
-<div id="gh-loading-overlay" style="position:fixed;inset:0;background:#0d0f14;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem">
-  <div style="font-family:Syne,sans-serif;font-size:1.5rem;font-weight:800;color:#fff">Football Dashboard</div>
-  <div style="color:#5a6080;font-size:13px">Chargement des données…</div>
-  <div style="width:48px;height:48px;border:3px solid #252a38;border-top-color:#4f8ef7;border-radius:50%;animation:spin .8s linear infinite"></div>
-</div>
-<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
 <div class="header">
   <div class="header-title">⚽ Football <span>Dashboard</span></div>
@@ -367,25 +358,20 @@ var GH = {
   branch: '%28root%29',
   file:   'data.json',
   sha:    null,
-  _loaded: false,
   saving: false,
   saveTimer: null,
   _pendingSave: false,
 
-  url: function(bustCache) {
-    var u = 'https://api.github.com/repos/' + this.user + '/' + this.repo
-          + '/contents/' + this.file + '?ref=' + this.branch;
-    // Cache-buster : force un vrai GET à chaque appel (évite le cache navigateur et GitHub)
-    if (bustCache !== false) u += '&_=' + Date.now();
-    return u;
+  url: function() {
+    return 'https://api.github.com/repos/' + this.user + '/' + this.repo
+         + '/contents/' + this.file + '?ref=' + this.branch;
   },
 
   // Chargement initial
   load: function(callback) {
     var self = this;
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', self.url(true), true);
-    xhr.setRequestHeader('Cache-Control', 'no-cache');
+    xhr.open('GET', self.url(), true);
     xhr.setRequestHeader('Authorization', 'token ' + self.token);
     xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
     xhr.onload = function() {
@@ -394,13 +380,11 @@ var GH = {
         self.sha = resp.sha;
         try {
           var content = JSON.parse(decodeURIComponent(escape(atob(resp.content.replace(/\n/g, '')))));
-          self._loaded = true;
           callback(null, content);
-          if (self._pendingSave) { self._pendingSave = false; setTimeout(function(){ self._doSave(); }, 100); }
-        } catch(e) { self._loaded = true; callback('Parse error'); }
-      } else { self._loaded = true; callback('HTTP ' + xhr.status); }
+        } catch(e) { callback('Parse error'); }
+      } else { callback('HTTP ' + xhr.status); }
     };
-    xhr.onerror = function() { self._loaded = true; callback('Network error'); };
+    xhr.onerror = function() { callback('Network error'); };
     xhr.send();
   },
 
@@ -424,10 +408,9 @@ var GH = {
     self._pollTimer = setInterval(function() {
       if (self.saving || self.saveTimer) return;
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', self.url(true), true);
+      xhr.open('GET', self.url(), true);
       xhr.setRequestHeader('Authorization', 'token ' + self.token);
       xhr.setRequestHeader('Accept', 'application/vnd.github.v3+json');
-      xhr.setRequestHeader('Cache-Control', 'no-cache');
       xhr.onload = function() {
         if (xhr.status !== 200) return;
         var resp = JSON.parse(xhr.responseText);
@@ -466,8 +449,6 @@ var GH = {
   // Sauvegarde : PUT direct avec SHA connu, GET seulement si SHA manquant ou 409
   _doSave: function() {
     var self = this;
-    // Bloquer toute sauvegarde avant que le chargement initial soit terminé
-    if (!self._loaded) { self._pendingSave = true; return; }
     if (self.saving) { self._pendingSave = true; return; }
     self._pendingSave = false;
     self.saving = true;
@@ -494,11 +475,6 @@ var GH = {
   _doPut: function(sha) {
     var self = this;
     var data = self.collectData();
-    // Protection 1 : ne jamais sauvegarder sn < 9
-    if ((data.currentSeasonNum || 0) < 9) {
-      self.saving = false; self._showStatus('synced'); return;
-    }
-
     self._saveLocal(data);
     var content;
     try { content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2)))); }
@@ -571,11 +547,10 @@ var GH = {
       clKoBracket:          (typeof CL_KO_DATA        !== 'undefined') ? CL_KO_DATA.bracket : {},
       elKoDetails:          (typeof elKoDetails       !== 'undefined') ? elKoDetails       : {},
       cupData:              (typeof CUP_DATA           !== 'undefined') ? CUP_DATA          : {},
-      snMatchData:          (typeof snMatchData !== 'undefined') ? snMatchData : {},
+      snMatchData:          (typeof snMatchData        !== 'undefined') ? snMatchData        : {},
       archives:             (typeof histArchives       !== 'undefined') ? histArchives       : [],
       playerLigueOverrides: window._playerLigueOverrides || {},
       playerClubOverrides:  window._playerClubOverrides  || {},
-      playerCareerOverrides: window._playerCareerOverrides || {},
       customPlayers:        window._customPlayers        || [],
       awardsData:           (typeof awardsData          !== 'undefined') ? awardsData         : {},
       mcData: (function() {
@@ -590,11 +565,14 @@ var GH = {
   },
 
   _saveLocal: function(data) {
-    // localStorage désactivé — GitHub est la seule source de vérité
+    try {
+      localStorage.setItem('fb_dashboard_backup', JSON.stringify(data));
+      localStorage.setItem('fb_dashboard_backup_ts', Date.now().toString());
+    } catch(e) {}
   },
 
   _loadLocal: function() {
-    return null; // localStorage désactivé
+    try { return JSON.parse(localStorage.getItem('fb_dashboard_backup')); } catch(e) { return null; }
   },
 
   _showStatus: function(state) {
@@ -617,14 +595,8 @@ var GH = {
 };
 function ghApplyData(data) {
   if (!data) return;
-  // Appliquer via window.X pour traverser les scopes de scripts
-  function applyObj(target, source) {
-    if (!target || !source) return;
-    Object.keys(target).forEach(function(k){ delete target[k]; });
-    Object.keys(source).forEach(function(k){ target[k] = source[k]; });
-  }
-  if (data.matchDetails) { applyObj(window.matchDetails, data.matchDetails); }
-  if (data.clMatchDetails) { applyObj(window.clMatchDetails, data.clMatchDetails); }
+  if (data.matchDetails)   matchDetails   = data.matchDetails;
+  if (data.clMatchDetails) clMatchDetails = data.clMatchDetails;
   if (data.clKoDetails)    clKoDetails    = data.clKoDetails;
   if (data.clKoBracket && typeof CL_KO_DATA !== 'undefined') {
     if (data.clKoBracket.r16)   CL_KO_DATA.bracket.r16   = data.clKoBracket.r16;
@@ -634,12 +606,12 @@ function ghApplyData(data) {
   }
   // Numéro de saison courant
   if (data.currentSeasonNum) {
-    window.currentSeasonNum = data.currentSeasonNum;
+    currentSeasonNum = data.currentSeasonNum;
     updateSeasonLabels();
   }
   // Archives
   if (data.archives) {
-    window.histArchives = data.archives;
+    histArchives = data.archives;
     initHistory(data.archives);
   }
   // Restaurer les overrides de ligue des joueurs
@@ -666,24 +638,29 @@ function ghApplyData(data) {
     });
   }
   if (data.snMatchData && typeof snMatchData !== 'undefined') {
-    // Mettre à jour GH._snGuard avec le max de chaque compétition
-    if (typeof GH !== 'undefined') {
-      if (!GH._snGuard) GH._snGuard = {};
-      var inc = data.snMatchData;
-      Object.keys(inc).forEach(function(comp) {
-        if (!GH._snGuard[comp]) GH._snGuard[comp] = {};
-        var ic = inc[comp] || {}, gc = GH._snGuard[comp];
-        ['qualifMatches','groupMatches','koMatches'].forEach(function(sub) {
-          var iv = ic[sub] || {}, gv = gc[sub] || {};
-          if (Object.keys(iv).length > Object.keys(gv).length) gc[sub] = iv;
+    // Mémoriser la version remote pour protéger lors des saves
+    if (typeof GH !== 'undefined') GH._lastRemoteSnMatchData = data.snMatchData;
+    // Fusionner avec localStorage si plus récent
+    var localData = GH._loadLocal ? GH._loadLocal() : null;
+    var localTs   = parseInt(localStorage.getItem('fb_dashboard_backup_ts') || '0');
+    var serverSn  = data.snMatchData;
+    if (localData && localData.snMatchData && localTs > 0) {
+      // Compter les matchs dans chaque source pour garder le plus complet
+      var countKeys = function(obj) {
+        var n = 0;
+        Object.keys(obj).forEach(function(comp) {
+          var c = obj[comp];
+          ['qualifMatches','groupMatches','koMatches'].forEach(function(t) {
+            if (c[t]) n += Object.keys(c[t]).length;
+          });
         });
-        var ip = ic.poules || {}, gp = gc.poules || {};
-        if (Object.keys(ip).length > Object.keys(gp).length) gc.poules = ip;
-        if (ic.r16Draw) gc.r16Draw = ic.r16Draw;
-      });
-      GH._lastRemoteSnMatchData = data.snMatchData;
+        return n;
+      };
+      if (countKeys(localData.snMatchData) >= countKeys(serverSn)) {
+        serverSn = localData.snMatchData;
+      }
     }
-    applyObj(window.snMatchData, data.snMatchData);
+    snMatchData = serverSn;
   }
   // Restaurer les données des Coupes
   if (data.cupData && typeof CUP_DATA !== 'undefined') {
@@ -695,16 +672,10 @@ function ghApplyData(data) {
     });
   }
   // Restaurer les résultats EL KO
-  if (data.elKoDetails)    { applyObj(window.elKoDetails, data.elKoDetails); }
-  // Restaurer les overrides de club
-  if (data.playerCareerOverrides) {
-    window._playerCareerOverrides = data.playerCareerOverrides;
-    // Appliquer les overrides de carrière sur ALL
-    Object.keys(data.playerCareerOverrides).forEach(function(pidx) {
-      var p = ALL[parseInt(pidx)];
-      if (p) p.career = Object.assign({}, p.career || {}, data.playerCareerOverrides[pidx]);
-    });
+  if (data.elKoDetails && typeof elKoDetails !== 'undefined') {
+    elKoDetails = data.elKoDetails;
   }
+  // Restaurer les overrides de club
   if (data.playerClubOverrides) {
     window._playerClubOverrides = data.playerClubOverrides;
     Object.keys(data.playerClubOverrides).forEach(function(pidx) {
@@ -732,19 +703,10 @@ function ghApplyData(data) {
   // Recalculer les buts en sélection depuis snMatchData restauré
   try { rebuildSnGoalsFromMatches(); } catch(e) {}
   if (data.mcData && typeof mcData !== 'undefined') {
-    // Mémoriser le meilleur état mcData vu
-    if (typeof GH !== 'undefined') {
-      if (!GH._mcGuard) GH._mcGuard = {};
-      if (data.mcData.budgets && Object.keys(data.mcData.budgets).length > Object.keys(GH._mcGuard.budgets||{}).length) {
-        GH._mcGuard.budgets = data.mcData.budgets;
-      }
-      var newTr = (data.mcData.transfers||[]).filter(function(t){return t.season;});
-      var curTr = (GH._mcGuard.transfers||[]);
-      if (newTr.length > curTr.length) GH._mcGuard.transfers = newTr;
-    }
-    if (data.mcData.budgets)   { applyObj(window.mcData.budgets, data.mcData.budgets); }
-    if (data.mcData.contracts) { applyObj(window.mcData.contracts, data.mcData.contracts); }
+    if (data.mcData.budgets)   mcData.budgets   = data.mcData.budgets;
+    if (data.mcData.contracts) mcData.contracts = data.mcData.contracts;
     if (data.mcData.transfers) {
+      // Fusionner : garder l'historique statique + ajouter les nouveaux transferts sauvegardés
       var savedNew = data.mcData.transfers.filter(function(t){ return t.season !== null; });
       mcData.transfers = MC_HISTORICAL_TRANSFERS.slice().concat(savedNew);
     }
@@ -1051,7 +1013,6 @@ function renderProfile(i) {
                 ${logo?`<img src="${logo}" class="club-logo" alt="${st.club}" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`:''}
                 <div class="club-fallback" style="${logo?'display:none':'display:flex'}">${ini(st.club)}</div>
                 <div class="club-name" title="${st.club}">${st.club}</div>
-                <span onclick="openCareerEditor(${i})" style="cursor:pointer;font-size:10px;color:#5a6080;margin-left:4px;opacity:.7" title="Modifier carrière">✏️</span>
               </div>
               <div class="career-season">${lbl}</div>
             </div>`;
@@ -1233,29 +1194,10 @@ initHeader();
 flt();
 try { sel(0); } catch(e) { console.warn('sel(0):', e); }
 // Charger données GitHub
-// Vider le localStorage au démarrage pour éviter toute interférence
-// avec les données GitHub (le localStorage peut contenir des données périmées)
-try {
-  localStorage.removeItem('fb_dashboard_backup');
-  localStorage.removeItem('fb_dashboard_backup_ts');
-} catch(e) {}
-
-// Timeout sécurité : masquer l'overlay après 8s max
-setTimeout(function() {
-  var ov = document.getElementById('gh-loading-overlay');
-  if (ov && ov.style.display !== 'none') {
-    ov.style.display = 'none';
-    console.warn('GH.load timeout - showing cached data');
-  }
-}, 8000);
-
 GH.load(function(err, data) {
-  if (err) { console.warn('GH load:', err); var ov2=document.getElementById('gh-loading-overlay'); if(ov2) ov2.style.display='none'; return; }
+  if (err) { console.warn('GH load:', err); return; }
   ghApplyData(data);
   GH.startPolling();
-  // Masquer l'overlay de chargement
-  var ov = document.getElementById('gh-loading-overlay');
-  if (ov) ov.style.display = 'none';
   // Re-render après chargement si onglet actif
   var activeTab = document.querySelector('.extra-pane[style*="block"]');
   if (activeTab) {
@@ -1263,8 +1205,6 @@ GH.load(function(err, data) {
     if (tabId === 'season') { try { renderLeague(curLg); initNavBadges(); } catch(e){} }
     if (tabId === 'cl')     { try { clRender(); } catch(e){} }
   }
-  // Refresh onglet actif
-  try { switchTab(tabId || 'fiches'); } catch(e) {}
 });
 
 // ===== TAB SWITCHING =====
@@ -1587,101 +1527,6 @@ function openClubEditor(playerIdx, cellEl) {
     var inp = document.getElementById('club-editor-input');
     if (inp) { inp.focus(); inp.select(); }
   }, 50);
-}
-
-
-// ── Éditeur de carrière ───────────────────────────────────────────────────────
-var _cePlayerIdx = null;
-var _ceSeasons   = [];
-
-function openCareerEditor(playerIdx) {
-  var p = ALL[playerIdx];
-  if (!p) return;
-  _cePlayerIdx = playerIdx;
-
-  document.getElementById('ce-player-name').textContent = p.name;
-
-  var career = p.career || {};
-  var SS_ALL = ['S-4','S-3','S-2','S-1','S1','S2','S3','S4','S5','S6','S7','S8','S9'];
-
-  // Datalist clubs connus
-  var allClubs = new Set();
-  ALL.forEach(function(pl) {
-    if (pl.currentClub) allClubs.add(pl.currentClub);
-    Object.values(pl.career || {}).forEach(function(c){ if(c) allClubs.add(c); });
-  });
-
-  var rows = '<datalist id="ce-clubs-list">'
-    + Array.from(allClubs).sort().map(function(c){ return '<option value="'+c.replace(/"/g,'&quot;')+'">'; }).join('')
-    + '</datalist>';
-
-  SS_ALL.forEach(function(sn) {
-    var club = career[sn] || '';
-    var hasClub = club.length > 0;
-    rows += '<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:3px">'
-      + '<div style="font-size:11px;color:' + (hasClub?'#8b93b0':'#3a4460') + ';min-width:32px;font-weight:'+(hasClub?'600':'400')+'">' + sn + '</div>'
-      + '<input data-sn="' + sn + '" value="' + club.replace(/"/g,'&quot;') + '" list="ce-clubs-list"'
-      + ' placeholder="— non renseigné —"'
-      + ' style="flex:1;background:#0d0f14;border:1px solid '
-      + (hasClub ? '#3a4460' : '#1e2230')
-      + ';border-radius:6px;padding:.35rem .6rem;color:'
-      + (hasClub ? '#e8eaf0' : '#3a4460')
-      + ';font-size:12px;outline:none">'
-      + '</div>';
-  });
-
-  document.getElementById('ce-rows').innerHTML = rows;
-  document.getElementById('career-editor-modal').style.display = 'flex';
-}
-
-function closeCareerEditor() {
-  document.getElementById('career-editor-modal').style.display = 'none';
-  _cePlayerIdx = null;
-  _ceSeasons   = [];
-}
-
-function saveCareerEditor() {
-  var p = ALL[_cePlayerIdx];
-  if (!p) return;
-  if (!p.career) p.career = {};
-
-  var inputs = document.querySelectorAll('#ce-rows input[data-sn]');
-  inputs.forEach(function(inp) {
-    var sn  = inp.getAttribute('data-sn');
-    var val = inp.value.trim();
-    if (val) {
-      p.career[sn] = val;
-    } else {
-      delete p.career[sn];
-    }
-  });
-
-  // Mettre à jour currentClub si S9 a changé
-  var snCur = 'S' + (currentSeasonNum || 9);
-  if (p.career[snCur]) {
-    p.currentClub = p.career[snCur];
-    if (!window._playerClubOverrides) window._playerClubOverrides = {};
-    window._playerClubOverrides[_cePlayerIdx] = { club: p.currentClub, season: snCur };
-  }
-
-  // Persister le career dans _playerCareerOverrides
-  if (!window._playerCareerOverrides) window._playerCareerOverrides = {};
-  window._playerCareerOverrides[_cePlayerIdx] = Object.assign({}, p.career);
-
-  GH.save();
-  closeCareerEditor();
-
-  // Rafraîchir la fiche et le tableau
-  try { renderProfile(_cePlayerIdx); } catch(e) {}
-  try { if (typeof tblFilter === 'function') tblFilter(); } catch(e) {}
-
-  // Notif
-  var notif = document.createElement('div');
-  notif.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#3ecf8e;color:#0d0f14;padding:.5rem 1rem;border-radius:7px;font-size:12px;font-weight:700;z-index:9999';
-  notif.textContent = '✓ Carrière de ' + p.name + ' mise à jour';
-  document.body.appendChild(notif);
-  setTimeout(function(){ notif.style.opacity='0'; notif.style.transition='opacity .4s'; }, 2500);
-  setTimeout(function(){ notif.remove(); }, 3000);
 }
 
 function closeClubEditor() {
@@ -2144,7 +1989,6 @@ const TOTAL_MATCHES = 17;
 
 // Per-match goals: {lg: {teamIdx: {matchIdx: {bm, be, scorers:{playerIdx: goals}}}}}
 var matchDetails = {};
-window.matchDetails = matchDetails;
 // Load from localStorage if available
 (function(){
   try {
@@ -2677,7 +2521,6 @@ function scorerSelect(playerIdx, playerName) {
 
 // Numéro de saison courant (lu depuis data.json)
 var currentSeasonNum = 8;  // défaut S8, sera mis à jour par ghApplyData
-window.currentSeasonNum = currentSeasonNum;
 
 // Mettre à jour les labels de saison dans l'UI
 function updateSeasonLabels() {
@@ -3106,7 +2949,6 @@ function showSeasonClosedNotif(seasonName) {
 // ══════════════════════════════════════════════════════════════════
 
 var histArchives = [];   // tableau des saisons archivées
-window.histArchives = histArchives;
 
 // ══════════════════════════════════════════════════════════════════
 // HISTORIQUE — TITRES DE CHAMPION PAR CHAMPIONNAT
@@ -6428,7 +6270,6 @@ var SN_DATA = {"palmares":{"EURO":[{"season":"S-3","winner":"Portugal"},{"season
 
 // Données saisies (matchs de poule, KO, qualifs)
 var snMatchData = {cdm:{qualifMatches:{},groupMatches:{},koMatches:{}},euro:{qualifMatches:{},groupMatches:{},koMatches:{}},copa:{qualifMatches:{},groupMatches:{},koMatches:{}},can:{qualifMatches:{},groupMatches:{},koMatches:{}}};
-window.snMatchData = snMatchData;
 
 var snView     = 'cdm';
 var snSubView  = 'groupes';
@@ -6673,7 +6514,6 @@ function snRenderGroupes(cfg) {
     + '<div><div class="sn-sec-title">' + cfg.label + ' S' + sn + ' — Phase de poules</div>'
     + '<div class="sn-sec-sub">Poules figées depuis les 24 qualifiés · Les 16 premiers au classement général se qualifient · '
     + '<span onclick="snResetPoules(\''+cfg.id+'\')" style="color:#f5c842;cursor:pointer;text-decoration:underline">↺ Regénérer les poules</span>'
-    + (cfg.id === 'cdm' ? ' · <span onclick="snDrawR16(\''+cfg.id+'\')" style="color:#3ecf8e;cursor:pointer;text-decoration:underline">🎲 Tirage Phase Finale</span>' : '')
     + '</div></div></div>'
     + '<div class="sn-content">';
 
@@ -6864,61 +6704,6 @@ function snRenderQualifs(cfg) {
   panel.innerHTML = h;
   snAttachSubnav();
 }
-
-// Propage les vainqueurs dans le tableau KO apres chaque resultat
-function snPropagateKO(compId) {
-  if (!snMatchData[compId]) return;
-  var ko = snMatchData[compId].koMatches;
-  if (!ko) return;
-
-  // Arbre KO : [tour_src, idx_src1, idx_src2] -> [tour_dst, idx_dst]
-  // r16_0 + r16_1 -> qf_0 | r16_2 + r16_3 -> qf_1 | etc.
-  var brackets;
-  if (compId === 'cdm') {
-    brackets = [
-      // r16 -> qf
-      {from: ['r16_0','r16_1'], to: 'qf_0'},
-      {from: ['r16_2','r16_3'], to: 'qf_1'},
-      {from: ['r16_4','r16_5'], to: 'qf_2'},
-      {from: ['r16_6','r16_7'], to: 'qf_3'},
-      // qf -> sf
-      {from: ['qf_0','qf_1'],   to: 'sf_0'},
-      {from: ['qf_2','qf_3'],   to: 'sf_1'},
-      // sf -> final
-      {from: ['sf_0','sf_1'],   to: 'final_0'},
-    ];
-  } else {
-    brackets = [
-      {from: ['qf_0','qf_1'],   to: 'sf_0'},
-      {from: ['qf_2','qf_3'],   to: 'sf_1'},
-      {from: ['sf_0','sf_1'],   to: 'final_0'},
-    ];
-  }
-
-  function getWinner(key) {
-    var m = ko[key];
-    if (!m || m.score_h == null || m.score_a == null) return null;
-    return m.score_h >= m.score_a ? m.home : m.away;
-  }
-
-  brackets.forEach(function(b) {
-    var w0 = getWinner(b.from[0]);
-    var w1 = getWinner(b.from[1]);
-    if (!w0 && !w1) return; // rien a propager
-    var dst = ko[b.to] || {};
-    var changed = false;
-    if (w0 && dst.home !== w0) { dst.home = w0; changed = true; }
-    if (w1 && dst.away !== w1) { dst.away = w1; changed = true; }
-    if (changed) {
-      // Reinitialiser le score si les equipes ont change
-      if (changed && (dst.score_h != null)) {
-        dst.score_h = null; dst.score_a = null; dst.scorers = {};
-      }
-      ko[b.to] = dst;
-    }
-  });
-}
-
 function snRenderKO(cfg) {
   var sn = currentSeasonNum || 8;
   var panel = document.getElementById('sn-panel');
@@ -6927,7 +6712,6 @@ function snRenderKO(cfg) {
     ? [{k:'r16',l:'1/8 de Finale',n:8},{k:'qf',l:'Quarts',n:4},{k:'sf',l:'Demis',n:2},{k:'final',l:'Finale',n:1}]
     : [{k:'qf',l:'Quarts',n:4},{k:'sf',l:'Demis',n:2},{k:'final',l:'Finale',n:1}];
 
-  snPropagateKO(cfg.id);
   var h = snSubnavHTML(cfg, 'ko')
     + '<div class="sn-sec-hdr"><span style="font-size:1.4rem">' + cfg.icon + '</span>'
     + '<div><div class="sn-sec-title">' + cfg.label + ' S' + sn + ' — Phase Finale</div>'
@@ -6958,100 +6742,6 @@ function snRenderKO(cfg) {
   h += '</div>';
   panel.innerHTML = h;
   snAttachSubnav();
-}
-
-
-// Classement d'une poule depuis les resultats saisis
-function snGetPouleStandings(compId, poule) {
-  var poules = (snMatchData[compId] && snMatchData[compId].poules) || {};
-  var gm     = (snMatchData[compId] && snMatchData[compId].groupMatches) || {};
-  var teams  = (poules[poule] && poules[poule].teams) || [];
-  var stats  = {};
-  teams.forEach(function(t) { stats[t] = {pts:0,bm:0,be:0}; });
-  var matches = gm[poule] || {};
-  Object.values(matches).forEach(function(m) {
-    if (!m || m.score_h == null) return;
-    var sh = m.score_h, sa = m.score_a, h = m.home, a = m.away;
-    if (stats[h]) { stats[h].bm+=sh; stats[h].be+=sa; if(sh>sa)stats[h].pts+=3; else if(sh===sa)stats[h].pts+=1; }
-    if (stats[a]) { stats[a].bm+=sa; stats[a].be+=sh; if(sa>sh)stats[a].pts+=3; else if(sh===sa)stats[a].pts+=1; }
-  });
-  return teams.slice().sort(function(a,b) {
-    var sa=stats[a]||{pts:0,bm:0,be:0}, sb=stats[b]||{pts:0,bm:0,be:0};
-    return sb.pts-sa.pts || (sb.bm-sb.be)-(sa.bm-sa.be) || sb.bm-sa.bm || a.localeCompare(b);
-  });
-}
-
-function snDrawR16(compId) {
-  var poules = (snMatchData[compId] && snMatchData[compId].poules) || {};
-  var pouleIds = Object.keys(poules).sort();
-  if (pouleIds.length < 6) { alert('Les poules doivent etre definies avant le tirage.'); return; }
-  var gm = (snMatchData[compId] && snMatchData[compId].groupMatches) || {};
-  var totalM = 0, playedM = 0;
-  pouleIds.forEach(function(g) {
-    var n = (poules[g].teams||[]).length;
-    totalM += n*(n-1)/2;
-    playedM += Object.keys(gm[g]||{}).filter(function(k){ return gm[g][k]&&gm[g][k].score_h!=null; }).length;
-  });
-  if (playedM < totalM) {
-    if (!confirm('Matchs incomplets (' + playedM + '/' + totalM + '). Tirer au sort quand meme ?')) return;
-  }
-  if (snMatchData[compId] && snMatchData[compId].r16Draw) {
-    if (!confirm('Un tirage existe deja. Le remplacer ?')) return;
-  }
-  // Classement general toutes poules confondues
-  var allTeams = [];
-  pouleIds.forEach(function(g) {
-    var ranked = snGetPouleStandings(compId, g);
-    var teams  = (poules[g] && poules[g].teams) || [];
-    var gStats = {};
-    teams.forEach(function(t){ gStats[t]={pts:0,bm:0,be:0}; });
-    Object.values(gm[g]||{}).forEach(function(m) {
-      if (!m||m.score_h==null) return;
-      var sh=m.score_h,sa=m.score_a,h=m.home,a=m.away;
-      if(gStats[h]){gStats[h].bm+=sh;gStats[h].be+=sa;if(sh>sa)gStats[h].pts+=3;else if(sh===sa)gStats[h].pts+=1;}
-      if(gStats[a]){gStats[a].bm+=sa;gStats[a].be+=sh;if(sa>sh)gStats[a].pts+=3;else if(sh===sa)gStats[a].pts+=1;}
-    });
-    teams.forEach(function(t){ allTeams.push({team:t, poule:g, pts:gStats[t].pts, bm:gStats[t].bm, be:gStats[t].be}); });
-  });
-  allTeams.sort(function(a,b){
-    return b.pts-a.pts || (b.bm-b.be)-(a.bm-a.be) || b.bm-a.bm || a.team.localeCompare(b.team);
-  });
-  var qualified = allTeams.slice(0, 16);
-
-  // Tirage : 8 matchs, pas deux equipes de la meme poule si possible
-  function shuffle(arr) {
-    for (var i=arr.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=arr[i];arr[i]=arr[j];arr[j]=t;}
-    return arr;
-  }
-  var draw = null;
-  for (var attempt=0; attempt<500; attempt++) {
-    var pool = shuffle(qualified.slice());
-    var used = {}, tryDraw = [];
-    for (var i=0; i<pool.length; i++) {
-      if (used[pool[i].team]) continue;
-      for (var j=i+1; j<pool.length; j++) {
-        if (!used[pool[j].team] && pool[j].poule !== pool[i].poule) {
-          tryDraw.push({home:pool[i].team, away:pool[j].team});
-          used[pool[i].team]=true; used[pool[j].team]=true; break;
-        }
-      }
-    }
-    if (tryDraw.length === 8) { draw = tryDraw; break; }
-  }
-  if (!draw) {
-    var pool = shuffle(qualified.slice());
-    draw = [];
-    for (var i=0;i<8;i++) draw.push({home:pool[i*2].team, away:pool[i*2+1].team});
-  }
-  if (!snMatchData[compId]) snMatchData[compId] = {};
-  snMatchData[compId].r16Draw = draw;
-  if (!snMatchData[compId].koMatches) snMatchData[compId].koMatches = {};
-  for (var i=0;i<8;i++) snMatchData[compId].koMatches['r16_'+i] = {home:draw[i].home, away:draw[i].away};
-  GH.save();
-  snRender();
-  var msg = 'Tirage des 8es de finale :\n\n';
-  draw.forEach(function(m,i){ msg += 'Match '+(i+1)+' : '+m.home+' vs '+m.away+'\n'; });
-  alert(msg);
 }
 
 function snGetR16Team(i, side) {
@@ -7447,8 +7137,6 @@ function snSaveMatch() {
     if(!snMatchData[ctx.compId]) snMatchData[ctx.compId]={groupMatches:{},koMatches:{}};
     if(!snMatchData[ctx.compId].koMatches) snMatchData[ctx.compId].koMatches={};
     snMatchData[ctx.compId].koMatches[ctx.key]=entry;
-    // Propager le vainqueur dans le tour suivant
-    snPropagateKO(ctx.compId);
   }
 
   // Recalculer les buts en sélection de tous les joueurs concernés
@@ -7457,78 +7145,9 @@ function snSaveMatch() {
   GH.save();
   snCloseModal();
   snRender();
+  // Re-render la fiche joueur si ouverte + le tableau comparatif
   try { if (typeof ai !== 'undefined' && ai >= 0 && typeof renderProfile === 'function') renderProfile(ai); } catch(e) {}
   try { if (typeof tblFilter === 'function') tblFilter(); } catch(e) {}
-
-  // Ouvrir automatiquement le prochain match non joue
-  setTimeout(function() { snOpenNextMatch(ctx); }, 120);
-}
-
-function snOpenNextMatch(ctx) {
-  if (!ctx) return;
-  var compId = ctx.compId;
-  var sn = snMatchData[compId] || {};
-
-  if (ctx.type === 'group') {
-    // Chercher le prochain match non joue dans la meme poule, puis les autres poules
-    var poules = (sn.poules) || {};
-    var gm     = sn.groupMatches || {};
-    var pouleIds = Object.keys(poules).sort();
-    // Commencer par la poule courante, puis les suivantes
-    var curIdx = pouleIds.indexOf(ctx.group);
-    var order  = pouleIds.slice(curIdx).concat(pouleIds.slice(0, curIdx));
-
-    for (var pi = 0; pi < order.length; pi++) {
-      var g = order[pi];
-      var teams = (poules[g] && poules[g].teams) || [];
-      var matchups = [];
-      for (var i=0;i<teams.length;i++) for(var j=i+1;j<teams.length;j++) matchups.push([teams[i],teams[j]]);
-
-      // Dans la meme poule, partir du match suivant
-      var startMi = 0;
-      if (g === ctx.group) {
-        var curKey = ctx.matchKey; // ex: "A_2"
-        var curMi  = parseInt(curKey.split('_')[1]) + 1;
-        startMi = curMi;
-      }
-      for (var mi = startMi; mi < matchups.length; mi++) {
-        var key  = g + '_' + mi;
-        var pair = matchups[mi];
-        var played = gm[g] && gm[g][key] && gm[g][key].score_h != null;
-        if (!played) {
-          // Ouvrir ce match
-          var h = pair[0].replace(/'/g, "\'");
-          var a = pair[1].replace(/'/g, "\'");
-          snOpenMatch(compId, g, key, pair[0], pair[1]);
-          return;
-        }
-      }
-    }
-
-  } else if (ctx.type === 'ko') {
-    // Propager d'abord, puis chercher le prochain match du meme tour ou tour suivant
-    snPropagateKO(compId);
-    var koM = sn.koMatches || {};
-    var allRounds = compId === 'cdm'
-      ? ['r16','qf','sf','final']
-      : ['qf','sf','final'];
-    var curRound = ctx.round;
-    var curRoundIdx = allRounds.indexOf(curRound);
-    // Chercher d'abord dans le meme tour, puis les tours suivants
-    for (var ri = curRoundIdx; ri < allRounds.length; ri++) {
-      var rnd = allRounds[ri];
-      var cnt = rnd==='r16'?8:rnd==='qf'?4:rnd==='sf'?2:1;
-      var startI = (ri === curRoundIdx) ? ctx.idx + 1 : 0;
-      for (var i = startI; i < cnt; i++) {
-        var k = rnd + '_' + i;
-        var m = koM[k];
-        if (m && m.home && m.home !== '?' && m.away && m.away !== '?' && m.score_h == null) {
-          snOpenKO(compId, rnd, i);
-          return;
-        }
-      }
-    }
-  }
 }
 
 // ── GH integration ───────────────────────────────────────────────
@@ -8522,35 +8141,43 @@ var mcData = {
   contracts: {},
   transfers: MC_HISTORICAL_TRANSFERS.slice(), // pré-rempli avec l'historique
 };
-window.mcData = mcData;
 
 // ── Formule de valorisation ───────────────────────────────────────
 function mcPlayerValue(p) {
-  // Reconstruction cumulative identique à mcValueChartHTML
-  // pour garantir la cohérence entre fiche joueur et onglet Mercato
-  var snCur = 'S' + (currentSeasonNum || 9);
-  var snCurNum = currentSeasonNum || 9;
-  var ageNow = p.age || 28;
-  var seasons = p.seasons || {};
-  var clGoals = (typeof CL_GOALS_BY_PLAYER !== 'undefined' && CL_GOALS_BY_PLAYER[p.name]) || {};
-  var SS_ALL = ['S-4','S-3','S-2','S-1','S1','S2','S3','S4','S5','S6','S7','S8','S9'];
+  var sn = 'S' + (currentSeasonNum || 8);
 
-  var cumul = 0;
-  var seasonGoals = 0;
-  SS_ALL.forEach(function(sn) {
-    var ch = (seasons[sn]) || 0;
-    var cl = (clGoals[sn]) || 0;
-    cumul += ch + cl;
-    if (sn === snCur) seasonGoals = ch + cl;
-  });
+  // Buts carrière = championnat + CL historique (saisons passées)
+  var careerGoals = p.total || 0;
+  if (typeof CL_GOALS_BY_PLAYER !== 'undefined' && CL_GOALS_BY_PLAYER[p.name]) {
+    var clG = CL_GOALS_BY_PLAYER[p.name];
+    Object.keys(clG).forEach(function(s) {
+      if (s !== sn) careerGoals += clG[s];
+    });
+  }
 
-  var A = Math.max(0.02, (42 - ageNow) / 22);
-  var C = 1 + cumul / 100;
-  var S = seasonGoals > 0 ? 1 + Math.sqrt(seasonGoals / 8) : 1;
+  // Buts cette saison (championnat + CL/EL via rebuild)
+  var seasonGoals = (p.seasons && p.seasons[sn]) || 0;
+
+  var age = p.age || 28;
+
+  // Formule calibrée sur 3 cibles (±20%) :
+  // Yamal  20a ~157b  6/S8 → ~483M
+  // Mbappe 30a ~315b 14/S8 → ~240M
+  // Leao   32a ~121b  7/S8 → ~30M
+  //
+  // value = B × A(age)^α × C(career)^β × S(season)
+  // A = max(0.02, (42-age)/22)       — décroissance linéaire, pic à 20 ans
+  // C = 1 + career/100               — buts carrière
+  // S = 1 + sqrt(season/8)           — buts saison (racine pour limiter l'impact)
+  // Plafond : 500M€
+
+  var A = Math.max(0.02, (42 - age) / 22);
+  var C = 1 + careerGoals / 100;
+  var S = 1 + Math.sqrt(seasonGoals / 8);
 
   var value = 43800000 * Math.pow(A, 3.16) * Math.pow(C, 1.9) * S;
-  value = Math.min(value, 500000000);
-  return Math.round(value / 100000) * 100000;
+  value = Math.min(value, 500000000); // plafond 500M€
+  return Math.round(value / 100000) * 100000; // arrondi à 100k€
 }
 
 function mcFormatValue(v) {
@@ -8891,13 +8518,11 @@ function mcConfirmTransfer() {
   var seller = p.currentClub;
 
   // Mettre à jour les budgets
-  // Si un montant est saisi (>0), appliquer la transaction quel que soit l'état du contrat
-  if (amount > 0) {
+  if (!isFree && amount > 0) {
     mcData.budgets[buyer]  = (mcData.budgets[buyer]  !== undefined ? mcData.budgets[buyer]  : 20) - amount;
     mcData.budgets[seller] = (mcData.budgets[seller] !== undefined ? mcData.budgets[seller] : 20) + amount;
-  } else {
-    // Transfert gratuit — initialiser les budgets si besoin
-    if (mcData.budgets[buyer]  === undefined) mcData.budgets[buyer]  = 20;
+  } else if (isFree) {
+    // Pas de frais de transfert mais on initialise le budget vendeur si besoin
     if (mcData.budgets[seller] === undefined) mcData.budgets[seller] = 20;
   }
 
@@ -9040,21 +8665,6 @@ function mcSaveBudget() {
       <button onclick="relgConfirm()"
         style="background:#f5c842;border:none;border-radius:7px;padding:.5rem 1.25rem;
         color:#0d0f14;cursor:pointer;font-size:12px;font-weight:700">✓ Confirmer et clôturer</button>
-    </div>
-  </div>
-</div>
-
-
-<!-- Modal éditeur de carrière -->
-<div id="career-editor-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10060;align-items:center;justify-content:center">
-  <div style="background:#13161e;border:1px solid #252a38;border-radius:14px;padding:1.5rem;width:400px;max-width:95vw">
-    <div style="font-family:Syne,sans-serif;font-size:1rem;font-weight:800;color:#fff;margin-bottom:1rem">
-      ✏️ Modifier la carrière — <span id="ce-player-name"></span>
-    </div>
-    <div id="ce-rows" style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem"></div>
-    <div style="display:flex;gap:.5rem;justify-content:flex-end">
-      <button onclick="closeCareerEditor()" style="background:#252a38;border:none;border-radius:7px;padding:.5rem 1.1rem;color:#8b93b0;cursor:pointer;font-size:12px">Annuler</button>
-      <button onclick="saveCareerEditor()" style="background:#4f8ef7;border:none;border-radius:7px;padding:.5rem 1.25rem;color:#fff;cursor:pointer;font-size:12px;font-weight:700">✓ Sauvegarder</button>
     </div>
   </div>
 </div>
