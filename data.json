@@ -11744,6 +11744,7 @@
     "39": "PL",
     "42": "BU",
     "43": "PL",
+    "46": "SA",
     "47": "SA",
     "50": "",
     "51": "L1",
@@ -11830,6 +11831,10 @@
     },
     "28": {
       "club": "As Monaco",
+      "season": "S9"
+    },
+    "46": {
+      "club": "Al Hilal",
       "season": "S9"
     },
     "48": {
@@ -12474,12 +12479,13 @@
       "Chelsea": 200,
       "Dortmund": 165,
       "Real Madrid": 0,
-      "Inter Milan": 0,
+      "Inter Milan": 30,
       "Bayern": 0,
       "Manchester City": 0,
       "PSG": 4.9,
       "Manchester United": 0,
-      "Feyenord": 20
+      "Feyenord": 20,
+      "Al Hilal": -10
     },
     "contracts": {
       "3": {
@@ -12514,9 +12520,9 @@
         "end": 11,
         "duration": 2
       },
-      "54": {
-        "end": 11,
-        "duration": 2
+      "46": {
+        "end": 13,
+        "duration": 4
       },
       "65": {
         "end": 13,
@@ -12582,6 +12588,14 @@
         "from": "Feyenord",
         "to": "Bayer Leverkusen",
         "amount": 0,
+        "date": "2026-09-09"
+      },
+      {
+        "season": 9,
+        "player": "Rico Lewis",
+        "from": "Inter Milan",
+        "to": "Al Hilal",
+        "amount": 30,
         "date": "2026-09-09"
       }
     ]
