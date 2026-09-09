@@ -11726,7 +11726,6 @@
   "playerLigueOverrides": {
     "0": "LA",
     "1": "PL",
-    "8": "LA",
     "9": "",
     "11": "L1",
     "13": "",
@@ -11788,12 +11787,14 @@
     "129": "",
     "130": "",
     "131": "",
+    "134": "PL",
     "136": "PL",
     "137": "LA",
     "139": "L1",
     "145": "PL",
     "146": "BU",
     "147": "SA",
+    "151": "L1",
     "154": "PL",
     "155": "SA",
     "156": "PL",
@@ -11822,10 +11823,6 @@
     "196": "SA"
   },
   "playerClubOverrides": {
-    "8": {
-      "club": "River Plate",
-      "season": "S9"
-    },
     "11": {
       "club": "AS Rome",
       "season": "S9"
@@ -11865,6 +11862,14 @@
     "125": {
       "club": "Aston Villa",
       "season": "S8"
+    },
+    "134": {
+      "club": "RB Leipzig",
+      "season": "S9"
+    },
+    "151": {
+      "club": "Besiktas",
+      "season": "S9"
     },
     "161": {
       "club": "Bayer Leverkusen",
@@ -12500,7 +12505,9 @@
       "Botafogo": 20,
       "Al Nasser": 20,
       "RB Leipzig": 20,
-      "River Plate": 20
+      "River Plate": 20,
+      "Besiktas": 0,
+      "Brighton": 40
     },
     "contracts": {
       "0": {
@@ -12512,10 +12519,6 @@
         "duration": 2
       },
       "4": {
-        "end": 13,
-        "duration": 4
-      },
-      "8": {
         "end": 13,
         "duration": 4
       },
@@ -12543,25 +12546,9 @@
         "end": 11,
         "duration": 2
       },
-      "20": {
-        "end": 11,
-        "duration": 2
-      },
       "26": {
         "end": 11,
         "duration": 2
-      },
-      "32": {
-        "end": 11,
-        "duration": 2
-      },
-      "40": {
-        "end": 11,
-        "duration": 2
-      },
-      "44": {
-        "end": 13,
-        "duration": 4
       },
       "45": {
         "end": 11,
@@ -12627,11 +12614,11 @@
         "end": 13,
         "duration": 4
       },
-      "123": {
-        "end": 11,
-        "duration": 2
-      },
       "131": {
+        "end": 13,
+        "duration": 4
+      },
+      "134": {
         "end": 13,
         "duration": 4
       },
@@ -12646,6 +12633,10 @@
       "145": {
         "end": 11,
         "duration": 2
+      },
+      "151": {
+        "end": 13,
+        "duration": 4
       },
       "152": {
         "end": 13,
@@ -12715,10 +12706,18 @@
       },
       {
         "season": 9,
-        "player": "N. Dominguez",
-        "from": "Real Madrid",
-        "to": "River Plate",
+        "player": "Ndiaye",
+        "from": "Totenham",
+        "to": "RB Leipzig",
         "amount": 0,
+        "date": "2026-09-09"
+      },
+      {
+        "season": 9,
+        "player": "Mitoma",
+        "from": "Brighton",
+        "to": "Besiktas",
+        "amount": 20,
         "date": "2026-09-09"
       }
     ]
