@@ -8886,11 +8886,13 @@ function mcConfirmTransfer() {
   var seller = p.currentClub;
 
   // Mettre à jour les budgets
-  if (!isFree && amount > 0) {
+  // Si un montant est saisi (>0), appliquer la transaction quel que soit l'état du contrat
+  if (amount > 0) {
     mcData.budgets[buyer]  = (mcData.budgets[buyer]  !== undefined ? mcData.budgets[buyer]  : 20) - amount;
     mcData.budgets[seller] = (mcData.budgets[seller] !== undefined ? mcData.budgets[seller] : 20) + amount;
-  } else if (isFree) {
-    // Pas de frais de transfert mais on initialise le budget vendeur si besoin
+  } else {
+    // Transfert gratuit — initialiser les budgets si besoin
+    if (mcData.budgets[buyer]  === undefined) mcData.budgets[buyer]  = 20;
     if (mcData.budgets[seller] === undefined) mcData.budgets[seller] = 20;
   }
 
