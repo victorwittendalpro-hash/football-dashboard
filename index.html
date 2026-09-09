@@ -405,7 +405,8 @@ var GH = {
   startPolling: function() {
     var self = this;
     if (self._pollTimer) return;
-    self._pollTimer = setInterval(function() {
+    self._pollTimer = null; return; // polling désactivé temporairement
+    setInterval(function() {
       if (self.saving || self.saveTimer) return;
       var xhr = new XMLHttpRequest();
       xhr.open('GET', self.url(), true);
