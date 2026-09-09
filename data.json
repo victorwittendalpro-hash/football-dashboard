@@ -2456,18 +2456,194 @@
   },
   "snMatchData": {
     "euro": {
-      "qualifMatches": {},
-      "groupMatches": {},
       "koMatches": {},
-      "poules": {}
+      "qualifMatches": {},
+      "groupMatches": {}
     },
     "copa": {
-      "qualifMatches": {},
-      "groupMatches": {},
       "koMatches": {},
-      "poules": {}
+      "qualifMatches": {},
+      "groupMatches": {}
     },
     "cdm": {
+      "poules": {
+        "A": {
+          "teams": [
+            "France",
+            "Japon",
+            "Algérie",
+            "Colombie"
+          ]
+        },
+        "B": {
+          "teams": [
+            "Macédoine",
+            "Maroc",
+            "Bolivie",
+            "Angleterre"
+          ]
+        },
+        "C": {
+          "teams": [
+            "Espagne",
+            "Côte d'Ivoire",
+            "Argentine",
+            "Suède"
+          ]
+        },
+        "D": {
+          "teams": [
+            "Turquie",
+            "Zimbabwe",
+            "Brésil",
+            "Suisse"
+          ]
+        },
+        "E": {
+          "teams": [
+            "Portugal",
+            "Uruguay",
+            "Belgique",
+            "Pays-Bas"
+          ]
+        },
+        "F": {
+          "teams": [
+            "Grèce",
+            "Etats-unis",
+            "Italie",
+            "Croatie"
+          ]
+        }
+      },
+      "koMatches": {
+        "r16_0": {
+          "home": "Algérie",
+          "away": "Macédoine",
+          "score_h": 0,
+          "score_a": 2,
+          "scorers": {}
+        },
+        "r16_1": {
+          "home": "Espagne",
+          "away": "Bolivie",
+          "score_h": 3,
+          "score_a": 0,
+          "scorers": {
+            "81": 1,
+            "137": 2
+          }
+        },
+        "r16_2": {
+          "home": "Suède",
+          "away": "Colombie",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {
+            "26": 1
+          }
+        },
+        "r16_3": {
+          "home": "Italie",
+          "away": "Côte d'Ivoire",
+          "score_h": 0,
+          "score_a": 1,
+          "scorers": {
+            "195": 1
+          }
+        },
+        "r16_4": {
+          "home": "Etats-unis",
+          "away": "Turquie",
+          "score_h": 5,
+          "score_a": 4,
+          "scorers": {
+            "24": 1,
+            "91": 1,
+            "97": 2
+          }
+        },
+        "r16_5": {
+          "home": "Zimbabwe",
+          "away": "Angleterre",
+          "score_h": 3,
+          "score_a": 0,
+          "scorers": {
+            "198": 2
+          }
+        },
+        "r16_6": {
+          "home": "France",
+          "away": "Pays-Bas",
+          "score_h": 3,
+          "score_a": 2,
+          "scorers": {
+            "3": 1,
+            "5": 1,
+            "54": 1,
+            "56": 1,
+            "142": 1
+          }
+        },
+        "r16_7": {
+          "home": "Brésil",
+          "away": "Portugal",
+          "score_h": 3,
+          "score_a": 2,
+          "scorers": {
+            "7": 2,
+            "95": 1,
+            "136": 1
+          }
+        },
+        "qf_0": {
+          "home": "Macédoine",
+          "away": "Espagne",
+          "score_h": 0,
+          "score_a": 3,
+          "scorers": {
+            "15": 1,
+            "16": 1
+          }
+        },
+        "qf_1": {
+          "home": "Suède",
+          "away": "Côte d'Ivoire",
+          "score_h": 1,
+          "score_a": 2,
+          "scorers": {
+            "21": 1,
+            "26": 1,
+            "195": 1
+          }
+        },
+        "qf_2": {
+          "home": "Etats-unis",
+          "away": "Zimbabwe",
+          "score_h": 2,
+          "score_a": 1,
+          "scorers": {}
+        },
+        "qf_3": {
+          "home": "France",
+          "away": "Brésil",
+          "score_h": 4,
+          "score_a": 0,
+          "scorers": {
+            "3": 1,
+            "12": 1,
+            "56": 2
+          }
+        },
+        "sf_0": {
+          "home": "Espagne",
+          "away": "Côte d'Ivoire"
+        },
+        "sf_1": {
+          "home": "Etats-unis",
+          "away": "France"
+        }
+      },
       "qualifMatches": {
         "0_0": {
           "home": "Algérie",
@@ -3431,184 +3607,6 @@
           }
         }
       },
-      "koMatches": {
-        "r16_0": {
-          "home": "Algérie",
-          "away": "Macédoine",
-          "score_h": 0,
-          "score_a": 2,
-          "scorers": {}
-        },
-        "r16_1": {
-          "home": "Espagne",
-          "away": "Bolivie",
-          "score_h": 3,
-          "score_a": 0,
-          "scorers": {
-            "81": 1,
-            "137": 2
-          }
-        },
-        "r16_2": {
-          "home": "Suède",
-          "away": "Colombie",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {
-            "26": 1
-          }
-        },
-        "r16_3": {
-          "home": "Italie",
-          "away": "Côte d'Ivoire",
-          "score_h": 0,
-          "score_a": 1,
-          "scorers": {
-            "195": 1
-          }
-        },
-        "r16_4": {
-          "home": "Etats-unis",
-          "away": "Turquie",
-          "score_h": 5,
-          "score_a": 4,
-          "scorers": {
-            "24": 1,
-            "91": 1,
-            "97": 2
-          }
-        },
-        "r16_5": {
-          "home": "Zimbabwe",
-          "away": "Angleterre",
-          "score_h": 3,
-          "score_a": 0,
-          "scorers": {
-            "198": 2
-          }
-        },
-        "r16_6": {
-          "home": "France",
-          "away": "Pays-Bas",
-          "score_h": 3,
-          "score_a": 2,
-          "scorers": {
-            "3": 1,
-            "5": 1,
-            "54": 1,
-            "56": 1,
-            "142": 1
-          }
-        },
-        "r16_7": {
-          "home": "Brésil",
-          "away": "Portugal",
-          "score_h": 3,
-          "score_a": 2,
-          "scorers": {
-            "7": 2,
-            "95": 1,
-            "136": 1
-          }
-        },
-        "qf_0": {
-          "home": "Macédoine",
-          "away": "Espagne",
-          "score_h": 0,
-          "score_a": 3,
-          "scorers": {
-            "15": 1,
-            "16": 1
-          }
-        },
-        "qf_1": {
-          "home": "Suède",
-          "away": "Côte d'Ivoire",
-          "score_h": 1,
-          "score_a": 2,
-          "scorers": {
-            "21": 1,
-            "26": 1,
-            "195": 1
-          }
-        },
-        "qf_2": {
-          "home": "Etats-unis",
-          "away": "Zimbabwe",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "qf_3": {
-          "home": "France",
-          "away": "Brésil",
-          "score_h": 4,
-          "score_a": 0,
-          "scorers": {
-            "3": 1,
-            "12": 1,
-            "56": 2
-          }
-        },
-        "sf_0": {
-          "home": "Espagne",
-          "away": "Côte d'Ivoire"
-        },
-        "sf_1": {
-          "home": "Etats-unis",
-          "away": "France"
-        }
-      },
-      "poules": {
-        "A": {
-          "teams": [
-            "France",
-            "Japon",
-            "Algérie",
-            "Colombie"
-          ]
-        },
-        "B": {
-          "teams": [
-            "Macédoine",
-            "Maroc",
-            "Bolivie",
-            "Angleterre"
-          ]
-        },
-        "C": {
-          "teams": [
-            "Espagne",
-            "Côte d'Ivoire",
-            "Argentine",
-            "Suède"
-          ]
-        },
-        "D": {
-          "teams": [
-            "Turquie",
-            "Zimbabwe",
-            "Brésil",
-            "Suisse"
-          ]
-        },
-        "E": {
-          "teams": [
-            "Portugal",
-            "Uruguay",
-            "Belgique",
-            "Pays-Bas"
-          ]
-        },
-        "F": {
-          "teams": [
-            "Grèce",
-            "Etats-unis",
-            "Italie",
-            "Croatie"
-          ]
-        }
-      },
       "r16Draw": [
         {
           "home": "Algérie",
@@ -3645,10 +3643,9 @@
       ]
     },
     "can": {
-      "qualifMatches": {},
-      "groupMatches": {},
       "koMatches": {},
-      "poules": {}
+      "qualifMatches": {},
+      "groupMatches": {}
     }
   },
   "archives": [
@@ -11901,13 +11898,6 @@
       "season": "S8"
     }
   },
-  "playerCareerOverrides": {
-    "108": {
-      "S7": "FC Barcelone",
-      "S8": "FC Barcelone",
-      "S6": "Brugges"
-    }
-  },
   "customPlayers": [
     {
       "rank": 200,
@@ -12542,6 +12532,10 @@
         "duration": 4
       },
       "12": {
+        "end": 11,
+        "duration": 2
+      },
+      "14": {
         "end": 11,
         "duration": 2
       },
