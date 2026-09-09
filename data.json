@@ -11805,7 +11805,7 @@
     "166": "BU",
     "167": "L1",
     "169": "SA",
-    "170": "",
+    "170": "LA",
     "172": "BU",
     "174": "LA",
     "179": "LA",
@@ -11868,6 +11868,10 @@
     "165": {
       "club": "Everton",
       "season": "S8"
+    },
+    "170": {
+      "club": "Botafogo",
+      "season": "S9"
     },
     "180": {
       "club": "Atalanta",
@@ -12487,7 +12491,9 @@
       "Feyenord": 20,
       "Al Hilal": -10,
       "Galatasarai": 0,
-      "Totenham": 40
+      "Totenham": 40,
+      "Botafogo": 20,
+      "Al Nasser": 20
     },
     "contracts": {
       "3": {
@@ -12590,7 +12596,19 @@
         "end": 11,
         "duration": 2
       },
+      "143": {
+        "end": 11,
+        "duration": 2
+      },
       "145": {
+        "end": 11,
+        "duration": 2
+      },
+      "152": {
+        "end": 13,
+        "duration": 4
+      },
+      "154": {
         "end": 11,
         "duration": 2
       },
@@ -12605,6 +12623,10 @@
       "163": {
         "end": 11,
         "duration": 2
+      },
+      "170": {
+        "end": 13,
+        "duration": 4
       },
       "172": {
         "end": 11,
@@ -12638,6 +12660,14 @@
         "from": "Inter Milan",
         "to": "Al Hilal",
         "amount": 30,
+        "date": "2026-09-09"
+      },
+      {
+        "season": 9,
+        "player": "Helinho",
+        "from": "Al Nasser",
+        "to": "Botafogo",
+        "amount": 0,
         "date": "2026-09-09"
       }
     ]
