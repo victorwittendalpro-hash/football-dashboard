@@ -11798,6 +11798,7 @@
     "158": "PL",
     "159": "SA",
     "160": "L1",
+    "161": "BU",
     "164": "SA",
     "165": "PL",
     "166": "BU",
@@ -11854,6 +11855,10 @@
     "125": {
       "club": "Aston Villa",
       "season": "S8"
+    },
+    "161": {
+      "club": "Bayer Leverkusen",
+      "season": "S9"
     },
     "165": {
       "club": "Everton",
@@ -12473,7 +12478,8 @@
       "Bayern": 0,
       "Manchester City": 0,
       "PSG": 4.9,
-      "Manchester United": 0
+      "Manchester United": 0,
+      "Feyenord": 20
     },
     "contracts": {
       "3": {
@@ -12496,10 +12502,6 @@
         "end": 11,
         "duration": 2
       },
-      "26": {
-        "end": 11,
-        "duration": 2
-      },
       "78": {
         "end": 11,
         "duration": 2
@@ -12515,6 +12517,10 @@
       "145": {
         "end": 11,
         "duration": 2
+      },
+      "161": {
+        "end": 13,
+        "duration": 4
       }
     },
     "transfers": [
@@ -12523,6 +12529,14 @@
         "player": "Edgar",
         "from": "PSG",
         "to": "AS Rome",
+        "amount": 0,
+        "date": "2026-09-09"
+      },
+      {
+        "season": 9,
+        "player": "J. Bakayoko",
+        "from": "Feyenord",
+        "to": "Bayer Leverkusen",
         "amount": 0,
         "date": "2026-09-09"
       }
