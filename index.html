@@ -498,43 +498,7 @@ var GH = {
     if ((data.currentSeasonNum || 0) < 9) {
       self.saving = false; self._showStatus('synced'); return;
     }
-    // Protection 2 : ne jamais sauvegarder moins de matchs SN que _snGuard
-    function snCount(snData) {
-      var n = 0;
-      Object.values(snData || {}).forEach(function(c) {
-        n += Object.keys(c.qualifMatches || {}).length;
-        n += Object.keys(c.groupMatches  || {}).length;
-        n += Object.keys(c.koMatches     || {}).length;
-      });
-      return n;
-    }
-    var localSnCount = snCount(data.snMatchData);
-    var guardSnCount = snCount(self._snGuard);
-    if (guardSnCount > localSnCount) {
-      // Injecter les données protégées avant de sauvegarder
-      if (!data.snMatchData) data.snMatchData = {};
-      Object.keys(self._snGuard).forEach(function(comp) {
-        if (!data.snMatchData[comp]) data.snMatchData[comp] = {};
-        var gc = self._snGuard[comp], lc = data.snMatchData[comp];
-        ['qualifMatches','groupMatches','koMatches'].forEach(function(sub) {
-          var gv = gc[sub] || {}, lv = lc[sub] || {};
-          if (Object.keys(gv).length > Object.keys(lv).length) lc[sub] = gv;
-        });
-        var gp = gc.poules || {}, lp = lc.poules || {};
-        if (Object.keys(gp).length > Object.keys(lp).length) lc.poules = gp;
-        if (gc.r16Draw && !lc.r16Draw) lc.r16Draw = gc.r16Draw;
-      });
-    }
-    // Protection 3 : ne jamais sauvegarder moins de budgets/transferts que _mcGuard
-    if (self._mcGuard) {
-      if (!data.mcData) data.mcData = {};
-      if (self._mcGuard.budgets && Object.keys(self._mcGuard.budgets).length > Object.keys(data.mcData.budgets||{}).length) {
-        data.mcData.budgets = Object.assign({}, self._mcGuard.budgets, data.mcData.budgets||{});
-      }
-      if (self._mcGuard.transfers && (self._mcGuard.transfers.length > (data.mcData.transfers||[]).filter(function(t){return t.season;}).length)) {
-        data.mcData.transfers = self._mcGuard.transfers;
-      }
-    }
+
     self._saveLocal(data);
     var content;
     try { content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2)))); }
@@ -607,26 +571,7 @@ var GH = {
       clKoBracket:          (typeof CL_KO_DATA        !== 'undefined') ? CL_KO_DATA.bracket : {},
       elKoDetails:          (typeof elKoDetails       !== 'undefined') ? elKoDetails       : {},
       cupData:              (typeof CUP_DATA           !== 'undefined') ? CUP_DATA          : {},
-      snMatchData: (function() {
-        var local  = (typeof snMatchData !== 'undefined') ? snMatchData : {};
-        var guard  = (typeof GH !== 'undefined' && GH._snGuard) ? GH._snGuard : {};
-        var merged = {};
-        var comps  = Object.keys(Object.assign({}, local, guard));
-        comps.forEach(function(comp) {
-          var lc = local[comp] || {}, gc = guard[comp] || {};
-          merged[comp] = {};
-          ['qualifMatches','groupMatches','koMatches'].forEach(function(sub) {
-            var lv = lc[sub] || {}, gv = gc[sub] || {};
-            merged[comp][sub] = Object.keys(gv).length >= Object.keys(lv).length ? gv : lv;
-          });
-          var lp = lc.poules || {}, gp = gc.poules || {};
-          merged[comp].poules = Object.keys(gp).length >= Object.keys(lp).length ? gp : lp;
-          if (lc.r16Draw || gc.r16Draw) {
-            merged[comp].r16Draw = lc.r16Draw || gc.r16Draw;
-          }
-        });
-        return merged;
-      })(),
+      snMatchData:          (typeof snMatchData !== 'undefined') ? snMatchData : {},
       archives:             (typeof histArchives       !== 'undefined') ? histArchives       : [],
       playerLigueOverrides: window._playerLigueOverrides || {},
       playerClubOverrides:  window._playerClubOverrides  || {},
