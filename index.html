@@ -683,12 +683,13 @@ function ghApplyData(data) {
       });
       GH._lastRemoteSnMatchData = data.snMatchData;
     }
-    // Modifier snMatchData EN PLACE (Object.assign) pour que le script SN
-    // qui a déclaré cette variable dans son propre scope voie les changements
-    Object.keys(snMatchData).forEach(function(k){ delete snMatchData[k]; });
-    Object.keys(data.snMatchData).forEach(function(k){
-      snMatchData[k] = data.snMatchData[k];
-    });
+    // Mettre à jour window.snMatchData (partagé entre tous les scripts)
+    if (window.snMatchData) {
+      Object.keys(window.snMatchData).forEach(function(k){ delete window.snMatchData[k]; });
+      Object.keys(data.snMatchData).forEach(function(k){
+        window.snMatchData[k] = data.snMatchData[k];
+      });
+    }
   }
   // Restaurer les données des Coupes
   if (data.cupData && typeof CUP_DATA !== 'undefined') {
@@ -6435,6 +6436,7 @@ var SN_DATA = {"palmares":{"EURO":[{"season":"S-3","winner":"Portugal"},{"season
 
 // Données saisies (matchs de poule, KO, qualifs)
 var snMatchData = {cdm:{qualifMatches:{},groupMatches:{},koMatches:{}},euro:{qualifMatches:{},groupMatches:{},koMatches:{}},copa:{qualifMatches:{},groupMatches:{},koMatches:{}},can:{qualifMatches:{},groupMatches:{},koMatches:{}}};
+window.snMatchData = snMatchData;
 
 var snView     = 'cdm';
 var snSubView  = 'groupes';
