@@ -735,27 +735,9 @@ function ghApplyData(data) {
       });
       GH._lastRemoteSnMatchData = data.snMatchData;
     }
-    // Fusionner avec localStorage si plus récent
-    var localData = GH._loadLocal ? GH._loadLocal() : null;
-    var localTs   = parseInt(localStorage.getItem('fb_dashboard_backup_ts') || '0');
-    var serverSn  = data.snMatchData;
-    if (localData && localData.snMatchData && localTs > 0) {
-      // Compter les matchs dans chaque source pour garder le plus complet
-      var countKeys = function(obj) {
-        var n = 0;
-        Object.keys(obj).forEach(function(comp) {
-          var c = obj[comp];
-          ['qualifMatches','groupMatches','koMatches'].forEach(function(t) {
-            if (c[t]) n += Object.keys(c[t]).length;
-          });
-        });
-        return n;
-      };
-      if (countKeys(localData.snMatchData) >= countKeys(serverSn)) {
-        serverSn = localData.snMatchData;
-      }
-    }
-    snMatchData = serverSn;
+    // Toujours prendre le serveur comme source de vérité
+    // (le localStorage peut être périmé et écraser des données récentes)
+    snMatchData = data.snMatchData;
   }
   // Restaurer les données des Coupes
   if (data.cupData && typeof CUP_DATA !== 'undefined') {
@@ -817,9 +799,8 @@ function ghApplyData(data) {
       if (newTr.length > curTr.length) GH._mcGuard.transfers = newTr;
     }
     if (data.mcData.budgets) {
-      // Fusionner : remote est la source de vérité, mais garder les clés locales
-      // non présentes dans le remote (modifications locales non encore propagées)
-      mcData.budgets = Object.assign({}, mcData.budgets, data.mcData.budgets);
+      // Le serveur fait toujours autorité
+      mcData.budgets = data.mcData.budgets;
     }
     if (data.mcData.contracts) mcData.contracts = data.mcData.contracts;
     if (data.mcData.transfers) {
