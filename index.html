@@ -205,6 +205,12 @@ body{background:var(--bg);color:var(--txt);font-family:'DM Sans',sans-serif;min-
 </style>
 </head>
 <body>
+<div id="gh-loading-overlay" style="position:fixed;inset:0;background:#0d0f14;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem">
+  <div style="font-family:Syne,sans-serif;font-size:1.5rem;font-weight:800;color:#fff">Football Dashboard</div>
+  <div style="color:#5a6080;font-size:13px">Chargement des données…</div>
+  <div style="width:48px;height:48px;border:3px solid #252a38;border-top-color:#4f8ef7;border-radius:50%;animation:spin .8s linear infinite"></div>
+</div>
+<style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
 <div class="header">
   <div class="header-title">⚽ Football <span>Dashboard</span></div>
@@ -1305,10 +1311,22 @@ initHeader();
 flt();
 try { sel(0); } catch(e) { console.warn('sel(0):', e); }
 // Charger données GitHub
+// Timeout sécurité : masquer l'overlay après 8s max
+setTimeout(function() {
+  var ov = document.getElementById('gh-loading-overlay');
+  if (ov && ov.style.display !== 'none') {
+    ov.style.display = 'none';
+    console.warn('GH.load timeout - showing cached data');
+  }
+}, 8000);
+
 GH.load(function(err, data) {
-  if (err) { console.warn('GH load:', err); return; }
+  if (err) { console.warn('GH load:', err); var ov2=document.getElementById('gh-loading-overlay'); if(ov2) ov2.style.display='none'; return; }
   ghApplyData(data);
   GH.startPolling();
+  // Masquer l'overlay de chargement
+  var ov = document.getElementById('gh-loading-overlay');
+  if (ov) ov.style.display = 'none';
   // Re-render après chargement si onglet actif
   var activeTab = document.querySelector('.extra-pane[style*="block"]');
   if (activeTab) {
@@ -1316,6 +1334,8 @@ GH.load(function(err, data) {
     if (tabId === 'season') { try { renderLeague(curLg); initNavBadges(); } catch(e){} }
     if (tabId === 'cl')     { try { clRender(); } catch(e){} }
   }
+  // Refresh onglet actif
+  try { switchTab(tabId || 'fiches'); } catch(e) {}
 });
 
 // ===== TAB SWITCHING =====
