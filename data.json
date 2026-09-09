@@ -2637,7 +2637,13 @@
         },
         "sf_0": {
           "home": "Espagne",
-          "away": "Côte d'Ivoire"
+          "away": "Côte d'Ivoire",
+          "score_h": 3,
+          "score_a": 1,
+          "scorers": {
+            "81": 3,
+            "195": 1
+          }
         },
         "sf_1": {
           "home": "Etats-unis",
