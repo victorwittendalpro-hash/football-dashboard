@@ -8512,40 +8512,31 @@ var mcData = {
 
 // ── Formule de valorisation ───────────────────────────────────────
 function mcPlayerValue(p) {
-  var sn = 'S' + (currentSeasonNum || 8);
+  // Reconstruction cumulative identique à mcValueChartHTML
+  // pour garantir la cohérence entre fiche joueur et onglet Mercato
+  var snCur = 'S' + (currentSeasonNum || 9);
+  var snCurNum = currentSeasonNum || 9;
+  var ageNow = p.age || 28;
+  var seasons = p.seasons || {};
+  var clGoals = (typeof CL_GOALS_BY_PLAYER !== 'undefined' && CL_GOALS_BY_PLAYER[p.name]) || {};
+  var SS_ALL = ['S-4','S-3','S-2','S-1','S1','S2','S3','S4','S5','S6','S7','S8','S9'];
 
-  // Buts carrière = championnat + CL historique (saisons passées)
-  var careerGoals = p.total || 0;
-  if (typeof CL_GOALS_BY_PLAYER !== 'undefined' && CL_GOALS_BY_PLAYER[p.name]) {
-    var clG = CL_GOALS_BY_PLAYER[p.name];
-    Object.keys(clG).forEach(function(s) {
-      if (s !== sn) careerGoals += clG[s];
-    });
-  }
+  var cumul = 0;
+  var seasonGoals = 0;
+  SS_ALL.forEach(function(sn) {
+    var ch = (seasons[sn]) || 0;
+    var cl = (clGoals[sn]) || 0;
+    cumul += ch + cl;
+    if (sn === snCur) seasonGoals = ch + cl;
+  });
 
-  // Buts cette saison (championnat + CL/EL via rebuild)
-  var seasonGoals = (p.seasons && p.seasons[sn]) || 0;
-
-  var age = p.age || 28;
-
-  // Formule calibrée sur 3 cibles (±20%) :
-  // Yamal  20a ~157b  6/S8 → ~483M
-  // Mbappe 30a ~315b 14/S8 → ~240M
-  // Leao   32a ~121b  7/S8 → ~30M
-  //
-  // value = B × A(age)^α × C(career)^β × S(season)
-  // A = max(0.02, (42-age)/22)       — décroissance linéaire, pic à 20 ans
-  // C = 1 + career/100               — buts carrière
-  // S = 1 + sqrt(season/8)           — buts saison (racine pour limiter l'impact)
-  // Plafond : 500M€
-
-  var A = Math.max(0.02, (42 - age) / 22);
-  var C = 1 + careerGoals / 100;
-  var S = 1 + Math.sqrt(seasonGoals / 8);
+  var A = Math.max(0.02, (42 - ageNow) / 22);
+  var C = 1 + cumul / 100;
+  var S = seasonGoals > 0 ? 1 + Math.sqrt(seasonGoals / 8) : 1;
 
   var value = 43800000 * Math.pow(A, 3.16) * Math.pow(C, 1.9) * S;
-  value = Math.min(value, 500000000); // plafond 500M€
-  return Math.round(value / 100000) * 100000; // arrondi à 100k€
+  value = Math.min(value, 500000000);
+  return Math.round(value / 100000) * 100000;
 }
 
 function mcFormatValue(v) {
