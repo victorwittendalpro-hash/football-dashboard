@@ -2647,7 +2647,14 @@
         },
         "sf_1": {
           "home": "Etats-unis",
-          "away": "France"
+          "away": "France",
+          "score_h": 1,
+          "score_a": 5,
+          "scorers": {
+            "3": 1,
+            "14": 1,
+            "56": 2
+          }
         }
       },
       "qualifMatches": {
