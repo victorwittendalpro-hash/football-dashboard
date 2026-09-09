@@ -555,6 +555,7 @@ var GH = {
       archives:             (typeof histArchives       !== 'undefined') ? histArchives       : [],
       playerLigueOverrides: window._playerLigueOverrides || {},
       playerClubOverrides:  window._playerClubOverrides  || {},
+      playerCareerOverrides: window._playerCareerOverrides || {},
       customPlayers:        window._customPlayers        || [],
       awardsData:           (typeof awardsData          !== 'undefined') ? awardsData         : {},
       mcData: (function() {
@@ -680,6 +681,14 @@ function ghApplyData(data) {
     elKoDetails = data.elKoDetails;
   }
   // Restaurer les overrides de club
+  if (data.playerCareerOverrides) {
+    window._playerCareerOverrides = data.playerCareerOverrides;
+    // Appliquer les overrides de carrière sur ALL
+    Object.keys(data.playerCareerOverrides).forEach(function(pidx) {
+      var p = ALL[parseInt(pidx)];
+      if (p) p.career = Object.assign({}, p.career || {}, data.playerCareerOverrides[pidx]);
+    });
+  }
   if (data.playerClubOverrides) {
     window._playerClubOverrides = data.playerClubOverrides;
     Object.keys(data.playerClubOverrides).forEach(function(pidx) {
@@ -1609,11 +1618,16 @@ function saveCareerEditor() {
     window._playerClubOverrides[_cePlayerIdx] = { club: p.currentClub, season: snCur };
   }
 
+  // Persister le career dans _playerCareerOverrides
+  if (!window._playerCareerOverrides) window._playerCareerOverrides = {};
+  window._playerCareerOverrides[_cePlayerIdx] = Object.assign({}, p.career);
+
   GH.save();
   closeCareerEditor();
 
-  // Rafraîchir la fiche
+  // Rafraîchir la fiche et le tableau
   try { renderProfile(_cePlayerIdx); } catch(e) {}
+  try { if (typeof tblFilter === 'function') tblFilter(); } catch(e) {}
 
   // Notif
   var notif = document.createElement('div');
