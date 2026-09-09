@@ -1017,6 +1017,7 @@ function renderProfile(i) {
                 ${logo?`<img src="${logo}" class="club-logo" alt="${st.club}" onerror="this.style.display='none';this.nextSibling.style.display='flex'">`:''}
                 <div class="club-fallback" style="${logo?'display:none':'display:flex'}">${ini(st.club)}</div>
                 <div class="club-name" title="${st.club}">${st.club}</div>
+                <span onclick="openCareerEditor(${i}, ${JSON.stringify(st.seasons)})" style="cursor:pointer;font-size:10px;color:#5a6080;margin-left:4px;opacity:.7" title="Modifier">✏️</span>
               </div>
               <div class="career-season">${lbl}</div>
             </div>`;
@@ -1531,6 +1532,96 @@ function openClubEditor(playerIdx, cellEl) {
     var inp = document.getElementById('club-editor-input');
     if (inp) { inp.focus(); inp.select(); }
   }, 50);
+}
+
+
+// ── Éditeur de carrière ───────────────────────────────────────────────────────
+var _cePlayerIdx = null;
+var _ceSeasons   = [];
+
+function openCareerEditor(playerIdx, seasons) {
+  var p = ALL[playerIdx];
+  if (!p) return;
+  _cePlayerIdx = playerIdx;
+  _ceSeasons   = seasons;
+
+  document.getElementById('ce-player-name').textContent = p.name;
+
+  // Construire les lignes de saisie (une par saison)
+  var career = p.career || {};
+  var rows = '';
+  // Afficher toutes les saisons connues du joueur, pas juste celles du step
+  var SS_ALL = ['S-4','S-3','S-2','S-1','S1','S2','S3','S4','S5','S6','S7','S8','S9'];
+  SS_ALL.forEach(function(sn) {
+    var club = career[sn] || '';
+    var isCurrent = seasons.indexOf(sn) >= 0;
+    var highlight = isCurrent ? 'border-color:#4f8ef7' : '';
+    rows += '<div style="display:flex;align-items:center;gap:.5rem">'
+      + '<div style="font-size:11px;color:#5a6080;min-width:32px">' + sn + '</div>'
+      + '<input data-sn="' + sn + '" value="' + club.replace(/"/g,'&quot;') + '" list="ce-clubs-list"'
+      + ' placeholder="Club…"'
+      + ' style="flex:1;background:#0d0f14;border:1px solid #' + (isCurrent?'4f8ef7':'3a4460')
+      + ';border-radius:6px;padding:.35rem .6rem;color:#e8eaf0;font-size:12px;outline:none">'
+      + '</div>';
+  });
+
+  // Datalist des clubs connus
+  var allClubs = new Set();
+  ALL.forEach(function(pl) {
+    if (pl.currentClub) allClubs.add(pl.currentClub);
+    Object.values(pl.career || {}).forEach(function(c){ if(c) allClubs.add(c); });
+  });
+  var datalist = '<datalist id="ce-clubs-list">'
+    + Array.from(allClubs).sort().map(function(c){ return '<option value="'+c.replace(/"/g,'&quot;')+'">'; }).join('')
+    + '</datalist>';
+
+  document.getElementById('ce-rows').innerHTML = rows + datalist;
+  document.getElementById('career-editor-modal').style.display = 'flex';
+}
+
+function closeCareerEditor() {
+  document.getElementById('career-editor-modal').style.display = 'none';
+  _cePlayerIdx = null;
+  _ceSeasons   = [];
+}
+
+function saveCareerEditor() {
+  var p = ALL[_cePlayerIdx];
+  if (!p) return;
+  if (!p.career) p.career = {};
+
+  var inputs = document.querySelectorAll('#ce-rows input[data-sn]');
+  inputs.forEach(function(inp) {
+    var sn  = inp.getAttribute('data-sn');
+    var val = inp.value.trim();
+    if (val) {
+      p.career[sn] = val;
+    } else {
+      delete p.career[sn];
+    }
+  });
+
+  // Mettre à jour currentClub si S9 a changé
+  var snCur = 'S' + (currentSeasonNum || 9);
+  if (p.career[snCur]) {
+    p.currentClub = p.career[snCur];
+    if (!window._playerClubOverrides) window._playerClubOverrides = {};
+    window._playerClubOverrides[_cePlayerIdx] = { club: p.currentClub, season: snCur };
+  }
+
+  GH.save();
+  closeCareerEditor();
+
+  // Rafraîchir la fiche
+  try { renderProfile(_cePlayerIdx); } catch(e) {}
+
+  // Notif
+  var notif = document.createElement('div');
+  notif.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#3ecf8e;color:#0d0f14;padding:.5rem 1rem;border-radius:7px;font-size:12px;font-weight:700;z-index:9999';
+  notif.textContent = '✓ Carrière de ' + p.name + ' mise à jour';
+  document.body.appendChild(notif);
+  setTimeout(function(){ notif.style.opacity='0'; notif.style.transition='opacity .4s'; }, 2500);
+  setTimeout(function(){ notif.remove(); }, 3000);
 }
 
 function closeClubEditor() {
@@ -8891,6 +8982,21 @@ function mcSaveBudget() {
       <button onclick="relgConfirm()"
         style="background:#f5c842;border:none;border-radius:7px;padding:.5rem 1.25rem;
         color:#0d0f14;cursor:pointer;font-size:12px;font-weight:700">✓ Confirmer et clôturer</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal éditeur de carrière -->
+<div id="career-editor-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10060;align-items:center;justify-content:center">
+  <div style="background:#13161e;border:1px solid #252a38;border-radius:14px;padding:1.5rem;width:400px;max-width:95vw">
+    <div style="font-family:Syne,sans-serif;font-size:1rem;font-weight:800;color:#fff;margin-bottom:1rem">
+      ✏️ Modifier la carrière — <span id="ce-player-name"></span>
+    </div>
+    <div id="ce-rows" style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem"></div>
+    <div style="display:flex;gap:.5rem;justify-content:flex-end">
+      <button onclick="closeCareerEditor()" style="background:#252a38;border:none;border-radius:7px;padding:.5rem 1.1rem;color:#8b93b0;cursor:pointer;font-size:12px">Annuler</button>
+      <button onclick="saveCareerEditor()" style="background:#4f8ef7;border:none;border-radius:7px;padding:.5rem 1.25rem;color:#fff;cursor:pointer;font-size:12px;font-weight:700">✓ Sauvegarder</button>
     </div>
   </div>
 </div>
