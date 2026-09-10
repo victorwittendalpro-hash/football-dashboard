@@ -6723,6 +6723,7 @@ function snRenderKO(cfg) {
     ? [{k:'r16',l:'1/8 de Finale',n:8},{k:'qf',l:'Quarts',n:4},{k:'sf',l:'Demis',n:2},{k:'final',l:'Finale',n:1}]
     : [{k:'qf',l:'Quarts',n:4},{k:'sf',l:'Demis',n:2},{k:'final',l:'Finale',n:1}];
 
+  snPropagateKO(cfg.id);
   var h = snSubnavHTML(cfg, 'ko')
     + '<div class="sn-sec-hdr"><span style="font-size:1.4rem">' + cfg.icon + '</span>'
     + '<div><div class="sn-sec-title">' + cfg.label + ' S' + sn + ' — Phase Finale</div>'
@@ -6753,6 +6754,54 @@ function snRenderKO(cfg) {
   h += '</div>';
   panel.innerHTML = h;
   snAttachSubnav();
+}
+
+
+function snPropagateKO(compId) {
+  if (!snMatchData[compId]) return;
+  var ko = snMatchData[compId].koMatches;
+  if (!ko) return;
+
+  function winner(key) {
+    var m = ko[key];
+    if (!m || m.score_h == null || m.score_a == null) return null;
+    return m.score_h >= m.score_a ? m.home : m.away;
+  }
+
+  function setSlot(dstKey, side, team) {
+    if (!team) return;
+    if (!ko[dstKey]) ko[dstKey] = {};
+    if (ko[dstKey][side] !== team) {
+      // Équipe changée — réinitialiser le score
+      ko[dstKey][side] = team;
+      if (ko[dstKey].score_h != null) {
+        ko[dstKey].score_h = null;
+        ko[dstKey].score_a = null;
+        ko[dstKey].scorers = {};
+      }
+    }
+  }
+
+  var brackets = compId === 'cdm'
+    ? [
+        {f:['r16_0','r16_1'], t:'qf_0'},
+        {f:['r16_2','r16_3'], t:'qf_1'},
+        {f:['r16_4','r16_5'], t:'qf_2'},
+        {f:['r16_6','r16_7'], t:'qf_3'},
+        {f:['qf_0','qf_1'],   t:'sf_0'},
+        {f:['qf_2','qf_3'],   t:'sf_1'},
+        {f:['sf_0','sf_1'],   t:'final_0'}
+      ]
+    : [
+        {f:['qf_0','qf_1'], t:'sf_0'},
+        {f:['qf_2','qf_3'], t:'sf_1'},
+        {f:['sf_0','sf_1'], t:'final_0'}
+      ];
+
+  brackets.forEach(function(b) {
+    setSlot(b.t, 'home', winner(b.f[0]));
+    setSlot(b.t, 'away', winner(b.f[1]));
+  });
 }
 
 function snGetR16Team(i, side) {
@@ -7148,6 +7197,8 @@ function snSaveMatch() {
     if(!snMatchData[ctx.compId]) snMatchData[ctx.compId]={groupMatches:{},koMatches:{}};
     if(!snMatchData[ctx.compId].koMatches) snMatchData[ctx.compId].koMatches={};
     snMatchData[ctx.compId].koMatches[ctx.key]=entry;
+    // Propager le vainqueur dans le tour suivant
+    snPropagateKO(ctx.compId);
   }
 
   // Recalculer les buts en sélection de tous les joueurs concernés
