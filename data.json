@@ -11744,6 +11744,7 @@
     "10": "L1",
     "11": "L1",
     "13": "",
+    "21": "SA",
     "24": "BU",
     "25": "L1",
     "27": "LA",
@@ -11855,6 +11856,10 @@
     },
     "11": {
       "club": "AS Rome",
+      "season": "S9"
+    },
+    "21": {
+      "club": "OM",
       "season": "S9"
     },
     "22": {
@@ -12549,7 +12554,7 @@
   "awardsData": {},
   "mcData": {
     "budgets": {
-      "AC Milan": 0,
+      "AC Milan": 30,
       "Bayer Leverkusen": 289,
       "FC Barcelone": 320,
       "Arsenal": 330,
@@ -12571,7 +12576,7 @@
       "River Plate": 20,
       "Besiktas": 0,
       "Brighton": 40,
-      "OM": 20,
+      "OM": -10,
       "Fluminense": 20,
       "Atletico Madrid": -57,
       "Lazio": 0,
@@ -12624,6 +12629,10 @@
       "20": {
         "end": 11,
         "duration": 2
+      },
+      "21": {
+        "end": 13,
+        "duration": 4
       },
       "26": {
         "end": 11,
@@ -12965,6 +12974,14 @@
         "from": "PSG",
         "to": "AS Rome",
         "amount": 41,
+        "date": "2026-09-10"
+      },
+      {
+        "season": 9,
+        "player": "Traorè",
+        "from": "AC Milan",
+        "to": "OM",
+        "amount": 30,
         "date": "2026-09-10"
       }
     ]
