@@ -11817,6 +11817,7 @@
     "159": "SA",
     "160": "L1",
     "161": "BU",
+    "162": "BU",
     "164": "SA",
     "165": "PL",
     "166": "BU",
@@ -11895,6 +11896,10 @@
       "season": "S9"
     },
     "161": {
+      "club": "Bayer Leverkusen",
+      "season": "S9"
+    },
+    "162": {
       "club": "Bayer Leverkusen",
       "season": "S9"
     },
@@ -12503,9 +12508,9 @@
   "mcData": {
     "budgets": {
       "AC Milan": 0,
-      "Bayer Leverkusen": 349,
+      "Bayer Leverkusen": 289,
       "FC Barcelone": 320,
-      "Arsenal": 270,
+      "Arsenal": 330,
       "Chelsea": 200,
       "Dortmund": 165,
       "Real Madrid": 0,
@@ -12728,6 +12733,10 @@
         "end": 13,
         "duration": 4
       },
+      "162": {
+        "end": 13,
+        "duration": 4
+      },
       "163": {
         "end": 15,
         "duration": 4
@@ -12813,6 +12822,14 @@
         "to": "OM",
         "amount": 0,
         "date": "2026-09-09"
+      },
+      {
+        "season": 9,
+        "player": "Noah Darvich",
+        "from": "Arsenal",
+        "to": "Bayer Leverkusen",
+        "amount": 60,
+        "date": "2026-09-10"
       }
     ]
   }
