@@ -11787,6 +11787,7 @@
     "96": "PL",
     "109": "",
     "111": "LA",
+    "112": "LA",
     "113": "LA",
     "115": "SA",
     "116": "SA",
@@ -11880,6 +11881,10 @@
     "85": {
       "club": "Bayern",
       "season": "S8"
+    },
+    "112": {
+      "club": "Galatasarai",
+      "season": "S9"
     },
     "113": {
       "club": "OL",
@@ -12535,7 +12540,7 @@
       "Manchester United": 0,
       "Feyenord": 20,
       "Al Hilal": -10,
-      "Galatasarai": 0,
+      "Galatasarai": -13,
       "Totenham": 40,
       "Botafogo": 20,
       "Al Nasser": 20,
@@ -12545,7 +12550,7 @@
       "Brighton": 40,
       "OM": 20,
       "Fluminense": 20,
-      "Atletico Madrid": -50,
+      "Atletico Madrid": -37,
       "Lazio": 0,
       "OL": -10
     },
@@ -12687,6 +12692,10 @@
         "duration": 4
       },
       "111": {
+        "end": 13,
+        "duration": 4
+      },
+      "112": {
         "end": 13,
         "duration": 4
       },
@@ -12878,6 +12887,14 @@
         "from": "Atletico Madrid",
         "to": "OL",
         "amount": 30,
+        "date": "2026-09-10"
+      },
+      {
+        "season": 9,
+        "player": "Osimhen",
+        "from": "Atletico Madrid",
+        "to": "Galatasarai",
+        "amount": 13,
         "date": "2026-09-10"
       }
     ]
