@@ -11741,6 +11741,7 @@
     "0": "LA",
     "1": "PL",
     "9": "",
+    "10": "L1",
     "11": "L1",
     "13": "",
     "24": "BU",
@@ -11844,6 +11845,10 @@
     "205": "LA"
   },
   "playerClubOverrides": {
+    "10": {
+      "club": "AS Rome",
+      "season": "S9"
+    },
     "11": {
       "club": "AS Rome",
       "season": "S9"
@@ -12550,7 +12555,7 @@
       "Inter Milan": 30,
       "Bayern": 120,
       "Manchester City": 0,
-      "PSG": 4.9,
+      "PSG": 45.9,
       "Manchester United": 0,
       "Feyenord": 20,
       "Al Hilal": -10,
@@ -12568,7 +12573,8 @@
       "Lazio": 0,
       "OL": 6.899999999999999,
       "Côme": 40,
-      "Atalanta": 3.1000000000000014
+      "Atalanta": 3.1000000000000014,
+      "AS Rome": -21
     },
     "contracts": {
       "0": {
@@ -12584,8 +12590,8 @@
         "duration": 4
       },
       "10": {
-        "end": 11,
-        "duration": 2
+        "end": 13,
+        "duration": 4
       },
       "11": {
         "end": 13,
@@ -12947,6 +12953,14 @@
         "from": "OL",
         "to": "Atalanta",
         "amount": 16.9,
+        "date": "2026-09-10"
+      },
+      {
+        "season": 9,
+        "player": "W. Zaïre-Emery",
+        "from": "PSG",
+        "to": "AS Rome",
+        "amount": 41,
         "date": "2026-09-10"
       }
     ]
