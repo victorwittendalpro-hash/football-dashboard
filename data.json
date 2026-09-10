@@ -11786,7 +11786,7 @@
     "93": "SA",
     "96": "PL",
     "109": "",
-    "111": "LA",
+    "111": "SA",
     "113": "LA",
     "115": "SA",
     "116": "SA",
@@ -11803,7 +11803,6 @@
     "129": "",
     "130": "",
     "131": "",
-    "133": "BU",
     "134": "PL",
     "136": "PL",
     "137": "LA",
@@ -11881,6 +11880,10 @@
       "club": "Bayern",
       "season": "S8"
     },
+    "111": {
+      "club": "Al Hilal",
+      "season": "S9"
+    },
     "124": {
       "club": "Al Ahli",
       "season": "S8"
@@ -11891,10 +11894,6 @@
     },
     "128": {
       "club": "Atletico Madrid",
-      "season": "S9"
-    },
-    "133": {
-      "club": "Lazio",
       "season": "S9"
     },
     "134": {
@@ -12530,7 +12529,7 @@
       "PSG": 4.9,
       "Manchester United": 0,
       "Feyenord": 20,
-      "Al Hilal": -10,
+      "Al Hilal": -40,
       "Galatasarai": 0,
       "Totenham": 40,
       "Botafogo": 20,
@@ -12541,8 +12540,7 @@
       "Brighton": 40,
       "OM": 20,
       "Fluminense": 20,
-      "Atletico Madrid": -80,
-      "Lazio": 0
+      "Atletico Madrid": -70
     },
     "contracts": {
       "0": {
@@ -12709,10 +12707,6 @@
         "end": 13,
         "duration": 4
       },
-      "133": {
-        "end": 13,
-        "duration": 4
-      },
       "134": {
         "end": 13,
         "duration": 4
@@ -12861,10 +12855,10 @@
       },
       {
         "season": 9,
-        "player": "F. Wirtz",
+        "player": "Aguerd",
         "from": "Atletico Madrid",
-        "to": "Lazio",
-        "amount": 20,
+        "to": "Al Hilal",
+        "amount": 30,
         "date": "2026-09-10"
       }
     ]
