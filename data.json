@@ -11832,7 +11832,7 @@
     "170": "LA",
     "172": "BU",
     "174": "LA",
-    "179": "LA",
+    "179": "L1",
     "180": "SA",
     "181": "LA",
     "182": "BU",
@@ -11952,6 +11952,10 @@
     },
     "170": {
       "club": "Botafogo",
+      "season": "S9"
+    },
+    "179": {
+      "club": "PSG",
       "season": "S9"
     },
     "180": {
@@ -12560,11 +12564,11 @@
       "Arsenal": 330,
       "Chelsea": 150,
       "Dortmund": 165,
-      "Real Madrid": 50,
+      "Real Madrid": 113,
       "Inter Milan": 30,
       "Bayern": 120,
       "Manchester City": 0,
-      "PSG": 45.9,
+      "PSG": -17.1,
       "Manchester United": 0,
       "Feyenord": 20,
       "Al Hilal": -10,
@@ -12834,6 +12838,10 @@
         "end": 11,
         "duration": 2
       },
+      "179": {
+        "end": 13,
+        "duration": 4
+      },
       "183": {
         "end": 11,
         "duration": 2
@@ -12986,6 +12994,14 @@
         "from": "AC Milan",
         "to": "OM",
         "amount": 30,
+        "date": "2026-09-10"
+      },
+      {
+        "season": 9,
+        "player": "K. Mainoo",
+        "from": "Real Madrid",
+        "to": "PSG",
+        "amount": 63,
         "date": "2026-09-10"
       }
     ]
