@@ -11839,7 +11839,8 @@
     "187": "SA",
     "188": "SA",
     "195": "BU",
-    "196": "SA"
+    "196": "SA",
+    "205": "LA"
   },
   "playerClubOverrides": {
     "11": {
@@ -11937,6 +11938,10 @@
     "199": {
       "club": "Benfica",
       "season": "S8"
+    },
+    "205": {
+      "club": "Atletico Madrid",
+      "season": "S9"
     }
   },
   "customPlayers": [
@@ -12550,9 +12555,10 @@
       "Brighton": 40,
       "OM": 20,
       "Fluminense": 20,
-      "Atletico Madrid": -37,
+      "Atletico Madrid": -57,
       "Lazio": 0,
-      "OL": -10
+      "OL": -10,
+      "Côme": 40
     },
     "contracts": {
       "0": {
@@ -12790,6 +12796,10 @@
       "183": {
         "end": 11,
         "duration": 2
+      },
+      "205": {
+        "end": 13,
+        "duration": 4
       }
     },
     "transfers": [
@@ -12895,6 +12905,14 @@
         "from": "Atletico Madrid",
         "to": "Galatasarai",
         "amount": 13,
+        "date": "2026-09-10"
+      },
+      {
+        "season": 9,
+        "player": "A. Cannobio",
+        "from": "Côme",
+        "to": "Atletico Madrid",
+        "amount": 20,
         "date": "2026-09-10"
       }
     ]
