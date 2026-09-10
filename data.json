@@ -11803,6 +11803,7 @@
     "129": "",
     "130": "",
     "131": "",
+    "133": "BU",
     "134": "PL",
     "136": "PL",
     "137": "LA",
@@ -11890,6 +11891,10 @@
     },
     "128": {
       "club": "Atletico Madrid",
+      "season": "S9"
+    },
+    "133": {
+      "club": "Lazio",
       "season": "S9"
     },
     "134": {
@@ -12536,7 +12541,8 @@
       "Brighton": 40,
       "OM": 20,
       "Fluminense": 20,
-      "Atletico Madrid": -100
+      "Atletico Madrid": -80,
+      "Lazio": 0
     },
     "contracts": {
       "0": {
@@ -12703,6 +12709,10 @@
         "end": 13,
         "duration": 4
       },
+      "133": {
+        "end": 13,
+        "duration": 4
+      },
       "134": {
         "end": 13,
         "duration": 4
@@ -12847,6 +12857,14 @@
         "from": "Bayern",
         "to": "Atletico Madrid",
         "amount": 120,
+        "date": "2026-09-10"
+      },
+      {
+        "season": 9,
+        "player": "F. Wirtz",
+        "from": "Atletico Madrid",
+        "to": "Lazio",
+        "amount": 20,
         "date": "2026-09-10"
       }
     ]
