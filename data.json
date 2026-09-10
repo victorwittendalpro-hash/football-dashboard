@@ -11809,6 +11809,7 @@
     "136": "PL",
     "137": "LA",
     "139": "L1",
+    "141": "SA",
     "145": "PL",
     "146": "BU",
     "147": "SA",
@@ -11909,6 +11910,10 @@
     },
     "134": {
       "club": "RB Leipzig",
+      "season": "S9"
+    },
+    "141": {
+      "club": "Chelsea",
       "season": "S9"
     },
     "151": {
@@ -12535,9 +12540,9 @@
       "Bayer Leverkusen": 289,
       "FC Barcelone": 320,
       "Arsenal": 330,
-      "Chelsea": 200,
+      "Chelsea": 150,
       "Dortmund": 165,
-      "Real Madrid": 0,
+      "Real Madrid": 50,
       "Inter Milan": 30,
       "Bayern": 120,
       "Manchester City": 0,
@@ -12741,6 +12746,10 @@
         "end": 13,
         "duration": 4
       },
+      "141": {
+        "end": 13,
+        "duration": 4
+      },
       "142": {
         "end": 11,
         "duration": 2
@@ -12913,6 +12922,14 @@
         "from": "Côme",
         "to": "Atletico Madrid",
         "amount": 20,
+        "date": "2026-09-10"
+      },
+      {
+        "season": 9,
+        "player": "Kudus",
+        "from": "Real Madrid",
+        "to": "Chelsea",
+        "amount": 50,
         "date": "2026-09-10"
       }
     ]
