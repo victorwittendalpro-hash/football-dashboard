@@ -11799,6 +11799,7 @@
     "124": "PL",
     "125": "PL",
     "126": "PL",
+    "128": "LA",
     "129": "",
     "130": "",
     "131": "",
@@ -11886,6 +11887,10 @@
     "125": {
       "club": "Aston Villa",
       "season": "S8"
+    },
+    "128": {
+      "club": "Atletico Madrid",
+      "season": "S9"
     },
     "134": {
       "club": "RB Leipzig",
@@ -12515,7 +12520,7 @@
       "Dortmund": 165,
       "Real Madrid": 0,
       "Inter Milan": 30,
-      "Bayern": 0,
+      "Bayern": 120,
       "Manchester City": 0,
       "PSG": 4.9,
       "Manchester United": 0,
@@ -12530,7 +12535,8 @@
       "Besiktas": 0,
       "Brighton": 40,
       "OM": 20,
-      "Fluminense": 20
+      "Fluminense": 20,
+      "Atletico Madrid": -100
     },
     "contracts": {
       "0": {
@@ -12689,6 +12695,10 @@
         "end": 13,
         "duration": 4
       },
+      "128": {
+        "end": 13,
+        "duration": 4
+      },
       "131": {
         "end": 13,
         "duration": 4
@@ -12829,6 +12839,14 @@
         "from": "Arsenal",
         "to": "Bayer Leverkusen",
         "amount": 60,
+        "date": "2026-09-10"
+      },
+      {
+        "season": 9,
+        "player": "E. Haaland",
+        "from": "Bayern",
+        "to": "Atletico Madrid",
+        "amount": 120,
         "date": "2026-09-10"
       }
     ]
