@@ -11849,6 +11849,7 @@
     "188": "SA",
     "195": "BU",
     "196": "SA",
+    "199": "LA",
     "205": "LA"
   },
   "playerClubOverrides": {
@@ -11973,8 +11974,8 @@
       "season": "S9"
     },
     "199": {
-      "club": "Benfica",
-      "season": "S8"
+      "club": "FC Barcelone",
+      "season": "S9"
     },
     "205": {
       "club": "Atletico Madrid",
@@ -11988,11 +11989,12 @@
       "nameRaw": "Jaminton Campaz",
       "age": 26,
       "post": "AiG",
-      "ligue": "",
-      "currentClub": "Benfica",
+      "ligue": "LA",
+      "currentClub": "FC Barcelone",
       "career": {
         "S8": "Benfica",
-        "S10": "Benfica"
+        "S10": "Benfica",
+        "S9": "FC Barcelone"
       },
       "total": 18,
       "CL": 0,
@@ -12571,7 +12573,7 @@
     "budgets": {
       "AC Milan": 30,
       "Bayer Leverkusen": 289,
-      "FC Barcelone": 320,
+      "FC Barcelone": 250,
       "Arsenal": 330,
       "Chelsea": 150,
       "Dortmund": 165,
@@ -12598,7 +12600,8 @@
       "OL": 6.899999999999999,
       "Côme": 40,
       "Atalanta": 3.1000000000000014,
-      "AS Rome": -21
+      "AS Rome": -21,
+      "Benfica": 90
     },
     "contracts": {
       "0": {
@@ -12857,6 +12860,10 @@
         "end": 11,
         "duration": 2
       },
+      "199": {
+        "end": 13,
+        "duration": 4
+      },
       "205": {
         "end": 13,
         "duration": 4
@@ -13014,6 +13021,14 @@
         "to": "PSG",
         "amount": 63,
         "date": "2026-09-10"
+      },
+      {
+        "season": 9,
+        "player": "Jaminton Campaz",
+        "from": "Benfica",
+        "to": "FC Barcelone",
+        "amount": 70,
+        "date": "2026-09-16"
       }
     ]
   }
