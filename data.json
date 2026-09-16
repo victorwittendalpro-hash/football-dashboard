@@ -11814,6 +11814,7 @@
     "131": "",
     "133": "BU",
     "134": "PL",
+    "135": "SA",
     "136": "PL",
     "137": "LA",
     "139": "L1",
@@ -11935,6 +11936,10 @@
     },
     "134": {
       "club": "RB Leipzig",
+      "season": "S9"
+    },
+    "135": {
+      "club": "AC Milan",
       "season": "S9"
     },
     "141": {
@@ -12792,6 +12797,10 @@
         "end": 13,
         "duration": 4
       },
+      "135": {
+        "end": 13,
+        "duration": 4
+      },
       "139": {
         "end": 13,
         "duration": 4
@@ -13028,6 +13037,14 @@
         "from": "Benfica",
         "to": "FC Barcelone",
         "amount": 70,
+        "date": "2026-09-16"
+      },
+      {
+        "season": 9,
+        "player": "Gibbs-White",
+        "from": "Real Madrid",
+        "to": "AC Milan",
+        "amount": 0,
         "date": "2026-09-16"
       }
     ]
