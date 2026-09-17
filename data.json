@@ -11848,7 +11848,7 @@
     "185": "LA",
     "187": "SA",
     "188": "SA",
-    "195": "BU",
+    "195": "SA",
     "196": "SA",
     "199": "LA",
     "205": "LA"
@@ -11984,6 +11984,10 @@
     },
     "183": {
       "club": "OL",
+      "season": "S9"
+    },
+    "195": {
+      "club": "Chelsea",
       "season": "S9"
     },
     "196": {
@@ -12653,7 +12657,7 @@
       "Bayer Leverkusen": 289,
       "FC Barcelone": 250,
       "Arsenal": 330,
-      "Chelsea": 150,
+      "Chelsea": -29,
       "Dortmund": 165,
       "Real Madrid": 113,
       "Inter Milan": 30,
@@ -12680,7 +12684,8 @@
       "Atalanta": 3.1000000000000014,
       "AS Rome": -21,
       "Benfica": 90,
-      "Al Itihad": 0
+      "Al Itihad": 0,
+      "Frankfort": 199
     },
     "contracts": {
       "0": {
@@ -12951,6 +12956,10 @@
         "end": 11,
         "duration": 2
       },
+      "195": {
+        "end": 13,
+        "duration": 4
+      },
       "199": {
         "end": 13,
         "duration": 4
@@ -13159,6 +13168,14 @@
         "from": "Dortmund",
         "to": "OL",
         "amount": 0,
+        "date": "2026-09-17"
+      },
+      {
+        "season": 9,
+        "player": "Moïse Sahi",
+        "from": "Frankfort",
+        "to": "Chelsea",
+        "amount": 179,
         "date": "2026-09-17"
       }
     ]
