@@ -11843,7 +11843,7 @@
     "180": "SA",
     "181": "LA",
     "182": "BU",
-    "183": "BU",
+    "183": "L1",
     "184": "BU",
     "185": "LA",
     "187": "SA",
@@ -11981,6 +11981,10 @@
     "180": {
       "club": "Atalanta",
       "season": "S8"
+    },
+    "183": {
+      "club": "OL",
+      "season": "S9"
     },
     "196": {
       "club": "PSG",
@@ -13086,6 +13090,14 @@
         "from": "Al Nasser",
         "to": "OL",
         "amount": 21,
+        "date": "2026-09-17"
+      },
+      {
+        "season": 9,
+        "player": "K. Adeyemi",
+        "from": "Dortmund",
+        "to": "OL",
+        "amount": 0,
         "date": "2026-09-17"
       }
     ]
