@@ -11911,7 +11911,7 @@
       "season": "S9"
     },
     "113": {
-      "club": "OL",
+      "club": "Al Itihad",
       "season": "S9"
     },
     "120": {
@@ -12606,11 +12606,12 @@
       "Fluminense": 20,
       "Atletico Madrid": -57,
       "Lazio": 0,
-      "OL": 6.899999999999999,
+      "OL": 26.9,
       "Côme": 40,
       "Atalanta": 3.1000000000000014,
       "AS Rome": -21,
-      "Benfica": 90
+      "Benfica": 90,
+      "Al Itihad": 0
     },
     "contracts": {
       "0": {
@@ -13062,6 +13063,14 @@
         "to": "AC Milan",
         "amount": 0,
         "date": "2026-09-16"
+      },
+      {
+        "season": 9,
+        "player": "N. Aké",
+        "from": "OL",
+        "to": "Al Itihad",
+        "amount": 20,
+        "date": "2026-09-17"
       }
     ]
   }
