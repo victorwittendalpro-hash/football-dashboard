@@ -11772,7 +11772,7 @@
     "50": "",
     "51": "L1",
     "56": "PL",
-    "58": "",
+    "58": "L1",
     "66": "BU",
     "67": "L1",
     "68": "",
@@ -11893,6 +11893,10 @@
     "48": {
       "club": "Totenham",
       "season": "S8"
+    },
+    "58": {
+      "club": "OL",
+      "season": "S9"
     },
     "67": {
       "club": "River Plate",
@@ -12231,7 +12235,7 @@
       "t_total": 0,
       "_custom": true,
       "_origS8": 0,
-      "_value": 46200000,
+      "_value": 15300000,
       "_origSN": 0
     },
     {
@@ -12597,7 +12601,7 @@
       "Galatasarai": -13,
       "Totenham": 40,
       "Botafogo": 20,
-      "Al Nasser": 20,
+      "Al Nasser": 41,
       "RB Leipzig": 20,
       "River Plate": 20,
       "Besiktas": 0,
@@ -12606,7 +12610,7 @@
       "Fluminense": 20,
       "Atletico Madrid": -57,
       "Lazio": 0,
-      "OL": 26.9,
+      "OL": 5.899999999999999,
       "Côme": 40,
       "Atalanta": 3.1000000000000014,
       "AS Rome": -21,
@@ -12705,6 +12709,10 @@
       "55": {
         "end": 13,
         "duration": 4
+      },
+      "58": {
+        "end": 11,
+        "duration": 2
       },
       "60": {
         "end": 13,
@@ -13070,6 +13078,14 @@
         "from": "OL",
         "to": "Al Itihad",
         "amount": 20,
+        "date": "2026-09-17"
+      },
+      {
+        "season": 9,
+        "player": "T. Chong",
+        "from": "Al Nasser",
+        "to": "OL",
+        "amount": 21,
         "date": "2026-09-17"
       }
     ]
