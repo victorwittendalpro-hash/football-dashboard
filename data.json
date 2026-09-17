@@ -12583,6 +12583,37 @@
       "_custom": true,
       "_value": 20900000,
       "_origS8": 0
+    },
+    {
+      "rank": 217,
+      "name": "Eli Kroupi Jr.",
+      "nameRaw": "Eli Kroupi Jr.",
+      "age": 19,
+      "post": "AC",
+      "ligue": "L1",
+      "currentClub": "OL",
+      "career": {
+        "S9": "OL"
+      },
+      "total": 15,
+      "CL": 0,
+      "SN": 0,
+      "CH": 15,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S9": 15
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true,
+      "_value": 155700000
     }
   ],
   "awardsData": {},
