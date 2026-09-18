@@ -11839,6 +11839,7 @@
     "170": "LA",
     "172": "BU",
     "174": "LA",
+    "177": "LA",
     "179": "L1",
     "180": "SA",
     "181": "LA",
@@ -11974,6 +11975,10 @@
       "club": "Botafogo",
       "season": "S9"
     },
+    "177": {
+      "club": "Bayern",
+      "season": "S9"
+    },
     "179": {
       "club": "PSG",
       "season": "S9"
@@ -12073,7 +12078,7 @@
       "_custom": true,
       "_origSN": 0,
       "_origS8": 0,
-      "_value": 44400000
+      "_value": 45100000
     },
     {
       "rank": 202,
@@ -12141,7 +12146,7 @@
       "t_total": 0,
       "_custom": true,
       "_origS8": 0,
-      "_value": 125700000,
+      "_value": 49300000,
       "_origSN": 0
     },
     {
@@ -12175,7 +12180,8 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true,
-      "_origS8": 0
+      "_origS8": 0,
+      "_value": 29700000
     },
     {
       "rank": 205,
@@ -12483,7 +12489,7 @@
       "t_total": 0,
       "_custom": true,
       "_origS8": 0,
-      "_value": 51600000,
+      "_value": 52500000,
       "_origSN": 0
     },
     {
@@ -12647,7 +12653,8 @@
       "t_cl": 0,
       "t_el": 0,
       "t_total": 0,
-      "_custom": true
+      "_custom": true,
+      "_value": 32400000
     }
   ],
   "awardsData": {},
@@ -12948,6 +12955,10 @@
         "end": 11,
         "duration": 2
       },
+      "177": {
+        "end": 13,
+        "duration": 4
+      },
       "179": {
         "end": 13,
         "duration": 4
@@ -13177,6 +13188,14 @@
         "to": "Chelsea",
         "amount": 179,
         "date": "2026-09-17"
+      },
+      {
+        "season": 9,
+        "player": "Fabio Silva",
+        "from": "Manchester City",
+        "to": "Bayern",
+        "amount": 0,
+        "date": "2026-09-18"
       }
     ]
   }
