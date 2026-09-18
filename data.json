@@ -11825,7 +11825,7 @@
     "151": "L1",
     "154": "PL",
     "155": "SA",
-    "156": "PL",
+    "156": "SA",
     "158": "PL",
     "159": "SA",
     "160": "SA",
@@ -11953,6 +11953,10 @@
     },
     "151": {
       "club": "Besiktas",
+      "season": "S9"
+    },
+    "156": {
+      "club": "Chelsea",
       "season": "S9"
     },
     "160": {
@@ -12923,6 +12927,10 @@
         "end": 11,
         "duration": 2
       },
+      "156": {
+        "end": 11,
+        "duration": 2
+      },
       "157": {
         "end": 13,
         "duration": 4
@@ -13194,6 +13202,14 @@
         "player": "Fabio Silva",
         "from": "Manchester City",
         "to": "Bayern",
+        "amount": 0,
+        "date": "2026-09-18"
+      },
+      {
+        "season": 9,
+        "player": "Endrick",
+        "from": "Manchester City",
+        "to": "Chelsea",
         "amount": 0,
         "date": "2026-09-18"
       }
