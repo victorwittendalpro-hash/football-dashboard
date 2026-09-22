@@ -11852,7 +11852,8 @@
     "195": "SA",
     "196": "SA",
     "199": "LA",
-    "205": "LA"
+    "205": "LA",
+    "210": "PL"
   },
   "playerClubOverrides": {
     "8": {
@@ -12009,6 +12010,10 @@
     },
     "205": {
       "club": "Atletico Madrid",
+      "season": "S9"
+    },
+    "210": {
+      "club": "Manchester City",
       "season": "S9"
     }
   },
@@ -12399,11 +12404,12 @@
       "nameRaw": "O. Bobb",
       "age": 22,
       "post": "AiD",
-      "ligue": "L1",
-      "currentClub": "AS Monaco",
+      "ligue": "PL",
+      "currentClub": "Manchester City",
       "career": {
         "S8": "AS Monaco",
-        "S10": "AS Monaco"
+        "S10": "AS Monaco",
+        "S9": "Manchester City"
       },
       "total": 9,
       "CL": 0,
@@ -12986,6 +12992,10 @@
       "205": {
         "end": 13,
         "duration": 4
+      },
+      "210": {
+        "end": 13,
+        "duration": 4
       }
     },
     "transfers": [
@@ -13212,6 +13222,14 @@
         "to": "Chelsea",
         "amount": 0,
         "date": "2026-09-18"
+      },
+      {
+        "season": 9,
+        "player": "O. Bobb",
+        "from": "AS Monaco",
+        "to": "Manchester City",
+        "amount": 0,
+        "date": "2026-09-22"
       }
     ]
   }
