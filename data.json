@@ -11800,7 +11800,7 @@
     "115": "SA",
     "116": "SA",
     "117": "L1",
-    "118": "",
+    "118": "L1",
     "119": "",
     "120": "SA",
     "121": "LA",
@@ -11922,6 +11922,10 @@
     },
     "113": {
       "club": "Al Itihad",
+      "season": "S9"
+    },
+    "118": {
+      "club": "As Monaco",
       "season": "S9"
     },
     "120": {
@@ -12687,7 +12691,7 @@
       "PSG": -17.1,
       "Manchester United": 0,
       "Feyenord": 20,
-      "Al Hilal": -3,
+      "Al Hilal": 3.5,
       "Galatasarai": -13,
       "Totenham": 40,
       "Botafogo": 20,
@@ -12707,7 +12711,7 @@
       "Benfica": 90,
       "Al Itihad": 0,
       "Frankfort": 199,
-      "As Monaco": 13
+      "As Monaco": 6.5
     },
     "contracts": {
       "0": {
@@ -12875,6 +12879,10 @@
         "duration": 4
       },
       "114": {
+        "end": 11,
+        "duration": 2
+      },
+      "118": {
         "end": 11,
         "duration": 2
       },
@@ -13246,6 +13254,14 @@
         "from": "Al Hilal",
         "to": "As Monaco",
         "amount": 7,
+        "date": "2026-09-22"
+      },
+      {
+        "season": 9,
+        "player": "Eze",
+        "from": "Al Hilal",
+        "to": "As Monaco",
+        "amount": 6.5,
         "date": "2026-09-22"
       }
     ]
