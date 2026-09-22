@@ -11787,7 +11787,7 @@
     "82": "",
     "83": "",
     "85": "LA",
-    "86": "",
+    "86": "L1",
     "88": "L1",
     "89": "L1",
     "90": "BU",
@@ -11911,6 +11911,10 @@
     "85": {
       "club": "Bayern",
       "season": "S8"
+    },
+    "86": {
+      "club": "As Monaco",
+      "season": "S9"
     },
     "112": {
       "club": "Galatasarai",
@@ -12683,7 +12687,7 @@
       "PSG": -17.1,
       "Manchester United": 0,
       "Feyenord": 20,
-      "Al Hilal": -10,
+      "Al Hilal": -3,
       "Galatasarai": -13,
       "Totenham": 40,
       "Botafogo": 20,
@@ -12702,7 +12706,8 @@
       "AS Rome": -21,
       "Benfica": 90,
       "Al Itihad": 0,
-      "Frankfort": 199
+      "Frankfort": 199,
+      "As Monaco": 13
     },
     "contracts": {
       "0": {
@@ -12824,6 +12829,10 @@
       "80": {
         "end": 13,
         "duration": 4
+      },
+      "86": {
+        "end": 11,
+        "duration": 2
       },
       "90": {
         "end": 11,
@@ -13229,6 +13238,14 @@
         "from": "AS Monaco",
         "to": "Manchester City",
         "amount": 0,
+        "date": "2026-09-22"
+      },
+      {
+        "season": 9,
+        "player": "L. Henrique",
+        "from": "Al Hilal",
+        "to": "As Monaco",
+        "amount": 7,
         "date": "2026-09-22"
       }
     ]
