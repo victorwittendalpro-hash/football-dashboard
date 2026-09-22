@@ -11769,6 +11769,7 @@
     "43": "PL",
     "46": "SA",
     "47": "SA",
+    "48": "L1",
     "50": "",
     "51": "L1",
     "56": "PL",
@@ -11893,8 +11894,8 @@
       "season": "S9"
     },
     "48": {
-      "club": "Totenham",
-      "season": "S8"
+      "club": "As Monaco",
+      "season": "S9"
     },
     "58": {
       "club": "OL",
@@ -12693,7 +12694,7 @@
       "Feyenord": 20,
       "Al Hilal": 3.5,
       "Galatasarai": -13,
-      "Totenham": 40,
+      "Totenham": 59,
       "Botafogo": 20,
       "Al Nasser": 41,
       "RB Leipzig": 20,
@@ -12711,7 +12712,7 @@
       "Benfica": 90,
       "Al Itihad": 0,
       "Frankfort": 199,
-      "As Monaco": 6.5
+      "As Monaco": -12.5
     },
     "contracts": {
       "0": {
@@ -12797,6 +12798,10 @@
       "46": {
         "end": 13,
         "duration": 4
+      },
+      "48": {
+        "end": 11,
+        "duration": 2
       },
       "54": {
         "end": 11,
@@ -13262,6 +13267,14 @@
         "from": "Al Hilal",
         "to": "As Monaco",
         "amount": 6.5,
+        "date": "2026-09-22"
+      },
+      {
+        "season": 9,
+        "player": "Rafael Leao",
+        "from": "Totenham",
+        "to": "As Monaco",
+        "amount": 19,
         "date": "2026-09-22"
       }
     ]
