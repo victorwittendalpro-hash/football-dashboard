@@ -11827,6 +11827,7 @@
     "154": "PL",
     "155": "SA",
     "156": "SA",
+    "157": "LA",
     "158": "PL",
     "159": "SA",
     "160": "SA",
@@ -11973,6 +11974,10 @@
     },
     "156": {
       "club": "Chelsea",
+      "season": "S9"
+    },
+    "157": {
+      "club": "Real Madrid",
       "season": "S9"
     },
     "160": {
@@ -12699,10 +12704,10 @@
       "Arsenal": 233,
       "Chelsea": -74.1,
       "Dortmund": 165,
-      "Real Madrid": 113,
+      "Real Madrid": 33,
       "Inter Milan": 30,
       "Bayern": 120,
-      "Manchester City": 0,
+      "Manchester City": 80,
       "PSG": -17.1,
       "Manchester United": 0,
       "Feyenord": 20,
@@ -13327,6 +13332,14 @@
         "from": "As Monaco",
         "to": "Arsenal",
         "amount": 97,
+        "date": "2026-09-24"
+      },
+      {
+        "season": 9,
+        "player": "T. Cantwell",
+        "from": "Manchester City",
+        "to": "Real Madrid",
+        "amount": 80,
         "date": "2026-09-24"
       }
     ]
