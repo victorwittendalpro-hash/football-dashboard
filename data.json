@@ -11897,6 +11897,10 @@
       "club": "As Monaco",
       "season": "S9"
     },
+    "51": {
+      "club": "Shanghai",
+      "season": "S9"
+    },
     "58": {
       "club": "OL",
       "season": "S9"
@@ -12712,7 +12716,9 @@
       "Benfica": 90,
       "Al Itihad": 0,
       "Frankfort": 199,
-      "As Monaco": -12.5
+      "As Monaco": -12.5,
+      "Shanghai": 18,
+      "AS Monaco": 22
     },
     "contracts": {
       "0": {
@@ -12802,6 +12808,10 @@
       "48": {
         "end": 11,
         "duration": 2
+      },
+      "51": {
+        "end": 13,
+        "duration": 4
       },
       "54": {
         "end": 11,
@@ -13276,6 +13286,14 @@
         "to": "As Monaco",
         "amount": 19,
         "date": "2026-09-22"
+      },
+      {
+        "season": 9,
+        "player": "Ndidi",
+        "from": "AS Monaco",
+        "to": "Shanghai",
+        "amount": 2,
+        "date": "2026-09-24"
       }
     ]
   }
