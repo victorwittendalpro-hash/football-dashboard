@@ -11746,6 +11746,7 @@
   "playerLigueOverrides": {
     "0": "LA",
     "1": "PL",
+    "2": "LA",
     "9": "",
     "10": "L1",
     "11": "L1",
@@ -11864,6 +11865,10 @@
     "210": "PL"
   },
   "playerClubOverrides": {
+    "2": {
+      "club": "Inter Milan",
+      "season": "S9"
+    },
     "8": {
       "club": "River Plate",
       "season": "S9"
@@ -12720,12 +12725,12 @@
     "budgets": {
       "AC Milan": 170,
       "Bayer Leverkusen": 316.4,
-      "FC Barcelone": 507,
+      "FC Barcelone": 553.5,
       "Arsenal": 233,
       "Chelsea": -74.1,
       "Dortmund": 165,
       "Real Madrid": 115.6,
-      "Inter Milan": 30,
+      "Inter Milan": -16.5,
       "Bayern": 120,
       "Manchester City": 59.900000000000006,
       "PSG": 143,
@@ -12757,6 +12762,10 @@
     },
     "contracts": {
       "0": {
+        "end": 13,
+        "duration": 4
+      },
+      "2": {
         "end": 13,
         "duration": 4
       },
@@ -13400,6 +13409,14 @@
         "from": "FC Barcelone",
         "to": "Manchester United",
         "amount": 86.9,
+        "date": "2026-09-24"
+      },
+      {
+        "season": 9,
+        "player": "Mudrik",
+        "from": "FC Barcelone",
+        "to": "Inter Milan",
+        "amount": 46.5,
         "date": "2026-09-24"
       }
     ]
