@@ -11853,6 +11853,7 @@
     "195": "SA",
     "196": "SA",
     "199": "LA",
+    "200": "SA",
     "205": "LA",
     "210": "PL"
   },
@@ -12019,6 +12020,10 @@
     },
     "199": {
       "club": "FC Barcelone",
+      "season": "S9"
+    },
+    "200": {
+      "club": "Chelsea",
       "season": "S9"
     },
     "205": {
@@ -12687,7 +12692,7 @@
       "Bayer Leverkusen": 289,
       "FC Barcelone": 250,
       "Arsenal": 330,
-      "Chelsea": -29,
+      "Chelsea": -74.1,
       "Dortmund": 165,
       "Real Madrid": 113,
       "Inter Milan": 30,
@@ -12718,7 +12723,7 @@
       "Frankfort": 199,
       "As Monaco": -12.5,
       "Shanghai": 18,
-      "AS Monaco": 22
+      "AS Monaco": 67.1
     },
     "contracts": {
       "0": {
@@ -13021,6 +13026,10 @@
         "end": 13,
         "duration": 4
       },
+      "200": {
+        "end": 13,
+        "duration": 4
+      },
       "205": {
         "end": 13,
         "duration": 4
@@ -13293,6 +13302,14 @@
         "from": "AS Monaco",
         "to": "Shanghai",
         "amount": 2,
+        "date": "2026-09-24"
+      },
+      {
+        "season": 9,
+        "player": "Moreira Jr.",
+        "from": "AS Monaco",
+        "to": "Chelsea",
+        "amount": 45.1,
         "date": "2026-09-24"
       }
     ]
