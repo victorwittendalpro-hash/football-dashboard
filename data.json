@@ -11823,6 +11823,7 @@
     "145": "PL",
     "146": "BU",
     "147": "SA",
+    "148": "LA",
     "151": "L1",
     "154": "PL",
     "155": "SA",
@@ -11966,6 +11967,10 @@
     },
     "141": {
       "club": "Chelsea",
+      "season": "S9"
+    },
+    "148": {
+      "club": "Real Madrid",
       "season": "S9"
     },
     "151": {
@@ -12698,13 +12703,13 @@
   "awardsData": {},
   "mcData": {
     "budgets": {
-      "AC Milan": 170,
-      "Bayer Leverkusen": 289,
+      "AC Milan": 30,
+      "Bayer Leverkusen": 316.4,
       "FC Barcelone": 250,
       "Arsenal": 233,
       "Chelsea": -74.1,
       "Dortmund": 165,
-      "Real Madrid": 33,
+      "Real Madrid": 205.6,
       "Inter Milan": 30,
       "Bayern": 120,
       "Manchester City": 80,
@@ -12730,12 +12735,10 @@
       "AS Rome": -21,
       "Benfica": 90,
       "Al Itihad": 0,
-      "Frankfort": 279,
+      "Frankfort": 199,
       "As Monaco": 84.5,
       "Shanghai": 18,
-      "AS Monaco": 67.1,
-      "Liverpool": 300,
-      "Fiorentina": 80
+      "AS Monaco": 67.1
     },
     "contracts": {
       "0": {
@@ -12969,6 +12972,10 @@
       "145": {
         "end": 11,
         "duration": 2
+      },
+      "148": {
+        "end": 13,
+        "duration": 4
       },
       "151": {
         "end": 13,
@@ -13342,6 +13349,14 @@
         "from": "Manchester City",
         "to": "Real Madrid",
         "amount": 80,
+        "date": "2026-09-24"
+      },
+      {
+        "season": 9,
+        "player": "Bertuğ Yıldırım",
+        "from": "Bayer Leverkusen",
+        "to": "Real Madrid",
+        "amount": 27.4,
         "date": "2026-09-24"
       }
     ]
