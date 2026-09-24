@@ -11750,6 +11750,7 @@
     "10": "L1",
     "11": "L1",
     "13": "",
+    "17": "LA",
     "21": "SA",
     "24": "BU",
     "25": "L1",
@@ -11871,6 +11872,10 @@
     },
     "11": {
       "club": "AS Rome",
+      "season": "S9"
+    },
+    "17": {
+      "club": "Manchester City",
       "season": "S9"
     },
     "21": {
@@ -12705,14 +12710,14 @@
     "budgets": {
       "AC Milan": 170,
       "Bayer Leverkusen": 316.4,
-      "FC Barcelone": 250,
+      "FC Barcelone": 420.1,
       "Arsenal": 233,
       "Chelsea": -74.1,
       "Dortmund": 165,
       "Real Madrid": 205.6,
       "Inter Milan": 30,
       "Bayern": 120,
-      "Manchester City": 230,
+      "Manchester City": 59.900000000000006,
       "PSG": 143,
       "Manchester United": 0,
       "Feyenord": 20,
@@ -12778,8 +12783,8 @@
         "duration": 2
       },
       "17": {
-        "end": 11,
-        "duration": 2
+        "end": 13,
+        "duration": 4
       },
       "20": {
         "end": 11,
@@ -13357,6 +13362,14 @@
         "from": "Bayer Leverkusen",
         "to": "Real Madrid",
         "amount": 27.4,
+        "date": "2026-09-24"
+      },
+      {
+        "season": 9,
+        "player": "Ben Seghir",
+        "from": "FC Barcelone",
+        "to": "Manchester City",
+        "amount": 170.1,
         "date": "2026-09-24"
       }
     ]
