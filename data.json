@@ -11852,6 +11852,7 @@
     "188": "SA",
     "195": "SA",
     "196": "SA",
+    "198": "PL",
     "199": "LA",
     "200": "SA",
     "205": "LA",
@@ -12016,6 +12017,10 @@
     },
     "196": {
       "club": "PSG",
+      "season": "S9"
+    },
+    "198": {
+      "club": "Arsenal",
       "season": "S9"
     },
     "199": {
@@ -12691,7 +12696,7 @@
       "AC Milan": 30,
       "Bayer Leverkusen": 289,
       "FC Barcelone": 250,
-      "Arsenal": 330,
+      "Arsenal": 233,
       "Chelsea": -74.1,
       "Dortmund": 165,
       "Real Madrid": 113,
@@ -12721,7 +12726,7 @@
       "Benfica": 90,
       "Al Itihad": 0,
       "Frankfort": 199,
-      "As Monaco": -12.5,
+      "As Monaco": 84.5,
       "Shanghai": 18,
       "AS Monaco": 67.1
     },
@@ -13022,6 +13027,10 @@
         "end": 13,
         "duration": 4
       },
+      "198": {
+        "end": 13,
+        "duration": 4
+      },
       "199": {
         "end": 13,
         "duration": 4
@@ -13310,6 +13319,14 @@
         "from": "AS Monaco",
         "to": "Chelsea",
         "amount": 45.1,
+        "date": "2026-09-24"
+      },
+      {
+        "season": 9,
+        "player": "Tawanda Chirewa",
+        "from": "As Monaco",
+        "to": "Arsenal",
+        "amount": 97,
         "date": "2026-09-24"
       }
     ]
