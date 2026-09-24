@@ -11795,6 +11795,7 @@
     "90": "BU",
     "93": "SA",
     "96": "PL",
+    "97": "LA",
     "109": "",
     "111": "LA",
     "112": "LA",
@@ -11928,6 +11929,10 @@
     },
     "86": {
       "club": "As Monaco",
+      "season": "S9"
+    },
+    "97": {
+      "club": "Real Madrid",
       "season": "S9"
     },
     "112": {
@@ -12714,12 +12719,12 @@
       "Arsenal": 233,
       "Chelsea": -74.1,
       "Dortmund": 165,
-      "Real Madrid": 205.6,
+      "Real Madrid": 115.6,
       "Inter Milan": 30,
       "Bayern": 120,
       "Manchester City": 59.900000000000006,
       "PSG": 143,
-      "Manchester United": 0,
+      "Manchester United": 90,
       "Feyenord": 20,
       "Al Hilal": 3.5,
       "Galatasarai": -13,
@@ -12885,6 +12890,10 @@
       "91": {
         "end": 11,
         "duration": 2
+      },
+      "97": {
+        "end": 13,
+        "duration": 4
       },
       "98": {
         "end": 13,
@@ -13370,6 +13379,14 @@
         "from": "FC Barcelone",
         "to": "Manchester City",
         "amount": 170.1,
+        "date": "2026-09-24"
+      },
+      {
+        "season": 9,
+        "player": "Arda Güler",
+        "from": "Manchester United",
+        "to": "Real Madrid",
+        "amount": 90,
         "date": "2026-09-24"
       }
     ]
