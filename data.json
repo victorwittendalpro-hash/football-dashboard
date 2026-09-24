@@ -12698,13 +12698,13 @@
   "awardsData": {},
   "mcData": {
     "budgets": {
-      "AC Milan": 30,
+      "AC Milan": 170,
       "Bayer Leverkusen": 289,
       "FC Barcelone": 250,
       "Arsenal": 233,
       "Chelsea": -74.1,
       "Dortmund": 165,
-      "Real Madrid": 233,
+      "Real Madrid": 33,
       "Inter Milan": 30,
       "Bayern": 120,
       "Manchester City": 80,
@@ -12733,7 +12733,8 @@
       "Frankfort": 199,
       "As Monaco": 84.5,
       "Shanghai": 18,
-      "AS Monaco": 67.1
+      "AS Monaco": 67.1,
+      "Liverpool": 300
     },
     "contracts": {
       "0": {
