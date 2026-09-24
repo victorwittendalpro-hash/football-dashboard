@@ -2148,8 +2148,8 @@
     ],
     "qf": [
       {
-        "home": null,
-        "away": null,
+        "home": "FC Barcelone",
+        "away": "Liverpool",
         "leg1": {
           "home_score": 2,
           "away_score": 3
@@ -2160,8 +2160,8 @@
         }
       },
       {
-        "home": null,
-        "away": null,
+        "home": "Inter Milan",
+        "away": "Manchester City",
         "leg1": {
           "home_score": 0,
           "away_score": 0
@@ -2172,8 +2172,8 @@
         }
       },
       {
-        "home": null,
-        "away": null,
+        "home": "PSG",
+        "away": "Manchester United",
         "leg1": {
           "home_score": 4,
           "away_score": 1
@@ -2184,8 +2184,8 @@
         }
       },
       {
-        "home": null,
-        "away": null,
+        "home": "Real Madrid",
+        "away": "Dortmund",
         "leg1": {
           "home_score": 1,
           "away_score": 0
@@ -2198,8 +2198,8 @@
     ],
     "sf": [
       {
-        "home": null,
-        "away": null,
+        "home": "Liverpool",
+        "away": "Manchester City",
         "leg1": {
           "home_score": 0,
           "away_score": 3
@@ -2210,8 +2210,8 @@
         }
       },
       {
-        "home": null,
-        "away": null,
+        "home": "PSG",
+        "away": "Real Madrid",
         "leg1": {
           "home_score": 4,
           "away_score": 1
@@ -2223,8 +2223,8 @@
       }
     ],
     "final": {
-      "home": null,
-      "away": null,
+      "home": "Manchester City",
+      "away": "PSG",
       "leg1": null,
       "leg2": null
     }
@@ -12708,7 +12708,7 @@
       "Inter Milan": 30,
       "Bayern": 120,
       "Manchester City": 80,
-      "PSG": -17.1,
+      "PSG": 143,
       "Manchester United": 0,
       "Feyenord": 20,
       "Al Hilal": 3.5,
