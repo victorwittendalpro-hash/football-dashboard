@@ -12285,11 +12285,12 @@
       "nameRaw": "A. Cannobio",
       "age": 28,
       "post": "AiD",
-      "ligue": "SA",
-      "currentClub": "Côme",
+      "ligue": "LA",
+      "currentClub": "Atletico Madrid",
       "career": {
         "S8": "Côme",
-        "S10": "Côme"
+        "S10": "Côme",
+        "S9": "Atletico Madrid"
       },
       "total": 22,
       "CL": 0,
@@ -12747,10 +12748,10 @@
       "Brighton": 40,
       "OM": -10,
       "Fluminense": 20,
-      "Atletico Madrid": -57,
+      "Atletico Madrid": -82.3,
       "Lazio": 0,
       "OL": 5.899999999999999,
-      "Côme": 40,
+      "Côme": 65.3,
       "Atalanta": 3.1000000000000014,
       "AS Rome": -21,
       "Benfica": 90,
@@ -13418,6 +13419,14 @@
         "to": "Inter Milan",
         "amount": 46.5,
         "date": "2026-09-24"
+      },
+      {
+        "season": 9,
+        "player": "A. Cannobio",
+        "from": "Côme",
+        "to": "Atletico Madrid",
+        "amount": 25.3,
+        "date": "2026-09-28"
       }
     ]
   }
