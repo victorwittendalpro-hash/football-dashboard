@@ -11863,7 +11863,8 @@
     "199": "LA",
     "200": "SA",
     "205": "LA",
-    "210": "PL"
+    "210": "PL",
+    "219": "LA"
   },
   "playerClubOverrides": {
     "2": {
@@ -12072,6 +12073,10 @@
     },
     "210": {
       "club": "Manchester City",
+      "season": "S9"
+    },
+    "219": {
+      "club": "FC Barcelone",
       "season": "S9"
     }
   },
@@ -12791,7 +12796,7 @@
     "budgets": {
       "AC Milan": 170,
       "Bayer Leverkusen": 316.4,
-      "FC Barcelone": 254.60000000000002,
+      "FC Barcelone": 186.00000000000003,
       "Arsenal": 531.9,
       "Chelsea": -74.1,
       "Dortmund": 165,
@@ -12824,7 +12829,8 @@
       "Frankfort": 199,
       "As Monaco": 84.5,
       "Shanghai": 18,
-      "AS Monaco": 67.1
+      "AS Monaco": 67.1,
+      "Palmeiras": 88.6
     },
     "contracts": {
       "0": {
@@ -13152,6 +13158,10 @@
         "duration": 4
       },
       "210": {
+        "end": 13,
+        "duration": 4
+      },
+      "219": {
         "end": 13,
         "duration": 4
       }
@@ -13500,6 +13510,14 @@
         "to": "FC Barcelone",
         "amount": 298.9,
         "date": "2026-09-28"
+      },
+      {
+        "season": 9,
+        "player": "Mauricio",
+        "from": "Palmeiras",
+        "to": "FC Barcelone",
+        "amount": 68.6,
+        "date": "2026-10-02"
       }
     ]
   }
