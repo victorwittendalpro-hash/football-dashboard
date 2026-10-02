@@ -12724,6 +12724,36 @@
       "t_total": 0,
       "_custom": true,
       "_value": 32400000
+    },
+    {
+      "rank": 219,
+      "name": "Mika Godts",
+      "nameRaw": "Mika Godts",
+      "age": 21,
+      "post": "AiG",
+      "ligue": "L1",
+      "currentClub": "PSG",
+      "career": {
+        "S9": "PSG"
+      },
+      "total": 0,
+      "CL": 0,
+      "SN": 0,
+      "CH": 0,
+      "EU": 0,
+      "CP": 0,
+      "seasons": {
+        "S9": 0
+      },
+      "t_sa": 0,
+      "t_l1": 0,
+      "t_pl": 0,
+      "t_lg": 0,
+      "t_bu": 0,
+      "t_cl": 0,
+      "t_el": 0,
+      "t_total": 0,
+      "_custom": true
     }
   ],
   "awardsData": {},
