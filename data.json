@@ -11818,6 +11818,7 @@
     "129": "",
     "130": "",
     "131": "",
+    "132": "PL",
     "133": "BU",
     "134": "PL",
     "135": "SA",
@@ -11978,6 +11979,10 @@
     },
     "128": {
       "club": "Atletico Madrid",
+      "season": "S9"
+    },
+    "132": {
+      "club": "Liverpool",
       "season": "S9"
     },
     "133": {
@@ -12835,7 +12840,8 @@
       "As Monaco": 84.5,
       "Shanghai": 18,
       "AS Monaco": 67.1,
-      "Palmeiras": 88.6
+      "Palmeiras": 88.6,
+      "Aston Villa": 20
     },
     "contracts": {
       "0": {
@@ -13051,6 +13057,10 @@
         "duration": 4
       },
       "131": {
+        "end": 13,
+        "duration": 4
+      },
+      "132": {
         "end": 13,
         "duration": 4
       },
@@ -13536,6 +13546,14 @@
         "season": 9,
         "player": "Alejandro Balde",
         "from": "Bayern",
+        "to": "Liverpool",
+        "amount": 0,
+        "date": "2026-10-08"
+      },
+      {
+        "season": 9,
+        "player": "A. Gordon",
+        "from": "Aston Villa",
         "to": "Liverpool",
         "amount": 0,
         "date": "2026-10-08"
