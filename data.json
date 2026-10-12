@@ -2331,7 +2331,21 @@
       "emoji": "🇮🇹",
       "color": "#3ecf8e",
       "league": "Serie A",
-      "matches": {},
+      "matches": {
+        "S9": {
+          "home": "AC Milan",
+          "away": "Inter Milan",
+          "score_home": 3,
+          "score_away": 1,
+          "scorers": {
+            "7": 1,
+            "135": 1,
+            "138": 1,
+            "164": 1
+          },
+          "winner": "AC Milan"
+        }
+      },
       "history": [
         {
           "season": "S5",
@@ -2360,6 +2374,13 @@
           "runner_up": "?",
           "score_home": null,
           "score_away": null
+        },
+        {
+          "season": "S9",
+          "winner": "AC Milan",
+          "runner_up": "Inter Milan",
+          "score_home": 3,
+          "score_away": 1
         }
       ]
     },
