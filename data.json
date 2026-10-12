@@ -2273,7 +2273,21 @@
       "emoji": "🇫🇷",
       "color": "#f7944f",
       "league": "Ligue 1",
-      "matches": {},
+      "matches": {
+        "S9": {
+          "home": "PSG",
+          "away": "AS Monaco",
+          "score_home": 4,
+          "score_away": 2,
+          "scorers": {
+            "5": 1,
+            "12": 1,
+            "48": 1,
+            "86": 1
+          },
+          "winner": "PSG"
+        }
+      },
       "history": [
         {
           "season": "S5",
@@ -2302,6 +2316,13 @@
           "runner_up": "?",
           "score_home": null,
           "score_away": null
+        },
+        {
+          "season": "S9",
+          "winner": "PSG",
+          "runner_up": "AS Monaco",
+          "score_home": 4,
+          "score_away": 2
         }
       ]
     },
@@ -12754,7 +12775,7 @@
       "total": 0,
       "CL": 0,
       "SN": 0,
-      "CH": 0,
+      "CH": 1,
       "EU": 0,
       "CP": 0,
       "seasons": {
@@ -12767,7 +12788,7 @@
       "t_bu": 0,
       "t_cl": 0,
       "t_el": 0,
-      "t_total": 0,
+      "t_total": 1,
       "_custom": true
     },
     {
