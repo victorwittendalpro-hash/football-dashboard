@@ -2426,7 +2426,16 @@
       "emoji": "🇩🇪",
       "color": "#f76f6f",
       "league": "Bundesliga",
-      "matches": {},
+      "matches": {
+        "S9": {
+          "home": "Frankfort",
+          "away": "Dortmund",
+          "score_home": 2,
+          "score_away": 3,
+          "scorers": {},
+          "winner": "Dortmund"
+        }
+      },
       "history": [
         {
           "season": "S5",
@@ -2455,6 +2464,13 @@
           "runner_up": "?",
           "score_home": null,
           "score_away": null
+        },
+        {
+          "season": "S9",
+          "winner": "Dortmund",
+          "runner_up": "Frankfort",
+          "score_home": 2,
+          "score_away": 3
         }
       ]
     },
@@ -12322,7 +12338,7 @@
       "total": 18,
       "CL": 0,
       "SN": 0,
-      "CH": 10,
+      "CH": 11,
       "EU": 0,
       "CP": 0,
       "seasons": {
@@ -12336,7 +12352,7 @@
       "t_bu": 0,
       "t_cl": 0,
       "t_el": 0,
-      "t_total": 0,
+      "t_total": 1,
       "_custom": true,
       "_origS8": 0,
       "_value": 44400000
@@ -12495,7 +12511,7 @@
       "total": 2,
       "CL": 0,
       "SN": 0,
-      "CH": 1,
+      "CH": 2,
       "EU": 0,
       "CP": 0,
       "seasons": {
@@ -12509,7 +12525,7 @@
       "t_bu": 0,
       "t_cl": 0,
       "t_el": 0,
-      "t_total": 0,
+      "t_total": 1,
       "_custom": true,
       "_origS8": 0,
       "_value": 28600000
@@ -12564,7 +12580,7 @@
       "total": 1,
       "CL": 0,
       "SN": 0,
-      "CH": 0,
+      "CH": 1,
       "EU": 0,
       "CP": 0,
       "seasons": {
@@ -12578,7 +12594,7 @@
       "t_bu": 0,
       "t_cl": 0,
       "t_el": 0,
-      "t_total": 0,
+      "t_total": 1,
       "_custom": true,
       "_value": 51400000,
       "_origS8": 0
