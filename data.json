@@ -2432,7 +2432,9 @@
           "away": "Dortmund",
           "score_home": 2,
           "score_away": 3,
-          "scorers": {},
+          "scorers": {
+            "90": 2
+          },
           "winner": "Dortmund"
         }
       },
