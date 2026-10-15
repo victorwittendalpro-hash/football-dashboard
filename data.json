@@ -11645,6 +11645,7 @@
     "198": "PL",
     "199": "LA",
     "200": "SA",
+    "204": "PL",
     "205": "LA",
     "210": "PL",
     "219": "LA"
@@ -11857,6 +11858,10 @@
     "200": {
       "club": "Chelsea",
       "season": "S9"
+    },
+    "204": {
+      "club": "Arsenal",
+      "season": "S10"
     },
     "205": {
       "club": "Atletico Madrid",
@@ -12588,9 +12593,9 @@
       "AC Milan": 170,
       "Bayer Leverkusen": 316.4,
       "FC Barcelone": 186.00000000000003,
-      "Arsenal": 531.9,
+      "Arsenal": 480.9,
       "Chelsea": -74.1,
-      "Dortmund": 165,
+      "Dortmund": 216,
       "Real Madrid": 115.6,
       "Inter Milan": -16.5,
       "Bayern": 120,
@@ -12955,6 +12960,10 @@
       },
       "200": {
         "end": 13,
+        "duration": 4
+      },
+      "204": {
+        "end": 14,
         "duration": 4
       },
       "205": {
@@ -13338,6 +13347,14 @@
         "to": "Liverpool",
         "amount": 0,
         "date": "2026-10-08"
+      },
+      {
+        "season": 10,
+        "player": "W. Odobert",
+        "from": "Dortmund",
+        "to": "Arsenal",
+        "amount": 51,
+        "date": "2026-10-15"
       }
     ]
   }
