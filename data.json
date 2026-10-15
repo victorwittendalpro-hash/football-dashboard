@@ -2389,7 +2389,21 @@
       "emoji": "🇪🇸",
       "color": "#a37af7",
       "league": "Liga",
-      "matches": {},
+      "matches": {
+        "S9": {
+          "home": "FC Barcelone",
+          "away": "Real Madrid",
+          "score_home": 1,
+          "score_away": 5,
+          "scorers": {
+            "3": 1,
+            "95": 2,
+            "121": 1,
+            "142": 1
+          },
+          "winner": "Real Madrid"
+        }
+      },
       "history": [
         {
           "season": "S5",
@@ -2418,6 +2432,13 @@
           "runner_up": "?",
           "score_home": null,
           "score_away": null
+        },
+        {
+          "season": "S9",
+          "winner": "Real Madrid",
+          "runner_up": "FC Barcelone",
+          "score_home": 1,
+          "score_away": 5
         }
       ]
     },
