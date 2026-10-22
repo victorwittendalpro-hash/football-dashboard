@@ -1701,15 +1701,15 @@ function rebuildPlayerGoalsFromDetails() {
 
     // Conserver les buts Excel originaux (_origS8)
     if (p._origS8 === undefined) {
-      p._origS8 = (p.seasons && p.seasons['S8']) || 0;
+      p._origS8 = (p.seasons && p.seasons['S'+(currentSeasonNum||9)]) || 0;
     }
 
     var newS8 = p._origS8 + goalsByPlayer[pidx];
 
     // Mettre à jour seasons['S8'] et total
     if (!p.seasons) p.seasons = {};
-    var prevS8   = p.seasons['S8'] || 0;
-    p.seasons['S8'] = newS8;
+    var prevS8   = p.seasons['S'+(currentSeasonNum||9)] || 0;
+    p.seasons['S'+(currentSeasonNum||9)] = newS8;
     p.total = (p.total || 0) - prevS8 + newS8;
 
     // Mettre à jour S8_DATA.players
@@ -2346,7 +2346,7 @@ function saveMatch(){
 
     // Buts Excel originaux (immuables — on les conserve en _origS8 au premier passage)
     if (ALL[pi] && ALL[pi]._origS8 === undefined) {
-      ALL[pi]._origS8 = (ALL[pi].seasons && ALL[pi].seasons['S8']) || 0;
+      ALL[pi]._origS8 = (ALL[pi].seasons && ALL[pi].seasons['S'+(currentSeasonNum||9)]) || 0;
     }
     var origGoals = (ALL[pi] && ALL[pi]._origS8) || 0;
 
@@ -2364,8 +2364,8 @@ function saveMatch(){
     // Mettre à jour ALL[pi].seasons['S8'] et ALL[pi].total
     if (ALL[pi]) {
       if (!ALL[pi].seasons) ALL[pi].seasons = {};
-      var prevS8 = ALL[pi].seasons['S8'] || 0;
-      ALL[pi].seasons['S8'] = totalGoals;
+      var prevS8 = ALL[pi].seasons['S'+(currentSeasonNum||9)] || 0;
+      ALL[pi].seasons['S'+(currentSeasonNum||9)] = totalGoals;
       // Ajuster le total de carrière
       ALL[pi].total = (ALL[pi].total || 0) - prevS8 + totalGoals;
     }
@@ -3246,7 +3246,7 @@ function renderSaisonEnCours() {
   var euScorerMap = {};
   // 1. Buts Excel originaux (base immuable, AVANT les saisies manuelles)
   ALL.forEach(function(p, pidx) {
-    var g = (p._origS8 !== undefined) ? p._origS8 : ((p.seasons && p.seasons['S8']) || 0);
+    var g = (p._origS8 !== undefined) ? p._origS8 : ((p.seasons && p.seasons['S'+(currentSeasonNum||9)]) || 0);
     if (g <= 0) return;
     var effectiveLigue = (window._playerLigueOverrides && window._playerLigueOverrides[pidx])
       ? window._playerLigueOverrides[pidx] : p.ligue;
@@ -3302,7 +3302,7 @@ function renderSaisonEnCours() {
         ? window._playerLigueOverrides[pidx] : p.ligue;
       if (effectiveLigue !== lgCode) return;
       // Utiliser _origS8 (valeur Excel figée) si disponible, sinon seasons['S8'] (pas encore modifié)
-      var g = (p._origS8 !== undefined) ? p._origS8 : ((p.seasons && p.seasons['S8']) || 0);
+      var g = (p._origS8 !== undefined) ? p._origS8 : ((p.seasons && p.seasons['S'+(currentSeasonNum||9)]) || 0);
       if (g > 0) scorerMap[pidx] = {name: p.name, goals: g};
     });
     // 2. Ajouter les buts saisis manuellement dans matchDetails
@@ -3857,7 +3857,7 @@ function clRenderScorers(){
 
   var rows = scorers.slice(0,50).map(function(s,i){
     var c = i===0?'#f5c842':i===1?'#c0c0c0':i===2?'#cd7f32':'#8b93b0';
-    var s8g = (s.seasons && s.seasons['S8']) ? s.seasons['S8'] : 0;
+    var s8g = (s.seasons && s.seasons['S'+(currentSeasonNum||9)]) ? s.seasons['S'+(currentSeasonNum||9)] : 0;
     return '<div class="cl-scorer-row">'
       +'<div class="cl-scorer-rank" style="color:'+c+'">'+(i+1)+'</div>'
       +'<div class="cl-scorer-name">'+s.name+'</div>'
