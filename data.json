@@ -2132,6 +2132,14 @@
             "142": 1
           },
           "winner": "Real Madrid"
+        },
+        "S10": {
+          "home": "FC Barcelone",
+          "away": "Real Madrid",
+          "score_home": 2,
+          "score_away": 3,
+          "scorers": {},
+          "winner": "Real Madrid"
         }
       },
       "history": [
@@ -2169,6 +2177,13 @@
           "runner_up": "FC Barcelone",
           "score_home": 1,
           "score_away": 5
+        },
+        {
+          "season": "S10",
+          "winner": "Real Madrid",
+          "runner_up": "FC Barcelone",
+          "score_home": 2,
+          "score_away": 3
         }
       ]
     },
