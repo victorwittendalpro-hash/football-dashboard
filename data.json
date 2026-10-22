@@ -2157,6 +2157,14 @@
             "90": 2
           },
           "winner": "Dortmund"
+        },
+        "S10": {
+          "home": "Frankfort",
+          "away": "Dortmund",
+          "score_home": 2,
+          "score_away": 1,
+          "scorers": {},
+          "winner": "Frankfort"
         }
       },
       "history": [
@@ -2194,6 +2202,13 @@
           "runner_up": "Frankfort",
           "score_home": 2,
           "score_away": 3
+        },
+        {
+          "season": "S10",
+          "winner": "Frankfort",
+          "runner_up": "Dortmund",
+          "score_home": 2,
+          "score_away": 1
         }
       ]
     },
@@ -12445,7 +12460,7 @@
       "total": 4,
       "CL": 0,
       "SN": 0,
-      "CH": 4,
+      "CH": 5,
       "EU": 0,
       "CP": 0,
       "seasons": {
@@ -12459,7 +12474,7 @@
       "t_bu": 1,
       "t_cl": 0,
       "t_el": 0,
-      "t_total": 1,
+      "t_total": 2,
       "_custom": true,
       "_value": 20900000,
       "_origS8": 0
