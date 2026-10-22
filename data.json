@@ -2059,6 +2059,14 @@
             "164": 1
           },
           "winner": "AC Milan"
+        },
+        "S10": {
+          "home": "AC Milan",
+          "away": "Inter Milan",
+          "score_home": 3,
+          "score_away": 2,
+          "scorers": {},
+          "winner": "AC Milan"
         }
       },
       "history": [
@@ -2096,6 +2104,13 @@
           "runner_up": "Inter Milan",
           "score_home": 3,
           "score_away": 1
+        },
+        {
+          "season": "S10",
+          "winner": "AC Milan",
+          "runner_up": "Inter Milan",
+          "score_home": 3,
+          "score_away": 2
         }
       ]
     },
