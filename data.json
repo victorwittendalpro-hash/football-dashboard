@@ -1986,6 +1986,14 @@
             "86": 1
           },
           "winner": "PSG"
+        },
+        "S10": {
+          "home": "PSG",
+          "away": "AS Monaco",
+          "score_home": 4,
+          "score_away": 2,
+          "scorers": {},
+          "winner": "PSG"
         }
       },
       "history": [
@@ -2019,6 +2027,13 @@
         },
         {
           "season": "S9",
+          "winner": "PSG",
+          "runner_up": "AS Monaco",
+          "score_home": 4,
+          "score_away": 2
+        },
+        {
+          "season": "S10",
           "winner": "PSG",
           "runner_up": "AS Monaco",
           "score_home": 4,
