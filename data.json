@@ -1990,10 +1990,10 @@
         "S10": {
           "home": "PSG",
           "away": "AS Monaco",
-          "score_home": 4,
-          "score_away": 2,
+          "score_home": 0,
+          "score_away": 0,
           "scorers": {},
-          "winner": "PSG"
+          "winner": null
         }
       },
       "history": [
@@ -2034,10 +2034,10 @@
         },
         {
           "season": "S10",
-          "winner": "PSG",
-          "runner_up": "AS Monaco",
-          "score_home": 4,
-          "score_away": 2
+          "winner": "Égalité",
+          "runner_up": "—",
+          "score_home": 0,
+          "score_away": 0
         }
       ]
     },
@@ -2063,10 +2063,10 @@
         "S10": {
           "home": "AC Milan",
           "away": "Inter Milan",
-          "score_home": 0,
-          "score_away": 0,
+          "score_home": 3,
+          "score_away": 2,
           "scorers": {},
-          "winner": null
+          "winner": "AC Milan"
         }
       },
       "history": [
@@ -2107,10 +2107,10 @@
         },
         {
           "season": "S10",
-          "winner": "Égalité",
-          "runner_up": "—",
-          "score_home": 0,
-          "score_away": 0
+          "winner": "AC Milan",
+          "runner_up": "Inter Milan",
+          "score_home": 3,
+          "score_away": 2
         }
       ]
     },
