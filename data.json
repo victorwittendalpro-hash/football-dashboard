@@ -730,7 +730,7 @@
       {
         "name": "FC Barcelone",
         "matches": [
-          null,
+          3,
           null,
           null,
           null,
@@ -748,8 +748,8 @@
           null,
           null
         ],
-        "bm": 0,
-        "be": 0
+        "bm": 3,
+        "be": 2
       },
       {
         "name": "Real Madrid",
@@ -1829,6 +1829,17 @@
       "14": {}
     },
     "Liga": {
+      "0": {
+        "0": {
+          "bm": 3,
+          "be": 2,
+          "pts": 3,
+          "scorers": {
+            "15": 2,
+            "142": 1
+          }
+        }
+      },
       "1": {
         "0": {
           "bm": 7,
@@ -12763,7 +12774,8 @@
       "t_cl": 0,
       "t_el": 0,
       "t_total": 0,
-      "_custom": true
+      "_custom": true,
+      "_value": 68600000
     }
   ],
   "awardsData": {},
