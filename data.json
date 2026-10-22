@@ -2136,10 +2136,10 @@
         "S10": {
           "home": "FC Barcelone",
           "away": "Real Madrid",
-          "score_home": 2,
-          "score_away": 3,
+          "score_home": 0,
+          "score_away": 0,
           "scorers": {},
-          "winner": "Real Madrid"
+          "winner": null
         }
       },
       "history": [
@@ -2180,10 +2180,10 @@
         },
         {
           "season": "S10",
-          "winner": "Real Madrid",
-          "runner_up": "FC Barcelone",
-          "score_home": 2,
-          "score_away": 3
+          "winner": "Égalité",
+          "runner_up": "—",
+          "score_home": 0,
+          "score_away": 0
         }
       ]
     },
@@ -2206,10 +2206,10 @@
         "S10": {
           "home": "Frankfort",
           "away": "Dortmund",
-          "score_home": 2,
-          "score_away": 3,
+          "score_home": 0,
+          "score_away": 0,
           "scorers": {},
-          "winner": "Dortmund"
+          "winner": null
         }
       },
       "history": [
@@ -2250,10 +2250,10 @@
         },
         {
           "season": "S10",
-          "winner": "Dortmund",
-          "runner_up": "Frankfort",
-          "score_home": 2,
-          "score_away": 3
+          "winner": "Égalité",
+          "runner_up": "—",
+          "score_home": 0,
+          "score_away": 0
         }
       ]
     },
