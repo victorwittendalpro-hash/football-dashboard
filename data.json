@@ -102,7 +102,7 @@
       {
         "name": "Atalanta",
         "matches": [
-          null,
+          3,
           null,
           null,
           null,
@@ -120,7 +120,7 @@
           null,
           null
         ],
-        "bm": 0,
+        "bm": 1,
         "be": 0
       },
       {
@@ -2247,6 +2247,14 @@
         "0": {
           "bm": 2,
           "be": 1,
+          "pts": 3,
+          "scorers": {}
+        }
+      },
+      "4": {
+        "0": {
+          "bm": 1,
+          "be": 0,
           "pts": 3,
           "scorers": {}
         }
