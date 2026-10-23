@@ -6,7 +6,7 @@
       {
         "name": "AC Milan",
         "matches": [
-          null,
+          3,
           null,
           null,
           null,
@@ -24,8 +24,8 @@
           null,
           null
         ],
-        "bm": 0,
-        "be": 0
+        "bm": 6,
+        "be": 1
       },
       {
         "name": "Inter Milan",
@@ -2095,6 +2095,17 @@
       }
     },
     "Serie A": {
+      "0": {
+        "0": {
+          "bm": 6,
+          "be": 1,
+          "pts": 3,
+          "scorers": {
+            "138": 5,
+            "160": 1
+          }
+        }
+      },
       "1": {
         "0": {
           "bm": 5,
