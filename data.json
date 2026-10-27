@@ -1454,7 +1454,7 @@
       {
         "name": "Frankfort",
         "matches": [
-          null,
+          0,
           null,
           null,
           null,
@@ -1472,8 +1472,8 @@
           null,
           null
         ],
-        "bm": 0,
-        "be": 0
+        "bm": 1,
+        "be": 3
       },
       {
         "name": "Dortmund",
@@ -2351,6 +2351,16 @@
       }
     },
     "Bundesliga": {
+      "0": {
+        "0": {
+          "bm": 1,
+          "be": 3,
+          "pts": 0,
+          "scorers": {
+            "221": 1
+          }
+        }
+      },
       "1": {
         "0": {
           "bm": 2,
@@ -13326,37 +13336,6 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true
-    },
-    {
-      "rank": 222,
-      "name": "Rayan",
-      "nameRaw": "Rayan",
-      "age": 20,
-      "post": "AiD",
-      "ligue": "BU",
-      "currentClub": "Frankfort",
-      "career": {
-        "S9": "Frankfort"
-      },
-      "total": 0,
-      "CL": 0,
-      "SN": 0,
-      "CH": 0,
-      "EU": 0,
-      "CP": 0,
-      "seasons": {
-        "S9": 0
-      },
-      "t_sa": 0,
-      "t_l1": 0,
-      "t_pl": 0,
-      "t_lg": 0,
-      "t_bu": 0,
-      "t_cl": 0,
-      "t_el": 0,
-      "t_total": 0,
-      "_custom": true,
-      "_value": 43800000
     }
   ],
   "awardsData": {},
