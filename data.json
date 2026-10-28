@@ -1141,7 +1141,7 @@
         "name": "OGC Nice",
         "matches": [
           3,
-          3,
+          0,
           null,
           null,
           null,
@@ -1158,14 +1158,38 @@
           null,
           null
         ],
-        "bm": 8,
-        "be": 5
+        "bm": 6,
+        "be": 6
       },
       {
         "name": "Red Star",
         "matches": [
           1,
-          3,
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 3,
+        "be": 3
+      },
+      {
+        "name": "OM",
+        "matches": [
+          0,
+          0,
           null,
           null,
           null,
@@ -1183,31 +1207,7 @@
           null
         ],
         "bm": 2,
-        "be": 1
-      },
-      {
-        "name": "OM",
-        "matches": [
-          0,
-          1,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 1,
-        "be": 3
+        "be": 5
       },
       {
         "name": "Strasbourg",
@@ -1230,14 +1230,14 @@
           null,
           null
         ],
-        "bm": 3,
-        "be": 3
+        "bm": 7,
+        "be": 6
       },
       {
         "name": "Toulouse",
         "matches": [
           3,
-          0,
+          3,
           null,
           null,
           null,
@@ -1254,8 +1254,8 @@
           null,
           null
         ],
-        "bm": 4,
-        "be": 3
+        "bm": 9,
+        "be": 4
       },
       {
         "name": "OL",
@@ -1302,37 +1302,13 @@
           null,
           null
         ],
-        "bm": 4,
-        "be": 6
+        "bm": 5,
+        "be": 3
       },
       {
         "name": "Reims",
         "matches": [
           0,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 2,
-        "be": 7
-      },
-      {
-        "name": "Auxerre",
-        "matches": [
-          3,
           3,
           null,
           null,
@@ -1350,11 +1326,11 @@
           null,
           null
         ],
-        "bm": 6,
+        "bm": 5,
         "be": 4
       },
       {
-        "name": "AS Saint-Etienne",
+        "name": "Auxerre",
         "matches": [
           3,
           0,
@@ -1378,6 +1354,30 @@
         "be": 3
       },
       {
+        "name": "AS Saint-Etienne",
+        "matches": [
+          3,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 3,
+        "be": 1
+      },
+      {
         "name": "FC Nantes",
         "matches": [
           0,
@@ -1399,7 +1399,7 @@
           null
         ],
         "bm": 1,
-        "be": 6
+        "be": 7
       },
       {
         "name": "Paris FC",
@@ -1422,8 +1422,8 @@
           null,
           null
         ],
-        "bm": 7,
-        "be": 5
+        "bm": 5,
+        "be": 4
       },
       {
         "name": "Brest",
@@ -1446,8 +1446,8 @@
           null,
           null
         ],
-        "bm": 1,
-        "be": 6
+        "bm": 3,
+        "be": 7
       }
     ],
     "Bundesliga": [
@@ -2316,9 +2316,9 @@
           "scorers": {}
         },
         "1": {
-          "bm": 2,
-          "be": 1,
-          "pts": 3,
+          "bm": 0,
+          "be": 2,
+          "pts": 0,
           "scorers": {}
         }
       },
@@ -2330,9 +2330,9 @@
           "scorers": {}
         },
         "1": {
-          "bm": 1,
-          "be": 0,
-          "pts": 3,
+          "bm": 2,
+          "be": 2,
+          "pts": 1,
           "scorers": {}
         }
       },
@@ -2344,9 +2344,9 @@
           "scorers": {}
         },
         "1": {
-          "bm": 0,
-          "be": 0,
-          "pts": 1,
+          "bm": 1,
+          "be": 2,
+          "pts": 0,
           "scorers": {}
         }
       },
@@ -2358,8 +2358,8 @@
           "scorers": {}
         },
         "1": {
-          "bm": 2,
-          "be": 1,
+          "bm": 6,
+          "be": 4,
           "pts": 3,
           "scorers": {}
         }
@@ -2372,9 +2372,9 @@
           "scorers": {}
         },
         "1": {
-          "bm": 1,
-          "be": 3,
-          "pts": 0,
+          "bm": 6,
+          "be": 4,
+          "pts": 3,
           "scorers": {}
         }
       },
@@ -2407,8 +2407,8 @@
           "scorers": {}
         },
         "1": {
-          "bm": 0,
-          "be": 5,
+          "bm": 1,
+          "be": 2,
           "pts": 0,
           "scorers": {}
         }
@@ -2421,9 +2421,9 @@
           "scorers": {}
         },
         "1": {
-          "bm": 1,
-          "be": 4,
-          "pts": 0,
+          "bm": 4,
+          "be": 1,
+          "pts": 3,
           "scorers": {}
         }
       },
@@ -2435,9 +2435,9 @@
           "scorers": {}
         },
         "1": {
-          "bm": 4,
-          "be": 3,
-          "pts": 3,
+          "bm": 0,
+          "be": 2,
+          "pts": 0,
           "scorers": {}
         }
       },
@@ -2449,9 +2449,9 @@
           "scorers": {}
         },
         "1": {
-          "bm": 0,
-          "be": 2,
-          "pts": 0,
+          "bm": 1,
+          "be": 0,
+          "pts": 3,
           "scorers": {}
         }
       },
@@ -2464,7 +2464,7 @@
         },
         "1": {
           "bm": 0,
-          "be": 2,
+          "be": 3,
           "pts": 0,
           "scorers": {}
         }
@@ -2477,8 +2477,8 @@
           "scorers": {}
         },
         "1": {
-          "bm": 2,
-          "be": 4,
+          "bm": 0,
+          "be": 3,
           "pts": 0,
           "scorers": {}
         }
@@ -2491,8 +2491,8 @@
           "scorers": {}
         },
         "1": {
-          "bm": 0,
-          "be": 3,
+          "bm": 2,
+          "be": 4,
           "pts": 0,
           "scorers": {}
         }
