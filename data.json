@@ -393,7 +393,7 @@
         "name": "Arsenal",
         "matches": [
           3,
-          null,
+          3,
           null,
           null,
           null,
@@ -410,8 +410,8 @@
           null,
           null
         ],
-        "bm": 3,
-        "be": 2
+        "bm": 5,
+        "be": 3
       },
       {
         "name": "Manchester City",
@@ -1841,6 +1841,15 @@
           "pts": 3,
           "scorers": {
             "91": 2,
+            "204": 1
+          }
+        },
+        "1": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {
+            "145": 1,
             "204": 1
           }
         }
