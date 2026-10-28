@@ -657,7 +657,7 @@
         "name": "Chelsea",
         "matches": [
           3,
-          3,
+          0,
           null,
           null,
           null,
@@ -674,8 +674,8 @@
           null,
           null
         ],
-        "bm": 8,
-        "be": 3
+        "bm": 6,
+        "be": 7
       },
       {
         "name": "Hull City",
@@ -2017,10 +2017,12 @@
           }
         },
         "1": {
-          "bm": 3,
-          "be": 0,
-          "pts": 3,
-          "scorers": {}
+          "bm": 1,
+          "be": 4,
+          "pts": 0,
+          "scorers": {
+            "156": 1
+          }
         }
       },
       "13": {
