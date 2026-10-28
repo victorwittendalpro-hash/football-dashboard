@@ -731,7 +731,7 @@
         "name": "FC Barcelone",
         "matches": [
           3,
-          null,
+          3,
           null,
           null,
           null,
@@ -748,7 +748,7 @@
           null,
           null
         ],
-        "bm": 3,
+        "bm": 4,
         "be": 2
       },
       {
@@ -1960,6 +1960,14 @@
           "pts": 3,
           "scorers": {
             "15": 2,
+            "142": 1
+          }
+        },
+        "1": {
+          "bm": 1,
+          "be": 0,
+          "pts": 3,
+          "scorers": {
             "142": 1
           }
         }
