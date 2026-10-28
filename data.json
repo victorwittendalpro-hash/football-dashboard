@@ -417,7 +417,7 @@
         "name": "Manchester City",
         "matches": [
           1,
-          null,
+          3,
           null,
           null,
           null,
@@ -434,8 +434,8 @@
           null,
           null
         ],
-        "bm": 2,
-        "be": 2
+        "bm": 4,
+        "be": 3
       },
       {
         "name": "Manchester United",
@@ -1861,6 +1861,15 @@
           "pts": 1,
           "scorers": {
             "220": 2
+          }
+        },
+        "1": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {
+            "17": 1,
+            "70": 1
           }
         }
       },
