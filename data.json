@@ -441,7 +441,7 @@
         "name": "Manchester United",
         "matches": [
           3,
-          null,
+          3,
           null,
           null,
           null,
@@ -458,7 +458,7 @@
           null,
           null
         ],
-        "bm": 4,
+        "bm": 9,
         "be": 2
       },
       {
@@ -1862,6 +1862,16 @@
           "pts": 3,
           "scorers": {
             "14": 3,
+            "192": 1
+          }
+        },
+        "1": {
+          "bm": 5,
+          "be": 0,
+          "pts": 3,
+          "scorers": {
+            "14": 1,
+            "56": 2,
             "192": 1
           }
         }
