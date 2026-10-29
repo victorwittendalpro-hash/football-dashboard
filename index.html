@@ -7889,25 +7889,31 @@ function cbGoalsAtClub(p, club, pidx) {
   var total = 0;
   var career  = p.career  || {};
   var seasons = p.seasons || {};
-  var sn8     = 'S' + (currentSeasonNum || 8);
+  var snCur   = 'S' + (currentSeasonNum || 9);
 
-  // 1. Buts en championnat (toutes saisons, y compris S8 déjà mis à jour par
-  //    rebuildPlayerGoalsFromDetails — contient déjà les buts CL/EL saisis en live)
-  Object.keys(career).forEach(function(sn) {
-    if (career[sn] === club && seasons[sn]) total += seasons[sn];
+  // 1. Buts en championnat pour toutes les saisons où le joueur était dans ce club.
+  //    Pour chaque saison ayant des buts (seasons[sn] > 0), on détermine le club
+  //    du joueur : career[sn] en priorité, sinon currentClub (joueurs sans entrée
+  //    career pour cette saison = ils n'ont pas changé de club depuis la dernière
+  //    entrée connue).
+  Object.keys(seasons).forEach(function(sn) {
+    if (!seasons[sn]) return;
+    var club_sn = career[sn] !== undefined ? career[sn] : p.currentClub;
+    if (club_sn === club) total += seasons[sn];
   });
 
-  // 2. Buts CL historiques UNIQUEMENT pour les saisons PASSÉES (antérieures à S8)
-  //    → évite le double comptage avec seasons[sn8] qui les inclut déjà via rebuild
+  // 2. Buts CL historiques UNIQUEMENT pour les saisons PASSÉES (antérieures à la
+  //    saison courante) → évite le double comptage avec seasons[snCur] qui les
+  //    inclut déjà via rebuildPlayerGoalsFromDetails
   var clGoals = CL_GOALS_BY_PLAYER[p.name] || {};
   Object.keys(clGoals).forEach(function(sn) {
-    if (sn === sn8) return; // S8 déjà dans seasons via rebuildPlayerGoalsFromDetails
-    var club_sn = career[sn] || p.currentClub;
+    if (sn === snCur) return; // saison courante déjà dans seasons via rebuild
+    var club_sn = career[sn] !== undefined ? career[sn] : p.currentClub;
     if (club_sn === club) total += clGoals[sn];
   });
 
   // NOTE : les buts CL/EL en direct (clKoDetails, clMatchDetails, elKoDetails)
-  // sont déjà intégrés dans seasons[sn8] via rebuildPlayerGoalsFromDetails()
+  // sont déjà intégrés dans seasons[snCur] via rebuildPlayerGoalsFromDetails()
   // → NE PAS les additionner ici pour éviter le double comptage
 
   return total;
