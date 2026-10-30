@@ -1455,7 +1455,7 @@
         "name": "Frankfort",
         "matches": [
           0,
-          null,
+          1,
           null,
           null,
           null,
@@ -1472,8 +1472,8 @@
           null,
           null
         ],
-        "bm": 1,
-        "be": 3
+        "bm": 2,
+        "be": 4
       },
       {
         "name": "Dortmund",
@@ -2756,6 +2756,14 @@
           "pts": 0,
           "scorers": {
             "221": 1
+          }
+        },
+        "1": {
+          "bm": 1,
+          "be": 1,
+          "pts": 1,
+          "scorers": {
+            "169": 1
           }
         }
       },
