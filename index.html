@@ -3674,8 +3674,10 @@ function clGetTeams(){
     ['m1','m2','m3'].forEach(function(mk){
       if(d[mk]){totalBm+=d[mk].bm||0;totalBe+=d[mk].be||0;hasAny=true;}
     });
+    var bmFinal = hasAny ? totalBm : t.bm;
+    var beFinal = hasAny ? totalBe : t.be;
     return {rawIdx:ti, name:t.name, m1:m1, m2:m2, m3:m3, m4:m4,
-      pts:pts_phase, bm:t.bm, be:t.be, diff:t.bm-t.be};
+      pts:pts_phase, bm:bmFinal, be:beFinal, diff:bmFinal-beFinal};
   });
 }
 
@@ -3746,15 +3748,15 @@ function clRenderLigue(){
   document.getElementById('cl-panel').innerHTML =
     '<div class="cl-section-header">'
       +'<span style="font-size:1.4rem">⭐</span>'
-      +'<div><div class="cl-section-title">Phase de Ligue — S8</div>'
-      +'<div class="cl-section-sub">'+played+'/3 journées · 30 équipes · Top 8 directs, 9-16 barrages</div></div>'
+      +'<div><div class="cl-section-title">Phase de Ligue — S9</div>'
+      +'<div class="cl-section-sub">'+played+'/3 journées · 26 équipes · Top 8 directs, 9-16 barrages</div></div>'
     +'</div>'
     +'<div class="cl-content">'
       +'<div class="cl-info-grid">'
         +'<div class="cl-info-box"><div class="cl-info-label">Journée</div><div class="cl-info-value" style="color:#f5c842">'+played+'/3</div></div>'
         +'<div class="cl-info-box"><div class="cl-info-label">Directs qualifiés</div><div class="cl-info-value" style="color:#3ecf8e">'+directCount+'/8</div></div>'
         +'<div class="cl-info-box"><div class="cl-info-label">Pour barrage</div><div class="cl-info-value" style="color:#f7944f">'+playoffCount+'/8</div></div>'
-        +'<div class="cl-info-box"><div class="cl-info-label">Équipes</div><div class="cl-info-value">30</div></div>'
+        +'<div class="cl-info-box"><div class="cl-info-label">Équipes</div><div class="cl-info-value">26</div></div>'
       +'</div>'
       +'<div class="cl-table-wrap">'
         +'<div class="cl-table-title"><span>📊</span> Classement Phase de Ligue</div>'
@@ -4007,6 +4009,7 @@ function clRenderScorerList(){
 }
 
 function clScorerAdjust(k, delta){
+  k = '' + k;
   var v = (clScorerSelected[k] || 0) + delta;
   if(v <= 0) delete clScorerSelected[k];
   else clScorerSelected[k] = v;
@@ -4014,6 +4017,7 @@ function clScorerAdjust(k, delta){
 }
 
 function clScorerRemove(k){
+  k = '' + k;
   delete clScorerSelected[k];
   clRenderScorerList();
 }
@@ -4207,8 +4211,10 @@ function clGetTeams(){
     ['m1','m2','m3'].forEach(function(mk){
       if(d[mk]){totalBm+=d[mk].bm||0;totalBe+=d[mk].be||0;hasAny=true;}
     });
+    var bmFinal = hasAny ? totalBm : t.bm;
+    var beFinal = hasAny ? totalBe : t.be;
     return {rawIdx:ti, name:t.name, m1:m1, m2:m2, m3:m3, m4:m4,
-      pts:pts_phase, bm:t.bm, be:t.be, diff:t.bm-t.be};
+      pts:pts_phase, bm:bmFinal, be:beFinal, diff:bmFinal-beFinal};
   });
 }
 
@@ -4279,15 +4285,15 @@ function clRenderLigue(){
   document.getElementById('cl-panel').innerHTML =
     '<div class="cl-section-header">'
       +'<span style="font-size:1.4rem">⭐</span>'
-      +'<div><div class="cl-section-title">Phase de Ligue — S8</div>'
-      +'<div class="cl-section-sub">'+played+'/3 journées · 30 équipes · Top 8 directs, 9-16 barrages</div></div>'
+      +'<div><div class="cl-section-title">Phase de Ligue — S9</div>'
+      +'<div class="cl-section-sub">'+played+'/3 journées · 26 équipes · Top 8 directs, 9-16 barrages</div></div>'
     +'</div>'
     +'<div class="cl-content">'
       +'<div class="cl-info-grid">'
         +'<div class="cl-info-box"><div class="cl-info-label">Journée</div><div class="cl-info-value" style="color:#f5c842">'+played+'/3</div></div>'
         +'<div class="cl-info-box"><div class="cl-info-label">Directs qualifiés</div><div class="cl-info-value" style="color:#3ecf8e">'+directCount+'/8</div></div>'
         +'<div class="cl-info-box"><div class="cl-info-label">Pour barrage</div><div class="cl-info-value" style="color:#f7944f">'+playoffCount+'/8</div></div>'
-        +'<div class="cl-info-box"><div class="cl-info-label">Équipes</div><div class="cl-info-value">30</div></div>'
+        +'<div class="cl-info-box"><div class="cl-info-label">Équipes</div><div class="cl-info-value">26</div></div>'
       +'</div>'
       +'<div class="cl-table-wrap">'
         +'<div class="cl-table-title"><span>📊</span> Classement Phase de Ligue</div>'
@@ -4570,6 +4576,7 @@ function clRenderScorerList(){
 }
 
 function clScorerAdjust(k, delta){
+  k = '' + k;
   var v = (clScorerSelected[k] || 0) + delta;
   if(v <= 0) delete clScorerSelected[k];
   else clScorerSelected[k] = v;
@@ -4577,6 +4584,7 @@ function clScorerAdjust(k, delta){
 }
 
 function clScorerRemove(k){
+  k = '' + k;
   delete clScorerSelected[k];
   clRenderScorerList();
 }
