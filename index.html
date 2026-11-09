@@ -480,8 +480,10 @@ var GH = {
       (data.snMatchData && data.snMatchData.cdm && data.snMatchData.cdm.qualifMatches) || {}
     ).length;
     var _bg = Object.keys((data.mcData && data.mcData.budgets) || {}).length;
+    var _cl = Object.keys(data.clMatchDetails || {}).length
+            + Object.keys(data.clKoDetails || {}).length;
     var _sn = data.currentSeasonNum || 0;
-    if (_sn < 9 || (_q === 0 && _bg === 0)) {
+    if (_sn < 9 || (_q === 0 && _bg === 0 && _cl === 0)) {
       self.saving = false;
       if (self._pendingSave) self._pendingSave = false;
       return; // silencieux - pas d'erreur, juste ignoré
