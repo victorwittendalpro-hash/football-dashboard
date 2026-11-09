@@ -3865,49 +3865,49 @@ function clRenderBarrage(){
 // ── Buteurs CL ─────────────────────────────────────────
 function clRenderScorers(){
   var sn = currentSeasonNum || 9;
-  var merged = {}; // {playerIdx: {name, seasons:{Sx: goals}, total}}
+  var curSn = 'S' + sn;
+  var merged = {}; // {name: {name, base, seasons:{Sx: goals}, total}}
 
-  function addGoals(pidx, g, season) {
+  // 1. Base historique depuis ALL[] (champ CL = total cumulé S1-S8)
+  if (typeof ALL !== 'undefined' && ALL) {
+    ALL.forEach(function(p, idx) {
+      var base = p && p.CL ? parseInt(p.CL) : 0;
+      if (base > 0) {
+        merged[p.name] = {name: p.name, base: base, total: base, seasons: {}};
+      }
+    });
+  }
+  // customPlayers
+  if (typeof customPlayers !== 'undefined' && customPlayers) {
+    customPlayers.forEach(function(p) {
+      var base = p && p.CL ? parseInt(p.CL) : 0;
+      if (base > 0) {
+        merged[p.name] = {name: p.name, base: base, total: base, seasons: {}};
+      }
+    });
+  }
+
+  function addGoalsCurrent(pidx, g) {
     var idx = parseInt(pidx);
     var p = idx < 199 ? (ALL && ALL[idx]) : (typeof customPlayers !== 'undefined' ? customPlayers[idx-199] : null);
     if (!p) return;
     var name = p.name;
-    if (!merged[name]) merged[name] = {name: name, total: 0, seasons: {}};
-    merged[name].seasons[season] = (merged[name].seasons[season] || 0) + g;
+    if (!merged[name]) merged[name] = {name: name, base: 0, total: 0, seasons: {}};
+    merged[name].seasons[curSn] = (merged[name].seasons[curSn] || 0) + g;
     merged[name].total += g;
   }
 
-  // 1. Buts historiques depuis les archives
-  (typeof histArchives !== 'undefined' ? histArchives : []).forEach(function(a) {
-    var asn = 'S' + (a.seasonNum || a.season || '?');
-    // Phase KO archivée
-    Object.values(a.clKoDetails || {}).forEach(function(m) {
-      Object.keys((m && m.scorers) || {}).forEach(function(pidx) {
-        addGoals(pidx, m.scorers[pidx], asn);
-      });
-    });
-    // Phase de ligue archivée
-    Object.values(a.clMatchDetails || {}).forEach(function(teamMatches) {
-      Object.values(teamMatches || {}).forEach(function(m) {
-        Object.keys((m && m.scorers) || {}).forEach(function(pidx) {
-          addGoals(pidx, m.scorers[pidx], asn);
-        });
-      });
-    });
-  });
-
-  // 2. Buts de la saison courante (phase de ligue + KO)
-  var curSn = 'S' + sn;
+  // 2. Buts de la saison courante uniquement (phase de ligue + KO)
   Object.values(clMatchDetails || {}).forEach(function(teamMatches) {
     Object.values(teamMatches || {}).forEach(function(m) {
       Object.keys((m && m.scorers) || {}).forEach(function(pidx) {
-        addGoals(pidx, m.scorers[pidx], curSn);
+        addGoalsCurrent(pidx, m.scorers[pidx]);
       });
     });
   });
   Object.values((typeof clKoDetails !== 'undefined' ? clKoDetails : {})).forEach(function(m) {
     Object.keys((m && m.scorers) || {}).forEach(function(pidx) {
-      addGoals(pidx, m.scorers[pidx], curSn);
+      addGoalsCurrent(pidx, m.scorers[pidx]);
     });
   });
 
@@ -4476,35 +4476,42 @@ function clRenderScorers(){
   var curSn = 'S' + sn;
   var merged = {};
 
-  function addGoals2(pidx, g, season) {
+  // 1. Base historique depuis ALL[] (champ CL = total cumulé S1-S8)
+  if (typeof ALL !== 'undefined' && ALL) {
+    ALL.forEach(function(p) {
+      var base = p && p.CL ? parseInt(p.CL) : 0;
+      if (base > 0) {
+        merged[p.name] = {name: p.name, base: base, total: base, seasons: {}};
+      }
+    });
+  }
+  if (typeof customPlayers !== 'undefined' && customPlayers) {
+    customPlayers.forEach(function(p) {
+      var base = p && p.CL ? parseInt(p.CL) : 0;
+      if (base > 0) {
+        merged[p.name] = {name: p.name, base: base, total: base, seasons: {}};
+      }
+    });
+  }
+
+  function addGoals2current(pidx, g) {
     var idx = parseInt(pidx);
     var p = idx < 199 ? (ALL && ALL[idx]) : (typeof customPlayers !== 'undefined' ? customPlayers[idx-199] : null);
     if (!p) return;
     var name = p.name;
-    if (!merged[name]) merged[name] = {name: name, total: 0, seasons: {}};
-    merged[name].seasons[season] = (merged[name].seasons[season] || 0) + g;
+    if (!merged[name]) merged[name] = {name: name, base: 0, total: 0, seasons: {}};
+    merged[name].seasons[curSn] = (merged[name].seasons[curSn] || 0) + g;
     merged[name].total += g;
   }
 
-  (typeof histArchives !== 'undefined' ? histArchives : []).forEach(function(a) {
-    var asn = 'S' + (a.seasonNum || a.season || '?');
-    Object.values(a.clKoDetails || {}).forEach(function(m) {
-      Object.keys((m && m.scorers) || {}).forEach(function(pidx) { addGoals2(pidx, m.scorers[pidx], asn); });
-    });
-    Object.values(a.clMatchDetails || {}).forEach(function(teamMatches) {
-      Object.values(teamMatches || {}).forEach(function(m) {
-        Object.keys((m && m.scorers) || {}).forEach(function(pidx) { addGoals2(pidx, m.scorers[pidx], asn); });
-      });
-    });
-  });
-
+  // 2. Buts de la saison courante uniquement
   Object.values(clMatchDetails || {}).forEach(function(teamMatches) {
     Object.values(teamMatches || {}).forEach(function(m) {
-      Object.keys((m && m.scorers) || {}).forEach(function(pidx) { addGoals2(pidx, m.scorers[pidx], curSn); });
+      Object.keys((m && m.scorers) || {}).forEach(function(pidx) { addGoals2current(pidx, m.scorers[pidx]); });
     });
   });
   Object.values((typeof clKoDetails !== 'undefined' ? clKoDetails : {})).forEach(function(m) {
-    Object.keys((m && m.scorers) || {}).forEach(function(pidx) { addGoals2(pidx, m.scorers[pidx], curSn); });
+    Object.keys((m && m.scorers) || {}).forEach(function(pidx) { addGoals2current(pidx, m.scorers[pidx]); });
   });
 
   var scorers = Object.values(merged).sort(function(a,b){ return (b.total||0)-(a.total||0); });
