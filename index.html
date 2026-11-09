@@ -3985,18 +3985,25 @@ function clRenderHistory(){
 var clScorerSelected = {};
 var clScorerAllPlayers = []; // [{idx, name}] players from the team
 
+function clNormClub(name){
+  if(!name) return '';
+  var n = name.toLowerCase().trim();
+  if(n === 'bayern munich') n = 'bayern';
+  return n;
+}
 function clGetPlayersForTeam(teamName){
   var players = [];
   var sn = 'S' + (currentSeasonNum || 9);
+  var normTarget = clNormClub(teamName);
   ALL.forEach(function(p, idx){
     var club = (p.career && p.career[sn]) ? p.career[sn] : p.currentClub;
-    if(club === teamName) players.push({idx: idx, name: p.name});
+    if(clNormClub(club) === normTarget) players.push({idx: idx, name: p.name});
   });
   if(typeof customPlayers !== 'undefined'){
     customPlayers.forEach(function(p, ci){
       var idx = 199 + ci;
       var club = (p.career && p.career[sn]) ? p.career[sn] : p.currentClub;
-      if(club === teamName) players.push({idx: idx, name: p.name});
+      if(clNormClub(club) === normTarget) players.push({idx: idx, name: p.name});
     });
   }
   return players;
@@ -4588,18 +4595,25 @@ function clRenderHistory(){
 var clScorerSelected = {};
 var clScorerAllPlayers = []; // [{idx, name}] players from the team
 
+function clNormClub(name){
+  if(!name) return '';
+  var n = name.toLowerCase().trim();
+  if(n === 'bayern munich') n = 'bayern';
+  return n;
+}
 function clGetPlayersForTeam(teamName){
   var players = [];
   var sn = 'S' + (currentSeasonNum || 9);
+  var normTarget = clNormClub(teamName);
   ALL.forEach(function(p, idx){
     var club = (p.career && p.career[sn]) ? p.career[sn] : p.currentClub;
-    if(club === teamName) players.push({idx: idx, name: p.name});
+    if(clNormClub(club) === normTarget) players.push({idx: idx, name: p.name});
   });
   if(typeof customPlayers !== 'undefined'){
     customPlayers.forEach(function(p, ci){
       var idx = 199 + ci;
       var club = (p.career && p.career[sn]) ? p.career[sn] : p.currentClub;
-      if(club === teamName) players.push({idx: idx, name: p.name});
+      if(clNormClub(club) === normTarget) players.push({idx: idx, name: p.name});
     });
   }
   return players;
