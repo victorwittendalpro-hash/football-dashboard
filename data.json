@@ -2971,55 +2971,142 @@
       }
     }
   },
-  "clMatchDetails": {},
+  "clMatchDetails": {
+    "0": {
+      "m1": {
+        "bm": 5,
+        "be": 4,
+        "scorers": {
+          "23": 2,
+          "132": 3
+        }
+      }
+    },
+    "1": {
+      "m1": {
+        "bm": 4,
+        "be": 0,
+        "scorers": {
+          "145": 1,
+          "198": 2
+        }
+      }
+    },
+    "3": {
+      "m1": {
+        "bm": 1,
+        "be": 4,
+        "scorers": {
+          "56": 1
+        }
+      }
+    },
+    "5": {
+      "m1": {
+        "bm": 1,
+        "be": 0,
+        "scorers": {
+          "164": 1
+        }
+      }
+    },
+    "6": {
+      "m1": {
+        "bm": 3,
+        "be": 0,
+        "scorers": {
+          "26": 1,
+          "168": 2
+        }
+      }
+    },
+    "10": {
+      "m1": {
+        "bm": 0,
+        "be": 0,
+        "scorers": {}
+      }
+    },
+    "15": {
+      "m1": {
+        "bm": 2,
+        "be": 1,
+        "scorers": {
+          "4": 1,
+          "5": 1
+        }
+      }
+    },
+    "16": {
+      "m1": {
+        "bm": 4,
+        "be": 2,
+        "scorers": {
+          "48": 1,
+          "77": 1,
+          "86": 1,
+          "118": 1
+        }
+      }
+    },
+    "20": {
+      "m1": {
+        "bm": 3,
+        "be": 1,
+        "scorers": {
+          "221": 3
+        }
+      }
+    }
+  },
   "clKoDetails": {},
   "clKoBracket": {
     "r16": [
       {
-        "home": null,
-        "away": null,
+        "home": "FC Barcelone",
+        "away": "Feyenoord",
         "leg1": null,
         "leg2": null
       },
       {
-        "home": null,
-        "away": null,
+        "home": "Liverpool",
+        "away": "Majorque",
         "leg1": null,
         "leg2": null
       },
       {
-        "home": null,
-        "away": null,
+        "home": "Inter Milan",
+        "away": "PSV Heindoven",
         "leg1": null,
         "leg2": null
       },
       {
-        "home": null,
-        "away": null,
+        "home": "Manchester City",
+        "away": "OGC Nice",
         "leg1": null,
         "leg2": null
       },
       {
-        "home": null,
-        "away": null,
+        "home": "PSG",
+        "away": "AS Roma",
         "leg1": null,
         "leg2": null
       },
       {
-        "home": null,
-        "away": null,
+        "home": "Sporting Lisbonne",
+        "away": "Manchester United",
         "leg1": null,
         "leg2": null
       },
       {
-        "home": null,
-        "away": null,
+        "home": "Arsenal",
+        "away": "Real Madrid",
         "leg1": null,
         "leg2": null
       },
       {
-        "home": null,
-        "away": null,
+        "home": "Benfica",
+        "away": "Dortmund",
         "leg1": null,
         "leg2": null
       }
@@ -3115,29 +3202,7 @@
       "emoji": "🇫🇷",
       "color": "#f7944f",
       "league": "Ligue 1",
-      "matches": {
-        "S9": {
-          "home": "PSG",
-          "away": "AS Monaco",
-          "score_home": 4,
-          "score_away": 2,
-          "scorers": {
-            "5": 1,
-            "12": 1,
-            "48": 1,
-            "86": 1
-          },
-          "winner": "PSG"
-        },
-        "S10": {
-          "home": "PSG",
-          "away": "AS Monaco",
-          "score_home": 0,
-          "score_away": 0,
-          "scorers": {},
-          "winner": null
-        }
-      },
+      "matches": {},
       "history": [
         {
           "season": "S5",
@@ -3166,20 +3231,6 @@
           "runner_up": "?",
           "score_home": null,
           "score_away": null
-        },
-        {
-          "season": "S9",
-          "winner": "PSG",
-          "runner_up": "AS Monaco",
-          "score_home": 4,
-          "score_away": 2
-        },
-        {
-          "season": "S10",
-          "winner": "Égalité",
-          "runner_up": "—",
-          "score_home": 0,
-          "score_away": 0
         }
       ]
     },
@@ -3188,29 +3239,7 @@
       "emoji": "🇮🇹",
       "color": "#3ecf8e",
       "league": "Serie A",
-      "matches": {
-        "S9": {
-          "home": "AC Milan",
-          "away": "Inter Milan",
-          "score_home": 3,
-          "score_away": 1,
-          "scorers": {
-            "7": 1,
-            "135": 1,
-            "138": 1,
-            "164": 1
-          },
-          "winner": "AC Milan"
-        },
-        "S10": {
-          "home": "AC Milan",
-          "away": "Inter Milan",
-          "score_home": 3,
-          "score_away": 2,
-          "scorers": {},
-          "winner": "AC Milan"
-        }
-      },
+      "matches": {},
       "history": [
         {
           "season": "S5",
@@ -3239,20 +3268,6 @@
           "runner_up": "?",
           "score_home": null,
           "score_away": null
-        },
-        {
-          "season": "S9",
-          "winner": "AC Milan",
-          "runner_up": "Inter Milan",
-          "score_home": 3,
-          "score_away": 1
-        },
-        {
-          "season": "S10",
-          "winner": "AC Milan",
-          "runner_up": "Inter Milan",
-          "score_home": 3,
-          "score_away": 2
         }
       ]
     },
@@ -3261,29 +3276,7 @@
       "emoji": "🇪🇸",
       "color": "#a37af7",
       "league": "Liga",
-      "matches": {
-        "S9": {
-          "home": "FC Barcelone",
-          "away": "Real Madrid",
-          "score_home": 1,
-          "score_away": 5,
-          "scorers": {
-            "3": 1,
-            "95": 2,
-            "121": 1,
-            "142": 1
-          },
-          "winner": "Real Madrid"
-        },
-        "S10": {
-          "home": "FC Barcelone",
-          "away": "Real Madrid",
-          "score_home": 0,
-          "score_away": 0,
-          "scorers": {},
-          "winner": null
-        }
-      },
+      "matches": {},
       "history": [
         {
           "season": "S5",
@@ -3312,20 +3305,6 @@
           "runner_up": "?",
           "score_home": null,
           "score_away": null
-        },
-        {
-          "season": "S9",
-          "winner": "Real Madrid",
-          "runner_up": "FC Barcelone",
-          "score_home": 1,
-          "score_away": 5
-        },
-        {
-          "season": "S10",
-          "winner": "Égalité",
-          "runner_up": "—",
-          "score_home": 0,
-          "score_away": 0
         }
       ]
     },
@@ -3334,26 +3313,7 @@
       "emoji": "🇩🇪",
       "color": "#f76f6f",
       "league": "Bundesliga",
-      "matches": {
-        "S9": {
-          "home": "Frankfort",
-          "away": "Dortmund",
-          "score_home": 2,
-          "score_away": 3,
-          "scorers": {
-            "90": 2
-          },
-          "winner": "Dortmund"
-        },
-        "S10": {
-          "home": "Frankfort",
-          "away": "Dortmund",
-          "score_home": 0,
-          "score_away": 0,
-          "scorers": {},
-          "winner": null
-        }
-      },
+      "matches": {},
       "history": [
         {
           "season": "S5",
@@ -3382,20 +3342,6 @@
           "runner_up": "?",
           "score_home": null,
           "score_away": null
-        },
-        {
-          "season": "S9",
-          "winner": "Dortmund",
-          "runner_up": "Frankfort",
-          "score_home": 2,
-          "score_away": 3
-        },
-        {
-          "season": "S10",
-          "winner": "Égalité",
-          "runner_up": "—",
-          "score_home": 0,
-          "score_away": 0
         }
       ]
     },
@@ -3438,1220 +3384,25 @@
     }
   },
   "snMatchData": {
-    "euro": {
-      "koMatches": {},
+    "cdm": {
       "qualifMatches": {},
-      "groupMatches": {}
+      "groupMatches": {},
+      "koMatches": {}
+    },
+    "euro": {
+      "qualifMatches": {},
+      "groupMatches": {},
+      "koMatches": {}
     },
     "copa": {
-      "koMatches": {},
       "qualifMatches": {},
-      "groupMatches": {}
-    },
-    "cdm": {
-      "poules": {
-        "A": {
-          "teams": [
-            "France",
-            "Japon",
-            "Algérie",
-            "Colombie"
-          ]
-        },
-        "B": {
-          "teams": [
-            "Macédoine",
-            "Maroc",
-            "Bolivie",
-            "Angleterre"
-          ]
-        },
-        "C": {
-          "teams": [
-            "Espagne",
-            "Côte d'Ivoire",
-            "Argentine",
-            "Suède"
-          ]
-        },
-        "D": {
-          "teams": [
-            "Turquie",
-            "Zimbabwe",
-            "Brésil",
-            "Suisse"
-          ]
-        },
-        "E": {
-          "teams": [
-            "Portugal",
-            "Uruguay",
-            "Belgique",
-            "Pays-Bas"
-          ]
-        },
-        "F": {
-          "teams": [
-            "Grèce",
-            "Etats-unis",
-            "Italie",
-            "Croatie"
-          ]
-        }
-      },
-      "koMatches": {
-        "r16_0": {
-          "home": "Algérie",
-          "away": "Macédoine",
-          "score_h": 0,
-          "score_a": 2,
-          "scorers": {}
-        },
-        "r16_1": {
-          "home": "Espagne",
-          "away": "Bolivie",
-          "score_h": 3,
-          "score_a": 0,
-          "scorers": {
-            "81": 1,
-            "137": 2
-          }
-        },
-        "r16_2": {
-          "home": "Suède",
-          "away": "Colombie",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {
-            "26": 1
-          }
-        },
-        "r16_3": {
-          "home": "Italie",
-          "away": "Côte d'Ivoire",
-          "score_h": 0,
-          "score_a": 1,
-          "scorers": {
-            "195": 1
-          }
-        },
-        "r16_4": {
-          "home": "Etats-unis",
-          "away": "Turquie",
-          "score_h": 5,
-          "score_a": 4,
-          "scorers": {
-            "24": 1,
-            "91": 1,
-            "97": 2
-          }
-        },
-        "r16_5": {
-          "home": "Zimbabwe",
-          "away": "Angleterre",
-          "score_h": 3,
-          "score_a": 0,
-          "scorers": {
-            "198": 2
-          }
-        },
-        "r16_6": {
-          "home": "France",
-          "away": "Pays-Bas",
-          "score_h": 3,
-          "score_a": 2,
-          "scorers": {
-            "3": 1,
-            "5": 1,
-            "54": 1,
-            "56": 1,
-            "142": 1
-          }
-        },
-        "r16_7": {
-          "home": "Brésil",
-          "away": "Portugal",
-          "score_h": 3,
-          "score_a": 2,
-          "scorers": {
-            "7": 2,
-            "95": 1,
-            "136": 1
-          }
-        },
-        "qf_0": {
-          "home": "Macédoine",
-          "away": "Espagne",
-          "score_h": 0,
-          "score_a": 3,
-          "scorers": {
-            "15": 1,
-            "16": 1
-          }
-        },
-        "qf_1": {
-          "home": "Suède",
-          "away": "Côte d'Ivoire",
-          "score_h": 1,
-          "score_a": 2,
-          "scorers": {
-            "21": 1,
-            "26": 1,
-            "195": 1
-          }
-        },
-        "qf_2": {
-          "home": "Etats-unis",
-          "away": "Zimbabwe",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "qf_3": {
-          "home": "France",
-          "away": "Brésil",
-          "score_h": 4,
-          "score_a": 0,
-          "scorers": {
-            "3": 1,
-            "12": 1,
-            "56": 2
-          }
-        },
-        "sf_0": {
-          "home": "Espagne",
-          "away": "Côte d'Ivoire",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {
-            "81": 3,
-            "195": 1
-          }
-        },
-        "sf_1": {
-          "home": "Etats-unis",
-          "away": "France",
-          "score_h": 1,
-          "score_a": 5,
-          "scorers": {
-            "3": 1,
-            "14": 1,
-            "56": 2
-          }
-        },
-        "final_0": {
-          "home": "Espagne",
-          "away": "France",
-          "score_h": 0,
-          "score_a": 3,
-          "scorers": {
-            "3": 2,
-            "5": 1
-          }
-        }
-      },
-      "qualifMatches": {
-        "0_0": {
-          "home": "Algérie",
-          "away": "Inde",
-          "score_h": 6,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "1_0": {
-          "home": "Colombie",
-          "away": "Pérou",
-          "score_h": 4,
-          "score_a": 1,
-          "scorers": {
-            "199": 3
-          }
-        },
-        "3_0": {
-          "home": "Sénégal",
-          "away": "Nigeria",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "4_0": {
-          "home": "Australie",
-          "away": "Zimbabwe",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "2_0": {
-          "home": "Turquie",
-          "away": "Ghana",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "5_0": {
-          "home": "Grèce",
-          "away": "Egypte",
-          "score_h": 3,
-          "score_a": 2,
-          "scorers": {}
-        },
-        "6_0": {
-          "home": "Angleterre",
-          "away": "Japon",
-          "score_h": 1,
-          "score_a": 2,
-          "scorers": {}
-        },
-        "8_0": {
-          "home": "Pologne",
-          "away": "Botswana",
-          "score_h": 5,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "30_0": {
-          "home": "Mexique",
-          "away": "Georgie",
-          "score_h": 1,
-          "score_a": 3,
-          "scorers": {}
-        },
-        "28_0": {
-          "home": "Bolivie",
-          "away": "Canada",
-          "score_h": 5,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "26_0": {
-          "home": "Macédoine",
-          "away": "Suisse",
-          "score_h": 6,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "22_0": {
-          "home": "Belgique",
-          "away": "Chili",
-          "score_h": 5,
-          "score_a": 1,
-          "scorers": {
-            "108": 2,
-            "188": 2,
-            "200": 1
-          }
-        },
-        "32_0": {
-          "home": "Brésil",
-          "away": "Equateur",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {
-            "126": 1
-          }
-        },
-        "14_0": {
-          "home": "France",
-          "away": "Pays de Galles",
-          "score_h": 6,
-          "score_a": 0,
-          "scorers": {
-            "3": 2,
-            "5": 1,
-            "14": 2,
-            "56": 1
-          }
-        },
-        "17_0": {
-          "home": "Espagne",
-          "away": "Danemark",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {
-            "81": 1
-          }
-        },
-        "10_0": {
-          "home": "Allemagne",
-          "away": "Irlande",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {
-            "164": 1
-          }
-        },
-        "34_0": {
-          "home": "Côte d'Ivoire",
-          "away": "Etats-unis",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "27_0": {
-          "home": "Argentine",
-          "away": "Suède",
-          "score_h": 0,
-          "score_a": 2,
-          "scorers": {}
-        },
-        "23_0": {
-          "home": "Italie",
-          "away": "Serbie",
-          "score_h": 2,
-          "score_a": 2,
-          "scorers": {
-            "121": 2
-          }
-        },
-        "33_0": {
-          "home": "Maroc",
-          "away": "Cap Vert",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {
-            "34": 1
-          }
-        },
-        "29_0": {
-          "home": "Uruguay",
-          "away": "Corée du Sud",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "11_0": {
-          "home": "Pays-Bas",
-          "away": "Tunisie",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {
-            "142": 1
-          }
-        },
-        "16_0": {
-          "home": "Ukraine",
-          "away": "Albanie",
-          "score_h": 0,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "20_0": {
-          "home": "Portugal",
-          "away": "Cuba",
-          "score_h": 6,
-          "score_a": 2,
-          "scorers": {
-            "1": 1,
-            "48": 1,
-            "136": 2
-          }
-        },
-        "25_0": {
-          "home": "Norvège",
-          "away": "Croatie",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {
-            "128": 1
-          }
-        },
-        "20_1": {
-          "home": "Portugal",
-          "away": "Botswana",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {
-            "136": 1
-          }
-        },
-        "4_1": {
-          "home": "Australie",
-          "away": "Etats-unis",
-          "score_h": 1,
-          "score_a": 4,
-          "scorers": {}
-        },
-        "11_1": {
-          "home": "Pays-Bas",
-          "away": "Espagne",
-          "score_h": 1,
-          "score_a": 2,
-          "scorers": {
-            "15": 2,
-            "142": 1
-          }
-        },
-        "32_1": {
-          "home": "Brésil",
-          "away": "Irlande",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {
-            "144": 1,
-            "145": 1
-          }
-        },
-        "9_0": {
-          "home": "Albanie",
-          "away": "Ghana",
-          "score_h": 1,
-          "score_a": 2,
-          "scorers": {}
-        },
-        "45_0": {
-          "home": "Nigeria",
-          "away": "Canada",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "15_0": {
-          "home": "Serbie",
-          "away": "Tunisie",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "49_0": {
-          "home": "Inde",
-          "away": "Chili",
-          "score_h": 2,
-          "score_a": 3,
-          "scorers": {}
-        },
-        "26_1": {
-          "home": "Macédoine",
-          "away": "Pays de Galles",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "13_0": {
-          "home": "Croatie",
-          "away": "Suisse",
-          "score_h": 0,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "47_0": {
-          "home": "Zimbabwe",
-          "away": "Pologne",
-          "score_h": 6,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "5_1": {
-          "home": "Grèce",
-          "away": "Georgie",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "2_1": {
-          "home": "Turquie",
-          "away": "Mexique",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {
-            "97": 1,
-            "104": 1
-          }
-        },
-        "27_1": {
-          "home": "Argentine",
-          "away": "Côte d'Ivoire",
-          "score_h": 4,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "6_1": {
-          "home": "Angleterre",
-          "away": "Equateur",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {
-            "92": 1,
-            "157": 1
-          }
-        },
-        "7_0": {
-          "home": "Danemark",
-          "away": "Sénégal",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {
-            "23": 1
-          }
-        },
-        "16_1": {
-          "home": "Ukraine",
-          "away": "Cap Vert",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "1_1": {
-          "home": "Colombie",
-          "away": "Egypte",
-          "score_h": 4,
-          "score_a": 1,
-          "scorers": {
-            "199": 2
-          }
-        },
-        "14_1": {
-          "home": "France",
-          "away": "Belgique",
-          "score_h": 3,
-          "score_a": 0,
-          "scorers": {
-            "47": 1,
-            "56": 2
-          }
-        },
-        "0_1": {
-          "home": "Algérie",
-          "away": "Allemagne",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "29_1": {
-          "home": "Uruguay",
-          "away": "Bolivie",
-          "score_h": 0,
-          "score_a": 4,
-          "scorers": {}
-        },
-        "36_0": {
-          "home": "Japon",
-          "away": "Corée du Sud",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "23_1": {
-          "home": "Italie",
-          "away": "Cuba",
-          "score_h": 3,
-          "score_a": 0,
-          "scorers": {
-            "121": 1,
-            "138": 1,
-            "187": 1
-          }
-        },
-        "48_0": {
-          "home": "Pérou",
-          "away": "Norvège",
-          "score_h": 4,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "33_1": {
-          "home": "Maroc",
-          "away": "Suède",
-          "score_h": 2,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "9_1": {
-          "home": "Albanie",
-          "away": "Egypte",
-          "score_h": 0,
-          "score_a": 4,
-          "scorers": {}
-        },
-        "45_1": {
-          "home": "Nigeria",
-          "away": "Mexique",
-          "score_h": 0,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "49_1": {
-          "home": "Inde",
-          "away": "Corée du Sud",
-          "score_h": 0,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "4_2": {
-          "home": "Australie",
-          "away": "Equateur",
-          "score_h": 2,
-          "score_a": 3,
-          "scorers": {}
-        },
-        "43_0": {
-          "home": "Cap Vert",
-          "away": "Chili",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "48_1": {
-          "home": "Pérou",
-          "away": "Maroc",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "34_1": {
-          "home": "Côte d'Ivoire",
-          "away": "Ghana",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "12_0": {
-          "home": "Irlande",
-          "away": "Grèce",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {}
-        },
-        "26_2": {
-          "home": "Macédoine",
-          "away": "Serbie",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "13_1": {
-          "home": "Croatie",
-          "away": "Bolivie",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "18_0": {
-          "home": "Suède",
-          "away": "Pologne",
-          "score_h": 2,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "36_1": {
-          "home": "Japon",
-          "away": "Ukraine",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {}
-        },
-        "6_2": {
-          "home": "Angleterre",
-          "away": "Georgie",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {
-            "192": 1
-          }
-        },
-        "11_2": {
-          "home": "Pays-Bas",
-          "away": "Botswana",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {
-            "58": 1,
-            "142": 2
-          }
-        },
-        "27_2": {
-          "home": "Argentine",
-          "away": "Brésil",
-          "score_h": 3,
-          "score_a": 2,
-          "scorers": {
-            "95": 1
-          }
-        },
-        "7_1": {
-          "home": "Danemark",
-          "away": "Allemagne",
-          "score_h": 1,
-          "score_a": 2,
-          "scorers": {
-            "23": 1,
-            "98": 2
-          }
-        },
-        "23_2": {
-          "home": "Italie",
-          "away": "Suisse",
-          "score_h": 0,
-          "score_a": 2,
-          "scorers": {}
-        },
-        "1_2": {
-          "home": "Colombie",
-          "away": "Pays de Galles",
-          "score_h": 2,
-          "score_a": 2,
-          "scorers": {
-            "199": 2
-          }
-        },
-        "25_1": {
-          "home": "Norvège",
-          "away": "Canada",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {
-            "128": 1
-          }
-        },
-        "29_2": {
-          "home": "Uruguay",
-          "away": "Cuba",
-          "score_h": 6,
-          "score_a": 2,
-          "scorers": {
-            "78": 3
-          }
-        },
-        "0_2": {
-          "home": "Algérie",
-          "away": "Turquie",
-          "score_h": 1,
-          "score_a": 1,
-          "scorers": {
-            "97": 1
-          }
-        },
-        "17_1": {
-          "home": "Espagne",
-          "away": "Portugal",
-          "score_h": 3,
-          "score_a": 1,
-          "scorers": {
-            "1": 1,
-            "15": 2,
-            "16": 1
-          }
-        },
-        "47_1": {
-          "home": "Zimbabwe",
-          "away": "Etats-unis",
-          "score_h": 2,
-          "score_a": 2,
-          "scorers": {
-            "24": 1,
-            "198": 2
-          }
-        },
-        "22_1": {
-          "home": "Belgique",
-          "away": "Tunisie",
-          "score_h": 2,
-          "score_a": 2,
-          "scorers": {
-            "188": 1
-          }
-        },
-        "14_2": {
-          "home": "France",
-          "away": "Sénégal",
-          "score_h": 1,
-          "score_a": 0,
-          "scorers": {
-            "3": 1
-          }
-        }
-      },
-      "groupMatches": {
-        "A": {
-          "A_0": {
-            "home": "France",
-            "away": "Japon",
-            "score_h": 3,
-            "score_a": 2,
-            "scorers": {
-              "3": 2,
-              "56": 1,
-              "169": 1
-            }
-          },
-          "A_5": {
-            "home": "Algérie",
-            "away": "Colombie",
-            "score_h": 0,
-            "score_a": 1,
-            "scorers": {}
-          },
-          "A_1": {
-            "home": "France",
-            "away": "Algérie",
-            "score_h": 1,
-            "score_a": 0,
-            "scorers": {
-              "3": 1
-            }
-          },
-          "A_4": {
-            "home": "Japon",
-            "away": "Colombie",
-            "score_h": 0,
-            "score_a": 2,
-            "scorers": {
-              "199": 1
-            }
-          },
-          "A_2": {
-            "home": "France",
-            "away": "Colombie",
-            "score_h": 3,
-            "score_a": 1,
-            "scorers": {
-              "5": 1,
-              "56": 2
-            }
-          },
-          "A_3": {
-            "home": "Japon",
-            "away": "Algérie",
-            "score_h": 2,
-            "score_a": 4,
-            "scorers": {
-              "4": 1,
-              "194": 1
-            }
-          }
-        },
-        "C": {
-          "C_1": {
-            "home": "Espagne",
-            "away": "Argentine",
-            "score_h": 3,
-            "score_a": 1,
-            "scorers": {
-              "15": 1,
-              "70": 1
-            }
-          },
-          "C_5": {
-            "home": "Argentine",
-            "away": "Suède",
-            "score_h": 3,
-            "score_a": 6,
-            "scorers": {
-              "26": 3,
-              "63": 1
-            }
-          },
-          "C_2": {
-            "home": "Espagne",
-            "away": "Suède",
-            "score_h": 2,
-            "score_a": 2,
-            "scorers": {
-              "26": 1,
-              "70": 1,
-              "207": 1,
-              "212": 1
-            }
-          },
-          "C_3": {
-            "home": "Côte d'Ivoire",
-            "away": "Argentine",
-            "score_h": 0,
-            "score_a": 1,
-            "scorers": {}
-          },
-          "C_0": {
-            "home": "Espagne",
-            "away": "Côte d'Ivoire",
-            "score_h": 2,
-            "score_a": 4,
-            "scorers": {
-              "15": 1,
-              "25": 1,
-              "70": 1,
-              "195": 2
-            }
-          },
-          "C_4": {
-            "home": "Côte d'Ivoire",
-            "away": "Suède",
-            "score_h": 1,
-            "score_a": 0,
-            "scorers": {}
-          }
-        },
-        "D": {
-          "D_1": {
-            "home": "Turquie",
-            "away": "Brésil",
-            "score_h": 1,
-            "score_a": 2,
-            "scorers": {
-              "86": 1,
-              "104": 1,
-              "156": 1
-            }
-          },
-          "D_4": {
-            "home": "Zimbabwe",
-            "away": "Suisse",
-            "score_h": 0,
-            "score_a": 0,
-            "scorers": {}
-          },
-          "D_0": {
-            "home": "Turquie",
-            "away": "Zimbabwe",
-            "score_h": 1,
-            "score_a": 0,
-            "scorers": {}
-          },
-          "D_5": {
-            "home": "Brésil",
-            "away": "Suisse",
-            "score_h": 3,
-            "score_a": 2,
-            "scorers": {
-              "126": 1,
-              "144": 1,
-              "145": 1
-            }
-          },
-          "D_3": {
-            "home": "Zimbabwe",
-            "away": "Brésil",
-            "score_h": 2,
-            "score_a": 0,
-            "scorers": {
-              "198": 2
-            }
-          },
-          "D_2": {
-            "home": "Turquie",
-            "away": "Suisse",
-            "score_h": 3,
-            "score_a": 2,
-            "scorers": {
-              "104": 2
-            }
-          }
-        },
-        "B": {
-          "B_0": {
-            "home": "Macédoine",
-            "away": "Maroc",
-            "score_h": 6,
-            "score_a": 1,
-            "scorers": {
-              "17": 1,
-              "50": 3
-            }
-          },
-          "B_5": {
-            "home": "Bolivie",
-            "away": "Angleterre",
-            "score_h": 2,
-            "score_a": 2,
-            "scorers": {
-              "135": 1,
-              "157": 1
-            }
-          },
-          "B_1": {
-            "home": "Macédoine",
-            "away": "Bolivie",
-            "score_h": 2,
-            "score_a": 1,
-            "scorers": {}
-          },
-          "B_4": {
-            "home": "Maroc",
-            "away": "Angleterre",
-            "score_h": 1,
-            "score_a": 2,
-            "scorers": {
-              "34": 1,
-              "77": 2
-            }
-          },
-          "B_2": {
-            "home": "Macédoine",
-            "away": "Angleterre",
-            "score_h": 0,
-            "score_a": 1,
-            "scorers": {
-              "192": 1
-            }
-          },
-          "B_3": {
-            "home": "Maroc",
-            "away": "Bolivie",
-            "score_h": 0,
-            "score_a": 2,
-            "scorers": {}
-          }
-        },
-        "E": {
-          "E_1": {
-            "home": "Portugal",
-            "away": "Belgique",
-            "score_h": 2,
-            "score_a": 1,
-            "scorers": {
-              "1": 1,
-              "108": 1,
-              "136": 1
-            }
-          },
-          "E_4": {
-            "home": "Uruguay",
-            "away": "Pays-Bas",
-            "score_h": 1,
-            "score_a": 1,
-            "scorers": {
-              "142": 1
-            }
-          },
-          "E_2": {
-            "home": "Portugal",
-            "away": "Pays-Bas",
-            "score_h": 0,
-            "score_a": 2,
-            "scorers": {
-              "142": 1
-            }
-          },
-          "E_0": {
-            "home": "Portugal",
-            "away": "Uruguay",
-            "score_h": 3,
-            "score_a": 0,
-            "scorers": {
-              "48": 1,
-              "136": 2
-            }
-          },
-          "E_3": {
-            "home": "Uruguay",
-            "away": "Belgique",
-            "score_h": 1,
-            "score_a": 2,
-            "scorers": {
-              "188": 2,
-              "205": 1
-            }
-          },
-          "E_5": {
-            "home": "Belgique",
-            "away": "Pays-Bas",
-            "score_h": 2,
-            "score_a": 3,
-            "scorers": {
-              "54": 1,
-              "90": 1,
-              "108": 1,
-              "142": 1,
-              "200": 1
-            }
-          }
-        },
-        "F": {
-          "F_0": {
-            "home": "Grèce",
-            "away": "Etats-unis",
-            "score_h": 1,
-            "score_a": 3,
-            "scorers": {
-              "91": 2
-            }
-          },
-          "F_5": {
-            "home": "Italie",
-            "away": "Croatie",
-            "score_h": 4,
-            "score_a": 2,
-            "scorers": {
-              "121": 2,
-              "190": 1,
-              "202": 1
-            }
-          },
-          "F_2": {
-            "home": "Grèce",
-            "away": "Croatie",
-            "score_h": 1,
-            "score_a": 1,
-            "scorers": {}
-          },
-          "F_3": {
-            "home": "Etats-unis",
-            "away": "Italie",
-            "score_h": 3,
-            "score_a": 1,
-            "scorers": {
-              "91": 1,
-              "138": 1
-            }
-          },
-          "F_1": {
-            "home": "Grèce",
-            "away": "Italie",
-            "score_h": 1,
-            "score_a": 2,
-            "scorers": {
-              "65": 1,
-              "138": 1
-            }
-          },
-          "F_4": {
-            "home": "Etats-unis",
-            "away": "Croatie",
-            "score_h": 2,
-            "score_a": 0,
-            "scorers": {
-              "91": 2
-            }
-          }
-        }
-      },
-      "r16Draw": [
-        {
-          "home": "Algérie",
-          "away": "Macédoine"
-        },
-        {
-          "home": "Espagne",
-          "away": "Bolivie"
-        },
-        {
-          "home": "Suède",
-          "away": "Colombie"
-        },
-        {
-          "home": "Italie",
-          "away": "Côte d'Ivoire"
-        },
-        {
-          "home": "Etats-unis",
-          "away": "Turquie"
-        },
-        {
-          "home": "Zimbabwe",
-          "away": "Angleterre"
-        },
-        {
-          "home": "France",
-          "away": "Pays-Bas"
-        },
-        {
-          "home": "Brésil",
-          "away": "Portugal"
-        }
-      ]
+      "groupMatches": {},
+      "koMatches": {}
     },
     "can": {
-      "koMatches": {},
       "qualifMatches": {},
-      "groupMatches": {}
+      "groupMatches": {},
+      "koMatches": {}
     }
   },
   "archives": [
@@ -13778,7 +12529,7 @@
       "age": 25,
       "post": "MO",
       "ligue": "",
-      "currentClub": "Palmeiras",
+      "currentClub": "FC Barcelone",
       "career": {
         "S9": "FC Barcelone"
       },
@@ -13800,7 +12551,7 @@
       "t_el": 0,
       "t_total": 0,
       "_custom": true,
-      "_value": 68600000
+      "_value": 19400000
     },
     {
       "rank": 221,
@@ -13866,792 +12617,8 @@
   ],
   "awardsData": {},
   "mcData": {
-    "budgets": {
-      "AC Milan": 170,
-      "Bayer Leverkusen": 316.4,
-      "FC Barcelone": 186.00000000000003,
-      "Arsenal": 480.9,
-      "Chelsea": -74.1,
-      "Dortmund": 216,
-      "Real Madrid": 115.6,
-      "Inter Milan": -16.5,
-      "Bayern": 120,
-      "Manchester City": 59.900000000000006,
-      "PSG": 143,
-      "Manchester United": 3.0999999999999943,
-      "Feyenord": 20,
-      "Al Hilal": 3.5,
-      "Galatasarai": -13,
-      "Totenham": 59,
-      "Botafogo": 20,
-      "Al Nasser": 41,
-      "RB Leipzig": 20,
-      "River Plate": 20,
-      "Besiktas": 0,
-      "Brighton": 40,
-      "OM": -10,
-      "Fluminense": 20,
-      "Atletico Madrid": -82.3,
-      "Lazio": 0,
-      "OL": 5.899999999999999,
-      "Côme": 44.4,
-      "Atalanta": 3.1000000000000014,
-      "AS Rome": -21,
-      "Benfica": 90,
-      "Al Itihad": 0,
-      "Frankfort": 219.9,
-      "Shanghai": 18,
-      "AS Monaco": 151.6,
-      "Palmeiras": 88.6,
-      "Aston Villa": 20
-    },
-    "contracts": {
-      "0": {
-        "end": 13,
-        "duration": 4
-      },
-      "2": {
-        "end": 13,
-        "duration": 4
-      },
-      "3": {
-        "end": 11,
-        "duration": 2
-      },
-      "4": {
-        "end": 13,
-        "duration": 4
-      },
-      "10": {
-        "end": 13,
-        "duration": 4
-      },
-      "11": {
-        "end": 13,
-        "duration": 4
-      },
-      "12": {
-        "end": 11,
-        "duration": 2
-      },
-      "14": {
-        "end": 13,
-        "duration": 4
-      },
-      "15": {
-        "end": 13,
-        "duration": 4
-      },
-      "16": {
-        "end": 11,
-        "duration": 2
-      },
-      "17": {
-        "end": 13,
-        "duration": 4
-      },
-      "20": {
-        "end": 11,
-        "duration": 2
-      },
-      "21": {
-        "end": 13,
-        "duration": 4
-      },
-      "23": {
-        "end": 11,
-        "duration": 2
-      },
-      "26": {
-        "end": 11,
-        "duration": 2
-      },
-      "29": {
-        "end": 13,
-        "duration": 4
-      },
-      "30": {
-        "end": 13,
-        "duration": 4
-      },
-      "32": {
-        "end": 11,
-        "duration": 2
-      },
-      "37": {
-        "end": 11,
-        "duration": 2
-      },
-      "40": {
-        "end": 11,
-        "duration": 2
-      },
-      "44": {
-        "end": 11,
-        "duration": 2
-      },
-      "45": {
-        "end": 11,
-        "duration": 2
-      },
-      "46": {
-        "end": 13,
-        "duration": 4
-      },
-      "48": {
-        "end": 11,
-        "duration": 2
-      },
-      "51": {
-        "end": 13,
-        "duration": 4
-      },
-      "54": {
-        "end": 11,
-        "duration": 2
-      },
-      "55": {
-        "end": 13,
-        "duration": 4
-      },
-      "58": {
-        "end": 11,
-        "duration": 2
-      },
-      "59": {
-        "end": 13,
-        "duration": 4
-      },
-      "60": {
-        "end": 13,
-        "duration": 4
-      },
-      "61": {
-        "end": 13,
-        "duration": 4
-      },
-      "64": {
-        "end": 14,
-        "duration": 4
-      },
-      "65": {
-        "end": 13,
-        "duration": 4
-      },
-      "78": {
-        "end": 11,
-        "duration": 2
-      },
-      "80": {
-        "end": 13,
-        "duration": 4
-      },
-      "86": {
-        "end": 11,
-        "duration": 2
-      },
-      "90": {
-        "end": 11,
-        "duration": 2
-      },
-      "91": {
-        "end": 11,
-        "duration": 2
-      },
-      "97": {
-        "end": 13,
-        "duration": 4
-      },
-      "98": {
-        "end": 13,
-        "duration": 4
-      },
-      "99": {
-        "end": 13,
-        "duration": 4
-      },
-      "101": {
-        "end": 13,
-        "duration": 4
-      },
-      "102": {
-        "end": 13,
-        "duration": 4
-      },
-      "104": {
-        "end": 11,
-        "duration": 2
-      },
-      "105": {
-        "end": 13,
-        "duration": 4
-      },
-      "111": {
-        "end": 13,
-        "duration": 4
-      },
-      "112": {
-        "end": 13,
-        "duration": 4
-      },
-      "113": {
-        "end": 13,
-        "duration": 4
-      },
-      "114": {
-        "end": 11,
-        "duration": 2
-      },
-      "118": {
-        "end": 11,
-        "duration": 2
-      },
-      "120": {
-        "end": 13,
-        "duration": 4
-      },
-      "122": {
-        "end": 13,
-        "duration": 4
-      },
-      "123": {
-        "end": 13,
-        "duration": 4
-      },
-      "128": {
-        "end": 13,
-        "duration": 4
-      },
-      "131": {
-        "end": 13,
-        "duration": 4
-      },
-      "132": {
-        "end": 13,
-        "duration": 4
-      },
-      "133": {
-        "end": 13,
-        "duration": 4
-      },
-      "134": {
-        "end": 13,
-        "duration": 4
-      },
-      "135": {
-        "end": 13,
-        "duration": 4
-      },
-      "138": {
-        "end": 11,
-        "duration": 2
-      },
-      "139": {
-        "end": 13,
-        "duration": 4
-      },
-      "141": {
-        "end": 13,
-        "duration": 4
-      },
-      "142": {
-        "end": 13,
-        "duration": 4
-      },
-      "143": {
-        "end": 11,
-        "duration": 2
-      },
-      "145": {
-        "end": 11,
-        "duration": 2
-      },
-      "148": {
-        "end": 13,
-        "duration": 4
-      },
-      "151": {
-        "end": 13,
-        "duration": 4
-      },
-      "152": {
-        "end": 13,
-        "duration": 4
-      },
-      "154": {
-        "end": 11,
-        "duration": 2
-      },
-      "156": {
-        "end": 11,
-        "duration": 2
-      },
-      "157": {
-        "end": 13,
-        "duration": 4
-      },
-      "160": {
-        "end": 13,
-        "duration": 4
-      },
-      "161": {
-        "end": 13,
-        "duration": 4
-      },
-      "162": {
-        "end": 13,
-        "duration": 4
-      },
-      "163": {
-        "end": 15,
-        "duration": 4
-      },
-      "170": {
-        "end": 13,
-        "duration": 4
-      },
-      "172": {
-        "end": 11,
-        "duration": 2
-      },
-      "175": {
-        "end": 11,
-        "duration": 2
-      },
-      "177": {
-        "end": 13,
-        "duration": 4
-      },
-      "179": {
-        "end": 13,
-        "duration": 4
-      },
-      "183": {
-        "end": 11,
-        "duration": 2
-      },
-      "195": {
-        "end": 13,
-        "duration": 4
-      },
-      "198": {
-        "end": 13,
-        "duration": 4
-      },
-      "199": {
-        "end": 13,
-        "duration": 4
-      },
-      "200": {
-        "end": 13,
-        "duration": 4
-      },
-      "204": {
-        "end": 14,
-        "duration": 4
-      },
-      "205": {
-        "end": 13,
-        "duration": 4
-      },
-      "210": {
-        "end": 13,
-        "duration": 4
-      },
-      "215": {
-        "end": 11,
-        "duration": 2
-      },
-      "219": {
-        "end": 13,
-        "duration": 4
-      }
-    },
-    "transfers": [
-      {
-        "season": 9,
-        "player": "Edgar",
-        "from": "PSG",
-        "to": "AS Rome",
-        "amount": 0,
-        "date": "2026-09-09"
-      },
-      {
-        "season": 9,
-        "player": "J. Bakayoko",
-        "from": "Feyenord",
-        "to": "Bayer Leverkusen",
-        "amount": 0,
-        "date": "2026-09-09"
-      },
-      {
-        "season": 9,
-        "player": "Rico Lewis",
-        "from": "Inter Milan",
-        "to": "Al Hilal",
-        "amount": 30,
-        "date": "2026-09-09"
-      },
-      {
-        "season": 9,
-        "player": "Helinho",
-        "from": "Al Nasser",
-        "to": "Botafogo",
-        "amount": 0,
-        "date": "2026-09-09"
-      },
-      {
-        "season": 9,
-        "player": "Ndiaye",
-        "from": "Totenham",
-        "to": "RB Leipzig",
-        "amount": 0,
-        "date": "2026-09-09"
-      },
-      {
-        "season": 9,
-        "player": "Mitoma",
-        "from": "Brighton",
-        "to": "Besiktas",
-        "amount": 20,
-        "date": "2026-09-09"
-      },
-      {
-        "season": 9,
-        "player": "Fekir",
-        "from": "Al Nasser",
-        "to": "Fluminense",
-        "amount": 0,
-        "date": "2026-09-09"
-      },
-      {
-        "season": 9,
-        "player": "B. Samba",
-        "from": "Manchester United",
-        "to": "OM",
-        "amount": 0,
-        "date": "2026-09-09"
-      },
-      {
-        "season": 9,
-        "player": "Noah Darvich",
-        "from": "Arsenal",
-        "to": "Bayer Leverkusen",
-        "amount": 60,
-        "date": "2026-09-10"
-      },
-      {
-        "season": 9,
-        "player": "E. Haaland",
-        "from": "Bayern",
-        "to": "Atletico Madrid",
-        "amount": 120,
-        "date": "2026-09-10"
-      },
-      {
-        "season": 9,
-        "player": "F. Wirtz",
-        "from": "Atletico Madrid",
-        "to": "Lazio",
-        "amount": 20,
-        "date": "2026-09-10"
-      },
-      {
-        "season": 9,
-        "player": "N. Aké",
-        "from": "Atletico Madrid",
-        "to": "OL",
-        "amount": 30,
-        "date": "2026-09-10"
-      },
-      {
-        "season": 9,
-        "player": "Osimhen",
-        "from": "Atletico Madrid",
-        "to": "Galatasarai",
-        "amount": 13,
-        "date": "2026-09-10"
-      },
-      {
-        "season": 9,
-        "player": "A. Cannobio",
-        "from": "Côme",
-        "to": "Atletico Madrid",
-        "amount": 20,
-        "date": "2026-09-10"
-      },
-      {
-        "season": 9,
-        "player": "Kudus",
-        "from": "Real Madrid",
-        "to": "Chelsea",
-        "amount": 50,
-        "date": "2026-09-10"
-      },
-      {
-        "season": 9,
-        "player": "M. Soulé",
-        "from": "OL",
-        "to": "Atalanta",
-        "amount": 16.9,
-        "date": "2026-09-10"
-      },
-      {
-        "season": 9,
-        "player": "W. Zaïre-Emery",
-        "from": "PSG",
-        "to": "AS Rome",
-        "amount": 41,
-        "date": "2026-09-10"
-      },
-      {
-        "season": 9,
-        "player": "Traorè",
-        "from": "AC Milan",
-        "to": "OM",
-        "amount": 30,
-        "date": "2026-09-10"
-      },
-      {
-        "season": 9,
-        "player": "K. Mainoo",
-        "from": "Real Madrid",
-        "to": "PSG",
-        "amount": 63,
-        "date": "2026-09-10"
-      },
-      {
-        "season": 9,
-        "player": "Jaminton Campaz",
-        "from": "Benfica",
-        "to": "FC Barcelone",
-        "amount": 70,
-        "date": "2026-09-16"
-      },
-      {
-        "season": 9,
-        "player": "Gibbs-White",
-        "from": "Real Madrid",
-        "to": "AC Milan",
-        "amount": 0,
-        "date": "2026-09-16"
-      },
-      {
-        "season": 9,
-        "player": "Andy Diouf",
-        "from": "OM",
-        "to": "AC Milan",
-        "amount": 0,
-        "date": "2026-09-16"
-      },
-      {
-        "season": 9,
-        "player": "N. Aké",
-        "from": "OL",
-        "to": "Al Itihad",
-        "amount": 20,
-        "date": "2026-09-17"
-      },
-      {
-        "season": 9,
-        "player": "T. Chong",
-        "from": "Al Nasser",
-        "to": "OL",
-        "amount": 21,
-        "date": "2026-09-17"
-      },
-      {
-        "season": 9,
-        "player": "K. Adeyemi",
-        "from": "Dortmund",
-        "to": "OL",
-        "amount": 0,
-        "date": "2026-09-17"
-      },
-      {
-        "season": 9,
-        "player": "Moïse Sahi",
-        "from": "Frankfort",
-        "to": "Chelsea",
-        "amount": 179,
-        "date": "2026-09-17"
-      },
-      {
-        "season": 9,
-        "player": "Fabio Silva",
-        "from": "Manchester City",
-        "to": "Bayern",
-        "amount": 0,
-        "date": "2026-09-18"
-      },
-      {
-        "season": 9,
-        "player": "Endrick",
-        "from": "Manchester City",
-        "to": "Chelsea",
-        "amount": 0,
-        "date": "2026-09-18"
-      },
-      {
-        "season": 9,
-        "player": "O. Bobb",
-        "from": "AS Monaco",
-        "to": "Manchester City",
-        "amount": 0,
-        "date": "2026-09-22"
-      },
-      {
-        "season": 9,
-        "player": "L. Henrique",
-        "from": "Al Hilal",
-        "to": "As Monaco",
-        "amount": 7,
-        "date": "2026-09-22"
-      },
-      {
-        "season": 9,
-        "player": "Eze",
-        "from": "Al Hilal",
-        "to": "As Monaco",
-        "amount": 6.5,
-        "date": "2026-09-22"
-      },
-      {
-        "season": 9,
-        "player": "Rafael Leao",
-        "from": "Totenham",
-        "to": "As Monaco",
-        "amount": 19,
-        "date": "2026-09-22"
-      },
-      {
-        "season": 9,
-        "player": "Ndidi",
-        "from": "AS Monaco",
-        "to": "Shanghai",
-        "amount": 2,
-        "date": "2026-09-24"
-      },
-      {
-        "season": 9,
-        "player": "Moreira Jr.",
-        "from": "AS Monaco",
-        "to": "Chelsea",
-        "amount": 45.1,
-        "date": "2026-09-24"
-      },
-      {
-        "season": 9,
-        "player": "Tawanda Chirewa",
-        "from": "As Monaco",
-        "to": "Arsenal",
-        "amount": 97,
-        "date": "2026-09-24"
-      },
-      {
-        "season": 9,
-        "player": "T. Cantwell",
-        "from": "Manchester City",
-        "to": "Real Madrid",
-        "amount": 80,
-        "date": "2026-09-24"
-      },
-      {
-        "season": 9,
-        "player": "Bertuğ Yıldırım",
-        "from": "Bayer Leverkusen",
-        "to": "Real Madrid",
-        "amount": 27.4,
-        "date": "2026-09-24"
-      },
-      {
-        "season": 9,
-        "player": "Ben Seghir",
-        "from": "FC Barcelone",
-        "to": "Manchester City",
-        "amount": 170.1,
-        "date": "2026-09-24"
-      },
-      {
-        "season": 9,
-        "player": "Arda Güler",
-        "from": "Manchester United",
-        "to": "Real Madrid",
-        "amount": 90,
-        "date": "2026-09-24"
-      },
-      {
-        "season": 9,
-        "player": "Désiré Doué",
-        "from": "FC Barcelone",
-        "to": "Manchester United",
-        "amount": 86.9,
-        "date": "2026-09-24"
-      },
-      {
-        "season": 9,
-        "player": "Mudrik",
-        "from": "FC Barcelone",
-        "to": "Inter Milan",
-        "amount": 46.5,
-        "date": "2026-09-24"
-      },
-      {
-        "season": 9,
-        "player": "A. Cannobio",
-        "from": "Côme",
-        "to": "Atletico Madrid",
-        "amount": 25.3,
-        "date": "2026-09-28"
-      },
-      {
-        "season": 9,
-        "player": "Brobbey",
-        "from": "Arsenal",
-        "to": "FC Barcelone",
-        "amount": 298.9,
-        "date": "2026-09-28"
-      },
-      {
-        "season": 9,
-        "player": "Mauricio",
-        "from": "Palmeiras",
-        "to": "FC Barcelone",
-        "amount": 68.6,
-        "date": "2026-10-02"
-      },
-      {
-        "season": 9,
-        "player": "Alejandro Balde",
-        "from": "Bayern",
-        "to": "Liverpool",
-        "amount": 0,
-        "date": "2026-10-08"
-      },
-      {
-        "season": 9,
-        "player": "A. Gordon",
-        "from": "Aston Villa",
-        "to": "Liverpool",
-        "amount": 0,
-        "date": "2026-10-08"
-      },
-      {
-        "season": 10,
-        "player": "W. Odobert",
-        "from": "Dortmund",
-        "to": "Arsenal",
-        "amount": 51,
-        "date": "2026-10-15"
-      },
-      {
-        "season": 9,
-        "player": "Geny Catamo",
-        "from": "Frankfort",
-        "to": "Côme",
-        "amount": 20.9,
-        "date": "2026-10-23"
-      }
-    ]
+    "budgets": {},
+    "contracts": {},
+    "transfers": []
   }
 }
