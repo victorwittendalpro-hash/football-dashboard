@@ -716,7 +716,23 @@ function ghApplyData(data) {
   // Recalculer les buts en sélection depuis snMatchData restauré
   try { rebuildSnGoalsFromMatches(); } catch(e) {}
   if (data.mcData && typeof mcData !== 'undefined') {
-    if (data.mcData.budgets)   mcData.budgets   = data.mcData.budgets;
+    if (data.mcData.budgets) {
+      // Dédupliquer les budgets par casse (ex: "As Monaco" + "AS Monaco" → fusionner)
+      var rawBg = data.mcData.budgets;
+      var dedupBg = {};
+      var normMap = {}; // normalisé → clé canonique déjà insérée
+      Object.keys(rawBg).forEach(function(k) {
+        var norm = k.toLowerCase().trim();
+        if (normMap[norm] !== undefined) {
+          // Fusionner : additionner (les deux représentent des soldes cumulatifs du même club)
+          dedupBg[normMap[norm]] += rawBg[k];
+        } else {
+          normMap[norm] = k;
+          dedupBg[k] = rawBg[k];
+        }
+      });
+      mcData.budgets = dedupBg;
+    }
     if (data.mcData.contracts) mcData.contracts = data.mcData.contracts;
     if (data.mcData.transfers) {
       // Fusionner : garder l'historique statique + ajouter les nouveaux transferts sauvegardés
@@ -2696,7 +2712,7 @@ function executeCloseSeason() {
   if (typeof mcData !== 'undefined') {
     function addBudget(club, amount) {
       if (!club || !amount) return;
-      mcData.budgets[club] = (mcData.budgets[club] !== undefined ? mcData.budgets[club] : 20) + amount;
+      mcAddBudget(club, amount);
     }
 
     // Champions League
@@ -8575,6 +8591,29 @@ var mcData = {
   transfers: MC_HISTORICAL_TRANSFERS.slice(), // pré-rempli avec l'historique
 };
 
+// Normalise un nom de club pour éviter les doublons de casse dans mcData.budgets
+function mcBudgetKey(name) {
+  if (!name) return name;
+  // Trouver la clé existante correspondante (insensible à la casse)
+  var norm = name.toLowerCase().trim();
+  var existing = Object.keys(mcData.budgets).find(function(k) {
+    return k.toLowerCase().trim() === norm;
+  });
+  return existing || name; // retourne la clé déjà présente, ou le nom tel quel
+}
+function mcGetBudget(name) {
+  var key = mcBudgetKey(name);
+  return mcData.budgets[key] !== undefined ? mcData.budgets[key] : 20;
+}
+function mcSetBudget(name, val) {
+  var key = mcBudgetKey(name);
+  mcData.budgets[key] = val;
+}
+function mcAddBudget(name, delta) {
+  var key = mcBudgetKey(name);
+  mcData.budgets[key] = (mcData.budgets[key] !== undefined ? mcData.budgets[key] : 20) + delta;
+}
+
 // ── Formule de valorisation ───────────────────────────────────────
 function mcPlayerValue(p) {
   var sn = 'S' + (currentSeasonNum || 8);
@@ -8680,7 +8719,7 @@ function mcRenderNavList(q) {
   if (ql) clubs = clubs.filter(function(c) { return c.toLowerCase().indexOf(ql) >= 0; });
 
   list.innerHTML = clubs.map(function(club) {
-    var budget = mcData.budgets[club] !== undefined ? mcData.budgets[club] : 20;
+    var budget = mcGetBudget(club);
     var on = club === _mcCurrentClub ? ' on' : '';
     var color = budget > 50 ? '#3ecf8e' : budget > 10 ? '#f5c842' : '#f76f6f';
     return '<div class="mc-club-btn' + on + '" onclick="mcSelectClub(\'' + club.replace(/'/g, "\\'") + '\')">'
@@ -8710,7 +8749,7 @@ function mcSelectClub(clubName) {
 function mcRenderClubPanel(clubName) {
   var panel = document.getElementById('mc-panel');
   if (!panel) return;
-  var budget = mcData.budgets[clubName] !== undefined ? mcData.budgets[clubName] : 20;
+  var budget = mcGetBudget(clubName);
 
   // Joueurs dans ce club
   var players = [];
@@ -8952,11 +8991,13 @@ function mcConfirmTransfer() {
 
   // Mettre à jour les budgets
   if (!isFree && amount > 0) {
-    mcData.budgets[buyer]  = (mcData.budgets[buyer]  !== undefined ? mcData.budgets[buyer]  : 20) - amount;
-    mcData.budgets[seller] = (mcData.budgets[seller] !== undefined ? mcData.budgets[seller] : 20) + amount;
+    mcAddBudget(buyer,  -amount);
+    mcAddBudget(seller, +amount);
   } else if (isFree) {
     // Pas de frais de transfert mais on initialise le budget vendeur si besoin
-    if (mcData.budgets[seller] === undefined) mcData.budgets[seller] = 20;
+    if (mcGetBudget(seller) === 20 && mcData.budgets[mcBudgetKey(seller)] === undefined) {
+      mcSetBudget(seller, 20);
+    }
   }
 
   // Mettre à jour le club actuel du joueur
@@ -9059,7 +9100,7 @@ function mcConfirmRenew() {
 var _mcBudgetClub = null;
 function mcOpenBudget(clubName) {
   _mcBudgetClub = clubName;
-  var budget = mcData.budgets[clubName] !== undefined ? mcData.budgets[clubName] : 20;
+  var budget = mcGetBudget(clubName);
   document.getElementById('mc-budget-club-name').value = clubName;
   document.getElementById('mc-budget-value').value = budget.toFixed(1);
   document.getElementById('mc-budget-modal').classList.add('open');
@@ -9068,7 +9109,7 @@ function mcSaveBudget() {
   if (!_mcBudgetClub) return;
   var val = parseFloat(document.getElementById('mc-budget-value').value);
   if (isNaN(val) || val < 0) return;
-  mcData.budgets[_mcBudgetClub] = val;
+  mcSetBudget(_mcBudgetClub, val);
   document.getElementById('mc-budget-modal').classList.remove('open');
   // GH.save() avec debounce 2s plutôt que saveNow() pour éviter les
   // conflits 409 avec le polling (qui vérifie self.saveTimer avant de démarrer)
