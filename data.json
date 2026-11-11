@@ -756,7 +756,7 @@
         "matches": [
           3,
           3,
-          null,
+          3,
           null,
           null,
           null,
@@ -772,8 +772,8 @@
           null,
           null
         ],
-        "bm": 9,
-        "be": 4
+        "bm": 12,
+        "be": 5
       },
       {
         "name": "Las Palmas",
@@ -2090,6 +2090,15 @@
           "pts": 3,
           "scorers": {
             "3": 2
+          }
+        },
+        "2": {
+          "bm": 3,
+          "be": 1,
+          "pts": 3,
+          "scorers": {
+            "3": 2,
+            "97": 1
           }
         }
       },
