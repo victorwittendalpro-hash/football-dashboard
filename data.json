@@ -780,7 +780,7 @@
         "matches": [
           3,
           1,
-          null,
+          1,
           null,
           null,
           null,
@@ -796,39 +796,15 @@
           null,
           null
         ],
-        "bm": 8,
-        "be": 7
+        "bm": 10,
+        "be": 9
       },
       {
         "name": "Valence",
         "matches": [
           1,
           3,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 3,
-        "be": 2
-      },
-      {
-        "name": "Villareal",
-        "matches": [
-          1,
-          1,
-          null,
+          0,
           null,
           null,
           null,
@@ -845,158 +821,14 @@
           null
         ],
         "bm": 5,
-        "be": 5
-      },
-      {
-        "name": "Real Betis",
-        "matches": [
-          3,
-          3,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 10,
-        "be": 7
-      },
-      {
-        "name": "FC Seville",
-        "matches": [
-          1,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 2,
-        "be": 7
-      },
-      {
-        "name": "Osasuna",
-        "matches": [
-          0,
-          1,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 4,
         "be": 6
       },
       {
-        "name": "Español Barcelone",
-        "matches": [
-          0,
-          3,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 7,
-        "be": 5
-      },
-      {
-        "name": "Atletico Madrid",
-        "matches": [
-          3,
-          3,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 10,
-        "be": 0
-      },
-      {
-        "name": "Levante",
+        "name": "Villareal",
         "matches": [
           1,
+          1,
           3,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 4,
-        "be": 3
-      },
-      {
-        "name": "Getafe",
-        "matches": [
-          3,
-          3,
-          null,
           null,
           null,
           null,
@@ -1013,59 +845,12 @@
           null
         ],
         "bm": 9,
-        "be": 4
-      },
-      {
-        "name": "Rayo Valleccano",
-        "matches": [
-          0,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 0,
-        "be": 8
-      },
-      {
-        "name": "Real Sociedad",
-        "matches": [
-          0,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 1,
         "be": 6
       },
       {
-        "name": "Valladollid",
+        "name": "Real Betis",
         "matches": [
+          3,
           3,
           0,
           null,
@@ -1081,11 +866,226 @@
           null,
           null,
           null,
+          null
+        ],
+        "bm": 11,
+        "be": 10
+      },
+      {
+        "name": "FC Seville",
+        "matches": [
+          1,
+          0,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           null,
           null
         ],
-        "bm": 5,
-        "be": 6
+        "bm": 4,
+        "be": 8
+      },
+      {
+        "name": "Osasuna",
+        "matches": [
+          0,
+          1,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 7,
+        "be": 8
+      },
+      {
+        "name": "Español Barcelone",
+        "matches": [
+          0,
+          3,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 11,
+        "be": 8
+      },
+      {
+        "name": "Atletico Madrid",
+        "matches": [
+          3,
+          3,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 13,
+        "be": 0
+      },
+      {
+        "name": "Levante",
+        "matches": [
+          1,
+          3,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 4,
+        "be": 5
+      },
+      {
+        "name": "Getafe",
+        "matches": [
+          3,
+          3,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 12,
+        "be": 4
+      },
+      {
+        "name": "Rayo Valleccano",
+        "matches": [
+          0,
+          0,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 2,
+        "be": 12
+      },
+      {
+        "name": "Real Sociedad",
+        "matches": [
+          0,
+          0,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 3,
+        "be": 10
+      },
+      {
+        "name": "Valladollid",
+        "matches": [
+          3,
+          0,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 8,
+        "be": 8
       }
     ],
     "Ligue 1": [
@@ -2105,6 +2105,12 @@
           "be": 5,
           "pts": 1,
           "scorers": {}
+        },
+        "2": {
+          "bm": 2,
+          "be": 2,
+          "pts": 1,
+          "scorers": {}
         }
       },
       "3": {
@@ -2118,6 +2124,12 @@
           "bm": 2,
           "be": 1,
           "pts": 3,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 2,
+          "be": 4,
+          "pts": 0,
           "scorers": {}
         }
       },
@@ -2133,6 +2145,12 @@
           "be": 5,
           "pts": 1,
           "scorers": {}
+        },
+        "2": {
+          "bm": 4,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "5": {
@@ -2146,6 +2164,12 @@
           "bm": 6,
           "be": 4,
           "pts": 3,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 1,
+          "be": 3,
+          "pts": 0,
           "scorers": {}
         }
       },
@@ -2161,6 +2185,12 @@
           "be": 5,
           "pts": 0,
           "scorers": {}
+        },
+        "2": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "7": {
@@ -2175,6 +2205,12 @@
           "be": 2,
           "pts": 1,
           "scorers": {}
+        },
+        "2": {
+          "bm": 3,
+          "be": 2,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "8": {
@@ -2187,6 +2223,12 @@
         "1": {
           "bm": 5,
           "be": 1,
+          "pts": 3,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 4,
+          "be": 3,
           "pts": 3,
           "scorers": {}
         }
@@ -2208,6 +2250,14 @@
             "128": 3,
             "205": 1
           }
+        },
+        "2": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {
+            "128": 3
+          }
         }
       },
       "10": {
@@ -2222,6 +2272,12 @@
           "be": 1,
           "pts": 3,
           "scorers": {}
+        },
+        "2": {
+          "bm": 0,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
         }
       },
       "11": {
@@ -2234,6 +2290,12 @@
         "1": {
           "bm": 4,
           "be": 3,
+          "pts": 3,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 3,
+          "be": 0,
           "pts": 3,
           "scorers": {}
         }
@@ -2250,6 +2312,12 @@
           "be": 3,
           "pts": 0,
           "scorers": {}
+        },
+        "2": {
+          "bm": 2,
+          "be": 4,
+          "pts": 0,
+          "scorers": {}
         }
       },
       "13": {
@@ -2262,6 +2330,12 @@
         "1": {
           "bm": 0,
           "be": 3,
+          "pts": 0,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 2,
+          "be": 4,
           "pts": 0,
           "scorers": {}
         }
@@ -2277,6 +2351,12 @@
           "bm": 2,
           "be": 4,
           "pts": 0,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 3,
+          "be": 2,
+          "pts": 3,
           "scorers": {}
         }
       }
@@ -2992,6 +3072,16 @@
         }
       }
     },
+    "2": {
+      "m1": {
+        "bm": 3,
+        "be": 0,
+        "scorers": {
+          "208": 1,
+          "220": 1
+        }
+      }
+    },
     "3": {
       "m1": {
         "bm": 1,
@@ -3020,11 +3110,29 @@
         }
       }
     },
+    "7": {
+      "m1": {
+        "bm": 1,
+        "be": 4,
+        "scorers": {
+          "202": 1
+        }
+      }
+    },
     "10": {
       "m1": {
         "bm": 0,
         "be": 0,
         "scorers": {}
+      }
+    },
+    "11": {
+      "m1": {
+        "bm": 1,
+        "be": 2,
+        "scorers": {
+          "15": 1
+        }
       }
     },
     "15": {
@@ -3049,6 +3157,17 @@
         }
       }
     },
+    "17": {
+      "m1": {
+        "bm": 4,
+        "be": 1,
+        "scorers": {
+          "21": 2,
+          "57": 1,
+          "186": 1
+        }
+      }
+    },
     "20": {
       "m1": {
         "bm": 3,
@@ -3056,6 +3175,32 @@
         "scorers": {
           "221": 3
         }
+      }
+    },
+    "21": {
+      "m1": {
+        "bm": 2,
+        "be": 1,
+        "scorers": {
+          "92": 2
+        }
+      }
+    },
+    "26": {
+      "m1": {
+        "bm": 3,
+        "be": 2,
+        "scorers": {
+          "156": 1,
+          "214": 2
+        }
+      }
+    },
+    "27": {
+      "m1": {
+        "bm": 0,
+        "be": 1,
+        "scorers": {}
       }
     }
   },
