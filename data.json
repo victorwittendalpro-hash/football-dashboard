@@ -658,7 +658,7 @@
         "matches": [
           3,
           0,
-          null,
+          0,
           null,
           null,
           null,
@@ -674,8 +674,8 @@
           null,
           null
         ],
-        "bm": 7,
-        "be": 10
+        "bm": 6,
+        "be": 9
       },
       {
         "name": "Hull City",
@@ -2089,6 +2089,12 @@
           "scorers": {
             "156": 1
           }
+        },
+        "2": {
+          "bm": 0,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
         }
       },
       "13": {
