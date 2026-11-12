@@ -442,7 +442,7 @@
         "matches": [
           3,
           3,
-          null,
+          3,
           null,
           null,
           null,
@@ -458,15 +458,15 @@
           null,
           null
         ],
-        "bm": 9,
-        "be": 2
+        "bm": 12,
+        "be": 4
       },
       {
         "name": "Newcastle",
         "matches": [
           3,
           1,
-          null,
+          3,
           null,
           null,
           null,
@@ -482,7 +482,7 @@
           null,
           null
         ],
-        "bm": 3,
+        "bm": 6,
         "be": 2
       },
       {
@@ -490,7 +490,7 @@
         "matches": [
           1,
           3,
-          null,
+          0,
           null,
           null,
           null,
@@ -507,14 +507,14 @@
           null
         ],
         "bm": 5,
-        "be": 1
+        "be": 6
       },
       {
         "name": "Nothimgham Forrest",
         "matches": [
           0,
           1,
-          null,
+          3,
           null,
           null,
           null,
@@ -530,37 +530,14 @@
           null,
           null
         ],
-        "bm": 6,
-        "be": 8
+        "bm": 11,
+        "be": 9
       },
       {
         "name": "Everton",
         "matches": [
           0,
           3,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 5,
-        "be": 4
-      },
-      {
-        "name": "Leicester",
-        "matches": [
-          1,
           3,
           null,
           null,
@@ -575,10 +552,33 @@
           null,
           null,
           null,
+          null
+        ],
+        "bm": 8,
+        "be": 6
+      },
+      {
+        "name": "Leicester",
+        "matches": [
+          1,
+          3,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           null,
           null
         ],
-        "bm": 6,
+        "bm": 7,
         "be": 5
       },
       {
@@ -586,31 +586,7 @@
         "matches": [
           3,
           0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 3,
-        "be": 4
-      },
-      {
-        "name": "Bournemouth",
-        "matches": [
           3,
-          0,
-          null,
           null,
           null,
           null,
@@ -627,14 +603,14 @@
           null
         ],
         "bm": 6,
-        "be": 9
+        "be": 6
       },
       {
-        "name": "Crystal Palace",
+        "name": "Bournemouth",
         "matches": [
-          1,
           3,
-          null,
+          0,
+          1,
           null,
           null,
           null,
@@ -650,7 +626,31 @@
           null,
           null
         ],
-        "bm": 3,
+        "bm": 10,
+        "be": 13
+      },
+      {
+        "name": "Crystal Palace",
+        "matches": [
+          1,
+          3,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 6,
         "be": 2
       },
       {
@@ -658,7 +658,7 @@
         "matches": [
           3,
           0,
-          null,
+          0,
           null,
           null,
           null,
@@ -674,15 +674,15 @@
           null,
           null
         ],
-        "bm": 6,
-        "be": 7
+        "bm": 7,
+        "be": 10
       },
       {
         "name": "Hull City",
         "matches": [
           0,
           1,
-          null,
+          3,
           null,
           null,
           null,
@@ -698,7 +698,7 @@
           null,
           null
         ],
-        "bm": 5,
+        "bm": 8,
         "be": 8
       },
       {
@@ -706,7 +706,7 @@
         "matches": [
           3,
           0,
-          null,
+          3,
           null,
           null,
           null,
@@ -722,8 +722,8 @@
           null,
           null
         ],
-        "bm": 4,
-        "be": 4
+        "bm": 7,
+        "be": 6
       }
     ],
     "Liga": [
@@ -1892,6 +1892,15 @@
             "56": 2,
             "192": 1
           }
+        },
+        "2": {
+          "bm": 3,
+          "be": 2,
+          "pts": 3,
+          "scorers": {
+            "136": 1,
+            "192": 2
+          }
         }
       },
       "4": {
@@ -1905,6 +1914,12 @@
           "bm": 1,
           "be": 1,
           "pts": 1,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
           "scorers": {}
         }
       },
@@ -1920,6 +1935,12 @@
           "be": 1,
           "pts": 3,
           "scorers": {}
+        },
+        "2": {
+          "bm": 0,
+          "be": 5,
+          "pts": 0,
+          "scorers": {}
         }
       },
       "6": {
@@ -1933,6 +1954,12 @@
           "bm": 5,
           "be": 5,
           "pts": 1,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 5,
+          "be": 1,
+          "pts": 3,
           "scorers": {}
         }
       },
@@ -1948,6 +1975,12 @@
           "be": 0,
           "pts": 3,
           "scorers": {}
+        },
+        "2": {
+          "bm": 3,
+          "be": 2,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "8": {
@@ -1958,6 +1991,12 @@
           "scorers": {}
         },
         "1": {
+          "bm": 1,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
+        },
+        "2": {
           "bm": 1,
           "be": 0,
           "pts": 3,
@@ -1976,6 +2015,12 @@
           "be": 2,
           "pts": 0,
           "scorers": {}
+        },
+        "2": {
+          "bm": 3,
+          "be": 2,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "10": {
@@ -1990,6 +2035,12 @@
           "be": 5,
           "pts": 0,
           "scorers": {}
+        },
+        "2": {
+          "bm": 4,
+          "be": 4,
+          "pts": 1,
+          "scorers": {}
         }
       },
       "11": {
@@ -2002,6 +2053,12 @@
         "1": {
           "bm": 2,
           "be": 1,
+          "pts": 3,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 3,
+          "be": 0,
           "pts": 3,
           "scorers": {}
         }
@@ -2023,6 +2080,12 @@
           "scorers": {
             "156": 1
           }
+        },
+        "2": {
+          "bm": 1,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
         }
       },
       "13": {
@@ -2037,6 +2100,12 @@
           "be": 4,
           "pts": 1,
           "scorers": {}
+        },
+        "2": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "14": {
@@ -2050,6 +2119,12 @@
           "bm": 1,
           "be": 4,
           "pts": 0,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 3,
+          "be": 2,
+          "pts": 3,
           "scorers": {}
         }
       }
