@@ -1094,7 +1094,7 @@
         "matches": [
           3,
           3,
-          null,
+          1,
           null,
           null,
           null,
@@ -1110,8 +1110,8 @@
           null,
           null
         ],
-        "bm": 11,
-        "be": 0
+        "bm": 13,
+        "be": 2
       },
       {
         "name": "AS Monaco",
@@ -1142,7 +1142,7 @@
         "matches": [
           3,
           0,
-          null,
+          3,
           null,
           null,
           null,
@@ -1158,15 +1158,39 @@
           null,
           null
         ],
-        "bm": 6,
-        "be": 6
+        "bm": 10,
+        "be": 9
       },
       {
         "name": "Red Star",
         "matches": [
           1,
           1,
+          3,
           null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 8,
+        "be": 4
+      },
+      {
+        "name": "OM",
+        "matches": [
+          0,
+          0,
+          3,
           null,
           null,
           null,
@@ -1183,30 +1207,6 @@
           null
         ],
         "bm": 3,
-        "be": 3
-      },
-      {
-        "name": "OM",
-        "matches": [
-          0,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 2,
         "be": 5
       },
       {
@@ -1214,7 +1214,7 @@
         "matches": [
           0,
           3,
-          null,
+          3,
           null,
           null,
           null,
@@ -1230,7 +1230,7 @@
           null,
           null
         ],
-        "bm": 7,
+        "bm": 10,
         "be": 6
       },
       {
@@ -1238,7 +1238,31 @@
         "matches": [
           3,
           3,
+          0,
           null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 11,
+        "be": 8
+      },
+      {
+        "name": "OL",
+        "matches": [
+          3,
+          0,
+          3,
           null,
           null,
           null,
@@ -1255,38 +1279,14 @@
           null
         ],
         "bm": 9,
-        "be": 4
-      },
-      {
-        "name": "OL",
-        "matches": [
-          3,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 5,
-        "be": 4
+        "be": 6
       },
       {
         "name": "LOSC",
         "matches": [
           3,
           0,
-          null,
+          0,
           null,
           null,
           null,
@@ -1303,12 +1303,13 @@
           null
         ],
         "bm": 5,
-        "be": 3
+        "be": 5
       },
       {
         "name": "Reims",
         "matches": [
           0,
+          3,
           3,
           null,
           null,
@@ -1323,10 +1324,9 @@
           null,
           null,
           null,
-          null,
           null
         ],
-        "bm": 5,
+        "bm": 8,
         "be": 4
       },
       {
@@ -1334,7 +1334,55 @@
         "matches": [
           3,
           0,
+          0,
           null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 3,
+        "be": 6
+      },
+      {
+        "name": "AS Saint-Etienne",
+        "matches": [
+          3,
+          3,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 7,
+        "be": 4
+      },
+      {
+        "name": "FC Nantes",
+        "matches": [
+          0,
+          0,
+          3,
           null,
           null,
           null,
@@ -1351,54 +1399,6 @@
           null
         ],
         "bm": 2,
-        "be": 3
-      },
-      {
-        "name": "AS Saint-Etienne",
-        "matches": [
-          3,
-          3,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 3,
-        "be": 1
-      },
-      {
-        "name": "FC Nantes",
-        "matches": [
-          0,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 1,
         "be": 7
       },
       {
@@ -1406,7 +1406,7 @@
         "matches": [
           3,
           0,
-          null,
+          3,
           null,
           null,
           null,
@@ -1422,15 +1422,15 @@
           null,
           null
         ],
-        "bm": 5,
-        "be": 4
+        "bm": 10,
+        "be": 5
       },
       {
         "name": "Brest",
         "matches": [
           0,
           0,
-          null,
+          0,
           null,
           null,
           null,
@@ -1446,8 +1446,8 @@
           null,
           null
         ],
-        "bm": 3,
-        "be": 7
+        "bm": 4,
+        "be": 10
       }
     ],
     "Bundesliga": [
@@ -2404,6 +2404,15 @@
             "5": 2,
             "179": 2
           }
+        },
+        "2": {
+          "bm": 2,
+          "be": 2,
+          "pts": 1,
+          "scorers": {
+            "4": 1,
+            "5": 1
+          }
         }
       },
       "1": {
@@ -2437,6 +2446,12 @@
           "be": 2,
           "pts": 0,
           "scorers": {}
+        },
+        "2": {
+          "bm": 4,
+          "be": 3,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "3": {
@@ -2450,6 +2465,12 @@
           "bm": 2,
           "be": 2,
           "pts": 1,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 5,
+          "be": 1,
+          "pts": 3,
           "scorers": {}
         }
       },
@@ -2465,6 +2486,12 @@
           "be": 2,
           "pts": 0,
           "scorers": {}
+        },
+        "2": {
+          "bm": 1,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "5": {
@@ -2477,6 +2504,12 @@
         "1": {
           "bm": 6,
           "be": 4,
+          "pts": 3,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 3,
+          "be": 0,
           "pts": 3,
           "scorers": {}
         }
@@ -2492,6 +2525,12 @@
           "bm": 6,
           "be": 4,
           "pts": 3,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 2,
+          "be": 4,
+          "pts": 0,
           "scorers": {}
         }
       },
@@ -2514,6 +2553,12 @@
             "183": 1,
             "216": 1
           }
+        },
+        "2": {
+          "bm": 4,
+          "be": 2,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "8": {
@@ -2525,6 +2570,12 @@
         },
         "1": {
           "bm": 1,
+          "be": 2,
+          "pts": 0,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 0,
           "be": 2,
           "pts": 0,
           "scorers": {}
@@ -2542,6 +2593,12 @@
           "be": 1,
           "pts": 3,
           "scorers": {}
+        },
+        "2": {
+          "bm": 3,
+          "be": 0,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "10": {
@@ -2554,6 +2611,12 @@
         "1": {
           "bm": 0,
           "be": 2,
+          "pts": 0,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 1,
+          "be": 3,
           "pts": 0,
           "scorers": {}
         }
@@ -2570,6 +2633,12 @@
           "be": 0,
           "pts": 3,
           "scorers": {}
+        },
+        "2": {
+          "bm": 4,
+          "be": 3,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "12": {
@@ -2583,6 +2652,12 @@
           "bm": 0,
           "be": 3,
           "pts": 0,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 1,
+          "be": 0,
+          "pts": 3,
           "scorers": {}
         }
       },
@@ -2598,6 +2673,12 @@
           "be": 3,
           "pts": 0,
           "scorers": {}
+        },
+        "2": {
+          "bm": 5,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "14": {
@@ -2610,6 +2691,12 @@
         "1": {
           "bm": 2,
           "be": 4,
+          "pts": 0,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 1,
+          "be": 3,
           "pts": 0,
           "scorers": {}
         }
