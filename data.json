@@ -1480,7 +1480,7 @@
         "matches": [
           1,
           1,
-          null,
+          1,
           null,
           null,
           null,
@@ -1496,8 +1496,8 @@
           null,
           null
         ],
-        "bm": 4,
-        "be": 4
+        "bm": 5,
+        "be": 5
       },
       {
         "name": "Bayern Munich",
@@ -3090,6 +3090,14 @@
             "92": 1,
             "211": 1
           }
+        },
+        "2": {
+          "bm": 1,
+          "be": 1,
+          "pts": 1,
+          "scorers": {
+            "211": 1
+          }
         }
       },
       "2": {
@@ -3835,57 +3843,7 @@
     "cdm": {
       "qualifMatches": {},
       "groupMatches": {},
-      "koMatches": {},
-      "poules": {
-        "A": {
-          "teams": [
-            "Algérie",
-            "Colombie",
-            "Turquie",
-            "Australie"
-          ]
-        },
-        "B": {
-          "teams": [
-            "Sénégal",
-            "Grèce",
-            "Allemagne",
-            "Pays-Bas"
-          ]
-        },
-        "C": {
-          "teams": [
-            "Angleterre",
-            "Irlande",
-            "Croatie",
-            "France"
-          ]
-        },
-        "D": {
-          "teams": [
-            "Danemark",
-            "Serbie",
-            "Ukraine",
-            "Espagne"
-          ]
-        },
-        "E": {
-          "teams": [
-            "Pologne",
-            "Suède",
-            "Georgie",
-            "Portugal"
-          ]
-        },
-        "F": {
-          "teams": [
-            "Albanie",
-            "Pays de Galles",
-            "Belgique",
-            "Italie"
-          ]
-        }
-      }
+      "koMatches": {}
     },
     "euro": {
       "qualifMatches": {},
@@ -12766,7 +12724,7 @@
         "S8": "Dortmund",
         "S10": "Dortmund"
       },
-      "total": 1,
+      "total": 4,
       "CL": 0,
       "SN": 0,
       "CH": 1,
@@ -12774,7 +12732,8 @@
       "CP": 0,
       "seasons": {
         "S8": 1,
-        "S10": 0
+        "S10": 0,
+        "S9": 3
       },
       "t_sa": 0,
       "t_l1": 0,
