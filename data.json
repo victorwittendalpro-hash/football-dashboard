@@ -8,7 +8,7 @@
         "matches": [
           3,
           1,
-          1,
+          null,
           null,
           null,
           null,
@@ -24,8 +24,8 @@
           null,
           null
         ],
-        "bm": 9,
-        "be": 4
+        "bm": 7,
+        "be": 2
       },
       {
         "name": "Inter Milan",
@@ -104,7 +104,7 @@
         "matches": [
           3,
           3,
-          null,
+          1,
           null,
           null,
           null,
@@ -120,8 +120,8 @@
           null,
           null
         ],
-        "bm": 4,
-        "be": 0
+        "bm": 5,
+        "be": 1
       },
       {
         "name": "Lazio",
@@ -2830,15 +2830,6 @@
           "scorers": {
             "160": 1
           }
-        },
-        "2": {
-          "bm": 2,
-          "be": 2,
-          "pts": 1,
-          "scorers": {
-            "135": 1,
-            "138": 1
-          }
         }
       },
       "1": {
@@ -2934,6 +2925,12 @@
           "bm": 3,
           "be": 0,
           "pts": 3,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 1,
+          "be": 1,
+          "pts": 1,
           "scorers": {}
         }
       },
