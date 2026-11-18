@@ -104,7 +104,7 @@
         "matches": [
           3,
           3,
-          null,
+          1,
           null,
           null,
           null,
@@ -120,8 +120,8 @@
           null,
           null
         ],
-        "bm": 4,
-        "be": 0
+        "bm": 5,
+        "be": 1
       },
       {
         "name": "Lazio",
@@ -2934,6 +2934,12 @@
           "bm": 3,
           "be": 0,
           "pts": 3,
+          "scorers": {}
+        },
+        "2": {
+          "bm": 1,
+          "be": 1,
+          "pts": 1,
           "scorers": {}
         }
       },
