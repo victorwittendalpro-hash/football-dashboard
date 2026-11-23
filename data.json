@@ -1481,7 +1481,79 @@
           1,
           1,
           1,
+          3,
           null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 7,
+        "be": 5
+      },
+      {
+        "name": "Bayern Munich",
+        "matches": [
+          3,
+          3,
+          1,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 7,
+        "be": 8
+      },
+      {
+        "name": "Fribourg",
+        "matches": [
+          3,
+          0,
+          3,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 13,
+        "be": 9
+      },
+      {
+        "name": "Stuttgart",
+        "matches": [
+          3,
+          0,
+          1,
+          0,
           null,
           null,
           null,
@@ -1497,79 +1569,7 @@
           null
         ],
         "bm": 5,
-        "be": 5
-      },
-      {
-        "name": "Bayern Munich",
-        "matches": [
-          3,
-          3,
-          1,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 7,
-        "be": 3
-      },
-      {
-        "name": "Fribourg",
-        "matches": [
-          3,
-          0,
-          3,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 11,
-        "be": 8
-      },
-      {
-        "name": "Stuttgart",
-        "matches": [
-          3,
-          0,
-          1,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 4,
-        "be": 6
+        "be": 9
       },
       {
         "name": "Werder Breme",
@@ -1577,7 +1577,7 @@
           3,
           1,
           3,
-          null,
+          0,
           null,
           null,
           null,
@@ -1593,7 +1593,7 @@
           null
         ],
         "bm": 9,
-        "be": 5
+        "be": 8
       },
       {
         "name": "Bayer Leverkusen",
@@ -1601,55 +1601,7 @@
           3,
           1,
           0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 7,
-        "be": 6
-      },
-      {
-        "name": "FC Cologne",
-        "matches": [
           0,
-          3,
-          3,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 7,
-        "be": 5
-      },
-      {
-        "name": "Leipzig",
-        "matches": [
-          0,
-          0,
-          3,
-          null,
           null,
           null,
           null,
@@ -1665,111 +1617,15 @@
           null
         ],
         "bm": 8,
-        "be": 13
+        "be": 10
       },
       {
-        "name": "Elversberg",
-        "matches": [
-          3,
-          3,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 7,
-        "be": 8
-      },
-      {
-        "name": "Union Berlin",
-        "matches": [
-          3,
-          1,
-          1,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 5,
-        "be": 4
-      },
-      {
-        "name": "Wolfsburg",
-        "matches": [
-          3,
-          0,
-          0,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 4,
-        "be": 7
-      },
-      {
-        "name": "Paderborn 07",
+        "name": "FC Cologne",
         "matches": [
           0,
           3,
           3,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        "bm": 9,
-        "be": 4
-      },
-      {
-        "name": "Borussia Mönchengladbach",
-        "matches": [
           3,
-          3,
-          3,
-          null,
           null,
           null,
           null,
@@ -1785,15 +1641,15 @@
           null
         ],
         "bm": 11,
-        "be": 3
+        "be": 6
       },
       {
-        "name": "Herta Berlin",
+        "name": "Leipzig",
         "matches": [
-          3,
+          0,
           0,
           3,
-          null,
+          3,
           null,
           null,
           null,
@@ -1808,8 +1664,152 @@
           null,
           null
         ],
-        "bm": 6,
+        "bm": 10,
+        "be": 14
+      },
+      {
+        "name": "Elversberg",
+        "matches": [
+          3,
+          3,
+          0,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 9,
+        "be": 12
+      },
+      {
+        "name": "Union Berlin",
+        "matches": [
+          3,
+          1,
+          1,
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 10,
+        "be": 9
+      },
+      {
+        "name": "Wolfsburg",
+        "matches": [
+          3,
+          0,
+          0,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 5,
+        "be": 9
+      },
+      {
+        "name": "Paderborn 07",
+        "matches": [
+          0,
+          3,
+          3,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 13,
+        "be": 6
+      },
+      {
+        "name": "Borussia Mönchengladbach",
+        "matches": [
+          3,
+          3,
+          3,
+          3,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 16,
         "be": 4
+      },
+      {
+        "name": "Herta Berlin",
+        "matches": [
+          3,
+          0,
+          3,
+          0,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "bm": 7,
+        "be": 6
       }
     ]
   },
@@ -3498,6 +3498,15 @@
           "scorers": {
             "211": 1
           }
+        },
+        "3": {
+          "bm": 2,
+          "be": 0,
+          "pts": 3,
+          "scorers": {
+            "92": 1,
+            "146": 1
+          }
         }
       },
       "2": {
@@ -3518,6 +3527,12 @@
           "be": 1,
           "pts": 1,
           "scorers": {}
+        },
+        "3": {
+          "bm": 0,
+          "be": 5,
+          "pts": 0,
+          "scorers": {}
         }
       },
       "3": {
@@ -3535,6 +3550,12 @@
         },
         "2": {
           "bm": 5,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        },
+        "3": {
+          "bm": 2,
           "be": 1,
           "pts": 3,
           "scorers": {}
@@ -3558,6 +3579,12 @@
           "be": 2,
           "pts": 1,
           "scorers": {}
+        },
+        "3": {
+          "bm": 1,
+          "be": 3,
+          "pts": 0,
+          "scorers": {}
         }
       },
       "5": {
@@ -3577,6 +3604,12 @@
           "bm": 4,
           "be": 1,
           "pts": 3,
+          "scorers": {}
+        },
+        "3": {
+          "bm": 0,
+          "be": 3,
+          "pts": 0,
           "scorers": {}
         }
       },
@@ -3598,6 +3631,12 @@
           "be": 2,
           "pts": 0,
           "scorers": {}
+        },
+        "3": {
+          "bm": 1,
+          "be": 4,
+          "pts": 0,
+          "scorers": {}
         }
       },
       "7": {
@@ -3614,6 +3653,12 @@
           "scorers": {}
         },
         "2": {
+          "bm": 4,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        },
+        "3": {
           "bm": 4,
           "be": 1,
           "pts": 3,
@@ -3638,6 +3683,12 @@
           "be": 4,
           "pts": 3,
           "scorers": {}
+        },
+        "3": {
+          "bm": 2,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "9": {
@@ -3655,6 +3706,12 @@
         },
         "2": {
           "bm": 1,
+          "be": 4,
+          "pts": 0,
+          "scorers": {}
+        },
+        "3": {
+          "bm": 2,
           "be": 4,
           "pts": 0,
           "scorers": {}
@@ -3678,6 +3735,12 @@
           "be": 2,
           "pts": 1,
           "scorers": {}
+        },
+        "3": {
+          "bm": 5,
+          "be": 5,
+          "pts": 1,
+          "scorers": {}
         }
       },
       "11": {
@@ -3696,6 +3759,12 @@
         "2": {
           "bm": 1,
           "be": 3,
+          "pts": 0,
+          "scorers": {}
+        },
+        "3": {
+          "bm": 1,
+          "be": 2,
           "pts": 0,
           "scorers": {}
         }
@@ -3718,6 +3787,12 @@
           "be": 0,
           "pts": 3,
           "scorers": {}
+        },
+        "3": {
+          "bm": 4,
+          "be": 2,
+          "pts": 3,
+          "scorers": {}
         }
       },
       "13": {
@@ -3734,6 +3809,12 @@
           "scorers": {}
         },
         "2": {
+          "bm": 5,
+          "be": 1,
+          "pts": 3,
+          "scorers": {}
+        },
+        "3": {
           "bm": 5,
           "be": 1,
           "pts": 3,
@@ -3757,6 +3838,12 @@
           "bm": 3,
           "be": 0,
           "pts": 3,
+          "scorers": {}
+        },
+        "3": {
+          "bm": 1,
+          "be": 2,
+          "pts": 0,
           "scorers": {}
         }
       }
