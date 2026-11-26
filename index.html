@@ -609,8 +609,49 @@ var GH = {
 function ghApplyData(data) {
   if (!data) return;
   if (data.matchDetails)   matchDetails   = data.matchDetails;
-  if (data.clMatchDetails) clMatchDetails = data.clMatchDetails;
-  if (data.clKoDetails)    clKoDetails    = data.clKoDetails;
+  if (data.clMatchDetails) {
+    // Merger avec localStorage : garder le plus complet match par match
+    var ghCL = data.clMatchDetails;
+    var localCL = clMatchDetails || {};
+    var mergedCL = {};
+    var allTeams = new Set(Object.keys(ghCL).concat(Object.keys(localCL)));
+    allTeams.forEach(function(tidx) {
+      var ghTeam = ghCL[tidx] || {};
+      var lcTeam = localCL[tidx] || {};
+      mergedCL[tidx] = {};
+      var allMatches = new Set(Object.keys(ghTeam).concat(Object.keys(lcTeam)));
+      allMatches.forEach(function(mk) {
+        var ghM = ghTeam[mk] || {};
+        var lcM = lcTeam[mk] || {};
+        // Priorité à la version avec le plus de buts ou de buteurs
+        var ghScore = (ghM.bm||0) + (ghM.be||0) + Object.keys(ghM.scorers||{}).length;
+        var lcScore = (lcM.bm||0) + (lcM.be||0) + Object.keys(lcM.scorers||{}).length;
+        mergedCL[tidx][mk] = (lcScore >= ghScore && (lcM.bm||0)+(lcM.be||0) > 0) ? lcM : ghM;
+      });
+    });
+    clMatchDetails = mergedCL;
+  }
+  if (data.clKoDetails) {
+    // Idem pour KO : merger en gardant le plus complet
+    var ghKO = data.clKoDetails;
+    var localKO = clKoDetails || {};
+    var mergedKO = {};
+    var allKOTeams = new Set(Object.keys(ghKO).concat(Object.keys(localKO)));
+    allKOTeams.forEach(function(tidx) {
+      var ghTeam = ghKO[tidx] || {};
+      var lcTeam = localKO[tidx] || {};
+      mergedKO[tidx] = {};
+      var allMatches = new Set(Object.keys(ghTeam).concat(Object.keys(lcTeam)));
+      allMatches.forEach(function(mk) {
+        var ghM = ghTeam[mk] || {};
+        var lcM = lcTeam[mk] || {};
+        var ghScore = (ghM.bm||0) + (ghM.be||0) + Object.keys(ghM.scorers||{}).length;
+        var lcScore = (lcM.bm||0) + (lcM.be||0) + Object.keys(lcM.scorers||{}).length;
+        mergedKO[tidx][mk] = (lcScore >= ghScore && (lcM.bm||0)+(lcM.be||0) > 0) ? lcM : ghM;
+      });
+    });
+    clKoDetails = mergedKO;
+  }
   if (data.clKoBracket && typeof CL_KO_DATA !== 'undefined') {
     if (data.clKoBracket.r16)   CL_KO_DATA.bracket.r16   = data.clKoBracket.r16;
     if (data.clKoBracket.qf)    CL_KO_DATA.bracket.qf    = data.clKoBracket.qf;
